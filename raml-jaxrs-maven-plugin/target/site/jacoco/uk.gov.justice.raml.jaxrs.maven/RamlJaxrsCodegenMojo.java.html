@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RamlJaxrsCodegenMojo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">raml-jaxrs-maven-plugin</a> &gt; <a href="index.source.html" class="el_package">uk.gov.justice.raml.jaxrs.maven</a> &gt; <span class="el_source">RamlJaxrsCodegenMojo.java</span></div><h1>RamlJaxrsCodegenMojo.java</h1><pre class="source lang-java linenums">package uk.gov.justice.raml.jaxrs.maven;
+
+import static java.text.MessageFormat.format;
+import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+
+import uk.gov.justice.raml.jaxrs.core.Configuration;
+import uk.gov.justice.raml.jaxrs.core.DefaultGenerator;
+import uk.gov.justice.raml.jaxrs.core.Generator;
+
+@Mojo(name = &quot;generate&quot;, requiresProject = true, threadSafe = false, requiresDependencyResolution = COMPILE_PLUS_RUNTIME, defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+public class RamlJaxrsCodegenMojo extends AbstractMojo {
+
+    private static final String RAML_HEADER = &quot;#%RAML&quot;;
+    private static final String RAML_EXTENSION = &quot;raml&quot;;
+    private static final String FAILED_TO_CLEAN_DIRECTORY = &quot;Failed to clean directory: {0}&quot;;
+    private static final String GENERATING_JAVA_CLASSES = &quot;Generating Java classes from: {0}&quot;;
+    private static final String FAILED_TO_CREATE_DIRECTORY = &quot;Failed to create directory: {0}&quot;;
+    private static final String LOOKING_FOR_RAML_FILES = &quot;Looking for RAML files in and below: {0}&quot;;
+    private static final String SOURCE_DIRECTORY_MUST_BE_PROVIDED = &quot;SourceDirectory must be provided&quot;;
+    private static final String ERROR_GENERATING_JAVA_CLASSES = &quot;Error generating Java classes from: {0}&quot;;
+    private static final String THE_PROVIDED_PATH_DOESN_T_REFER_TO_A_VALID_DIRECTORY = &quot;The provided path doesn''t refer to a valid directory: {0}&quot;;
+    private static final String DOES_NOT_SEEM_TO_BE_RAML_ROOT_FILE = &quot;{0} does not seem to be RAML root file -skipped(first line should start from #%RAML 0.8&quot;;
+
+    private final Generator generator;
+
+
+    @Parameter(defaultValue = &quot;${project}&quot;)
+    private MavenProject project;
+
+    /**
+     * Target directory for generated Java source files.
+     */
+    @Parameter(property = &quot;outputDirectory&quot;, defaultValue = &quot;${project.build.directory}/generated-sources/raml-jaxrs&quot;)
+    private File outputDirectory;
+
+    /**
+     * Directory location of the RAML file(s).
+     */
+    @Parameter(property = &quot;sourceDirectory&quot;, defaultValue = &quot;${basedir}/src/main/raml&quot;)
+    private File sourceDirectory;
+
+    /**
+     * Base package name used for generated Java classes.
+     */
+    @Parameter(property = &quot;basePackageName&quot;, required = true)
+    private String basePackageName;
+
+
+    public RamlJaxrsCodegenMojo() {
+<span class="nc" id="L63">        this(new DefaultGenerator());</span>
+<span class="nc" id="L64">    }</span>
+
+<span class="fc" id="L66">    RamlJaxrsCodegenMojo(Generator generator) {</span>
+<span class="fc" id="L67">        this.generator = generator;</span>
+<span class="fc" id="L68">    }</span>
+
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+<span class="fc" id="L72">        verify(sourceDirectory);</span>
+<span class="fc" id="L73">        prepare(outputDirectory);</span>
+<span class="fc" id="L74">        project.addCompileSourceRoot(outputDirectory.getPath());</span>
+<span class="fc" id="L75">        process(ramlFiles());</span>
+<span class="fc" id="L76">    }</span>
+
+    private void process(Collection&lt;File&gt; ramlFiles) throws MojoExecutionException {
+<span class="fc" id="L79">        File currentSourcePath = null;</span>
+
+        try {
+<span class="fc bfc" id="L82" title="All 2 branches covered.">            for (final File ramlFile : ramlFiles) {</span>
+<span class="fc" id="L83">                currentSourcePath = ramlFile;</span>
+<span class="fc" id="L84">                String raml = FileUtils.readFileToString(ramlFile);</span>
+<span class="pc bpc" id="L85" title="1 of 4 branches missed.">                if (raml != null &amp;&amp; raml.startsWith(RAML_HEADER)) {</span>
+<span class="fc" id="L86">                    getLog().info(format(GENERATING_JAVA_CLASSES, ramlFile));</span>
+<span class="fc" id="L87">                    generator.run(raml, configuration());</span>
+                } else {
+<span class="fc" id="L89">                    getLog().info(format(DOES_NOT_SEEM_TO_BE_RAML_ROOT_FILE, ramlFile));</span>
+                }
+<span class="fc" id="L91">            }</span>
+<span class="nc" id="L92">        } catch (final Exception e) {</span>
+<span class="nc" id="L93">            throw new MojoExecutionException(format(ERROR_GENERATING_JAVA_CLASSES, currentSourcePath), e);</span>
+<span class="fc" id="L94">        }</span>
+<span class="fc" id="L95">    }</span>
+
+    private Configuration configuration() {
+<span class="fc" id="L98">        final Configuration configuration = new Configuration();</span>
+
+<span class="fc" id="L100">        configuration.setBasePackageName(basePackageName);</span>
+<span class="fc" id="L101">        configuration.setOutputDirectory(outputDirectory);</span>
+<span class="fc" id="L102">        configuration.setSourceDirectory(sourceDirectory);</span>
+<span class="fc" id="L103">        return configuration;</span>
+    }
+
+    private void verify(File sourceDirectory2) throws MojoExecutionException {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (sourceDirectory2 == null) {</span>
+<span class="fc" id="L108">            throw new MojoExecutionException(SOURCE_DIRECTORY_MUST_BE_PROVIDED);</span>
+        }
+<span class="fc" id="L110">    }</span>
+
+    private void prepare(File outputDirectory) throws MojoExecutionException {
+        try {
+<span class="fc" id="L114">            FileUtils.forceMkdir(outputDirectory);</span>
+<span class="nc" id="L115">        } catch (final IOException ioe) {</span>
+<span class="nc" id="L116">            throw new MojoExecutionException(format(FAILED_TO_CREATE_DIRECTORY, outputDirectory), ioe);</span>
+<span class="fc" id="L117">        }</span>
+
+        try {
+<span class="fc" id="L120">            FileUtils.cleanDirectory(outputDirectory);</span>
+<span class="nc" id="L121">        } catch (final IOException ioe) {</span>
+<span class="nc" id="L122">            throw new MojoExecutionException(format(FAILED_TO_CLEAN_DIRECTORY, outputDirectory), ioe);</span>
+<span class="fc" id="L123">        }</span>
+<span class="fc" id="L124">    }</span>
+
+    private Collection&lt;File&gt; ramlFiles() throws MojoExecutionException {
+
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (!sourceDirectory.isDirectory()) {</span>
+<span class="nc" id="L129">            throw new MojoExecutionException(</span>
+<span class="nc" id="L130">                    format(THE_PROVIDED_PATH_DOESN_T_REFER_TO_A_VALID_DIRECTORY, sourceDirectory));</span>
+        }
+
+<span class="fc" id="L133">        getLog().info(format(LOOKING_FOR_RAML_FILES, sourceDirectory));</span>
+
+<span class="fc" id="L135">        return FileUtils.listFiles(sourceDirectory, new String[] { RAML_EXTENSION }, true);</span>
+    }
+
+    void setSourceDirectory(File sourceDirectory) {
+<span class="fc" id="L139">        this.sourceDirectory = sourceDirectory;</span>
+<span class="fc" id="L140">    }</span>
+
+    void setOutputDirectory(File outputDirectory) {
+<span class="fc" id="L143">        this.outputDirectory = outputDirectory;</span>
+<span class="fc" id="L144">    }</span>
+
+    void setProject(MavenProject project) {
+<span class="fc" id="L147">        this.project = project;</span>
+<span class="fc" id="L148">    }</span>
+
+    void setBasePackageName(String basePackageName) {
+<span class="fc" id="L151">        this.basePackageName = basePackageName;</span>
+<span class="fc" id="L152">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Configuration.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">raml-jaxrs-core</a> &gt; <a href="index.source.html" class="el_package">uk.gov.justice.raml.jaxrs.core</a> &gt; <span class="el_source">Configuration.java</span></div><h1>Configuration.java</h1><pre class="source lang-java linenums">package uk.gov.justice.raml.jaxrs.core;
+
+import java.io.File;
+
+<span class="fc" id="L5">public class Configuration {</span>
+
+    private File outputDirectory;
+    private String basePackageName;
+    private File sourceDirectory;
+<span class="fc" id="L10">    private String restIFPackageName = &quot;resource&quot;;</span>
+<span class="fc" id="L11">    private String interfaceNameSuffix = &quot;Resource&quot;;</span>
+
+
+    public File getOutputDirectory() {
+<span class="fc" id="L15">        return outputDirectory;</span>
+    }
+
+    public void setOutputDirectory(final File outputDirectory) {
+<span class="fc" id="L19">        this.outputDirectory = outputDirectory;</span>
+<span class="fc" id="L20">    }</span>
+
+    public String getBasePackageName() {
+<span class="fc" id="L23">        return basePackageName;</span>
+    }
+
+    public void setBasePackageName(final String basePackageName) {
+<span class="fc" id="L27">        this.basePackageName = basePackageName;</span>
+<span class="fc" id="L28">    }</span>
+
+    public File getSourceDirectory() {
+<span class="fc" id="L31">        return sourceDirectory;</span>
+    }
+
+    public void setSourceDirectory(File sourceDirectory) {
+<span class="fc" id="L35">        this.sourceDirectory = sourceDirectory;</span>
+<span class="fc" id="L36">    }</span>
+
+    public String getRestIFPackageName() {
+<span class="fc" id="L39">        return restIFPackageName;</span>
+    }
+
+    public void setRestIFPackageName(String restIFPackageName) {
+<span class="nc" id="L43">        this.restIFPackageName = restIFPackageName;</span>
+<span class="nc" id="L44">    }</span>
+
+    public String getInterfaceNameSuffix() {
+<span class="fc" id="L47">        return interfaceNameSuffix;</span>
+    }
+
+    public void setInterfaceNameSuffix(String interfaceNameSuffix) {
+<span class="nc" id="L51">        this.interfaceNameSuffix = interfaceNameSuffix;</span>
+<span class="nc" id="L52">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

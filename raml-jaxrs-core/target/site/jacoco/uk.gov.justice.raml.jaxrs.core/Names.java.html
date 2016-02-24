@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Names.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">raml-jaxrs-core</a> &gt; <a href="index.source.html" class="el_package">uk.gov.justice.raml.jaxrs.core</a> &gt; <span class="el_source">Names.java</span></div><h1>Names.java</h1><pre class="source lang-java linenums">package uk.gov.justice.raml.jaxrs.core;
+
+import static org.apache.commons.lang.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.remove;
+import static org.apache.commons.lang.StringUtils.uncapitalize;
+import static org.apache.commons.lang.WordUtils.capitalize;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.raml.model.Action;
+import org.raml.model.MimeType;
+import org.raml.model.Resource;
+
+public class Names {
+<span class="fc" id="L21">    public static final Set&lt;String&gt; JAVA_KEYWORDS = Collections.unmodifiableSet(new HashSet&lt;String&gt;(</span>
+<span class="fc" id="L22">            Arrays.asList(&quot;abstract&quot;, &quot;assert&quot;, &quot;boolean&quot;, &quot;break&quot;, &quot;byte&quot;, &quot;case&quot;, &quot;catch&quot;, &quot;char&quot;, &quot;class&quot;,</span>
+                    &quot;const&quot;, &quot;continue&quot;, &quot;default&quot;, &quot;do&quot;, &quot;double&quot;, &quot;else&quot;, &quot;enum&quot;, &quot;extends&quot;, &quot;false&quot;, &quot;final&quot;,
+                    &quot;finally&quot;, &quot;float&quot;, &quot;for&quot;, &quot;goto&quot;, &quot;if&quot;, &quot;implements&quot;, &quot;import&quot;, &quot;instanceof&quot;, &quot;int&quot;,
+                    &quot;interface&quot;, &quot;long&quot;, &quot;native&quot;, &quot;new&quot;, &quot;null&quot;, &quot;package&quot;, &quot;private&quot;, &quot;protected&quot;, &quot;public&quot;,
+                    &quot;return&quot;, &quot;short&quot;, &quot;static&quot;, &quot;strictfp&quot;, &quot;super&quot;, &quot;switch&quot;, &quot;synchronized&quot;, &quot;this&quot;, &quot;throw&quot;,
+                    &quot;throws&quot;, &quot;transient&quot;, &quot;true&quot;, &quot;try&quot;, &quot;void&quot;, &quot;volatile&quot;, &quot;while&quot;)));
+
+    public static final String GENERIC_PAYLOAD_ARGUMENT_NAME = &quot;entity&quot;;
+    public static final String MULTIPLE_RESPONSE_HEADERS_ARGUMENT_NAME = &quot;headers&quot;;
+    public static final String EXAMPLE_PREFIX = &quot; e.g. &quot;;
+<span class="fc" id="L32">    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;</span>
+
+<span class="nc" id="L34">    private Names() {</span>
+<span class="nc" id="L35">    }</span>
+
+    public static String resourceInterfaceNameOf(final Resource resource, Configuration config) {
+<span class="fc" id="L38">        final String resourceInterfaceName = buildJavaFriendlyName(defaultIfBlank(resource.getDisplayName(),</span>
+<span class="fc" id="L39">                resource.getRelativeUri()));</span>
+
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        return isBlank(resourceInterfaceName) ? &quot;Root&quot; : resourceInterfaceName.concat(config.getInterfaceNameSuffix());</span>
+    }
+
+    public static String buildVariableName(final String source) {
+<span class="fc" id="L45">        final String name = uncapitalize(buildJavaFriendlyName(source));</span>
+
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        return JAVA_KEYWORDS.contains(name) ? &quot;$&quot; + name : name;</span>
+    }
+
+    public static String buildJavaFriendlyName(final String source) {
+<span class="fc" id="L51">        final String baseName = source.replaceAll(&quot;[\\W_]&quot;, &quot; &quot;);</span>
+<span class="fc" id="L52">        return capitalize(baseName).replaceAll(&quot;[\\W_]&quot;, &quot;&quot;);</span>
+    }
+
+    public static String buildResourceMethodName(final Action action, final MimeType bodyMimeType) {
+<span class="fc" id="L56">        final String methodBaseName = buildJavaFriendlyName(action.getResource()</span>
+<span class="fc" id="L57">                .getUri()</span>
+<span class="fc" id="L58">                .replace(&quot;{&quot;, &quot; By &quot;));</span>
+
+<span class="fc" id="L60">        return action.getType().toString().toLowerCase() + buildMimeTypeInfix(bodyMimeType) + methodBaseName;</span>
+    }
+
+    public static String buildMimeTypeInfix(final MimeType bodyMimeType) {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        return bodyMimeType != null ? buildJavaFriendlyName(getShortMimeType(bodyMimeType)) : &quot;&quot;;</span>
+    }
+
+    public static String getShortMimeType(final MimeType mimeType) {
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        if (mimeType == null) {</span>
+<span class="nc" id="L69">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L71">        String subType = StringUtils.substringAfter(mimeType.getType()</span>
+<span class="fc" id="L72">                .toLowerCase(DEFAULT_LOCALE), &quot;/&quot;);</span>
+
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (subType.contains(&quot;.&quot;)) {</span>
+            // handle types like application/vnd.example.v1+json
+<span class="fc" id="L76">            StringBuilder sb = new StringBuilder();</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            for (String s : subType.split(&quot;\\W+&quot;)) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                sb.append(sb.length() == 0 ? s : StringUtils.capitalize(s));</span>
+            }
+<span class="fc" id="L80">            return sb.toString();</span>
+        } else {
+            // handle any other types
+<span class="nc" id="L83">            return remove(remove(remove(subType, &quot;x-www-&quot;), &quot;+&quot;), &quot;-&quot;);</span>
+        }
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

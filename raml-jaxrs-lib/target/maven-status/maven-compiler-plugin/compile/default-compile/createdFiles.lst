@@ -1,0 +1,10 @@
+uk\gov\justice\raml\jaxrs\lib\DefaultEnvelope.class
+uk\gov\justice\raml\jaxrs\lib\JsonObjectUtils.class
+uk\gov\justice\raml\jaxrs\lib\UnmodifiableMapBuilder.class
+uk\gov\justice\raml\jaxrs\lib\Metadata.class
+uk\gov\justice\raml\jaxrs\lib\Envelope.class
+uk\gov\justice\raml\jaxrs\lib\DefaultEnvelopeBuilder.class
+uk\gov\justice\raml\jaxrs\lib\Dispatcher.class
+uk\gov\justice\raml\jaxrs\lib\EnvelopeBuilder.class
+uk\gov\justice\raml\jaxrs\lib\RestProcessor.class
+uk\gov\justice\raml\jaxrs\lib\DefaultDispatcher.class

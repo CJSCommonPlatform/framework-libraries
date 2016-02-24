@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+raml-jaxrs-core,uk.gov.justice.raml.jaxrs.core,Configuration,8,36,0,0,4,14,2,9,2,9
+raml-jaxrs-core,uk.gov.justice.raml.jaxrs.core,JaxRsResourceImplementationCodeGenerator,0,194,0,2,0,36,0,9,0,8
+raml-jaxrs-core,uk.gov.justice.raml.jaxrs.core,JaxRsResourceCodeGenerator,0,71,0,0,0,17,0,4,0,4
+raml-jaxrs-core,uk.gov.justice.raml.jaxrs.core,JaxRsResourceInterfaceCodeGenerator,25,383,10,20,4,81,10,21,0,16
+raml-jaxrs-core,uk.gov.justice.raml.jaxrs.core,Names,24,338,4,10,4,23,5,10,1,7
+raml-jaxrs-core,uk.gov.justice.raml.jaxrs.core,CodeGenareationException,4,0,0,0,2,0,1,0,1,0
+raml-jaxrs-core,uk.gov.justice.raml.jaxrs.core,DefaultGenerator,7,242,3,9,2,50,3,10,0,7

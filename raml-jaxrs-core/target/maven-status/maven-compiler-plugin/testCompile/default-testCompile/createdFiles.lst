@@ -1,0 +1,12 @@
+uk\gov\justice\raml\jaxrs\util\compiler\CompilationException.class
+uk\gov\justice\raml\jaxrs\util\builder\RamlResourceMethodBuilder$Method.class
+uk\gov\justice\raml\jaxrs\util\builder\RamlResourceBuilder.class
+uk\gov\justice\raml\jaxrs\core\DefaultGenerator_ResourceCodeStructureTest.class
+uk\gov\justice\raml\jaxrs\util\builder\ResourceAndBeanAnnotationListener.class
+uk\gov\justice\raml\jaxrs\util\compiler\JavaCompilerUtil.class
+uk\gov\justice\raml\jaxrs\util\builder\HttpMethod.class
+uk\gov\justice\raml\jaxrs\core\DefaultGenerator_ResourceMethodBodyTest.class
+uk\gov\justice\raml\jaxrs\util\builder\RamlResourceMethodBuilder.class
+uk\gov\justice\raml\jaxrs\util\builder\RamlBuilder.class
+uk\gov\justice\raml\jaxrs\util\builder\FileBuilder.class
+uk\gov\justice\raml\jaxrs\util\compiler\ExtendedPackagesResourceConfig.class

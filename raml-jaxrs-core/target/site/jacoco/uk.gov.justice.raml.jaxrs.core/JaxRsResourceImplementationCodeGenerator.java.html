@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JaxRsResourceImplementationCodeGenerator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">raml-jaxrs-core</a> &gt; <a href="index.source.html" class="el_package">uk.gov.justice.raml.jaxrs.core</a> &gt; <span class="el_source">JaxRsResourceImplementationCodeGenerator.java</span></div><h1>JaxRsResourceImplementationCodeGenerator.java</h1><pre class="source lang-java linenums">package uk.gov.justice.raml.jaxrs.core;
+
+import static com.sun.codemodel.JMod.PUBLIC;
+
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.core.HttpHeaders;
+
+import com.sun.codemodel.JBlock;
+import com.sun.codemodel.JClass;
+import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JMethod;
+import com.sun.codemodel.JPackage;
+import com.sun.codemodel.JType;
+import com.sun.codemodel.JVar;
+
+import uk.gov.justice.raml.jaxrs.lib.Dispatcher;
+import uk.gov.justice.raml.jaxrs.lib.RestProcessor;
+import uk.gov.justice.raml.jaxrs.lib.UnmodifiableMapBuilder;
+
+public class JaxRsResourceImplementationCodeGenerator {
+    private final JCodeModel codeModel;
+
+<span class="fc" id="L33">    public JaxRsResourceImplementationCodeGenerator(JCodeModel codeModel) {</span>
+<span class="fc" id="L34">        this.codeModel = codeModel;</span>
+<span class="fc" id="L35">    }</span>
+
+    public JDefinedClass createImplementation(JDefinedClass resourceInterface)
+            throws JClassAlreadyExistsException {
+<span class="fc" id="L39">        final JPackage pkg = resourceInterface.getPackage();</span>
+<span class="fc" id="L40">        final JDefinedClass resourceImplementation = pkg._class(&quot;Default&quot; + resourceInterface.name());</span>
+<span class="fc" id="L41">        resourceImplementation._implements(resourceInterface);</span>
+<span class="fc" id="L42">        resourceImplementation.annotate(Stateless.class);</span>
+
+<span class="fc" id="L44">        addImplemetationMethods(resourceImplementation, resourceInterface);</span>
+
+<span class="fc" id="L46">        addAnnotatedProperty(resourceImplementation, Dispatcher.class, &quot;dispatcher&quot;, Inject.class);</span>
+<span class="fc" id="L47">        addAnnotatedProperty(resourceImplementation, RestProcessor.class, &quot;restProcessor&quot;, Inject.class);</span>
+<span class="fc" id="L48">        addAnnotatedProperty(resourceImplementation, HttpHeaders.class, &quot;headers&quot;, javax.ws.rs.core.Context.class);</span>
+<span class="fc" id="L49">        return resourceImplementation;</span>
+    }
+
+    private void addImplemetationMethods(final JDefinedClass resourceImplementation, JDefinedClass resourceInterface) {
+<span class="fc" id="L53">        JClass str = codeModel.ref(&quot;String&quot;);</span>
+<span class="fc" id="L54">        resourceInterface.methods().forEach(interfaceMethod -&gt; {</span>
+<span class="fc" id="L55">            JMethod implementationMethod = resourceImplementation.method(PUBLIC, interfaceMethod.type(),</span>
+<span class="fc" id="L56">                    interfaceMethod.name());</span>
+<span class="fc" id="L57">            implementationMethod.annotate(Override.class);</span>
+
+<span class="fc" id="L59">            addMethodParams(implementationMethod, interfaceMethod);</span>
+
+<span class="fc" id="L61">            JType map = codeModel.ref(Map.class.getCanonicalName()).narrow(str, str);</span>
+<span class="fc" id="L62">            JClass mapBuilderClass = codeModel.ref(UnmodifiableMapBuilder.class.getCanonicalName()).narrow(str, str);</span>
+
+<span class="fc" id="L64">            JBlock block = implementationMethod.body().block();</span>
+<span class="fc" id="L65">            block.decl(map, &quot;pathParams&quot;, pathParamsMapBuilderInvocation(mapBuilderClass, implementationMethod));</span>
+<span class="fc" id="L66">            block.directStatement(&quot;return restProcessor.process(dispatcher::dispatch, entity, headers, pathParams);&quot;);</span>
+<span class="fc" id="L67">        });</span>
+<span class="fc" id="L68">    }</span>
+
+    private void addAnnotatedProperty(final JDefinedClass resourceClass, Class&lt;?&gt; clazz, String name,
+            Class&lt;? extends Annotation&gt; annotation) {
+<span class="fc" id="L72">        JFieldVar dispatcherField = resourceClass.field(0, clazz, name);</span>
+<span class="fc" id="L73">        dispatcherField.annotate(annotation);</span>
+<span class="fc" id="L74">    }</span>
+
+    private void addMethodParams(JMethod implMethod, JMethod m) {
+<span class="fc" id="L77">        m.params().forEach(p -&gt; implMethod.param(p.type(), p.name()));</span>
+<span class="fc" id="L78">    }</span>
+
+    private JInvocation pathParamsMapBuilderInvocation(JClass mapBuilderClass, JMethod implMethod) {
+<span class="fc" id="L81">        JInvocation builderInstance = JExpr._new(mapBuilderClass);</span>
+<span class="fc" id="L82">        List&lt;JVar&gt; params = implMethod.params();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (int i = 0; i &lt; params.size() - 1; i++) {</span>
+<span class="fc" id="L84">            JVar p = params.get(i);</span>
+<span class="fc" id="L85">            builderInstance = builderInstance.invoke(&quot;with&quot;).arg(JExpr.lit(p.name())).arg(p);</span>
+        }
+<span class="fc" id="L87">        return builderInstance.invoke(&quot;build&quot;);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

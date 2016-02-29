@@ -61,9 +61,9 @@ public class JaxRsResourceImplementationCodeGenerator {
             JType map = codeModel.ref(Map.class.getCanonicalName()).narrow(str, str);
             JClass mapBuilderClass = codeModel.ref(UnmodifiableMapBuilder.class.getCanonicalName()).narrow(str, str);
 
-            JBlock block = implementationMethod.body().block();
-            block.decl(map, "pathParams", pathParamsMapBuilderInvocation(mapBuilderClass, implementationMethod));
-            block.directStatement("return restProcessor.process(dispatcher::dispatch, entity, headers, pathParams);");
+            JBlock body = implementationMethod.body();
+            body.decl(map, "pathParams", pathParamsMapBuilderInvocation(mapBuilderClass, implementationMethod));
+            body.directStatement("return restProcessor.process(dispatcher::dispatch, entity, headers, pathParams);");
         });
     }
 

@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.lib;
+package uk.gov.justice.services.adapter.rest;
 
 import javax.json.Json;
 import javax.json.JsonObject;

@@ -22,10 +22,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.gov.justice.raml.jaxrs.lib.DefaultEnvelope;
-import uk.gov.justice.raml.jaxrs.lib.Dispatcher;
-import uk.gov.justice.raml.jaxrs.lib.Envelope;
-import uk.gov.justice.raml.jaxrs.lib.RestProcessor;
+import uk.gov.justice.services.adapter.rest.DefaultEnvelope;
+import uk.gov.justice.services.adapter.rest.Envelope;
+import uk.gov.justice.services.adapter.rest.RestProcessor;
+import uk.gov.justice.services.core.dispatcher.Dispatcher;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultUsersUserIdResourceTest {

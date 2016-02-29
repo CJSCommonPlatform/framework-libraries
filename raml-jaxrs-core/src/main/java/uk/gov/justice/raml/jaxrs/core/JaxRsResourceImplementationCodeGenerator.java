@@ -23,9 +23,9 @@ import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 
-import uk.gov.justice.raml.jaxrs.lib.Dispatcher;
-import uk.gov.justice.raml.jaxrs.lib.RestProcessor;
-import uk.gov.justice.raml.jaxrs.lib.UnmodifiableMapBuilder;
+import uk.gov.justice.services.adapter.rest.RestProcessor;
+import uk.gov.justice.services.adapter.rest.builder.UnmodifiableMapBuilder;
+import uk.gov.justice.services.core.dispatcher.Dispatcher;
 
 public class JaxRsResourceImplementationCodeGenerator {
     private final JCodeModel codeModel;

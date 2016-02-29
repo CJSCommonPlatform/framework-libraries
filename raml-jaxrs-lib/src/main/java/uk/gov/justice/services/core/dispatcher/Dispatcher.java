@@ -1,6 +1,8 @@
-package uk.gov.justice.raml.jaxrs.lib;
+package uk.gov.justice.services.core.dispatcher;
 
 import javax.json.JsonObject;
+
+import uk.gov.justice.services.adapter.rest.Envelope;
 
 /**
  * Created by david on 15/02/16.

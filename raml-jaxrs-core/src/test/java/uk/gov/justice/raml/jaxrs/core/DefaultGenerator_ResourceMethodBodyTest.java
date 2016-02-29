@@ -44,11 +44,11 @@ import com.sun.jersey.spi.container.ContainerRequest;
 
 import uk.gov.justice.raml.jaxrs.core.Configuration;
 import uk.gov.justice.raml.jaxrs.core.DefaultGenerator;
-import uk.gov.justice.raml.jaxrs.lib.DefaultEnvelope;
-import uk.gov.justice.raml.jaxrs.lib.Dispatcher;
-import uk.gov.justice.raml.jaxrs.lib.Envelope;
-import uk.gov.justice.raml.jaxrs.lib.RestProcessor;
 import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
+import uk.gov.justice.services.adapter.rest.DefaultEnvelope;
+import uk.gov.justice.services.adapter.rest.Envelope;
+import uk.gov.justice.services.adapter.rest.RestProcessor;
+import uk.gov.justice.services.core.dispatcher.Dispatcher;
 
 public class DefaultGenerator_ResourceMethodBodyTest {
     private static final JsonObject NOT_USED_JSONOBJECT = Json.createObjectBuilder().build();

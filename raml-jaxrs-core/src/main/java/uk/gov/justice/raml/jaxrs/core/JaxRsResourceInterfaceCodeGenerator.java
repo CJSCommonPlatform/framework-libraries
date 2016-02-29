@@ -47,12 +47,12 @@ public class JaxRsResourceInterfaceCodeGenerator {
     private final Map<String, Set<String>> resourcesMethods;
     private final Map<String, Object> httpMethodAnnotations;
 
-    public JaxRsResourceInterfaceCodeGenerator(JCodeModel codeModel, Configuration configuration) {
+    public JaxRsResourceInterfaceCodeGenerator(final JCodeModel codeModel, final Configuration configuration) {
         super();
         this.codeModel = codeModel;
         this.configuration = configuration;
-        this.resourcesMethods = new HashMap<String, Set<String>>();
-        this.httpMethodAnnotations = new HashMap<String, Object>();
+        this.resourcesMethods = new HashMap<>();
+        this.httpMethodAnnotations = new HashMap<>();
         for (final Class<? extends Annotation> clazz : JAXRS_HTTP_METHODS) {
             httpMethodAnnotations.put(clazz.getSimpleName(), clazz);
         }
@@ -111,11 +111,8 @@ public class JaxRsResourceInterfaceCodeGenerator {
             final boolean addBodyMimeTypeInMethodName) {
 
         MimeType actualBodyMimeType = addBodyMimeTypeInMethodName ? bodyMimeType : null;
-        String methodName = null;
 
-        if (methodName == null) {
-            methodName = Names.buildResourceMethodName(action, actualBodyMimeType);
-        }
+        String methodName = Names.buildResourceMethodName(action, actualBodyMimeType);
 
         final JClass resourceMethodReturnType = codeModel.ref("javax.ws.rs.core.Response");
 

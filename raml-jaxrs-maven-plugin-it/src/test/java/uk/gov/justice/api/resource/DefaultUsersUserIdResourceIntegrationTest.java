@@ -60,7 +60,7 @@ public class DefaultUsersUserIdResourceIntegrationTest {
     @Test
     public void shouldCallCreateUser() throws Exception {
         Response response = target.request()
-                .post(Entity.entity(JSON, "application/vnd.create-user+json"));
+                .post(Entity.entity(JSON, "application/vnd.people.commands.create-user+json"));
 
         assertThat(response.getStatus(), is(202));
     }
@@ -68,7 +68,7 @@ public class DefaultUsersUserIdResourceIntegrationTest {
     @Test
     public void shouldCallUpdateUser() throws Exception {
         Response response = target.request()
-                .post(Entity.entity(JSON, "application/vnd.update-user+json"));
+                .post(Entity.entity(JSON, "application/vnd.people.commands.update-user+json"));
 
         assertThat(response.getStatus(), is(202));
     }

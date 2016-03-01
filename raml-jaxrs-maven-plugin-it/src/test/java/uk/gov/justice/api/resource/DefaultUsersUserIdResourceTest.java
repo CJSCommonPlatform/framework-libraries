@@ -49,7 +49,7 @@ public class DefaultUsersUserIdResourceTest {
         when(restProcessor.process(any(Consumer.class), any(JsonObject.class), any(HttpHeaders.class),
                 any(Map.class))).thenReturn(processorResponse);
 
-        Response resourceResponse = resource.postVndCreateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
+        Response resourceResponse = resource.postVndPeopleCommandsCreateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
         assertThat(resourceResponse, is(processorResponse));
 
     }
@@ -62,7 +62,7 @@ public class DefaultUsersUserIdResourceTest {
         when(restProcessor.process(any(Consumer.class), any(JsonObject.class), any(HttpHeaders.class),
                 any(Map.class))).thenReturn(processorResponse);
 
-        Response resourceResponse = resource.postVndUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
+        Response resourceResponse = resource.postVndPeopleCommandsUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
         assertThat(resourceResponse, is(processorResponse));
 
     }
@@ -71,7 +71,7 @@ public class DefaultUsersUserIdResourceTest {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void shouldCallDispatcherWhenCreatingUser() throws Exception {
 
-        resource.postVndCreateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
+        resource.postVndPeopleCommandsCreateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
 
         ArgumentCaptor<Consumer> consumerCaptor = ArgumentCaptor.forClass(Consumer.class);
         verify(restProcessor).process(consumerCaptor.capture(), any(JsonObject.class), any(HttpHeaders.class),
@@ -88,7 +88,7 @@ public class DefaultUsersUserIdResourceTest {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void shouldCallDispatcherWhenUpdatingUser() throws Exception {
 
-        resource.postVndUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
+        resource.postVndPeopleCommandsUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, NOT_USED_ENTITY);
 
         ArgumentCaptor<Consumer> consumerCaptor = ArgumentCaptor.forClass(Consumer.class);
         verify(restProcessor).process(consumerCaptor.capture(), any(JsonObject.class), any(HttpHeaders.class),
@@ -107,7 +107,7 @@ public class DefaultUsersUserIdResourceTest {
 
         JsonObject entity = createObjectBuilder().add("paramNameA", "valueABCD").build();
 
-        resource.postVndUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, entity);
+        resource.postVndPeopleCommandsUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, entity);
 
         verify(restProcessor).process(any(Consumer.class), eq(entity), any(HttpHeaders.class), any(Map.class));
 
@@ -119,7 +119,7 @@ public class DefaultUsersUserIdResourceTest {
 
         JsonObject entity = createObjectBuilder().add("paramNameB", "valueEFG").build();
 
-        resource.postVndUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, entity);
+        resource.postVndPeopleCommandsUpdateUserJsonUsersByUserId(NOT_USED_USER_ID, entity);
 
         verify(restProcessor).process(any(Consumer.class), eq(entity), any(HttpHeaders.class), any(Map.class));
 
@@ -129,7 +129,7 @@ public class DefaultUsersUserIdResourceTest {
     @Test
     public void shouldPassUserIdToRestProcessorWhenCreatingUser() throws Exception {
 
-        resource.postVndUpdateUserJsonUsersByUserId("user1234", NOT_USED_ENTITY);
+        resource.postVndPeopleCommandsUpdateUserJsonUsersByUserId("user1234", NOT_USED_ENTITY);
         ArgumentCaptor<Map> pathParamsCaptor = ArgumentCaptor.forClass(Map.class);
 
         verify(restProcessor).process(any(Consumer.class), any(JsonObject.class), any(HttpHeaders.class),
@@ -148,7 +148,7 @@ public class DefaultUsersUserIdResourceTest {
     @Test
     public void shouldPassUserIdToRestProcessorWhenUpdatingUser() throws Exception {
 
-        resource.postVndUpdateUserJsonUsersByUserId("user5678", NOT_USED_ENTITY);
+        resource.postVndPeopleCommandsUpdateUserJsonUsersByUserId("user5678", NOT_USED_ENTITY);
         ArgumentCaptor<Map> pathParamsCaptor = ArgumentCaptor.forClass(Map.class);
 
         verify(restProcessor).process(any(Consumer.class), any(JsonObject.class), any(HttpHeaders.class),

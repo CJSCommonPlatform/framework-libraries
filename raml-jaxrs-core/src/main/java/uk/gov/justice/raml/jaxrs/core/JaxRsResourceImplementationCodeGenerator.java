@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
 
+import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -25,6 +26,8 @@ import com.sun.codemodel.JVar;
 
 import uk.gov.justice.services.adapter.rest.RestProcessor;
 import uk.gov.justice.services.adapter.rest.builder.UnmodifiableMapBuilder;
+import uk.gov.justice.services.core.annotation.Adapter;
+import uk.gov.justice.services.core.annotation.Component;
 import uk.gov.justice.services.core.dispatcher.Dispatcher;
 
 public class JaxRsResourceImplementationCodeGenerator {
@@ -39,14 +42,19 @@ public class JaxRsResourceImplementationCodeGenerator {
         final JPackage pkg = resourceInterface.getPackage();
         final JDefinedClass resourceImplementation = pkg._class("Default" + resourceInterface.name());
         resourceImplementation._implements(resourceInterface);
-        resourceImplementation.annotate(Stateless.class);
-
+        addAnnotations(resourceImplementation);
         addImplemetationMethods(resourceImplementation, resourceInterface);
 
         addAnnotatedProperty(resourceImplementation, Dispatcher.class, "dispatcher", Inject.class);
         addAnnotatedProperty(resourceImplementation, RestProcessor.class, "restProcessor", Inject.class);
         addAnnotatedProperty(resourceImplementation, HttpHeaders.class, "headers", javax.ws.rs.core.Context.class);
         return resourceImplementation;
+    }
+
+    private void addAnnotations(final JDefinedClass resourceImplementation) {
+        resourceImplementation.annotate(Stateless.class);
+        JAnnotationUse adapterAnnotation = resourceImplementation.annotate(Adapter.class);
+        adapterAnnotation.param("value", Component.COMMAND_API);
     }
 
     private void addImplemetationMethods(final JDefinedClass resourceImplementation, JDefinedClass resourceInterface) {

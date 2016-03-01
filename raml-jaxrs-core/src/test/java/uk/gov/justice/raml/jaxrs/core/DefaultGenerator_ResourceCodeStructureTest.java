@@ -41,6 +41,8 @@ import uk.gov.justice.raml.jaxrs.core.Configuration;
 import uk.gov.justice.raml.jaxrs.core.DefaultGenerator;
 import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
 import uk.gov.justice.services.adapter.rest.RestProcessor;
+import uk.gov.justice.services.core.annotation.Adapter;
+import uk.gov.justice.services.core.annotation.Component;
 import uk.gov.justice.services.core.dispatcher.Dispatcher;
 
 public class DefaultGenerator_ResourceCodeStructureTest {
@@ -254,6 +256,18 @@ public class DefaultGenerator_ResourceCodeStructureTest {
         assertThat(resourceClass.getGenericInterfaces(), arrayWithSize(1));
         assertThat(resourceClass.getGenericInterfaces()[0].getTypeName(), equalTo(resourceInterface.getTypeName()));
 
+    }
+    
+    @Test
+    public void shouldGenerateResourceClassContainingAdapterAnnotation() throws Exception {
+        Set<String> generatedClasses = generator.run(aRaml().withDefaults().toString(), configuration);
+
+        Class<?> resourceClass = compiler.compiledClassOf(generatedClasses, BASE_PACKAGE);
+
+        assertThat(resourceClass.isInterface(), is(false));
+        assertThat(resourceClass.getAnnotation(Adapter.class), not(nullValue()));
+        assertThat(resourceClass.getAnnotation(Adapter.class).value(), is(Component.COMMAND_API));
+        
     }
 
     @Test

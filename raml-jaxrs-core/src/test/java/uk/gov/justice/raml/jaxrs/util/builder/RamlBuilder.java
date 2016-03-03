@@ -1,13 +1,13 @@
 package uk.gov.justice.raml.jaxrs.util.builder;
 
-import static java.text.MessageFormat.format;
-import static uk.gov.justice.raml.jaxrs.util.builder.RamlResourceBuilder.aResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.text.MessageFormat.format;
+import static uk.gov.justice.raml.jaxrs.util.builder.RamlResourceBuilder.aResource;
 
 public class RamlBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(RamlBuilder.class);
@@ -21,7 +21,7 @@ public class RamlBuilder {
     public static RamlBuilder aRaml() {
         return new RamlBuilder();
     }
-    
+
     public RamlBuilder withDefaults() {
         return this.with(aResource());
     }

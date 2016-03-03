@@ -1,7 +1,17 @@
 package uk.gov.justice.raml.jaxrs.util.compiler;
 
-import static java.text.MessageFormat.format;
+import com.sun.jersey.api.core.ResourceConfig;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler.CompilationTask;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,23 +26,10 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
-
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sun.jersey.api.core.ResourceConfig;
+import static java.text.MessageFormat.format;
 
 /**
  * Compiles and loads classes and interfaces from the specified folders
- * 
  */
 public class JavaCompilerUtil {
     private static final Logger LOG = LoggerFactory.getLogger(JavaCompilerUtil.class);
@@ -45,12 +42,12 @@ public class JavaCompilerUtil {
 
     /**
      * Compiles and loads a single class
-     * 
+     *
      * @param classNames
      * @param basePackage
      * @return
      * @throws MalformedURLException
-     * @throws IllegalStateException - if more or less than one classes found 
+     * @throws IllegalStateException - if more or less than one classes found
      */
     public Class<?> compiledClassOf(Set<String> classNames, String basePackage)
             throws MalformedURLException {
@@ -63,7 +60,7 @@ public class JavaCompilerUtil {
 
     /**
      * Compiles and loads a single interface
-     * 
+     *
      * @param classNames
      * @param basePackageName
      * @return
@@ -82,7 +79,7 @@ public class JavaCompilerUtil {
 
     /**
      * compiles and loads specified classes
-     * 
+     *
      * @param classNames
      * @param basePackage
      * @return
@@ -95,7 +92,7 @@ public class JavaCompilerUtil {
 
     /**
      * compiles and loads specified interfaces
-     * 
+     *
      * @param resourceClasses
      * @param basePackage
      * @return
@@ -108,8 +105,8 @@ public class JavaCompilerUtil {
 
 
     private Set<Class<?>> compiledClassesAndInterfaces(Set<String> classNames,
-            Predicate<? super Class<?>> predicate, String basePackage)
-                    throws MalformedURLException {
+                                                       Predicate<? super Class<?>> predicate, String basePackage)
+            throws MalformedURLException {
         return compile(classNames, basePackage).stream().filter(predicate).collect(Collectors.toSet());
     }
 
@@ -119,7 +116,7 @@ public class JavaCompilerUtil {
     }
 
     private Set<Class<?>> loadClasses(String basePackage) throws MalformedURLException {
-        URLClassLoader resourceClassLoader = new URLClassLoader(new URL[] { compilationOutputDir.toURI().toURL() });
+        URLClassLoader resourceClassLoader = new URLClassLoader(new URL[]{compilationOutputDir.toURI().toURL()});
 
         ClassLoader initialClassLoader = Thread.currentThread().getContextClassLoader();
         ResourceConfig config = null;
@@ -135,7 +132,7 @@ public class JavaCompilerUtil {
     }
 
     private void compile(Set<String> resourceClasses) {
- 
+
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
@@ -146,7 +143,7 @@ public class JavaCompilerUtil {
             throw new CompilationException(
                     format("There are no source files to compile in {0}", codegenOutputDir.getAbsolutePath()));
         }
-        String[] compileOptions = new String[] { "-d", compilationOutputDir.getAbsolutePath() };
+        String[] compileOptions = new String[]{"-d", compilationOutputDir.getAbsolutePath()};
         Iterable<String> compilationOptions = Arrays.asList(compileOptions);
 
         CompilationTask compilerTask = compiler.getTask(null, fileManager, diagnostics, compilationOptions, null,

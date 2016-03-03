@@ -7,9 +7,6 @@ public class Configuration {
     private File outputDirectory;
     private String basePackageName;
     private File sourceDirectory;
-    private String restIFPackageName = "resource";
-    private String interfaceNameSuffix = "Resource";
-
 
     public File getOutputDirectory() {
         return outputDirectory;
@@ -33,22 +30,6 @@ public class Configuration {
 
     public void setSourceDirectory(File sourceDirectory) {
         this.sourceDirectory = sourceDirectory;
-    }
-
-    public String getRestIFPackageName() {
-        return restIFPackageName;
-    }
-
-    public void setRestIFPackageName(String restIFPackageName) {
-        this.restIFPackageName = restIFPackageName;
-    }
-
-    public String getInterfaceNameSuffix() {
-        return interfaceNameSuffix;
-    }
-
-    public void setInterfaceNameSuffix(String interfaceNameSuffix) {
-        this.interfaceNameSuffix = interfaceNameSuffix;
     }
 
 }

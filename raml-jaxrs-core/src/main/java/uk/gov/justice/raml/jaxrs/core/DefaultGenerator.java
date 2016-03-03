@@ -1,16 +1,7 @@
 package uk.gov.justice.raml.jaxrs.core;
 
-import static org.apache.commons.lang.StringUtils.join;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.codemodel.JDefinedClass;
 import org.apache.commons.lang.Validate;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
@@ -23,10 +14,40 @@ import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.visitor.RamlDocumentBuilder;
 import org.raml.parser.visitor.RamlValidationService;
 
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JDefinedClass;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.apache.commons.lang.StringUtils.join;
 
 public class DefaultGenerator implements Generator {
+
+    private static String toDetailedString(ValidationResult item) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\t");
+        stringBuilder.append(item.getLevel());
+        stringBuilder.append(" ");
+        stringBuilder.append(item.getMessage());
+        if (item.getLine() != ValidationResult.UNKNOWN) {
+            stringBuilder.append(" (line ");
+            stringBuilder.append(item.getLine());
+            if (item.getStartColumn() != ValidationResult.UNKNOWN) {
+                stringBuilder.append(", col ");
+                stringBuilder.append(item.getStartColumn());
+                if (item.getEndColumn() != item.getStartColumn()) {
+                    stringBuilder.append(" to ");
+                    stringBuilder.append(item.getEndColumn());
+                }
+            }
+            stringBuilder.append(")");
+        }
+        return stringBuilder.toString();
+    }
 
     @Override
     public Set<String> run(final String ramlBuffer, final Configuration configuration) {
@@ -44,7 +65,7 @@ public class DefaultGenerator implements Generator {
                 throw new IllegalArgumentException("Error processing RAML", e);
             }
         } else {
-            final List<String> validationErrors = results.stream().map(vr -> toDetailedString(vr))
+            final List<String> validationErrors = results.stream().map(DefaultGenerator::toDetailedString)
                     .collect(Collectors.toList());
             throw new IllegalArgumentException("Invalid RAML definition:\n"
                     + join(validationErrors, "\n"));
@@ -93,28 +114,6 @@ public class DefaultGenerator implements Generator {
 
         Validate.notEmpty(configuration.getBasePackageName(),
                 "base package name can't be empty");
-    }
-
-    private static String toDetailedString(ValidationResult item) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\t");
-        stringBuilder.append(item.getLevel());
-        stringBuilder.append(" ");
-        stringBuilder.append(item.getMessage());
-        if (item.getLine() != ValidationResult.UNKNOWN) {
-            stringBuilder.append(" (line ");
-            stringBuilder.append(item.getLine());
-            if (item.getStartColumn() != ValidationResult.UNKNOWN) {
-                stringBuilder.append(", col ");
-                stringBuilder.append(item.getStartColumn());
-                if (item.getEndColumn() != item.getStartColumn()) {
-                    stringBuilder.append(" to ");
-                    stringBuilder.append(item.getEndColumn());
-                }
-            }
-            stringBuilder.append(")");
-        }
-        return stringBuilder.toString();
     }
 
 }

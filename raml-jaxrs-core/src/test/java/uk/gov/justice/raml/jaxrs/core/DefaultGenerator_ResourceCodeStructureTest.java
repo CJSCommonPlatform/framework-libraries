@@ -1,5 +1,33 @@
 package uk.gov.justice.raml.jaxrs.core;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
+import uk.gov.justice.services.adapter.rest.RestProcessor;
+import uk.gov.justice.services.core.annotation.Adapter;
+import uk.gov.justice.services.core.annotation.Component;
+import uk.gov.justice.services.core.dispatcher.Dispatcher;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.json.JsonObject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -12,38 +40,6 @@ import static uk.gov.justice.raml.jaxrs.util.builder.HttpMethod.POST;
 import static uk.gov.justice.raml.jaxrs.util.builder.RamlBuilder.aRaml;
 import static uk.gov.justice.raml.jaxrs.util.builder.RamlResourceBuilder.aResource;
 import static uk.gov.justice.raml.jaxrs.util.builder.RamlResourceMethodBuilder.aResourceMethod;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import uk.gov.justice.raml.jaxrs.core.Configuration;
-import uk.gov.justice.raml.jaxrs.core.DefaultGenerator;
-import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
-import uk.gov.justice.services.adapter.rest.RestProcessor;
-import uk.gov.justice.services.core.annotation.Adapter;
-import uk.gov.justice.services.core.annotation.Component;
-import uk.gov.justice.services.core.dispatcher.Dispatcher;
 
 public class DefaultGenerator_ResourceCodeStructureTest {
     private static final String BASE_PACKAGE = "org.raml.test";
@@ -122,7 +118,7 @@ public class DefaultGenerator_ResourceCodeStructureTest {
         assertThat(method.getAnnotation(POST.class), not(nullValue()));
         assertThat(method.getAnnotation(Consumes.class), not(nullValue()));
         assertThat(method.getAnnotation(Consumes.class).value(),
-                is(new String[] { "application/vnd.command+json" }));
+                is(new String[]{"application/vnd.command+json"}));
 
     }
 
@@ -147,14 +143,14 @@ public class DefaultGenerator_ResourceCodeStructureTest {
         assertThat(method1.getAnnotation(POST.class), not(nullValue()));
         assertThat(method1.getAnnotation(Consumes.class), not(nullValue()));
         assertThat(method1.getAnnotation(Consumes.class).value(),
-                is(new String[] { "application/vnd.cmd-a+json" }));
+                is(new String[]{"application/vnd.cmd-a+json"}));
 
         Method method2 = methodWithConsumesAnnotationOf(methods, "application/vnd.cmd-b+json");
         assertThat(method2.getReturnType(), equalTo(Response.class));
         assertThat(method2.getAnnotation(POST.class), not(nullValue()));
         assertThat(method2.getAnnotation(Consumes.class), not(nullValue()));
         assertThat(method2.getAnnotation(Consumes.class).value(),
-                is(new String[] { "application/vnd.cmd-b+json" }));
+                is(new String[]{"application/vnd.cmd-b+json"}));
 
     }
 
@@ -257,7 +253,7 @@ public class DefaultGenerator_ResourceCodeStructureTest {
         assertThat(resourceClass.getGenericInterfaces()[0].getTypeName(), equalTo(resourceInterface.getTypeName()));
 
     }
-    
+
     @Test
     public void shouldGenerateResourceClassContainingAdapterAnnotation() throws Exception {
         Set<String> generatedClasses = generator.run(aRaml().withDefaults().toString(), configuration);
@@ -267,7 +263,7 @@ public class DefaultGenerator_ResourceCodeStructureTest {
         assertThat(resourceClass.isInterface(), is(false));
         assertThat(resourceClass.getAnnotation(Adapter.class), not(nullValue()));
         assertThat(resourceClass.getAnnotation(Adapter.class).value(), is(Component.COMMAND_API));
-        
+
     }
 
     @Test

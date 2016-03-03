@@ -1,19 +1,18 @@
 package uk.gov.justice.raml.jaxrs.core;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JDefinedClass;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.raml.model.Resource;
 
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JDefinedClass;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class JaxRsResourceCodeGenerator {
     private final Configuration configuration;
@@ -46,7 +45,7 @@ public class JaxRsResourceCodeGenerator {
         final PrintStream ps = new PrintStream(baos);
         codeModel.build(configuration.getOutputDirectory(), ps);
         ps.close();
-        final Set<String> generatedFiles = new HashSet<String>();
+        final Set<String> generatedFiles = new HashSet<>();
         generatedFiles.addAll(Arrays.asList(StringUtils.split(baos.toString())));
         return generatedFiles;
     }

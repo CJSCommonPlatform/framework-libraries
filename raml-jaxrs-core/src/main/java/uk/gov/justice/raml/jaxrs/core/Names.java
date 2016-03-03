@@ -1,10 +1,9 @@
 package uk.gov.justice.raml.jaxrs.core;
 
-import static org.apache.commons.lang.StringUtils.defaultIfBlank;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.remove;
-import static org.apache.commons.lang.StringUtils.uncapitalize;
-import static org.apache.commons.lang.WordUtils.capitalize;
+import org.apache.commons.lang.StringUtils;
+import org.raml.model.Action;
+import org.raml.model.MimeType;
+import org.raml.model.Resource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,10 +11,11 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.raml.model.Action;
-import org.raml.model.MimeType;
-import org.raml.model.Resource;
+import static org.apache.commons.lang.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.remove;
+import static org.apache.commons.lang.StringUtils.uncapitalize;
+import static org.apache.commons.lang.WordUtils.capitalize;
 
 public class Names {
     public static final Set<String> JAVA_KEYWORDS = Collections.unmodifiableSet(new HashSet<String>(
@@ -30,6 +30,7 @@ public class Names {
     public static final String MULTIPLE_RESPONSE_HEADERS_ARGUMENT_NAME = "headers";
     public static final String EXAMPLE_PREFIX = " e.g. ";
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+    private static final String INTERFACE_NAME_SUFFIX = "Resource";
 
     private Names() {
     }
@@ -38,7 +39,7 @@ public class Names {
         final String resourceInterfaceName = buildJavaFriendlyName(defaultIfBlank(resource.getDisplayName(),
                 resource.getRelativeUri()));
 
-        return isBlank(resourceInterfaceName) ? "Root" : resourceInterfaceName.concat(config.getInterfaceNameSuffix());
+        return isBlank(resourceInterfaceName) ? "Root" : resourceInterfaceName.concat(INTERFACE_NAME_SUFFIX);
     }
 
     public static String buildVariableName(final String source) {

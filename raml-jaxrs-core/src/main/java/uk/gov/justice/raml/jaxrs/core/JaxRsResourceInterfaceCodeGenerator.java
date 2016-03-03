@@ -1,33 +1,5 @@
 package uk.gov.justice.raml.jaxrs.core;
 
-import static java.util.Collections.unmodifiableList;
-import static org.apache.commons.lang.StringUtils.defaultIfBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.strip;
-import static uk.gov.justice.raml.jaxrs.core.Names.GENERIC_PAYLOAD_ARGUMENT_NAME;
-
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-
-import org.apache.commons.lang.StringUtils;
-import org.raml.model.Action;
-import org.raml.model.MimeType;
-import org.raml.model.Resource;
-import org.raml.model.parameter.UriParameter;
-
 import com.sun.codemodel.JAnnotatable;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
@@ -37,11 +9,38 @@ import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JVar;
+import org.apache.commons.lang.StringUtils;
+import org.raml.model.Action;
+import org.raml.model.MimeType;
+import org.raml.model.Resource;
+import org.raml.model.parameter.UriParameter;
+
+import javax.json.JsonObject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import static java.util.Collections.unmodifiableList;
+import static org.apache.commons.lang.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.strip;
+import static uk.gov.justice.raml.jaxrs.core.Names.GENERIC_PAYLOAD_ARGUMENT_NAME;
 
 public class JaxRsResourceInterfaceCodeGenerator {
     private static final List<Class<? extends Annotation>> JAXRS_HTTP_METHODS = unmodifiableList(Arrays.asList(
             GET.class, POST.class));
     private static final String DEFAULT_ANNOTATION_PARAMETER = "value";
+    private static final String REST_INTERFACE_PACKAGE_NAME = "resource";
     private final JCodeModel codeModel;
     private final Configuration configuration;
     private final Map<String, Set<String>> resourcesMethods;
@@ -82,13 +81,13 @@ public class JaxRsResourceInterfaceCodeGenerator {
         }
 
         final JPackage pkg = codeModel
-                ._package(configuration.getBasePackageName() + "." + configuration.getRestIFPackageName());
+                ._package(configuration.getBasePackageName() + "." + REST_INTERFACE_PACKAGE_NAME);
         return pkg._interface(actualName);
     }
 
     private void addResourceMethods(final Resource resource,
-            final JDefinedClass resourceInterface,
-            final String resourceInterfacePath) {
+                                    final JDefinedClass resourceInterface,
+                                    final String resourceInterfacePath) {
 
         for (final Action action : resource.getActions().values()) {
             if (!action.hasBody()) {
@@ -105,10 +104,10 @@ public class JaxRsResourceInterfaceCodeGenerator {
     }
 
     private JMethod addResourceMethod(final JDefinedClass resourceInterface,
-            final String resourceInterfacePath,
-            final Action action,
-            final MimeType bodyMimeType,
-            final boolean addBodyMimeTypeInMethodName) {
+                                      final String resourceInterfacePath,
+                                      final Action action,
+                                      final MimeType bodyMimeType,
+                                      final boolean addBodyMimeTypeInMethodName) {
 
         MimeType actualBodyMimeType = addBodyMimeTypeInMethodName ? bodyMimeType : null;
 
@@ -129,7 +128,7 @@ public class JaxRsResourceInterfaceCodeGenerator {
     }
 
     private void addParamAnnotation(final String resourceInterfacePath,
-            final Action action, final JMethod method) {
+                                    final Action action, final JMethod method) {
         final String path = StringUtils.substringAfter(action.getResource()
                 .getUri(), resourceInterfacePath + "/");
         if (isNotBlank(path)) {
@@ -139,7 +138,7 @@ public class JaxRsResourceInterfaceCodeGenerator {
     }
 
     private void addConsumesAnnotation(final MimeType bodyMimeType,
-            final JMethod method) {
+                                       final JMethod method) {
         if (bodyMimeType != null) {
             method.annotate(Consumes.class).param(DEFAULT_ANNOTATION_PARAMETER,
                     bodyMimeType.getType());
@@ -151,7 +150,7 @@ public class JaxRsResourceInterfaceCodeGenerator {
     }
 
     private void addAllResourcePathParameters(Resource resource,
-            final JMethod method) {
+                                              final JMethod method) {
 
         for (final Entry<String, UriParameter> namedUriParameter : resource
                 .getUriParameters().entrySet()) {
@@ -167,8 +166,8 @@ public class JaxRsResourceInterfaceCodeGenerator {
     }
 
     private void addParameter(final String name,
-            final Class<? extends Annotation> annotationClass,
-            final JMethod method) {
+                              final Class<? extends Annotation> annotationClass,
+                              final JMethod method) {
 
         final String argumentName = Names.buildVariableName(name);
 
@@ -181,7 +180,7 @@ public class JaxRsResourceInterfaceCodeGenerator {
     }
 
     private void addBodyParameters(final MimeType bodyMimeType,
-            final JMethod method) {
+                                   final JMethod method) {
         if (bodyMimeType == null) {
             return;
         } else {
@@ -190,8 +189,8 @@ public class JaxRsResourceInterfaceCodeGenerator {
     }
 
     private JMethod createResourceMethod(final JDefinedClass resourceClass,
-            final String methodName,
-            final JClass returnType) {
+                                         final String methodName,
+                                         final JClass returnType) {
         final Set<String> existingMethodNames = resourcesMethods.get(resourceClass.name());
 
         String actualMethodName;

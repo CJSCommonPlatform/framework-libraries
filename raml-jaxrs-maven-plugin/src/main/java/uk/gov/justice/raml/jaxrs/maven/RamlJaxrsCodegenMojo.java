@@ -1,12 +1,5 @@
 package uk.gov.justice.raml.jaxrs.maven;
 
-import static java.text.MessageFormat.format;
-import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -15,10 +8,16 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-
 import uk.gov.justice.raml.jaxrs.core.Configuration;
 import uk.gov.justice.raml.jaxrs.core.DefaultGenerator;
 import uk.gov.justice.raml.jaxrs.core.Generator;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+
+import static java.text.MessageFormat.format;
+import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
 @Mojo(name = "generate", requiresProject = true, threadSafe = false, requiresDependencyResolution = COMPILE_PLUS_RUNTIME, defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class RamlJaxrsCodegenMojo extends AbstractMojo {
@@ -132,7 +131,7 @@ public class RamlJaxrsCodegenMojo extends AbstractMojo {
 
         getLog().info(format(LOOKING_FOR_RAML_FILES, sourceDirectory));
 
-        return FileUtils.listFiles(sourceDirectory, new String[] { RAML_EXTENSION }, true);
+        return FileUtils.listFiles(sourceDirectory, new String[]{RAML_EXTENSION}, true);
     }
 
     void setSourceDirectory(File sourceDirectory) {

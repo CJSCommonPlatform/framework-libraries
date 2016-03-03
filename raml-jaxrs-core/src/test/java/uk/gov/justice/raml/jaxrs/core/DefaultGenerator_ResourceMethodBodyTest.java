@@ -1,5 +1,36 @@
 package uk.gov.justice.raml.jaxrs.core;
 
+import com.sun.jersey.core.header.InBoundHeaders;
+import com.sun.jersey.server.impl.application.WebApplicationImpl;
+import com.sun.jersey.spi.container.ContainerRequest;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
+import uk.gov.justice.services.adapter.rest.DefaultEnvelope;
+import uk.gov.justice.services.adapter.rest.Envelope;
+import uk.gov.justice.services.adapter.rest.RestProcessor;
+import uk.gov.justice.services.core.dispatcher.Dispatcher;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -14,42 +45,6 @@ import static uk.gov.justice.raml.jaxrs.util.builder.RamlBuilder.aRaml;
 import static uk.gov.justice.raml.jaxrs.util.builder.RamlResourceBuilder.aResource;
 import static uk.gov.justice.raml.jaxrs.util.builder.RamlResourceMethodBuilder.aResourceMethod;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TemporaryFolder;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-
-import com.sun.jersey.core.header.InBoundHeaders;
-import com.sun.jersey.server.impl.application.WebApplicationImpl;
-import com.sun.jersey.spi.container.ContainerRequest;
-
-import uk.gov.justice.raml.jaxrs.core.Configuration;
-import uk.gov.justice.raml.jaxrs.core.DefaultGenerator;
-import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
-import uk.gov.justice.services.adapter.rest.DefaultEnvelope;
-import uk.gov.justice.services.adapter.rest.Envelope;
-import uk.gov.justice.services.adapter.rest.RestProcessor;
-import uk.gov.justice.services.core.dispatcher.Dispatcher;
-
 public class DefaultGenerator_ResourceMethodBodyTest {
     private static final JsonObject NOT_USED_JSONOBJECT = Json.createObjectBuilder().build();
 
@@ -60,16 +55,13 @@ public class DefaultGenerator_ResourceMethodBodyTest {
 
     @Rule
     public TemporaryFolder compilationOutputFolder = new TemporaryFolder();
-
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
     private JavaCompilerUtil compiler;
-
     private Configuration configuration;
-
     private DefaultGenerator generator;
-
     @Mock
     private Dispatcher dispatcher;
-
     @Mock
     private RestProcessor restProcessorMock;
 
@@ -112,7 +104,7 @@ public class DefaultGenerator_ResourceMethodBodyTest {
     }
 
     @Test
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void shouldCallDispatcher() throws Exception {
 
         Set<String> generatedClasses = generator.run(
@@ -186,7 +178,7 @@ public class DefaultGenerator_ResourceMethodBodyTest {
         verify(restProcessorMock).process(any(Consumer.class), any(JsonObject.class), eq(headers), any(Map.class));
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void shouldPassMapWithOnePathParamToRestProcessor() throws Exception {
         Set<String> generatedClasses = generator.run(
@@ -215,7 +207,7 @@ public class DefaultGenerator_ResourceMethodBodyTest {
 
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void shouldPassMapWithOnePathParamToRestProcessorWhenInvocing2ndMethod() throws Exception {
         Set<String> generatedClasses = generator.run(
@@ -249,7 +241,7 @@ public class DefaultGenerator_ResourceMethodBodyTest {
 
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void shouldPassMapWithTwoPathParamsToRestProcessor() throws Exception {
         Set<String> generatedClasses = generator.run(
@@ -281,16 +273,13 @@ public class DefaultGenerator_ResourceMethodBodyTest {
         assertThat(pathParams.get("param2"), is("paramValueDEF"));
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-    
     @Test
     public void shouldFailIfRamlInvalid() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("ERROR Invalid RAML");
         generator.run("not_a_raml", configuration);
     }
-    
+
     @Test
     public void shouldFailIfInvalidMediaType() {
         thrown.expect(IllegalArgumentException.class);

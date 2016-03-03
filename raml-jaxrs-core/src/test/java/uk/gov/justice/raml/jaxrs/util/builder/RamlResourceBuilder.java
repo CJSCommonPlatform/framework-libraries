@@ -1,9 +1,9 @@
 package uk.gov.justice.raml.jaxrs.util.builder;
 
-import static java.text.MessageFormat.format;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import static java.text.MessageFormat.format;
 
 public class RamlResourceBuilder {
 

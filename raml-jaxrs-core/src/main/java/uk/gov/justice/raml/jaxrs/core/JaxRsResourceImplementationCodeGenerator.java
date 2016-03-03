@@ -1,15 +1,5 @@
 package uk.gov.justice.raml.jaxrs.core;
 
-import static com.sun.codemodel.JMod.PUBLIC;
-
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.ws.rs.core.HttpHeaders;
-
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
@@ -23,12 +13,20 @@ import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
-
 import uk.gov.justice.services.adapter.rest.RestProcessor;
 import uk.gov.justice.services.adapter.rest.builder.UnmodifiableMapBuilder;
 import uk.gov.justice.services.core.annotation.Adapter;
 import uk.gov.justice.services.core.annotation.Component;
 import uk.gov.justice.services.core.dispatcher.Dispatcher;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.core.HttpHeaders;
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
+
+import static com.sun.codemodel.JMod.PUBLIC;
 
 public class JaxRsResourceImplementationCodeGenerator {
     private final JCodeModel codeModel;
@@ -76,7 +74,7 @@ public class JaxRsResourceImplementationCodeGenerator {
     }
 
     private void addAnnotatedProperty(final JDefinedClass resourceClass, Class<?> clazz, String name,
-            Class<? extends Annotation> annotation) {
+                                      Class<? extends Annotation> annotation) {
         JFieldVar dispatcherField = resourceClass.field(0, clazz, name);
         dispatcherField.annotate(annotation);
     }

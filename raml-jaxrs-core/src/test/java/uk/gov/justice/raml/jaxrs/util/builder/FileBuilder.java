@@ -1,12 +1,12 @@
 package uk.gov.justice.raml.jaxrs.util.builder;
 
-import static org.junit.Assert.fail;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import org.apache.commons.io.FileUtils;
+import static org.junit.Assert.fail;
 
 public class FileBuilder {
 

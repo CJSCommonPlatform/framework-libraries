@@ -1,5 +1,6 @@
 package uk.gov.justice.raml.jaxrs.core;
 
+import com.google.common.collect.ImmutableMap;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
@@ -14,7 +15,6 @@ import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 import uk.gov.justice.services.adapter.rest.RestProcessor;
-import uk.gov.justice.services.adapter.rest.builder.UnmodifiableMapBuilder;
 import uk.gov.justice.services.core.annotation.Adapter;
 import uk.gov.justice.services.core.annotation.Component;
 import uk.gov.justice.services.core.dispatcher.Dispatcher;
@@ -65,7 +65,7 @@ public class JaxRsResourceImplementationCodeGenerator {
             addMethodParams(implementationMethod, interfaceMethod);
 
             JType map = codeModel.ref(Map.class.getCanonicalName()).narrow(str, str);
-            JClass mapBuilderClass = codeModel.ref(UnmodifiableMapBuilder.class.getCanonicalName()).narrow(str, str);
+            JClass mapBuilderClass = codeModel.ref(ImmutableMap.Builder.class.getName()).narrow(str, str);
 
             JBlock body = implementationMethod.body();
             body.decl(map, "pathParams", pathParamsMapBuilderInvocation(mapBuilderClass, implementationMethod));
@@ -88,7 +88,7 @@ public class JaxRsResourceImplementationCodeGenerator {
         List<JVar> params = implMethod.params();
         for (int i = 0; i < params.size() - 1; i++) {
             JVar p = params.get(i);
-            builderInstance = builderInstance.invoke("with").arg(JExpr.lit(p.name())).arg(p);
+            builderInstance = builderInstance.invoke("put").arg(JExpr.lit(p.name())).arg(p);
         }
         return builderInstance.invoke("build");
     }

@@ -10,7 +10,7 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>raml-jaxrs-maven-plugin</artifactId>
+                <artifactId>raml-maven-plugin</artifactId>
                 <groupId>uk.gov.justice</groupId>
                 <configuration>
                     <generatorName>uk.gov.justice.raml.jaxrs.maven.DummyGenerator</generatorName>

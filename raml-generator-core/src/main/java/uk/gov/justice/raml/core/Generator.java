@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.core;
+package uk.gov.justice.raml.core;
 
 import java.util.Set;
 

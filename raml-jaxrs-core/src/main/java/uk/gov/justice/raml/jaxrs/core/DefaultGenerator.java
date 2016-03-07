@@ -13,6 +13,8 @@ import org.raml.parser.loader.UrlResourceLoader;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.visitor.RamlDocumentBuilder;
 import org.raml.parser.visitor.RamlValidationService;
+import uk.gov.justice.raml.core.Configuration;
+import uk.gov.justice.raml.core.Generator;
 
 import java.io.File;
 import java.io.IOException;

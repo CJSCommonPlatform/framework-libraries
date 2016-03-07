@@ -7,6 +7,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.raml.model.Resource;
+import uk.gov.justice.raml.core.Configuration;
 
 import java.io.IOException;
 import java.io.PrintStream;

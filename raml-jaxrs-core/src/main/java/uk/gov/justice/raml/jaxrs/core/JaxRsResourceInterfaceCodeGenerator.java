@@ -14,6 +14,7 @@ import org.raml.model.Action;
 import org.raml.model.MimeType;
 import org.raml.model.Resource;
 import org.raml.model.parameter.UriParameter;
+import uk.gov.justice.raml.core.Configuration;
 
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;

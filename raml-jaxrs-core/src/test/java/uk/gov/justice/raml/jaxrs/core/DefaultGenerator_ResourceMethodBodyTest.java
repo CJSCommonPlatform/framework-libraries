@@ -10,6 +10,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import uk.gov.justice.raml.core.Configuration;
 import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
 import uk.gov.justice.services.adapter.rest.DefaultEnvelope;
 import uk.gov.justice.services.adapter.rest.Envelope;

@@ -8,12 +8,13 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import uk.gov.justice.raml.jaxrs.core.Configuration;
-import uk.gov.justice.raml.jaxrs.core.DefaultGenerator;
-import uk.gov.justice.raml.jaxrs.core.Generator;
+import uk.gov.justice.raml.core.Configuration;
+import uk.gov.justice.raml.core.Generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import static java.text.MessageFormat.format;
@@ -33,8 +34,10 @@ public class RamlJaxrsCodegenMojo extends AbstractMojo {
     private static final String THE_PROVIDED_PATH_DOESN_T_REFER_TO_A_VALID_DIRECTORY = "The provided path doesn''t refer to a valid directory: {0}";
     private static final String DOES_NOT_SEEM_TO_BE_RAML_ROOT_FILE = "{0} does not seem to be RAML root file -skipped(first line should start from #%RAML 0.8";
 
-    private final Generator generator;
+    private Generator generator;
 
+    @Parameter(property = "generatorName", required = true)
+    private String generatorName;
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -42,13 +45,13 @@ public class RamlJaxrsCodegenMojo extends AbstractMojo {
     /**
      * Target directory for generated Java source files.
      */
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/raml-jaxrs")
+    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources")
     private File outputDirectory;
 
     /**
      * Directory location of the RAML file(s).
      */
-    @Parameter(property = "sourceDirectory", defaultValue = "${basedir}/src/main/raml")
+    @Parameter(property = "sourceDirectory", defaultValue = "${basedir}/src/raml")
     private File sourceDirectory;
 
     /**
@@ -59,7 +62,6 @@ public class RamlJaxrsCodegenMojo extends AbstractMojo {
 
 
     public RamlJaxrsCodegenMojo() {
-        this(new DefaultGenerator());
     }
 
     RamlJaxrsCodegenMojo(Generator generator) {
@@ -68,10 +70,23 @@ public class RamlJaxrsCodegenMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        instantiateGenerator();
         verify(sourceDirectory);
         prepare(outputDirectory);
         project.addCompileSourceRoot(outputDirectory.getPath());
         process(ramlFiles());
+    }
+
+    private void instantiateGenerator() {
+        if (generator == null) {
+            try {
+                Class<?> clazz = Class.forName(generatorName);
+                Constructor<?> constructor = clazz.getConstructor();
+                generator = (Generator) constructor.newInstance();
+            } catch (ClassNotFoundException|NoSuchMethodException|IllegalAccessException|InstantiationException|InvocationTargetException e) {
+                throw new IllegalArgumentException(String.format("Could not instantiate generator %s", generatorName), e);
+            }
+        }
     }
 
     private void process(Collection<File> ramlFiles) throws MojoExecutionException {
@@ -148,5 +163,9 @@ public class RamlJaxrsCodegenMojo extends AbstractMojo {
 
     void setBasePackageName(String basePackageName) {
         this.basePackageName = basePackageName;
+    }
+
+    void setGeneratorName(String generatorName) {
+        this.generatorName = generatorName;
     }
 }

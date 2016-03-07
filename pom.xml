@@ -14,6 +14,7 @@
         <module>raml-jaxrs-maven-plugin</module>
         <module>raml-jaxrs-lib</module>
         <module>raml-jaxrs-maven-plugin-it</module>
+        <module>raml-generator-core</module>
     </modules>
     <properties>
         <javax.json.version>1.0.3</javax.json.version>

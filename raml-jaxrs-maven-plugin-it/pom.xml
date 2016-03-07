@@ -14,6 +14,7 @@
                 <artifactId>raml-jaxrs-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
+                    <generatorName>uk.gov.justice.raml.jaxrs.core.DefaultGenerator</generatorName>
                     <sourceDirectory>${basedir}/raml</sourceDirectory>
                     <basePackageName>uk.gov.justice.api</basePackageName>
                 </configuration>
@@ -25,6 +26,13 @@
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>uk.gov.justice</groupId>
+                        <artifactId>raml-jaxrs-core</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

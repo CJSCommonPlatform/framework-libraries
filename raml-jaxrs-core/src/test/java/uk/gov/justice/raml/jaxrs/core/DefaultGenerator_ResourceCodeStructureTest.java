@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import uk.gov.justice.raml.core.Configuration;
 import uk.gov.justice.raml.jaxrs.util.compiler.JavaCompilerUtil;
 import uk.gov.justice.services.adapter.rest.RestProcessor;
 import uk.gov.justice.services.core.annotation.Adapter;
@@ -43,6 +44,7 @@ import static uk.gov.justice.raml.jaxrs.util.builder.RamlResourceMethodBuilder.a
 
 public class DefaultGenerator_ResourceCodeStructureTest {
     private static final String BASE_PACKAGE = "org.raml.test";
+
 
     @Rule
     public TemporaryFolder codegenOutputFolder = new TemporaryFolder();

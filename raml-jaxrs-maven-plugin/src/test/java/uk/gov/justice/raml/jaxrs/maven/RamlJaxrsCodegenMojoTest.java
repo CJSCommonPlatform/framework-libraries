@@ -1,18 +1,5 @@
 package uk.gov.justice.raml.jaxrs.maven;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -23,10 +10,20 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import uk.gov.justice.raml.core.Configuration;
+import uk.gov.justice.raml.core.Generator;
 
-import uk.gov.justice.raml.jaxrs.core.Configuration;
-import uk.gov.justice.raml.jaxrs.core.Generator;
-import uk.gov.justice.raml.jaxrs.maven.RamlJaxrsCodegenMojo;
+import java.io.File;
+import java.io.IOException;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RamlJaxrsCodegenMojoTest {
     private RamlJaxrsCodegenMojo pluginMojo;
@@ -87,11 +84,10 @@ public class RamlJaxrsCodegenMojoTest {
     @SuppressWarnings("unchecked")
     @Test
     public void shouldAddCompileSourceRootToMavenProject() throws Exception {
-        String outputDirPath = "oDir1456";
-        pluginMojo.setOutputDirectory(new File(outputDirPath));
+        File outputDir = new File("oDir1456");
+        pluginMojo.setOutputDirectory(outputDir);
         pluginMojo.execute();
-        assertThat(((List<String>) project.getCompileSourceRoots()), hasItem(outputDirPath));
-
+        assertThat((project.getCompileSourceRoots()), hasItem(outputDir.getAbsolutePath()));
     }
 
     @Test

@@ -8,7 +8,7 @@ before_install: git clone https://github.com/CJSCommonPlatform/travis-settings.g
 install: true
 script: mvn -Dmaven.wagon.http.ssl.insecure=true -B -V --settings target/travis-settings/settings.xml verify coveralls:report
 after_success:
-  - '[[ $TRAVIS_BRANCH == "master" ]] && mvn -Dmaven.wagon.http.ssl.insecure=true -DskipTests=true -B -V --errors deploy --settings target/travis-settings/settings.xml'
+  - '[[ $TRAVIS_BRANCH == "master" ]] && mvn -DdeployAtEnd=true -B -V --errors deploy:deploy --settings target/travis-settings/settings.xml'
 env:
   global:
   - secure: DphHndeN5oy5SXX6P5PwO0O1gI5uhVQTQWYDCIIFDL4lmPv/EyjWFuZaW7Zj+f6yjiYxarAN6R8X6o1BMYF1rZrt7u1FSOWQKHCE/N63USDT2gk+fJKSoEexJk54EbAeE9/mPKlwVErFMhLN6Fa5kNJqhvknxM6T4I3/4ujDp5aElu7dZ9Ob03+zfyAfU7URSyyU6/REbRtKXMM1u2fjeH/yebBoKqtPj+65Z28eViJSj5Wy9EsMkPImTPK71KRRfWqVaGZ8pjN1y3UOoWCBlwTx7LNWbY7MYKbXsWQh3DaeTYjdiWWyihih2M3zmAHimFy4xUOpEClXvytyWZq/dUpMuQPWuqWus/tcetARdCGQ8VOBhJS0gV5y/ObW1v5+nRetiHGebP6LXPkV+QL53vFrbmyuL9rlbEdprhv4Rs2+mS1ed9iuysDpaFOwB+sC2MXVo5dOEloA/KOZakqygdeT/X8IkRTUJQ8JlzhvcNsK/GUyF+ztIQ4hfR43GI8ppPCNyv3m7n3v+mbu+uQGwzSiEVDmOHo4lUz8AOfweGgR6fsPRSK4GsqdPB8narJ5LOK3+v6hqbEq4dRpLjfI1O10V0zmiT0TbaNqRvUDg5ck7XwJZ63D/BIBq6c/FDP12lzTKiH+8F3DvgQsZk98PS/DwgI68gN/soD7GbOAs+k=

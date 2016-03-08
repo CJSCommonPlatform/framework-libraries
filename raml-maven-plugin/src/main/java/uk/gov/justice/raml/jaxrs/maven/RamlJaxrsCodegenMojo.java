@@ -74,6 +74,7 @@ public class RamlJaxrsCodegenMojo extends AbstractMojo {
         verify(sourceDirectory);
         prepare(outputDirectory);
         project.addCompileSourceRoot(outputDirectory.getPath());
+        project.addTestCompileSourceRoot(outputDirectory.getPath());
         process(ramlFiles());
     }
 

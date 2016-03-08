@@ -1,8 +1,5 @@
 package uk.gov.justice.raml.jaxrs.maven;
 
-import java.io.File;
-import java.util.Arrays;
-
 import org.apache.maven.DefaultMaven;
 import org.apache.maven.Maven;
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
@@ -20,6 +17,9 @@ import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory;
 import org.eclipse.aether.repository.LocalRepository;
 
+import java.io.File;
+import java.util.Arrays;
+
 /** Use this as you would {@link AbstractMojoTestCase},
  * where you want more of the standard maven defaults to be set
  * (and where the {@link AbstractMojoTestCase} leaves them as null or empty).
@@ -35,6 +35,8 @@ import org.eclipse.aether.repository.LocalRepository;
  * and {@link #lookupConfiguredMojo(File, String)} so you don't have to always build the project yourself.
  */
 public abstract class BetterAbstractMojoTestCase extends AbstractMojoTestCase {
+
+    protected MavenProject project;
 
     protected MavenSession newMavenSession() {
         try {
@@ -88,7 +90,7 @@ public abstract class BetterAbstractMojoTestCase extends AbstractMojoTestCase {
 
         ProjectBuildingRequest buildingRequest = newMavenSession().getProjectBuildingRequest();
         ProjectBuilder projectBuilder = lookup(ProjectBuilder.class);
-        MavenProject project = projectBuilder.build(pom, buildingRequest).getProject();
+        project = projectBuilder.build(pom, buildingRequest).getProject();
 
         return lookupConfiguredMojo(project, goal);
     }

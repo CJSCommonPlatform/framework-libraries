@@ -6,12 +6,14 @@ import uk.gov.justice.raml.core.GeneratorConfig;
 import uk.gov.justice.raml.core.Generator;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -27,8 +29,12 @@ public class DummyGenerator implements Generator {
             Files.createDirectories(outputPath.getParent());
             OutputStream outputStream = Files.newOutputStream(outputPath);
             JsonWriter writer = Json.createWriter(outputStream);
+            JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+            for(String line : Arrays.asList(new RamlEmitter().dump(raml).split("\n"))) {
+                jsonArrayBuilder = jsonArrayBuilder.add(line);
+            }
             writer.writeObject(Json.createObjectBuilder()
-                    .add("raml", new RamlEmitter().dump(raml))
+                    .add("raml", jsonArrayBuilder)
                             .add("configuration", Json.createObjectBuilder()
                                     .add("basePackageName", generatorConfig.getBasePackageName())
                                     .add("sourceDirectory", generatorConfig.getSourceDirectory().toString())

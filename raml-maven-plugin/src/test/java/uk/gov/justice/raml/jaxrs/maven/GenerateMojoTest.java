@@ -34,7 +34,8 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
         Path expectedSourceDirectory = Paths.get(project.getBasedir().toString(), "src", "raml");
         Path expectedOutputDirectory = Paths.get(project.getBasedir().toString(), "target", "generated-sources");
-        assertThat(output.getString("raml"), equalTo("#%RAML 0.8" + System.getProperty("line.separator")));
+        assertThat(output.getJsonArray("raml").getString(0), equalTo("#%RAML 0.8"));
+        assertThat(output.getJsonArray("raml").size(), equalTo(1));
         assertThat(output.getJsonObject("configuration").getString("sourceDirectory"), equalTo(expectedSourceDirectory.toString()));
         assertThat(output.getJsonObject("configuration").getString("outputDirectory"), equalTo(expectedOutputDirectory.toString()));
         assertThat(output.getJsonObject("configuration").getString("basePackageName"), equalTo("uk.gov.justice.api"));

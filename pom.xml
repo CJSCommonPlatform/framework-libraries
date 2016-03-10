@@ -14,6 +14,8 @@
     <modules>
         <module>raml-maven-plugin</module>
         <module>raml-generator-core</module>
+        <module>io-utils</module>
+        <module>raml-parser</module>
     </modules>
 
     <dependencyManagement>
@@ -24,6 +26,11 @@
                 <version>1.6.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.raml</groupId>
+                <artifactId>raml-parser</artifactId>
+                <version>0.8.12</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

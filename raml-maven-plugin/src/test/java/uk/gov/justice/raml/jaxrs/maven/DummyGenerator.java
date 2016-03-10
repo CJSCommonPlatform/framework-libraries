@@ -1,6 +1,8 @@
 package uk.gov.justice.raml.jaxrs.maven;
 
-import uk.gov.justice.raml.core.Configuration;
+import org.raml.emitter.RamlEmitter;
+import org.raml.model.Raml;
+import uk.gov.justice.raml.core.GeneratorConfig;
 import uk.gov.justice.raml.core.Generator;
 
 import javax.json.Json;
@@ -13,29 +15,24 @@ import java.nio.file.Paths;
 import java.util.Set;
 
 /**
- * Created by david on 04/03/16.
+ * Generator for testing - the RAML and configuration are dumped to a JSON file.
  */
 public class DummyGenerator implements Generator {
 
-    private String raml;
-    private Configuration configuration;
-
     @Override
-    public Set<String> run(String raml, Configuration configuration) {
-        this.raml = raml;
-        this.configuration = configuration;
+    public Set<String> run(Raml raml, GeneratorConfig generatorConfig) {
 
-        Path outputPath = Paths.get(configuration.getOutputDirectory().getAbsolutePath(), "example.json");
+        Path outputPath = Paths.get(generatorConfig.getOutputDirectory().toString(), "example.json");
         try {
             Files.createDirectories(outputPath.getParent());
             OutputStream outputStream = Files.newOutputStream(outputPath);
             JsonWriter writer = Json.createWriter(outputStream);
             writer.writeObject(Json.createObjectBuilder()
-                            .add("raml", raml)
+                    .add("raml", new RamlEmitter().dump(raml))
                             .add("configuration", Json.createObjectBuilder()
-                                    .add("basePackageName", configuration.getBasePackageName())
-                                    .add("sourceDirectory", configuration.getSourceDirectory().getPath())
-                                    .add("outputDirectory", configuration.getOutputDirectory().getPath())
+                                    .add("basePackageName", generatorConfig.getBasePackageName())
+                                    .add("sourceDirectory", generatorConfig.getSourceDirectory().toString())
+                                    .add("outputDirectory", generatorConfig.getOutputDirectory().toString())
                             )
                             .build());
             writer.close();

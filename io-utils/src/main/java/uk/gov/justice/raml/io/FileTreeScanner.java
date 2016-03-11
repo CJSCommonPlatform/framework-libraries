@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static java.util.Arrays.*;
 
 /**
  * Utility class for searching directories.
@@ -39,7 +40,7 @@ public class FileTreeScanner {
         scanner.setExcludes(excludes);
         scanner.scan();
 
-        return Arrays.asList(scanner.getIncludedFiles())
+        return asList(scanner.getIncludedFiles())
                 .stream()
                 .map(Paths::get)
                 .collect(Collectors.toList());

@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static java.nio.file.Files.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
@@ -29,7 +30,7 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         mojo.execute();
 
         Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "example.json");
-        JsonReader jsonReader = Json.createReader(Files.newInputStream(outputPath));
+        JsonReader jsonReader = Json.createReader(newInputStream(outputPath));
         JsonObject output = jsonReader.readObject();
 
         Path expectedSourceDirectory = Paths.get(project.getBasedir().toString(), "src", "raml");
@@ -43,9 +44,6 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         assertThat((project.getCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
         assertThat((project.getTestCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
     }
-
-    //need to test shouldAddCompileSourceRootToMavenProject()
-
 
     public void testShouldNotProcessInvalidRamlFile() throws Exception {
 
@@ -61,10 +59,9 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         }
     }
 
-
     public void testShouldNotProcessNonRAMLFile() throws Exception {
 
-        Path outputPath = Paths.get(getBasedir(), "src", "test", "resources", "generate", "target", "generated-sources", "example.json");
+        Path outputPath = Paths.get(getBasedir(), "src", "test", "resources", "generate", "target", "generated-sources");
 
         File pom = getTestFile( "src/test/resources/non-raml/pom.xml" );
 
@@ -72,8 +69,31 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
         mojo.execute();
 
-        assertThat(Files.exists(outputPath), is(true));
+        assertThat(exists(outputPath), is(true));
 
+    }
+
+    public void testShouldGenerateFromOnlyIncludedRaml() throws Exception {
+        File pom = getTestFile( "src/test/resources/includes-excludes/pom.xml" );
+
+        GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
+
+        mojo.execute();
+
+        Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "example.json");
+        JsonReader jsonReader = Json.createReader(newInputStream(outputPath));
+        JsonObject output = jsonReader.readObject();
+
+        Path expectedSourceDirectory = Paths.get(project.getBasedir().toString(), "src", "raml");
+        Path expectedOutputDirectory = Paths.get(project.getBasedir().toString(), "target", "generated-sources");
+        assertThat(output.getJsonArray("raml").getString(0), equalTo("#%RAML 0.8"));
+        assertThat(output.getJsonArray("raml").size(), equalTo(1));
+        assertThat(output.getJsonObject("configuration").getString("sourceDirectory"), equalTo(expectedSourceDirectory.toString()));
+        assertThat(output.getJsonObject("configuration").getString("outputDirectory"), equalTo(expectedOutputDirectory.toString()));
+        assertThat(output.getJsonObject("configuration").getString("basePackageName"), equalTo("uk.gov.justice.api"));
+
+        assertThat((project.getCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
+        assertThat((project.getTestCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
     }
 
 }

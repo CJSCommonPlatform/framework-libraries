@@ -27,11 +27,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.raml</groupId>
-                <artifactId>raml-parser</artifactId>
-                <version>0.8.12</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

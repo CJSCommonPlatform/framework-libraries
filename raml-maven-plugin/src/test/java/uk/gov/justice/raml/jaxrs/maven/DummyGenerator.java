@@ -2,8 +2,8 @@ package uk.gov.justice.raml.jaxrs.maven;
 
 import org.raml.emitter.RamlEmitter;
 import org.raml.model.Raml;
-import uk.gov.justice.raml.core.GeneratorConfig;
 import uk.gov.justice.raml.core.Generator;
+import uk.gov.justice.raml.core.GeneratorConfig;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Set;
 
 /**
  * Generator for testing - the RAML and configuration are dumped to a JSON file.
@@ -22,7 +21,7 @@ import java.util.Set;
 public class DummyGenerator implements Generator {
 
     @Override
-    public Set<String> run(Raml raml, GeneratorConfig generatorConfig) {
+    public void run(Raml raml, GeneratorConfig generatorConfig) {
 
         Path outputPath = Paths.get(generatorConfig.getOutputDirectory().toString(), "example.json");
         try {
@@ -46,7 +45,5 @@ public class DummyGenerator implements Generator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 }

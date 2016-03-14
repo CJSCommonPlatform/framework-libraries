@@ -58,11 +58,8 @@ public class GenerateMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
 
-        if (includes == null || includes.isEmpty()) {
+        if (includes.isEmpty()) {
             includes = ImmutableList.of(DEFAULT_INCLUDE);
-        }
-        if (excludes == null) {
-            excludes = Collections.emptyList();
         }
 
         project.addCompileSourceRoot(outputDirectory.getPath());

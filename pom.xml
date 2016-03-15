@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>1.6.0-SNAPSHOT</version>
+        <version>1.6.4</version>
     </parent>
 
     <artifactId>raml-maven</artifactId>
@@ -23,7 +23,7 @@
             <dependency>
                 <groupId>uk.gov.justice</groupId>
                 <artifactId>common-bom</artifactId>
-                <version>1.6.0-SNAPSHOT</version>
+                <version>1.6.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -35,7 +35,6 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.1.0</version>
             </plugin>
         </plugins>
     </build>

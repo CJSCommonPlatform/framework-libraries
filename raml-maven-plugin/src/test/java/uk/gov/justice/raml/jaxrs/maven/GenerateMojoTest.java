@@ -6,11 +6,11 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static java.nio.file.Files.*;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.newInputStream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
@@ -29,7 +29,7 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
         mojo.execute();
 
-        Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "example.json");
+        Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", DummyGenerator.OUTPUT_FILE);
         JsonReader jsonReader = Json.createReader(newInputStream(outputPath));
         JsonObject output = jsonReader.readObject();
 
@@ -40,6 +40,9 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         assertThat(output.getJsonObject("configuration").getString("sourceDirectory"), equalTo(expectedSourceDirectory.toString()));
         assertThat(output.getJsonObject("configuration").getString("outputDirectory"), equalTo(expectedOutputDirectory.toString()));
         assertThat(output.getJsonObject("configuration").getString("basePackageName"), equalTo("uk.gov.justice.api"));
+        assertThat(output.getJsonObject("configuration").getJsonObject("generatorProperties").getString("property1"), equalTo("propertyValueABC"));
+        assertThat(output.getJsonObject("configuration").getJsonObject("generatorProperties").getString("property2"), equalTo("propertyValueDDD"));
+
 
         assertThat((project.getCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
         assertThat((project.getTestCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
@@ -80,7 +83,7 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
         mojo.execute();
 
-        Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "example.json");
+        Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", DummyGenerator.OUTPUT_FILE);
         JsonReader jsonReader = Json.createReader(newInputStream(outputPath));
         JsonObject output = jsonReader.readObject();
 

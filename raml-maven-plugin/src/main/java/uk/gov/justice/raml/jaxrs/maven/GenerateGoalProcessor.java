@@ -28,7 +28,8 @@ public class GenerateGoalProcessor {
         final String[] includes = config.getIncludes().toArray(new String[config.getIncludes().size()]);
         final String[] excludes = config.getExcludes().toArray(new String[config.getExcludes().size()]);
 
-        final GeneratorConfig generatorConfig = new GeneratorConfig(config.getSourceDirectory(), config.getOutputDirectory(), config.getBasePackageName());
+        final GeneratorConfig generatorConfig = new GeneratorConfig(config.getSourceDirectory(),
+                config.getOutputDirectory(), config.getBasePackageName(), config.getProperties());
 
         final Generator generator = generatorFactory.create(config.getGeneratorName());
 

@@ -1,7 +1,6 @@
 package uk.gov.justice.raml.jaxrs.maven;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -12,8 +11,8 @@ import org.apache.maven.project.MavenProject;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
@@ -55,6 +54,9 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(property = "basePackageName", required = true)
     private String basePackageName;
 
+    @Parameter(property = "generatorProperties", required = false)
+    private Map<String, String> generatorProperties;
+
     @Override
     public void execute() throws MojoExecutionException {
 
@@ -82,7 +84,8 @@ public class GenerateMojo extends AbstractMojo {
                 outputDirectory.toPath(),
                 basePackageName,
                 includes,
-                excludes
+                excludes,
+                generatorProperties
         );
 
     }

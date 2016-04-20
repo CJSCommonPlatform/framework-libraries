@@ -32,7 +32,9 @@ public class DummyGenerator implements Generator {
         Path outputPath = Paths.get(generatorConfig.getOutputDirectory().toString(), OUTPUT_FILE);
         try {
             Files.createDirectories(outputPath.getParent());
+            Files.deleteIfExists(outputPath);
             OutputStream outputStream = Files.newOutputStream(outputPath);
+
             JsonWriter writer = Json.createWriter(outputStream);
             JsonObjectBuilder propertiesJson = Json.createObjectBuilder();
             if (generatorConfig.getGeneratorProperties() != null) {

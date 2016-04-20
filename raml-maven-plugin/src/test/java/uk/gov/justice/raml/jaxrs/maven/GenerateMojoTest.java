@@ -6,6 +6,8 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.File;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -47,6 +49,21 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         assertThat((project.getCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
         assertThat((project.getTestCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
     }
+
+    public void testShouldNotDeleteExistingFileInTheOutputPath() throws Exception {
+        File pom = getTestFile("src/test/resources/generate/pom.xml");
+        GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
+        Path existingFilePath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "existing.file");
+        OutputStream outputStream = Files.newOutputStream(existingFilePath);
+
+        assertTrue(exists(existingFilePath));
+
+        mojo.execute();
+
+        assertTrue(exists(existingFilePath));
+
+    }
+
 
     public void testShouldNotProcessInvalidRamlFile() throws Exception {
 

@@ -69,7 +69,6 @@ public class GenerateMojo extends AbstractMojo {
 
         try {
             FileUtils.forceMkdir(outputDirectory);
-            FileUtils.cleanDirectory(outputDirectory);
             new GenerateGoalProcessor(new GeneratorFactory(), new FileTreeScannerFactory())
                     .generate(configuration());
         } catch (Exception e) {

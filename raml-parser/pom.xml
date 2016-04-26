@@ -29,6 +29,12 @@
             <artifactId>hamcrest-library</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.maven</groupId>
+            <artifactId>raml-for-testing-io</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -4,24 +4,33 @@ import uk.gov.justice.raml.core.Generator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Factory for generators
  */
 public class GeneratorFactory {
+    private Map<String, Generator> generators = new HashMap();
+
 
     /**
-     * Create a generator from the provided fullyb qualified classname.
+     * Returns an instance of a generator.
+     *
      * @param generatorName fully qualified classname that implements {@link Generator}
      * @return the generator
      */
-    public Generator create(final String generatorName) {
+    public Generator instanceOf(final String generatorName) {
 
         try {
-
-            Class<?> clazz = Class.forName(generatorName);
-            Constructor<?> constructor = clazz.getConstructor();
-            return (Generator) constructor.newInstance();
+            Generator generator = generators.get(generatorName);
+            if (generator == null) {
+                Class<?> clazz = Class.forName(generatorName);
+                Constructor<?> constructor = clazz.getConstructor();
+                generator = (Generator) constructor.newInstance();
+                generators.put(generatorName, generator);
+            }
+            return generator;
 
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 

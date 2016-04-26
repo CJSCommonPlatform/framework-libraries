@@ -39,7 +39,7 @@ public class GenerateMojo extends AbstractMojo {
     /**
      * Directory location of the RAML file(s).
      */
-    @Parameter(property = "sourceDirectory", defaultValue = "${basedir}/src/raml")
+    @Parameter(property = "sourceDirectory", defaultValue = "CLASSPATH")
     private File sourceDirectory;
 
     @Parameter(property = "includes.include")

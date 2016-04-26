@@ -19,14 +19,13 @@ import static org.hamcrest.Matchers.hasSize;
  * Unit tests for the {@link RamlFileParser} class.
  */
 public class RamlFileParserTest {
+    private RamlFileParser parser = new RamlFileParser();
 
     @Test
     @SuppressWarnings("unchecked")
-    public void shouldParseRamlFiles() throws Exception {
+    public void shouldParseRamlFilesFromRamlDirectory() throws Exception {
 
-        RamlFileParser parser = new RamlFileParser();
-
-        Collection<Raml> ramls = parser.parse(
+        Collection<Raml> ramls = parser.ramlOf(
                 get("src/test/resources/raml/"),
                 asList(
                         get("example-1.raml"),
@@ -53,5 +52,20 @@ public class RamlFileParserTest {
                         )
                 )
         ));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shouldParseRamlFilesFromClassPath() {
+        Collection<Raml> ramls = parser.ramlOf(
+                get("CLASSPATH"),
+                asList(
+                        get("raml/external-3.raml"),
+                        get("raml/external-4.raml")));
+
+        assertThat(ramls, hasSize(2));
+        assertThat(ramls, containsInAnyOrder(
+                hasProperty("title", equalTo("external-3.raml")),
+                hasProperty("title", equalTo("external-4.raml"))));
     }
 }

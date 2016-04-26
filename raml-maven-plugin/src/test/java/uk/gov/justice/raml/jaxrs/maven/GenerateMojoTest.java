@@ -1,21 +1,23 @@
 package uk.gov.justice.raml.jaxrs.maven;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.raml.model.Raml;
+import uk.gov.justice.raml.core.GeneratorConfig;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.io.File;
-import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static java.nio.file.Files.exists;
-import static java.nio.file.Files.newInputStream;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
@@ -23,51 +25,58 @@ import static org.hamcrest.core.IsEqual.equalTo;
  */
 public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        DummyGeneratorCaptor.getInstance().init();
+    }
 
     public void testShouldGenerateFromValidRaml() throws Exception {
-        File pom = getTestFile( "src/test/resources/generate/pom.xml" );
+        File pom = getTestFile("src/test/resources/generate/pom.xml");
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
         mojo.execute();
+        List<Pair<Raml, GeneratorConfig>> capturedGeneratorArgs = DummyGeneratorCaptor.getInstance().capturedArgs();
+        assertThat(capturedGeneratorArgs, hasSize(1));
 
-        Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", DummyGenerator.OUTPUT_FILE);
-        JsonReader jsonReader = Json.createReader(newInputStream(outputPath));
-        JsonObject output = jsonReader.readObject();
+
+        Raml raml = capturedGeneratorArgs.get(0).getLeft();
+        assertThat(raml.getTitle(), equalTo("example.raml"));
 
         Path expectedSourceDirectory = Paths.get(project.getBasedir().toString(), "src", "raml");
         Path expectedOutputDirectory = Paths.get(project.getBasedir().toString(), "target", "generated-sources");
-        assertThat(output.getJsonArray("raml").getString(0), equalTo("#%RAML 0.8"));
-        assertThat(output.getJsonArray("raml").size(), equalTo(1));
-        assertThat(output.getJsonObject("configuration").getString("sourceDirectory"), equalTo(expectedSourceDirectory.toString()));
-        assertThat(output.getJsonObject("configuration").getString("outputDirectory"), equalTo(expectedOutputDirectory.toString()));
-        assertThat(output.getJsonObject("configuration").getString("basePackageName"), equalTo("uk.gov.justice.api"));
-        assertThat(output.getJsonObject("configuration").getJsonObject("generatorProperties").getString("property1"), equalTo("propertyValueABC"));
-        assertThat(output.getJsonObject("configuration").getJsonObject("generatorProperties").getString("property2"), equalTo("propertyValueDDD"));
 
+        GeneratorConfig config = capturedGeneratorArgs.get(0).getRight();
+        assertThat(config.getSourceDirectory(), equalTo(expectedSourceDirectory));
+        assertThat(config.getOutputDirectory(), equalTo(expectedOutputDirectory));
+        assertThat(config.getBasePackageName(), equalTo("uk.gov.justice.api"));
+        assertThat(config.getGeneratorProperties().get("property1"), equalTo("propertyValueABC"));
+        assertThat(config.getGeneratorProperties().get("property2"), equalTo("propertyValueDDD"));
 
-        assertThat((project.getCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
-        assertThat((project.getTestCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
+        assertThat((project.getCompileSourceRoots()), hasItem(expectedOutputDirectory.toString()));
+        assertThat((project.getTestCompileSourceRoots()), hasItem(expectedOutputDirectory.toString()));
     }
 
     public void testShouldNotDeleteExistingFileInTheOutputPath() throws Exception {
         File pom = getTestFile("src/test/resources/generate/pom.xml");
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
-        Path existingFilePath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "existing.file");
-        OutputStream outputStream = Files.newOutputStream(existingFilePath);
 
-        assertTrue(exists(existingFilePath));
+        Path existingFilePath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "existing.file");
+        if (!Files.exists(existingFilePath, LinkOption.NOFOLLOW_LINKS)) {
+            Files.createFile(existingFilePath);
+        }
+
+        assertTrue("file should exist before plugin execution", exists(existingFilePath));
 
         mojo.execute();
 
-        assertTrue(exists(existingFilePath));
-
+        assertTrue("file should exist after plugin execution", exists(existingFilePath));
     }
-
 
     public void testShouldNotProcessInvalidRamlFile() throws Exception {
 
-        File pom = getTestFile( "src/test/resources/invalid-raml/pom.xml" );
+        File pom = getTestFile("src/test/resources/invalid-raml/pom.xml");
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
@@ -79,41 +88,45 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         }
     }
 
-    public void testShouldNotProcessNonRAMLFile() throws Exception {
+    public void testShouldNotTryToInstatiateGeneratorIfNoRamlFiles() throws Exception {
+        //NonExisting generator defined in pom.xml
 
-        Path outputPath = Paths.get(getBasedir(), "src", "test", "resources", "generate", "target", "generated-sources");
-
-        File pom = getTestFile( "src/test/resources/non-raml/pom.xml" );
+        File pom = getTestFile("src/test/resources/non-raml/pom.xml");
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
-
         mojo.execute();
 
-        assertThat(exists(outputPath), is(true));
 
     }
 
     public void testShouldGenerateFromOnlyIncludedRaml() throws Exception {
-        File pom = getTestFile( "src/test/resources/includes-excludes/pom.xml" );
+        File pom = getTestFile("src/test/resources/includes-excludes/pom.xml");
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
         mojo.execute();
 
-        Path outputPath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", DummyGenerator.OUTPUT_FILE);
-        JsonReader jsonReader = Json.createReader(newInputStream(outputPath));
-        JsonObject output = jsonReader.readObject();
+        List<Raml> capturedRamls = DummyGeneratorCaptor.getInstance().capturedRamls();
+        assertThat(capturedRamls, hasSize(1));
 
-        Path expectedSourceDirectory = Paths.get(project.getBasedir().toString(), "src", "raml");
-        Path expectedOutputDirectory = Paths.get(project.getBasedir().toString(), "target", "generated-sources");
-        assertThat(output.getJsonArray("raml").getString(0), equalTo("#%RAML 0.8"));
-        assertThat(output.getJsonArray("raml").size(), equalTo(1));
-        assertThat(output.getJsonObject("configuration").getString("sourceDirectory"), equalTo(expectedSourceDirectory.toString()));
-        assertThat(output.getJsonObject("configuration").getString("outputDirectory"), equalTo(expectedOutputDirectory.toString()));
-        assertThat(output.getJsonObject("configuration").getString("basePackageName"), equalTo("uk.gov.justice.api"));
+        Raml processedRaml = capturedRamls.get(0);
+        assertThat(processedRaml.getTitle(), equalTo("my-example.raml"));
 
-        assertThat((project.getCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
-        assertThat((project.getTestCompileSourceRoots()), hasItem(outputPath.getParent().toAbsolutePath().toString()));
+    }
+
+    public void testShouldIncludeRamlFilesFromTheClasspath() throws Exception {
+        File pom = getTestFile("src/test/resources/includes-excludes-external/pom.xml");
+
+        GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
+
+        mojo.execute();
+
+        List<Raml> capturedRamls = DummyGeneratorCaptor.getInstance().capturedRamls();
+        assertThat(capturedRamls, hasSize(2));
+
+        assertThat(capturedRamls, containsInAnyOrder(
+                hasProperty("title", equalTo("external-1.raml")),
+                hasProperty("title", equalTo("external-2.raml"))));
     }
 
 }

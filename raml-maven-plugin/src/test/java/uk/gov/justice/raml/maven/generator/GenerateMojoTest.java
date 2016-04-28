@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.maven;
+package uk.gov.justice.raml.maven.generator;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -26,7 +26,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         DummyGeneratorCaptor.getInstance().init();
     }

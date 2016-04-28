@@ -13,7 +13,7 @@
                 <artifactId>raml-maven-plugin</artifactId>
                 <groupId>uk.gov.justice.maven</groupId>
                 <configuration>
-                    <generatorName>uk.gov.justice.raml.jaxrs.maven.DummyGenerator</generatorName>
+                    <generatorName>uk.gov.justice.raml.maven.generator.DummyGenerator</generatorName>
                     <basePackageName>uk.gov.justice.api</basePackageName>
                     <sourceDirectory>${basedir}/src/raml</sourceDirectory>
                     <includes>

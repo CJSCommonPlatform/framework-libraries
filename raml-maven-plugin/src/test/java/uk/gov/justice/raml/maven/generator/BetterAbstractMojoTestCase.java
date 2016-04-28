@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.maven;
+package uk.gov.justice.raml.maven.generator;
 
 import org.apache.maven.DefaultMaven;
 import org.apache.maven.Maven;

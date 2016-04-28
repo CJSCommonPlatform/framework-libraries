@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.maven;
+package uk.gov.justice.raml.maven.generator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,14 +25,14 @@ public class GeneratorFactoryTest {
 
     @Test
     public void shouldCreateGenerator() {
-        Generator generator = factory.instanceOf("uk.gov.justice.raml.jaxrs.maven.GeneratorFactoryTest$TestGenerator");
+        Generator generator = factory.instanceOf("uk.gov.justice.raml.maven.generator.GeneratorFactoryTest$TestGenerator");
         assertThat(generator, is(instanceOf(TestGenerator.class)));
     }
 
     @Test
     public void shouldCreateOnlyOneInstanceOfGenerator() {
-        Generator generator1 = factory.instanceOf("uk.gov.justice.raml.jaxrs.maven.GeneratorFactoryTest$TestGenerator");
-        Generator generator2 = factory.instanceOf("uk.gov.justice.raml.jaxrs.maven.GeneratorFactoryTest$TestGenerator");
+        Generator generator1 = factory.instanceOf("uk.gov.justice.raml.maven.generator.GeneratorFactoryTest$TestGenerator");
+        Generator generator2 = factory.instanceOf("uk.gov.justice.raml.maven.generator.GeneratorFactoryTest$TestGenerator");
 
         assertThat(generator1, sameInstance(generator2));
     }

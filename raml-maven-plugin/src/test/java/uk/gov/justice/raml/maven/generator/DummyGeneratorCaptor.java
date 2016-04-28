@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.maven;
+package uk.gov.justice.raml.maven.generator;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.raml.model.Raml;

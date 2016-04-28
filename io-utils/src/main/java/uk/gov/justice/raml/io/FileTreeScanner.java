@@ -31,7 +31,6 @@ import static java.util.stream.Collectors.toList;
  */
 public class FileTreeScanner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileTreeScanner.class);
     private static final String CLASSPATH = "CLASSPATH";
     private static final String RAML_PATTERN = "**/*.raml";
 

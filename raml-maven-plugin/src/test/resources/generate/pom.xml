@@ -15,6 +15,7 @@
                 <configuration>
                     <generatorName>uk.gov.justice.raml.jaxrs.maven.DummyGenerator</generatorName>
                     <basePackageName>uk.gov.justice.api</basePackageName>
+                    <sourceDirectory>${basedir}/src/raml</sourceDirectory>
                     <generatorProperties>
                         <property1>propertyValueABC</property1>
                         <property2>propertyValueDDD</property2>

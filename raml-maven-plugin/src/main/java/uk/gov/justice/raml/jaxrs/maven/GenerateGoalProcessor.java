@@ -1,6 +1,5 @@
 package uk.gov.justice.raml.jaxrs.maven;
 
-import uk.gov.justice.raml.core.Generator;
 import uk.gov.justice.raml.core.GeneratorConfig;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
 import uk.gov.justice.raml.io.files.parser.RamlFileParser;
@@ -31,13 +30,11 @@ public class GenerateGoalProcessor {
         final GeneratorConfig generatorConfig = new GeneratorConfig(config.getSourceDirectory(),
                 config.getOutputDirectory(), config.getBasePackageName(), config.getProperties());
 
-        final Generator generator = generatorFactory.create(config.getGeneratorName());
-
         final Collection<Path> paths = scannerFactory.create().find(config.getSourceDirectory(), includes, excludes);
 
         new RamlFileParser()
-                .parse(config.getSourceDirectory(), paths)
+                .ramlOf(config.getSourceDirectory(), paths)
                 .stream()
-                .forEach(raml -> generator.run(raml, generatorConfig));
+                .forEach(raml -> generatorFactory.instanceOf(config.getGeneratorName()).run(raml, generatorConfig));
     }
 }

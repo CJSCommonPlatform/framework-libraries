@@ -17,10 +17,13 @@ import uk.gov.justice.raml.io.FileTreeScanner;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.write;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -68,7 +71,7 @@ public class GenerateGoalProcessorTest {
     public void setup() {
         String generatorName = "mock.generator";
 
-        when(generatorFactory.create(generatorName)).thenReturn(generator);
+        when(generatorFactory.instanceOf(generatorName)).thenReturn(generator);
         when(config.getGeneratorName()).thenReturn(generatorName);
         when(config.getSourceDirectory()).thenReturn(sourceDirectory.getRoot().toPath());
         when(config.getIncludes()).thenReturn(asList(includes));
@@ -151,5 +154,15 @@ public class GenerateGoalProcessorTest {
 
         RamlEmitter emitter = new RamlEmitter();
         assertThat(emitter.dump(raml), equalTo(ramlString1));
+    }
+
+    @Test
+    public void shouldNotInstatiateGeneratorIfNoRamlFilesToProcess() throws IOException {
+
+        when(scanner.find(any(Path.class), any(String[].class), any(String[].class))).thenReturn(emptyList());
+        generateGoalProcessor.generate(config);
+
+        verifyZeroInteractions(generatorFactory);
+
     }
 }

@@ -1,25 +1,21 @@
-package uk.gov.justice.raml.jaxrs.maven;
+package uk.gov.justice.raml.maven.generator;
 
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.io.FileUtils;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
+import uk.gov.justice.raml.maven.common.BasicMojo;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
-@Mojo(name = "generate", requiresProject = true, threadSafe = false, requiresDependencyResolution = COMPILE_PLUS_RUNTIME, defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class GenerateMojo extends AbstractMojo {
+@Mojo(name = "generate", requiresDependencyResolution = COMPILE_PLUS_RUNTIME, defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+public class GenerateMojo extends BasicMojo {
 
-    private static final String DEFAULT_INCLUDE = "**/*.raml";
 
     /**
      * The fully qualified classname for the generator to use
@@ -27,26 +23,12 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(property = "generatorName", required = true)
     private String generatorName;
 
-    @Parameter(defaultValue = "${project}")
-    private MavenProject project;
-
     /**
      * Target directory for generated Java source files.
      */
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources")
     private File outputDirectory;
 
-    /**
-     * Directory location of the RAML file(s).
-     */
-    @Parameter(property = "sourceDirectory", defaultValue = "CLASSPATH")
-    private File sourceDirectory;
-
-    @Parameter(property = "includes.include")
-    private List<String> includes;
-
-    @Parameter(property = "excludes.exclude")
-    private List<String> excludes;
 
     /**
      * Base package name used for generated Java classes.
@@ -60,9 +42,7 @@ public class GenerateMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
 
-        if (includes.isEmpty()) {
-            includes = ImmutableList.of(DEFAULT_INCLUDE);
-        }
+        configureDefaultFileIncludes();
 
         project.addCompileSourceRoot(outputDirectory.getPath());
         project.addTestCompileSourceRoot(outputDirectory.getPath());

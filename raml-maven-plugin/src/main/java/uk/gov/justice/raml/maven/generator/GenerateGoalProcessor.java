@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.maven;
+package uk.gov.justice.raml.maven.generator;
 
 import uk.gov.justice.raml.core.GeneratorConfig;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;

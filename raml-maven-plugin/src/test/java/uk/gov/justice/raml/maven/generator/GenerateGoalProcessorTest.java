@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.jaxrs.maven;
+package uk.gov.justice.raml.maven.generator;
 
 import org.junit.Before;
 import org.junit.Rule;

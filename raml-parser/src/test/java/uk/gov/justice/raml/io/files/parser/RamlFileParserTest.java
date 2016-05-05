@@ -1,10 +1,5 @@
 package uk.gov.justice.raml.io.files.parser;
 
-import org.junit.Test;
-import org.raml.model.Raml;
-
-import java.util.Collection;
-
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -14,6 +9,11 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
+
+import java.util.Collection;
+
+import org.junit.Test;
+import org.raml.model.Raml;
 
 /**
  * Unit tests for the {@link RamlFileParser} class.

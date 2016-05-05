@@ -1,8 +1,5 @@
 package uk.gov.justice.raml.maven.validator;
 
-import org.raml.parser.loader.FileResourceLoader;
-import org.raml.parser.rule.ValidationResult;
-import org.raml.parser.visitor.RamlValidationService;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
 import uk.gov.justice.raml.maven.common.BasicGoalConfig;
 
@@ -12,6 +9,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.raml.parser.loader.FileResourceLoader;
+import org.raml.parser.rule.ValidationResult;
+import org.raml.parser.visitor.RamlValidationService;
 
 public class RamlSyntaxValidator {
 

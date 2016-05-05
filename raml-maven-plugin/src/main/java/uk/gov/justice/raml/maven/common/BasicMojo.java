@@ -1,12 +1,12 @@
 package uk.gov.justice.raml.maven.common;
 
+import java.io.File;
+import java.util.List;
+
 import com.google.common.collect.ImmutableList;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-
-import java.io.File;
-import java.util.List;
 
 public abstract class BasicMojo extends AbstractMojo {
     private static final String DEFAULT_INCLUDE = "**/*.raml";

@@ -1,8 +1,13 @@
 package uk.gov.justice.raml.maven.generator;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.raml.model.Raml;
+import static java.nio.file.Files.exists;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.IsEqual.equalTo;
+
 import uk.gov.justice.raml.core.GeneratorConfig;
 
 import java.io.File;
@@ -12,13 +17,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static java.nio.file.Files.exists;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.core.IsEqual.equalTo;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.raml.model.Raml;
 
 /**
  * Maven plugin harness test for the {@link GenerateMojo} class.

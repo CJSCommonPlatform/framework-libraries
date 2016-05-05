@@ -1,15 +1,16 @@
 package uk.gov.justice.raml.maven.generator;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.raml.model.Raml;
-import uk.gov.justice.raml.core.Generator;
-import uk.gov.justice.raml.core.GeneratorConfig;
-
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
+
+import uk.gov.justice.raml.core.Generator;
+import uk.gov.justice.raml.core.GeneratorConfig;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.raml.model.Raml;
 
 /**
  * Unit tests for the {@link GeneratorFactory} class.

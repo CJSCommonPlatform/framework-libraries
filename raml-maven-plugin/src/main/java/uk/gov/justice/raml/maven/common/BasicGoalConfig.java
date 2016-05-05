@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
-* POJO to hold config for maven plugin goal.
-*/
+ * POJO to hold config for maven plugin goal.
+ */
 
 public class BasicGoalConfig {
 

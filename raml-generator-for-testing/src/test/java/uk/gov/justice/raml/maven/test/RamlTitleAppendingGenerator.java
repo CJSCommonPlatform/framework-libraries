@@ -1,6 +1,11 @@
 package uk.gov.justice.raml.maven.test;
 
-import org.raml.model.Raml;
+import static java.lang.String.format;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.util.Arrays.asList;
+
 import uk.gov.justice.raml.core.Generator;
 import uk.gov.justice.raml.core.GeneratorConfig;
 
@@ -9,11 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static java.lang.String.format;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.StandardOpenOption.APPEND;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.util.Arrays.asList;
+import org.raml.model.Raml;
 
 /**
  * Generator for testing - RAML titles are appended to a text file.

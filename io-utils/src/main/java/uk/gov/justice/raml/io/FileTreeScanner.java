@@ -5,8 +5,6 @@ import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -58,8 +56,8 @@ public class FileTreeScanner {
 
     private Collection<URL> urlsToScan(final Path baseDir) throws MalformedURLException {
         return shouldSearchOnClasspath(baseDir)
-                    ? ClasspathHelper.forClassLoader()
-                    : asList(baseDir.toUri().toURL());
+                ? ClasspathHelper.forClassLoader()
+                : asList(baseDir.toUri().toURL());
     }
 
     private boolean shouldSearchOnClasspath(final Path baseDir) {

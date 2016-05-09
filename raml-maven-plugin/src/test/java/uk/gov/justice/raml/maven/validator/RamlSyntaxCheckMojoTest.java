@@ -1,9 +1,14 @@
 package uk.gov.justice.raml.maven.validator;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.hamcrest.core.IsCollectionContaining;
-import org.raml.parser.rule.ValidationResult;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import uk.gov.justice.raml.maven.common.BasicGoalConfig;
 import uk.gov.justice.raml.maven.generator.BetterAbstractMojoTestCase;
 
@@ -11,17 +16,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.raml.parser.rule.ValidationResult;
 
 public class RamlSyntaxCheckMojoTest extends BetterAbstractMojoTestCase {
 
@@ -71,7 +70,6 @@ public class RamlSyntaxCheckMojoTest extends BetterAbstractMojoTestCase {
         mojo.execute();
 
     }
-
 
 
     public void testShouldWrapIOExceptionInMojoFailureException() throws Exception {

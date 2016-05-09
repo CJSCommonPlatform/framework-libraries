@@ -1,27 +1,5 @@
 package uk.gov.justice.raml.maven.generator;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.raml.emitter.RamlEmitter;
-import org.raml.model.Raml;
-import uk.gov.justice.raml.core.Generator;
-import uk.gov.justice.raml.core.GeneratorConfig;
-import uk.gov.justice.raml.io.FileTreeScanner;
-import uk.gov.justice.raml.io.FileTreeScannerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -36,6 +14,29 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.raml.core.Generator;
+import uk.gov.justice.raml.core.GeneratorConfig;
+import uk.gov.justice.raml.io.FileTreeScanner;
+import uk.gov.justice.raml.io.FileTreeScannerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.raml.emitter.RamlEmitter;
+import org.raml.model.Raml;
+
 /**
  * Unit tests for the {@link GenerateGoalProcessor} class.
  */
@@ -44,25 +45,18 @@ public class GenerateGoalProcessorTest {
 
     private final String[] includes = {"**/*.raml"};
     private final String[] excludes = {};
-
-    @Mock
-    private Generator generator;
-
-    @Mock
-    private GeneratorFactory generatorFactory;
-
-    @Mock
-    private FileTreeScannerFactory scannerFactory;
-
-    @Mock
-    private GenerateGoalConfig config;
-
-    @Mock
-    private FileTreeScanner scanner;
-
     @Rule
     public TemporaryFolder sourceDirectory = new TemporaryFolder();
-
+    @Mock
+    private Generator generator;
+    @Mock
+    private GeneratorFactory generatorFactory;
+    @Mock
+    private FileTreeScannerFactory scannerFactory;
+    @Mock
+    private GenerateGoalConfig config;
+    @Mock
+    private FileTreeScanner scanner;
     @InjectMocks
     private GenerateGoalProcessor generateGoalProcessor;
 

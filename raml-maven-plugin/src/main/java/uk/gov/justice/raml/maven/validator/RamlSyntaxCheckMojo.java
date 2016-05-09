@@ -1,9 +1,5 @@
 package uk.gov.justice.raml.maven.validator;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.raml.parser.rule.ValidationResult;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
 import uk.gov.justice.raml.maven.common.BasicGoalConfig;
 import uk.gov.justice.raml.maven.common.BasicMojo;
@@ -12,6 +8,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.raml.parser.rule.ValidationResult;
 
 @Mojo(name = "check-syntax")
 public class RamlSyntaxCheckMojo extends BasicMojo {

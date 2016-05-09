@@ -1,22 +1,22 @@
 package uk.gov.justice.raml.maven.generator;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.raml.model.Raml;
+import static java.util.stream.Collectors.toList;
+
 import uk.gov.justice.raml.core.GeneratorConfig;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+import org.apache.commons.lang3.tuple.Pair;
+import org.raml.model.Raml;
 
 /**
- * Captures execution arguments of the DummyGenerator.
- * Single threaded, will fail if tests were configured to run in parallel.
+ * Captures execution arguments of the DummyGenerator. Single threaded, will fail if tests were
+ * configured to run in parallel.
  */
 public class DummyGeneratorCaptor {
-    private List<Pair<Raml, GeneratorConfig>> capturedArgs = new LinkedList<>();
-
     private static final DummyGeneratorCaptor instance = new DummyGeneratorCaptor();
+    private List<Pair<Raml, GeneratorConfig>> capturedArgs = new LinkedList<>();
 
     public static DummyGeneratorCaptor getInstance() {
         return instance;

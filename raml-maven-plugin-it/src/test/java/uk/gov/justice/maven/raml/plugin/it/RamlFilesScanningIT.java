@@ -1,7 +1,10 @@
 package uk.gov.justice.maven.raml.plugin.it;
 
 
-import org.junit.Test;
+import static org.apache.commons.lang.StringUtils.substringBefore;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertThat;
+
 import uk.gov.justice.raml.maven.test.RamlTitleAppendingGenerator;
 
 import java.net.URI;
@@ -12,9 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.substringBefore;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class RamlFilesScanningIT {
 

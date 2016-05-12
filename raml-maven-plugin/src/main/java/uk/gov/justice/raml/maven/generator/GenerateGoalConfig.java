@@ -19,18 +19,22 @@ public class GenerateGoalConfig extends BasicGoalConfig {
 
     private final Map<String, String> properties;
 
+    private final List<Path> sourcePaths;
+
     public GenerateGoalConfig(final String generatorName,
                               final Path sourceDirectory,
                               final Path outputDirectory,
                               final String basePackageName,
                               final List<String> includes,
                               final List<String> excludes,
-                              final Map<String, String> properties) {
+                              final Map<String, String> properties,
+                              final List<Path> sourcePaths) {
         super(sourceDirectory, includes, excludes);
         this.generatorName = generatorName;
         this.outputDirectory = outputDirectory;
         this.basePackageName = basePackageName;
         this.properties = properties;
+        this.sourcePaths = sourcePaths;
     }
 
     public String getGeneratorName() {
@@ -47,5 +51,9 @@ public class GenerateGoalConfig extends BasicGoalConfig {
 
     public Map<String, String> getProperties() {
         return properties;
+    }
+
+    public List<Path> getSourcePaths() {
+        return sourcePaths;
     }
 }

@@ -28,7 +28,7 @@ public class GenerateGoalProcessor {
         final String[] excludes = config.getExcludes().toArray(new String[config.getExcludes().size()]);
 
         final GeneratorConfig generatorConfig = new GeneratorConfig(config.getSourceDirectory(),
-                config.getOutputDirectory(), config.getBasePackageName(), config.getProperties());
+                config.getOutputDirectory(), config.getBasePackageName(), config.getProperties(), config.getSourcePaths());
 
         final Collection<Path> paths = scannerFactory.create().find(config.getSourceDirectory(), includes, excludes);
 

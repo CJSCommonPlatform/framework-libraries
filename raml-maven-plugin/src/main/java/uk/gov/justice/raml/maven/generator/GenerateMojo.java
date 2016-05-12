@@ -6,6 +6,10 @@ import uk.gov.justice.raml.io.FileTreeScannerFactory;
 import uk.gov.justice.raml.maven.common.BasicMojo;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -48,16 +52,19 @@ public class GenerateMojo extends BasicMojo {
         project.addCompileSourceRoot(outputDirectory.getPath());
         project.addTestCompileSourceRoot(outputDirectory.getPath());
 
+        final List<Path> sourcePaths = new ArrayList<>();
+        project.getCompileSourceRoots().stream().forEach(root -> sourcePaths.add(Paths.get(root)));
+
         try {
             FileUtils.forceMkdir(outputDirectory);
             new GenerateGoalProcessor(new GeneratorFactory(), new FileTreeScannerFactory())
-                    .generate(configuration());
+                    .generate(configuration(sourcePaths));
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to apply generator to raml", e);
         }
     }
 
-    private GenerateGoalConfig configuration() {
+    private GenerateGoalConfig configuration(final List<Path> sourcePaths) {
 
         return new GenerateGoalConfig(generatorName,
                 sourceDirectory.toPath(),
@@ -65,8 +72,8 @@ public class GenerateMojo extends BasicMojo {
                 basePackageName,
                 includes,
                 excludes,
-                generatorProperties
-        );
+                generatorProperties,
+                sourcePaths);
 
     }
 

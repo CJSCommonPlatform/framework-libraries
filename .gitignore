@@ -1,23 +1,11 @@
-temp/
-target/
-dist/
-node_modules/
-_SpecRunner.html
-.DS_Store
-test-results.xml
+# IDEA #
+#################
+out
+wiremock.iml
+wiremock.ipr
+wiremock.iws
+**/*.iml
 .idea/
-*.iml
-bower_components/
-.project
-.settings
-.classpath
-.springBeans
-.directory
-.springBeans
-pom.xml~
-.gitignore~
-activemq-data/
-.sonar
 
 ### SublimeText ###
 # cache files for sublime text
@@ -44,6 +32,7 @@ sftp-config.json
 *.exe
 *.o
 *.so
+*.pyc
 
 # Packages #
 ############
@@ -61,6 +50,7 @@ sftp-config.json
 # Logs and databases #
 ######################
 *.log
+*.sql
 *.sqlite
 
 # OS generated files #
@@ -75,3 +65,31 @@ Thumbs.db
 
 *.h2.db
 *.trace.db
+
+# Maven/Eclipse #
+#################
+build
+bin
+.project
+.classpath
+.settings
+.gradle
+**/target
+temp/
+dist/
+node_modules/
+_SpecRunner.html
+.DS_Store
+test-results.xml
+bower_components/
+.project
+.settings
+.classpath
+.springBeans
+.directory
+.springBeans
+pom.xml~
+.gitignore~
+activemq-data/
+.sonar
+

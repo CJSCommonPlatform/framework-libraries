@@ -1,5 +1,7 @@
 package uk.gov.justice.raml.maven.validator;
 
+import static java.io.File.pathSeparator;
+
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
 import uk.gov.justice.raml.maven.common.BasicGoalConfig;
 import uk.gov.justice.raml.maven.common.BasicMojo;
@@ -29,13 +31,13 @@ public class RamlSyntaxCheckMojo extends BasicMojo {
 
     private void report(final Map<Path, ValidationResult> results) throws MojoFailureException {
         if (results.isEmpty()) {
-            getLog().info("Raml and Json Schema Validation Complete");
+            getLog().info("RAML and JSON schema validation complete");
         } else {
             String validationResultsPrint = printResults(results, sourceDirectory);
 
             getLog().debug(validationResultsPrint);
 
-            throw new MojoFailureException(results, "Raml & Json schema validation has failed", validationResultsPrint);
+            throw new MojoFailureException(results, "RAML and JSON schema validation failed", validationResultsPrint);
         }
     }
 
@@ -59,6 +61,7 @@ public class RamlSyntaxCheckMojo extends BasicMojo {
                 .forEach(resultEntry -> {
                     sb.append("\nSyntax check has failed for ");
                     sb.append(sourceDirectory);
+                    sb.append(pathSeparator);
                     sb.append(resultEntry.getKey());
                     sb.append("\nError Level : ");
                     sb.append(resultEntry.getValue().getLevel());

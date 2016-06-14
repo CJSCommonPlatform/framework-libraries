@@ -3,10 +3,11 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.1.2] - 2016-06-14
 
 ### Changed
 
+- Corrected parent POM to release version
 - Minor fixes to log messages
 
 ## [1.1.1] - 2016-05-12

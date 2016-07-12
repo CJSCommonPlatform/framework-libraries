@@ -12,7 +12,9 @@
     <artifactId>maven-common-bom</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>Bill of materials defining standard versions for dependencies of the Microservices framework</description>
+    <description>Bill of materials defining standard versions for dependencies of the Microservices
+        framework
+    </description>
 
     <!-- ===== NOTES ===== The dependencies defined here are NOT included
     in a project - it just sets the version that will be included if required.

@@ -13,7 +13,7 @@ install:
   jks -trustcacerts -alias IndigoBlueRoot -file target/travis-settings/ROOT-CA.crt
   -keystore target/travis-settings/cacerts"
 script: mvn -Djavax.net.ssl.trustStore=$PWD/target/travis-settings/cacerts -B -V --settings
-  target/travis-settings/settings.xml verify
+  target/travis-settings/settings.xml verify -U
 after_success:
 - '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_PULL_REQUEST == "false" ]] || [[ $TRAVIS_TAG
   == release-* ]] && mvn -Djavax.net.ssl.trustStore=$PWD/target/travis-settings/cacerts

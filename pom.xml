@@ -61,6 +61,7 @@
 
         <plugins.buildnumber.version>1.4</plugins.buildnumber.version>
         <plugins.buildhelper.version>1.10</plugins.buildhelper.version>
+        <plugins.coveralls.version>4.2.0</plugins.coveralls.version>
 
         <!-- testing -->
         <plugins.maven.surefire.version>2.19.1</plugins.maven.surefire.version>

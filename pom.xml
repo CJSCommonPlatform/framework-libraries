@@ -79,7 +79,17 @@
 
         <plugins.jacoco.version>0.7.5.201505241946</plugins.jacoco.version>
 
+        <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-framework-parent-pom.git</cpp.scm.git.url>
+        <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
+        <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
+        <cpp.scm.url>https://github.com/CJSCommonPlatform/maven-framework-parent-pom</cpp.scm.url>
     </properties>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
 
     <!--
     =============

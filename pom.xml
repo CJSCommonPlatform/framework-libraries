@@ -52,6 +52,7 @@
         <plugins.maven.jar.version>2.6</plugins.maven.jar.version>
         <plugins.maven.resources.version>2.7</plugins.maven.resources.version>
         <plugins.maven.site.version>3.4</plugins.maven.site.version>
+        <plugins.maven.javadoc.version>2.10.4</plugins.maven.javadoc.version>
 
         <plugins.maven.wagon.version>2.10</plugins.maven.wagon.version>
         <plugins.maven.war.version>2.6</plugins.maven.war.version>

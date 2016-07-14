@@ -53,6 +53,7 @@
         <plugins.maven.resources.version>2.7</plugins.maven.resources.version>
         <plugins.maven.site.version>3.4</plugins.maven.site.version>
         <plugins.maven.javadoc.version>2.10.4</plugins.maven.javadoc.version>
+        <plugins.maven.source.version>3.0.1</plugins.maven.source.version>
 
         <plugins.maven.wagon.version>2.10</plugins.maven.wagon.version>
         <plugins.maven.war.version>2.6</plugins.maven.war.version>
@@ -81,7 +82,8 @@
 
         <plugins.jacoco.version>0.7.5.201505241946</plugins.jacoco.version>
 
-        <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-framework-parent-pom.git</cpp.scm.git.url>
+        <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-framework-parent-pom.git
+        </cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
         <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
         <cpp.scm.url>https://github.com/CJSCommonPlatform/maven-framework-parent-pom</cpp.scm.url>
@@ -264,6 +266,12 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${plugins.maven.javadoc.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${plugins.maven.source.version}</version>
                 </plugin>
 
                 <plugin>

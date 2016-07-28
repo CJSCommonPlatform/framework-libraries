@@ -1,4 +1,4 @@
-# Super POM
+# Framework Parent POM
 
 [![Build Status](https://travis-ci.org/CJSCommonPlatform/maven-framework-parent-pom.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/maven-framework-parent-pom)
 

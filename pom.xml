@@ -399,7 +399,7 @@
             <dependency>
                 <groupId>co.unruly</groupId>
                 <artifactId>java-8-matchers</artifactId>
-                <version>$(java.8.matchers.version}</version>
+                <version>${java.8.matchers.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.trajano.commons</groupId>

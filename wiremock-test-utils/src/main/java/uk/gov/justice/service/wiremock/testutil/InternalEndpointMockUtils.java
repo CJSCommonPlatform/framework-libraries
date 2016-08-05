@@ -1,6 +1,5 @@
 package uk.gov.justice.service.wiremock.testutil;
 
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -9,7 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 /**
  * Created by yli on 02/08/2016.
  * Utility class for stubbing internal end point of health check service
- * 
+ *
  */
 public final class InternalEndpointMockUtils {
 

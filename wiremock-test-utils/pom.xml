@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>wiremock-test-util</artifactId>
+    <artifactId>wiremock-test-utils</artifactId>
 
     <properties>
         <jboss.home>${project.build.directory}/wildfly-10.0.0.Final</jboss.home>
@@ -37,5 +37,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
 </project>

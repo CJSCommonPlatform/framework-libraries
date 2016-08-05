@@ -17,6 +17,7 @@
     <modules>
         <module>wiremock-service</module>
         <module>wiremock-service-test</module>
+        <module>wiremock-test-util</module>
     </modules>
 
     <name>WireMock Service</name>

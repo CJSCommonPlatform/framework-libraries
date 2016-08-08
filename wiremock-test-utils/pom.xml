@@ -24,6 +24,7 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -33,6 +34,11 @@
         <dependency>
             <groupId>org.apache.tomee</groupId>
             <artifactId>openejb-cxf-rs</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.trajano.commons</groupId>
+            <artifactId>commons-testing</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

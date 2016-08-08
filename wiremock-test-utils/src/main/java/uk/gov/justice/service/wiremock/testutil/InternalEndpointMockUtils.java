@@ -1,46 +1,35 @@
 package uk.gov.justice.service.wiremock.testutil;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.head;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.OK;
 
 /**
- * Created by yli on 02/08/2016.
- * Utility class for stubbing internal end point of health check service
- *
+ * Utility class for stubbing internal endpoints for health checks.
  */
 public final class InternalEndpointMockUtils {
 
     /**
-     * Utility class suppress instance instantiation
+     * Utility class suppress instance instantiation.
      */
     private InternalEndpointMockUtils() {
-
     }
 
-    public static final void stubPingFor(final String serviceName) {
+    public static void stubPingFor(final String serviceName) {
 
-        String url = "/" + serviceName + "/internal/metrics/ping";
+        final String url = String.format("/%s/internal/metrics/ping", serviceName);
 
-        /*
-         * Stub for serving health check GET request
-         * will return a "pong" string
-         */
         stubFor(get(urlEqualTo(url))
-                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode())
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON)
+                .willReturn(aResponse().withStatus(OK.getStatusCode())
+                        .withHeader("Content-Type", APPLICATION_JSON)
                         .withBody("pong")));
 
-
-        /*
-          Stub for health check HEAD request
-          will return http status 200 with no content in the response
-         */
         stubFor(head(urlEqualTo(url))
-                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode())
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON)
-                ));
-
+                .willReturn(aResponse().withStatus(OK.getStatusCode())
+                        .withHeader("Content-Type", APPLICATION_JSON)));
     }
 }

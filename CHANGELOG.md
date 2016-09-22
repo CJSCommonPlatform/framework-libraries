@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [Un-released]
+
+### Added
+
+- Add hamcrest date library
+
+
 ## [1.1.0] - 2016-08-18
 
 ### Added

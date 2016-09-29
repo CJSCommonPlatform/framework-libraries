@@ -71,6 +71,7 @@
         <xbean.version>4.5</xbean.version>
         <apache.httpclient.version>4.5.1</apache.httpclient.version>
         <java.8.matchers.version>1.1</java.8.matchers.version>
+        <javassist.version>3.20.0-GA</javassist.version>
 
         <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
@@ -468,6 +469,11 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${apache.httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

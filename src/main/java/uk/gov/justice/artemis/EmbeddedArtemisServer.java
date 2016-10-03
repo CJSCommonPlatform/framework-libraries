@@ -1,5 +1,6 @@
 package uk.gov.justice.artemis;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.activemq.artemis.core.security.CheckType;
@@ -23,26 +24,31 @@ public class EmbeddedArtemisServer {
                 }
             }
         }));
+        
+        
     }
 
     private static EmbeddedJMS jmsServer;
     
-    private EmbeddedArtemisServer() {}
+    
+    private EmbeddedArtemisServer() {
+        
+    }
 
     public static void main(String args[]) throws Exception {
-
         startServer();        
     }
     
     public static final void startServer() throws Exception {
-        
         //ensure that the loggers are in the classpath and loaded
         Class.forName(org.apache.activemq.artemis.core.server.ActiveMQServerLogger.class
                         .getCanonicalName());
         Class.forName(org.apache.activemq.artemis.core.server.ActiveMQServerLogger_$logger.class
                         .getCanonicalName());
 
-        final EmbeddedJMS jmsServer = new EmbeddedJMS();
+        if(Objects.isNull(jmsServer)){
+            setJmsServer(new EmbeddedJMS());
+        }
         
         jmsServer.setConfigResourcePath("broker.xml");
         
@@ -68,4 +74,13 @@ public class EmbeddedArtemisServer {
             jmsServer.stop();
         }
     }
+
+    public static EmbeddedJMS getJmsServer() {
+        return jmsServer;
+    }
+
+    public static void setJmsServer(final EmbeddedJMS jmsServer) {
+        EmbeddedArtemisServer.jmsServer = jmsServer;
+    }
+    
 }

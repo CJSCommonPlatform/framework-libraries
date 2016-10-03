@@ -17,7 +17,7 @@
 		<jboss-logmanager.version>2.0.3.Final</jboss-logmanager.version>
 		<junit.version>4.12</junit.version>
 		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
-		<mockito.version>1.10.19</mockito.version>      
+		<mockito.version>1.10.19</mockito.version>
 	</properties>
 
 	<dependencies>
@@ -106,18 +106,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

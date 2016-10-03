@@ -41,10 +41,8 @@ public class EmbeddedArtemisServer {
     
     public static final void startServer() throws Exception {
         //ensure that the loggers are in the classpath and loaded
-        Class.forName(org.apache.activemq.artemis.core.server.ActiveMQServerLogger.class
-                        .getCanonicalName());
-        Class.forName(org.apache.activemq.artemis.core.server.ActiveMQServerLogger_$logger.class
-                        .getCanonicalName());
+        org.apache.activemq.artemis.core.server.ActiveMQServerLogger.class.getCanonicalName();
+        org.apache.activemq.artemis.core.server.ActiveMQServerLogger_$logger.class.getCanonicalName();
 
         if(Objects.isNull(jmsServer)){
             setJmsServer(new EmbeddedJMS());

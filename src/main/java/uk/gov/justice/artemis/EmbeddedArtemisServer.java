@@ -8,6 +8,8 @@ import org.apache.activemq.artemis.core.security.CheckType;
 import org.apache.activemq.artemis.core.security.Role;
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -16,17 +18,15 @@ import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
  */
 public final class EmbeddedArtemisServer {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EmbeddedArtemisServer.class);
+
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 try {
-                    serverPermit.acquire();
-                    try {
-                        stopServer();
-                    } finally {
-                        serverPermit.release();
-                    }
+                    stopServer();
                 } catch (Exception e) {
+                    LOG.error("EmbeddedArtemisServerRuntimeHook", e);
                 }
             }
         }, "EmbeddedArtemisServerRuntimeHook"));
@@ -49,13 +49,12 @@ public final class EmbeddedArtemisServer {
 
         serverPermit.acquire();
         try {
+
             if (initialised) {
                 return;
             }
-            // ensure that the loggers are in the classpath and loaded
-            org.apache.activemq.artemis.core.server.ActiveMQServerLogger.class.getCanonicalName();
-            org.apache.activemq.artemis.core.server.ActiveMQServerLogger_$logger.class
-                            .getCanonicalName();
+
+            checkLoggers();
 
             if (Objects.isNull(jmsServer)) {
                 setJmsServer(new EmbeddedJMS());
@@ -65,18 +64,7 @@ public final class EmbeddedArtemisServer {
 
             // override the security manager to cater for multiple test configurations
             // users and passwords
-            jmsServer.setSecurityManager(new ActiveMQSecurityManager() {
-                @Override
-                public boolean validateUser(String user, String password) {
-                    return true;
-                }
-
-                @Override
-                public boolean validateUserAndRole(String user, String password, Set<Role> roles,
-                                CheckType checkType) {
-                    return true;
-                }
-            });
+            jmsServer.setSecurityManager(getSecurityManager());
 
             jmsServer.start();
 
@@ -87,7 +75,7 @@ public final class EmbeddedArtemisServer {
         }
     }
 
-    public static synchronized final void stopServer() throws Exception {
+    public static final void stopServer() throws Exception {
         serverPermit.acquire();
         try {
             if (initialised) {
@@ -107,4 +95,25 @@ public final class EmbeddedArtemisServer {
         EmbeddedArtemisServer.jmsServer = jmsServer;
     }
 
+    private static void checkLoggers() {
+        // ensure that the loggers are in the classpath and loaded
+        org.apache.activemq.artemis.core.server.ActiveMQServerLogger.class.getCanonicalName();
+        org.apache.activemq.artemis.core.server.ActiveMQServerLogger_$logger.class
+                        .getCanonicalName();
+    }
+
+    private static ActiveMQSecurityManager getSecurityManager() {
+        return new ActiveMQSecurityManager() {
+            @Override
+            public boolean validateUser(final String user, final String password) {
+                return true;
+            }
+
+            @Override
+            public boolean validateUserAndRole(final String user, final String password,
+                            final Set<Role> roles, final CheckType checkType) {
+                return true;
+            }
+        };
+    }
 }

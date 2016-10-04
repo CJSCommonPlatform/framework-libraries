@@ -1,9 +1,11 @@
 package uk.gov.justice.artemis;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import java.net.MalformedURLException;
 
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
@@ -11,20 +13,24 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class EmbeddedArtemisServerTest {
 
-    static EmbeddedJMS embeddedJMS;
+    @Mock
+    EmbeddedJMS embeddedJMS;
 
     @Before
     public void before() {
-        embeddedJMS = mock(EmbeddedJMS.class);
         EmbeddedArtemisServer.setJmsServer(embeddedJMS);
     }
 
     @After
-    public void after()throws Exception {
-        EmbeddedArtemisServer.stopServer();        
+    public void after() throws Exception {
+        EmbeddedArtemisServer.stopServer();
     }
 
     @Test
@@ -42,6 +48,16 @@ public class EmbeddedArtemisServerTest {
 
             Assert.fail(e.getMessage());
         }
+    }
+
+    @Test(expected=MalformedURLException.class)
+    public void shouldInitialiseTheServerWithDefaultInstance() throws Exception {
+        
+        EmbeddedArtemisServer.setJmsServer(null);
+
+        EmbeddedArtemisServer.startServer();
+
+        verify(embeddedJMS, times(1)).setConfigResourcePath("broker.xml");
     }
 
     @Test
@@ -82,7 +98,7 @@ public class EmbeddedArtemisServerTest {
             Assert.fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void shouldStopTheServerOnlyOnce() {
         try {
@@ -90,7 +106,7 @@ public class EmbeddedArtemisServerTest {
             EmbeddedArtemisServer.startServer();
 
             EmbeddedArtemisServer.stopServer();
-            
+
             EmbeddedArtemisServer.stopServer();
 
             verify(embeddedJMS, times(1)).stop();
@@ -98,6 +114,18 @@ public class EmbeddedArtemisServerTest {
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void shouldTestSetter() {
+        EmbeddedArtemisServer.setJmsServer(embeddedJMS);
+        assertEquals(embeddedJMS, EmbeddedArtemisServer.getJmsServer());
+    }
+
+    @Test(expected = IllegalAccessException.class)
+    public void shouldTestPrivateConstructor()
+                    throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+        Class.forName(EmbeddedArtemisServer.class.getCanonicalName()).newInstance();
     }
 
 }

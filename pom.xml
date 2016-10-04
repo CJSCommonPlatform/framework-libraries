@@ -74,6 +74,7 @@
         <javassist.version>3.20.0-GA</javassist.version>
         <jcommander.version>1.48</jcommander.version>
         <weld.version>2.4.0.Final</weld.version>
+        <expiringmap.version>0.5.7</expiringmap.version>
 
         <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
@@ -488,6 +489,11 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.jodah</groupId>
+                <artifactId>expiringmap</artifactId>
+                <version>${expiringmap.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

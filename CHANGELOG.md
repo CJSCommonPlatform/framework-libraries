@@ -2,7 +2,8 @@
 All notable changes to this project will be documented in this file, which follows the guidelines
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
-## [Un-released]
+
+## [Unreleased]
 
 ### Changed
 
@@ -31,3 +32,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 
 - Initial release of common BOM
+
+[Unreleased]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.1.0...HEAD
+[1.1.0]: https://github.com/CJSCommonPlatform/maven-common-bom/release-1.0.0...release-1.1.0
+[1.0.0]: https://github.com/CJSCommonPlatform/maven-common-bom/commits/release-1.0.0

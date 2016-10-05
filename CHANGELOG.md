@@ -5,17 +5,17 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [Un-released]
 
 ### Changed
+
 - Changed artemis.jms.client.version from 1.2.0 to 1.3.0
 
 ### Added
+
 - Add artemis.jms.version 1.3.0
 - Add artemis-ra artemis-jms-server artemis-service-extensions and wildfly-client-all libraries
 
-## [Unreleased]
+### Added
 
 - Add javassist version
-
-## [Un-released]
 
 ### Added
 

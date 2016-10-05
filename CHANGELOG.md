@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.2.0] - 2016-10-05
+
 ### Changed
 
 - Changed artemis.jms.client.version from 1.2.0 to 1.3.0
@@ -33,6 +35,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 - Initial release of common BOM
 
-[Unreleased]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.1.0...HEAD
-[1.1.0]: https://github.com/CJSCommonPlatform/maven-common-bom/release-1.0.0...release-1.1.0
+[Unreleased]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.2.0...HEAD
+[1.2.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.1.0...release-1.2.0
+[1.1.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.0.0...release-1.1.0
 [1.0.0]: https://github.com/CJSCommonPlatform/maven-common-bom/commits/release-1.0.0

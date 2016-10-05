@@ -1,2 +1,4 @@
 /.idea
 /maven-common-bom.iml
+.settings/
+.project

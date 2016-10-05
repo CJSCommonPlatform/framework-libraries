@@ -20,6 +20,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 - Add wildfly-client-all library
 - Add javassist version
 - Add hamcrest date library
+- Dropwizard metrics core
+- Weld 2.4.0.Final
+- JCommander 1.48
 
 
 ## [1.1.0] - 2016-08-18

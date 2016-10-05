@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * An embedded Artemis server that can be used for testing
+ * An embedded Artemis server that should be used only for testing.
  *
  */
 public final class EmbeddedArtemisServer {
@@ -21,15 +21,7 @@ public final class EmbeddedArtemisServer {
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedArtemisServer.class);
 
     static {
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
-                try {
-                    stopServer();
-                } catch (Exception e) {
-                    LOG.error("EmbeddedArtemisServerRuntimeHook", e);
-                }
-            }
-        }, "EmbeddedArtemisServerRuntimeHook"));
+        Runtime.getRuntime().addShutdownHook(getShutDownHook());
     }
 
     private static EmbeddedJMS jmsServer;
@@ -45,6 +37,11 @@ public final class EmbeddedArtemisServer {
         startServer();
     }
 
+    /**
+     * Start the server using a broker.xml from your project classpath.
+     * 
+     * @throws Exception
+     */
     public static final void startServer() throws Exception {
 
         serverPermit.acquire();
@@ -75,6 +72,11 @@ public final class EmbeddedArtemisServer {
         }
     }
 
+    /**
+     * Stop the server
+     * 
+     * @throws Exception
+     */
     public static final void stopServer() throws Exception {
         serverPermit.acquire();
         try {
@@ -115,5 +117,15 @@ public final class EmbeddedArtemisServer {
                 return true;
             }
         };
+    }
+
+    private static Thread getShutDownHook() {
+        return new Thread(() -> {
+            try {
+                stopServer();
+            } catch (Exception e) {
+                LOG.error("EmbeddedArtemisServerRuntimeHook", e);
+            }
+        }, "EmbeddedArtemisServerRuntimeHook");
     }
 }

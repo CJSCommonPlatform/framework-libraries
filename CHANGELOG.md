@@ -11,14 +11,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 
 - Add artemis.jms.version 1.3.0
-- Add artemis-ra artemis-jms-server artemis-service-extensions and wildfly-client-all libraries
-
-### Added
-
+- Add artemis-ra library
+- Add artemis-jms-server library
+- Add artemis-service-extensions library
+- Add wildfly-client-all library
 - Add javassist version
-
-### Added
-
 - Add hamcrest date library
 
 

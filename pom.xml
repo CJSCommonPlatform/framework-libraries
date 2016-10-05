@@ -65,7 +65,8 @@
         <javapoet.version>1.6.1</javapoet.version>
         <reflections.version>0.9.10</reflections.version>
         <findbugs.version>3.0.0</findbugs.version>
-        <artemis.jms.client.version>1.2.0</artemis.jms.client.version>
+        <artemis.jms.client.version>1.3.0</artemis.jms.client.version>
+        <artemis.jms.version>1.3.0</artemis.jms.version>
         <json.schema.version>1.3.0</json.schema.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <xbean.version>4.5</xbean.version>
@@ -75,7 +76,8 @@
         <jcommander.version>1.48</jcommander.version>
         <weld.version>2.4.0.Final</weld.version>
         <expiringmap.version>0.5.7</expiringmap.version>
-
+        <wildfly.client.version>10.0.0.Final</wildfly.client.version>
+        
         <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
         <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
@@ -494,6 +496,26 @@
                 <groupId>net.jodah</groupId>
                 <artifactId>expiringmap</artifactId>
                 <version>${expiringmap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-ra</artifactId>
+                <version>${artemis.jms.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-jms-server</artifactId>
+                <version>${artemis.jms.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-service-extensions</artifactId>
+                <version>${artemis.jms.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wildfly</groupId>
+                <artifactId>wildfly-client-all</artifactId>
+                <version>${wildfly.client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

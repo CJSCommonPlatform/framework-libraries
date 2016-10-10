@@ -1,131 +1,166 @@
 package uk.gov.justice.artemis;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.Semaphore;
+import static uk.gov.justice.artemis.EmbeddedArtemisInitializer.initialize;
 
-import org.apache.activemq.artemis.core.security.CheckType;
-import org.apache.activemq.artemis.core.security.Role;
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
-import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * 
- * An embedded Artemis server that should be used only for testing.
+ * An embedded Artemis server that should be used <b> only for testing </b>.
  *
+ * Example usage given below <br>
+ * <code>
+ *     &#64;BeforeClass
+ *     public static void beforeClass() {
+ *         try{
+ *             EmbeddedArtemisServer.startServer();
+ *         }catch(Throwable e){
+ *             LOG.error("EmbeddedArtemisServer start: ", e);
+ *             fail(e.getMessage());
+ *         }
+ *     }
+ * 
+ *     &#64;AfterClass
+ *     public static void afterClass() {
+ *         try{
+ *             EmbeddedArtemisServer.stopServer();
+ *         }catch(Exception e){
+ *             LOG.error("EmbeddedArtemisServer stop: ", e);
+ *         }
+ *     }
+ * 
+ * </code>
+ * 
  */
 public final class EmbeddedArtemisServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedArtemisServer.class);
 
+    /**
+     * Shutdown hook to ensure that all resources are tidy before exit
+     */
     static {
         Runtime.getRuntime().addShutdownHook(getShutDownHook());
     }
 
-    private static EmbeddedJMS jmsServer;
+    /**
+     * Create an instance of the EmbeddedJMSServer
+     */
+    private static EmbeddedJMSServer jmsServer =
+                    new EmbeddedJMSServer().setJmsServer(initialize(new EmbeddedJMS()));
 
-    private static final Semaphore serverPermit = new Semaphore(1, true);
+    /**
+     * Create an explicit permit for invoking methods on the server.
+     */
+    private static ServerPermit serverPermit = new ServerPermit();
 
-    private static volatile boolean initialised;
-
+    /**
+     * Private constructor to avoid instantiating the utility class
+     */
     private EmbeddedArtemisServer() {}
 
+    /**
+     * Start an embedded Artemis server using a broker.xml from a projects <br>
+     * class path
+     * 
+     * @param args not expected
+     * @throws Exception while starting the server.
+     */
     public static void main(String args[]) throws Exception {
-
         startServer();
     }
 
     /**
-     * Start the server using a broker.xml from your project classpath.
+     * Start the server after acquiring a permit
      * 
-     * @throws Exception
+     * @throws Exception if unsuccessful
      */
     public static final void startServer() throws Exception {
-
-        serverPermit.acquire();
-        try {
-
-            if (initialised) {
-                return;
-            }
-
-            checkLoggers();
-
-            if (Objects.isNull(jmsServer)) {
-                setJmsServer(new EmbeddedJMS());
-            }
-
-            jmsServer.setConfigResourcePath("broker.xml");
-
-            // override the security manager to cater for multiple test configurations
-            // users and passwords
-            jmsServer.setSecurityManager(getSecurityManager());
-
+        try (final ServerPermit sp = serverPermit.acquire()) {
             jmsServer.start();
-
-            initialised = true;
-
-        } finally {
-            serverPermit.release();
         }
     }
 
     /**
-     * Stop the server
+     * Stop the server after acquiring a permit
      * 
-     * @throws Exception
+     * @throws Exception if unsuccessful
      */
-    public static final void stopServer() throws Exception {
-        serverPermit.acquire();
-        try {
-            if (initialised) {
-                jmsServer.stop();
-                initialised = false;
-            }
-        } finally {
-            serverPermit.release();
+    public static final boolean stopServer() {
+        try (final ServerPermit sp = serverPermit.acquire()) {
+            return jmsServer.stop();
+        } catch (Exception e) {
+            LOG.error("EmbeddedArtemisServer", e);
         }
+        return false;
     }
 
-    public static EmbeddedJMS getJmsServer() {
+    /**
+     * Get the shutdown hook for stopping the server
+     * 
+     * @return Thread
+     */
+    public static Thread getShutDownHook() {
+        return new Thread(() -> {
+            stopServer();
+        }, "EmbeddedArtemisServerRuntimeHook");
+    }
+
+    /**
+     * Get a reference to EmbeddedJMSServer
+     * 
+     * @return EmbeddedJMSServer
+     */
+    public static EmbeddedJMSServer getJmsServer() {
         return jmsServer;
     }
 
-    public static void setJmsServer(final EmbeddedJMS jmsServer) {
+    /**
+     * Set a reference to EmbeddedJMSServer
+     * 
+     * @param EmbeddedJMSServer
+     * @see EmbeddedJMSServer
+     */
+    public static void setJmsServer(final EmbeddedJMSServer jmsServer) {
         EmbeddedArtemisServer.jmsServer = jmsServer;
     }
 
-    private static void checkLoggers() {
-        // ensure that the loggers are in the classpath and loaded
-        org.apache.activemq.artemis.core.server.ActiveMQServerLogger.class.getCanonicalName();
-        org.apache.activemq.artemis.core.server.ActiveMQServerLogger_$logger.class
-                        .getCanonicalName();
+    /**
+     * Set a reference to EmbeddedJMS
+     * 
+     * @return EmbeddedJMS
+     * @see EmbeddedJMS
+     */
+    public static void setEmbeddedJms(final EmbeddedJMS embeddedJms) {
+        jmsServer.setJmsServer(embeddedJms);
     }
 
-    private static ActiveMQSecurityManager getSecurityManager() {
-        return new ActiveMQSecurityManager() {
-            @Override
-            public boolean validateUser(final String user, final String password) {
-                return true;
-            }
-
-            @Override
-            public boolean validateUserAndRole(final String user, final String password,
-                            final Set<Role> roles, final CheckType checkType) {
-                return true;
-            }
-        };
+    /**
+     * Get a reference to EmbeddedJMS
+     * 
+     * @return EmbeddedJMS
+     */
+    public static EmbeddedJMS getEmbeddedJms() {
+        return jmsServer.getJmsServer();
     }
 
-    private static Thread getShutDownHook() {
-        return new Thread(() -> {
-            try {
-                stopServer();
-            } catch (Exception e) {
-                LOG.error("EmbeddedArtemisServerRuntimeHook", e);
-            }
-        }, "EmbeddedArtemisServerRuntimeHook");
+    /**
+     * Get a reference to ServerPermit
+     * 
+     * @return ServerPermit
+     */
+    public static ServerPermit getServerPermit() {
+        return serverPermit;
+    }
+
+    /**
+     * Set a reference to ServerPermit
+     * 
+     * @param ServerPermit
+     */
+    public static void setServerPermit(final ServerPermit serverPermit) {
+        EmbeddedArtemisServer.serverPermit = serverPermit;
     }
 }

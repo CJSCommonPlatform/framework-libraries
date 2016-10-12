@@ -1,131 +1,191 @@
 package uk.gov.justice.artemis;
 
+
+import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.net.MalformedURLException;
+import java.util.concurrent.Semaphore;
 
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
-import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EmbeddedArtemisServerTest {
 
-    @Mock
-    EmbeddedJMS embeddedJMS;
-
-    @Before
-    public void before() {
-        EmbeddedArtemisServer.setJmsServer(embeddedJMS);
-    }
-
-    @After
-    public void after() throws Exception {
-        EmbeddedArtemisServer.stopServer();
+    @Test
+    public void shouldBeWellDefinedUtilityClass() {
+        assertUtilityClassWellDefined(EmbeddedArtemisServer.class);
     }
 
     @Test
-    public void shouldStartTheServerInvokingAllTheMethods() throws Exception {
-        try {
-            EmbeddedArtemisServer.startServer();
+    public void shouldStartServerUsingMainMethod() throws Exception {
 
-            verify(embeddedJMS, times(1)).setConfigResourcePath("broker.xml");
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.main(null);
 
-            verify(embeddedJMS, times(1)).setSecurityManager(any(ActiveMQSecurityManager.class));
-
-            verify(embeddedJMS, times(1)).start();
-
-        } catch (Exception e) {
-
-            Assert.fail(e.getMessage());
-        }
+        verify(es, times(1)).start();
     }
 
-    @Test(expected=MalformedURLException.class)
-    public void shouldInitialiseTheServerWithDefaultInstance() throws Exception {
-        
-        EmbeddedArtemisServer.setJmsServer(null);
+    @Test
+    public void shouldStartServer() throws Exception {
 
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        EmbeddedArtemisServer.setJmsServer(es);
         EmbeddedArtemisServer.startServer();
 
-        verify(embeddedJMS, times(1)).setConfigResourcePath("broker.xml");
+        verify(es, times(1)).start();
     }
 
     @Test
-    public void shouldBeAbleToStartAndStopTheServerMultipleTimes() throws Exception {
+    public void shouldNotStartServerIfServerPermitFails() throws Exception {
+
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        ServerPermit sp = mock(ServerPermit.class);
+
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.setServerPermit(sp);
+
+        doThrow(new InterruptedException()).when(sp).acquire();
+
         try {
-
             EmbeddedArtemisServer.startServer();
-
-            verify(embeddedJMS, times(1)).start();
-
-            EmbeddedArtemisServer.stopServer();
-
-            verify(embeddedJMS, times(1)).stop();
-
-            EmbeddedArtemisServer.startServer();
-
-            verify(embeddedJMS, times(2)).start();
-
-        } catch (Exception e) {
-
-            Assert.fail(e.getMessage());
-
+        } catch (InterruptedException ie) {
         }
-
+        verify(es, never()).start();
     }
 
+
     @Test
-    public void shouldStartTheServerOnlyOnce() {
+    public void shouldReleaseServerPermitIfStartServerFails() throws Exception {
+
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        Semaphore sem = mock(Semaphore.class);
+        ServerPermit sp = new ServerPermit();
+        sp.setSemaphore(sem);
+
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.setServerPermit(sp);
+
+        doThrow(new Exception()).when(es).start();
+
         try {
-
             EmbeddedArtemisServer.startServer();
-
-            EmbeddedArtemisServer.startServer();
-
-            verify(embeddedJMS, times(1)).start();
-
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
         }
+        verify(sem, times(1)).release();
+    }
+
+
+    @Test
+    public void shouldStopServer() throws Exception {
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.stopServer();
+
+        verify(es, times(1)).stop();
     }
 
     @Test
-    public void shouldStopTheServerOnlyOnce() {
+    public void shouldNotStopServerIfServerPermitFails() throws Exception {
+
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        ServerPermit sp = mock(ServerPermit.class);
+
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.setServerPermit(sp);
+
+        doThrow(new InterruptedException()).when(sp).acquire();
+
+        EmbeddedArtemisServer.stopServer();
+        verify(es, never()).stop();
+    }
+
+
+    @Test
+    public void shouldReleaseServerPermitIfStopServerFails() throws Exception {
+
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        Semaphore sem = mock(Semaphore.class);
+        ServerPermit sp = new ServerPermit();
+        sp.setSemaphore(sem);
+
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.setServerPermit(sp);
+
+        doThrow(new Exception()).when(es).stop();
+
         try {
-
-            EmbeddedArtemisServer.startServer();
-
             EmbeddedArtemisServer.stopServer();
-
-            EmbeddedArtemisServer.stopServer();
-
-            verify(embeddedJMS, times(1)).stop();
-
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
         }
+        
+        verify(sem, times(1)).release();
     }
 
     @Test
-    public void shouldTestSetter() {
-        EmbeddedArtemisServer.setJmsServer(embeddedJMS);
-        assertEquals(embeddedJMS, EmbeddedArtemisServer.getJmsServer());
+    public void shouldSetAndGetJmsServer() {
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        EmbeddedArtemisServer.setJmsServer(es);
+
+        assertEquals(es, EmbeddedArtemisServer.getJmsServer());
     }
 
-    @Test(expected = IllegalAccessException.class)
-    public void shouldTestPrivateConstructor()
-                    throws IllegalAccessException, ClassNotFoundException, InstantiationException {
-        Class.forName(EmbeddedArtemisServer.class.getCanonicalName()).newInstance();
+    @Test
+    public void shouldSetAndGetServerPermit() {
+        ServerPermit sp = mock(ServerPermit.class);
+        EmbeddedArtemisServer.setServerPermit(sp);
+
+        assertEquals(sp, EmbeddedArtemisServer.getServerPermit());
+    }
+
+
+    @Test
+    public void shouldTestShutdownHookHandlesException() throws Exception {
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        EmbeddedArtemisServer.setJmsServer(es);
+
+        doThrow(new Exception("Shutdown Exception")).when(es).stop();
+        Thread t = EmbeddedArtemisServer.getShutDownHook();
+        t.run();
+    }
+
+    @Test
+    public void shouldHandleThrownExceptionWhenInvokingStop() throws Exception {
+
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        EmbeddedArtemisServer.setJmsServer(es);
+
+        doThrow(new Exception()).when(es).stop();
+
+        assertEquals(false, EmbeddedArtemisServer.stopServer());
+    }
+    
+    @Test
+    public void shouldSetEmbeddedJMS() {
+        EmbeddedJMS jms = mock(EmbeddedJMS.class);
+        EmbeddedJMSServer es = mock(EmbeddedJMSServer.class);
+        
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.setEmbeddedJms(jms);
+
+        verify(es).setJmsServer(jms);
+    }
+
+    @Test
+    public void shouldGetEmbeddedJMS() {
+        EmbeddedJMS jms = mock(EmbeddedJMS.class);
+        EmbeddedJMSServer es = new EmbeddedJMSServer();
+        
+        EmbeddedArtemisServer.setJmsServer(es);
+        EmbeddedArtemisServer.setEmbeddedJms(jms);
+
+        assertEquals(jms, EmbeddedArtemisServer.getEmbeddedJms());
     }
 
 }
+

@@ -5,6 +5,18 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- EmbeddedArtemisServer utility class has been refactored into multiple 
+  classes mentioned below (added section), clean separation of responsibilities 
+  SRP(Single Responsibility Principle)
+
+### Added
+
+- EmbeddedArtemisInitializer utility class, for configuring the server
+- EmbeddedJMSServer class, maintains server state and wraps an ActiveMQ EmbeddedJMS
+- ServerPermit class, maintains a permit for invoking operations on the server
+
 ## [1.0.0] - 2016-10-06
 
 ### Added

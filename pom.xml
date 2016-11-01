@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>maven-common-bom</artifactId>
@@ -77,7 +77,11 @@
         <weld.version>2.4.0.Final</weld.version>
         <expiringmap.version>0.5.7</expiringmap.version>
         <wildfly.client.version>10.0.0.Final</wildfly.client.version>
-        
+        <plexus-utils.version>3.0.22</plexus-utils.version>
+        <maven-plugin-api.version>3.3.9</maven-plugin-api.version>
+        <maven-model.version>3.3.9</maven-model.version>
+        <org.eclipse.sisu.plexus.version>0.3.2</org.eclipse.sisu.plexus.version>
+
         <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
         <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
@@ -351,6 +355,12 @@
                 <groupId>org.raml</groupId>
                 <artifactId>raml-parser</artifactId>
                 <version>${raml-parser.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.sf.jopt-simple</groupId>
+                        <artifactId>jopt-simple</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -516,6 +526,38 @@
                 <groupId>org.wildfly</groupId>
                 <artifactId>wildfly-client-all</artifactId>
                 <version>${wildfly.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>${plexus-utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${maven-plugin-api.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.maven</groupId>
+                        <artifactId>maven-artifact</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.sisu</groupId>
+                <artifactId>org.eclipse.sisu.plexus</artifactId>
+                <version>${org.eclipse.sisu.plexus.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-component-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-model</artifactId>
+                <version>${maven-model.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

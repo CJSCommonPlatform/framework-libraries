@@ -5,6 +5,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.3.0] - 2016-11-02
+
+### Added
+- Add jolokia dependencies
+
+### Changed
+- Dependencies to resolve maven enforcer conflicts
+- Property ordering and removing duplicate declarations
+
 ## [1.2.0] - 2016-10-05
 
 ### Changed

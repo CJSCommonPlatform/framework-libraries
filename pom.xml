@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>maven-common-bom</artifactId>
@@ -26,58 +26,60 @@
     <!-- ========== PROPERTIES ========== -->
 
     <properties>
-        <guava.version>19.0</guava.version>
-        <hamcrest.version>1.3</hamcrest.version>
-        <hamcrest.date.version>2.0.4</hamcrest.date.version>
-        <version.org.wildfly>10.0.0.Final</version.org.wildfly>
-        <persistence-api.version>1.0.2</persistence-api.version>
-        <resteasy.version>3.0.11.Final</resteasy.version>
-        <jackson.version>2.6.4</jackson.version>
-        <commons.io.version>2.4</commons.io.version>
+        <apache.httpclient.version>4.5.1</apache.httpclient.version>
+        <artemis.jms.client.version>1.3.0</artemis.jms.client.version>
+        <artemis.jms.version>1.3.0</artemis.jms.version>
+        <awaitility.version>1.7.0</awaitility.version>
+        <cdi.api.version>1.2</cdi.api.version>
         <commons.beanutils.version>1.9.2</commons.beanutils.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
+        <commons.io.version>2.4</commons.io.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.lang3.version>3.4</commons.lang3.version>
         <commons.logging.version>1.2</commons.logging.version>
-        <commons.validator.version>1.5.1</commons.validator.version>
-        <jee.api.version>7.0</jee.api.version>
-        <servlet.api.version>3.1.0</servlet.api.version>
-        <cdi.api.version>1.2</cdi.api.version>
-        <jsonpath.version>2.2.0</jsonpath.version>
-        <awaitility.version>1.7.0</awaitility.version>
-        <mockito.version>1.10.19</mockito.version>
-        <wiremock.version>1.57</wiremock.version>
-        <junit.version>4.12</junit.version>
-        <hamcrest.version>1.3</hamcrest.version>
         <commons.testing.version>1.0.1</commons.testing.version>
-        <jsonassert.version>1.2.3</jsonassert.version>
-        <guava.version>19.0</guava.version>
-        <openejb.version>7.0.0-M3</openejb.version>
+        <commons.validator.version>1.5.1</commons.validator.version>
         <deltaspike.version>1.6.1</deltaspike.version>
-        <hibernate.version>4.3.8.Final</hibernate.version>
-        <slf4j.version>1.7.10</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
-        <javax.json.version>1.0</javax.json.version>
-        <org.json.version>20160212</org.json.version>
-        <glassfish-json.version>1.0.2</glassfish-json.version>
         <drools.version>6.4.0.Final</drools.version>
-        <metrics.version>3.1.2</metrics.version>
-        <raml-parser.version>0.8.12</raml-parser.version>
-        <javapoet.version>1.6.1</javapoet.version>
-        <reflections.version>0.9.10</reflections.version>
-        <findbugs.version>3.0.0</findbugs.version>
-        <artemis.jms.client.version>1.3.0</artemis.jms.client.version>
-        <artemis.jms.version>1.3.0</artemis.jms.version>
-        <json.schema.version>1.3.0</json.schema.version>
-        <commons.collections.version>3.2.2</commons.collections.version>
-        <xbean.version>4.5</xbean.version>
-        <apache.httpclient.version>4.5.1</apache.httpclient.version>
-        <java.8.matchers.version>1.1</java.8.matchers.version>
-        <javassist.version>3.20.0-GA</javassist.version>
-        <jcommander.version>1.48</jcommander.version>
-        <weld.version>2.4.0.Final</weld.version>
         <expiringmap.version>0.5.7</expiringmap.version>
+        <findbugs.version>3.0.0</findbugs.version>
+        <glassfish-json.version>1.0.2</glassfish-json.version>
+        <guava.version>19.0</guava.version>
+        <hamcrest.date.version>2.0.4</hamcrest.date.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <hibernate.version>4.3.8.Final</hibernate.version>
+        <jackson.version>2.6.4</jackson.version>
+        <java.8.matchers.version>1.1</java.8.matchers.version>
+        <javapoet.version>1.6.1</javapoet.version>
+        <javassist.version>3.20.0-GA</javassist.version>
+        <javax.json.version>1.0</javax.json.version>
+        <jcommander.version>1.48</jcommander.version>
+        <jee.api.version>7.0</jee.api.version>
+        <json.schema.version>1.3.0</json.schema.version>
+        <jsonassert.version>1.2.3</jsonassert.version>
+        <jsonpath.version>2.2.0</jsonpath.version>
+        <junit.version>4.12</junit.version>
+        <log4j.version>1.2.17</log4j.version>
+        <maven-model.version>3.3.9</maven-model.version>
+        <maven-plugin-api.version>3.3.9</maven-plugin-api.version>
+        <metrics.version>3.1.2</metrics.version>
+        <mockito.version>1.10.19</mockito.version>
+        <openejb.version>7.0.0-M3</openejb.version>
+        <org.eclipse.sisu.plexus.version>0.3.2</org.eclipse.sisu.plexus.version>
+        <org.json.version>20160212</org.json.version>
+        <persistence-api.version>1.0.2</persistence-api.version>
+        <plexus-utils.version>3.0.22</plexus-utils.version>
+        <raml-parser.version>0.8.12</raml-parser.version>
+        <reflections.version>0.9.10</reflections.version>
+        <resteasy.version>3.0.11.Final</resteasy.version>
+        <servlet.api.version>3.1.0</servlet.api.version>
+        <slf4j.version>1.7.10</slf4j.version>
+        <version.org.wildfly>10.0.0.Final</version.org.wildfly>
+        <weld.version>2.4.0.Final</weld.version>
         <wildfly.client.version>10.0.0.Final</wildfly.client.version>
-        
+        <wiremock.version>1.57</wiremock.version>
+        <xbean.version>4.5</xbean.version>
+
         <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
         <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
@@ -351,6 +353,12 @@
                 <groupId>org.raml</groupId>
                 <artifactId>raml-parser</artifactId>
                 <version>${raml-parser.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.sf.jopt-simple</groupId>
+                        <artifactId>jopt-simple</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -516,6 +524,38 @@
                 <groupId>org.wildfly</groupId>
                 <artifactId>wildfly-client-all</artifactId>
                 <version>${wildfly.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>${plexus-utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${maven-plugin-api.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.maven</groupId>
+                        <artifactId>maven-artifact</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.sisu</groupId>
+                <artifactId>org.eclipse.sisu.plexus</artifactId>
+                <version>${org.eclipse.sisu.plexus.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-component-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-model</artifactId>
+                <version>${maven-model.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

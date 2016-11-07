@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.gov.justice.maven</groupId>
     <artifactId>raml-maven-plugin-it</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
 
     <!-- TODO add parent after extracting framewrok specific parent pom that does not contain raml-maven-plugin configuration-->
     <!-- remember to manually update version -->

@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- Add hamcrest regex library
+
 ## [1.3.0] - 2016-11-02
 
 ### Added

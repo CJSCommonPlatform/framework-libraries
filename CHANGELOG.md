@@ -5,8 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.4.0] - 2016-11-14
+
 ### Added
 - Add hamcrest regex library
+
+### Changed
+- Resolved logging transitive dependency conflicts
 
 ## [1.3.0] - 2016-11-02
 

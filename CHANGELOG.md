@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.2.0] - 2016-11-14
+
 ### Changed
 
 - Updated common bom to 1.4.0

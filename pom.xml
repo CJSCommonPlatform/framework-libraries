@@ -28,7 +28,7 @@
             <dependency>
                 <groupId>uk.gov.justice</groupId>
                 <artifactId>maven-common-bom</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

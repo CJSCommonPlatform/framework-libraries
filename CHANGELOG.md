@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to 
 [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Changed
+
+- Updated common bom to 1.4.0
+- Excluding SLF4J implementation enforcement
+- Corrected parent POM and updated associated dependencies from change
+
+
 ## [1.1.2] - 2016-06-14
 
 ### Changed

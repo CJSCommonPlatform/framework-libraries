@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.3.0] - 2016-11-15
+
+### Changed
+
+- Updated parent pom to 1.2.0
+
 ## [1.2.0] - 2016-11-14
 
 ### Changed

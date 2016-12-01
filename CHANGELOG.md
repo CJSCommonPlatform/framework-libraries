@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Depend on MoJ forked json schema library as it has fix for date-time format
+
 ## [1.4.0] - 2016-11-14
 
 ### Added

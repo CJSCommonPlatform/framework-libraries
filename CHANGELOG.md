@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Update org.json version to 20160810
+
 ## [1.5.0] - 2016-12-01
 
 ### Changed

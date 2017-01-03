@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.file.api.domain.StorableFile;
+import uk.gov.justice.services.fileservice.common.StorableFile;
 import uk.gov.justice.services.fileservice.repository.TransactionalFileStore;
 
 import java.util.Optional;

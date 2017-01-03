@@ -1,6 +1,6 @@
 package uk.gov.justice.services.fileservice.repository;
 
-import uk.gov.justice.services.file.api.domain.StorableFile;
+import uk.gov.justice.services.fileservice.common.StorableFile;
 import uk.gov.justice.services.fileservice.datasource.DataSourceProvider;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryException;
 

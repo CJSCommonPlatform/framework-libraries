@@ -14,7 +14,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.file.api.domain.StorableFile;
+import uk.gov.justice.services.fileservice.common.StorableFile;
 import uk.gov.justice.services.fileservice.datasource.DataSourceProvider;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryException;
 

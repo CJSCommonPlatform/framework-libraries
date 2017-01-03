@@ -1,6 +1,6 @@
 package uk.gov.justice.services.fileservice.client;
 
-import uk.gov.justice.services.file.api.domain.StorableFile;
+import uk.gov.justice.services.fileservice.common.StorableFile;
 import uk.gov.justice.services.fileservice.repository.TransactionalFileStore;
 
 import java.util.Optional;

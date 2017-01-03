@@ -4,7 +4,11 @@ import static java.lang.String.format;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-import java.io.ByteArrayInputStream;
+import uk.gov.justice.services.fileservice.api.DataIntegrityException;
+import uk.gov.justice.services.fileservice.api.FileServiceException;
+import uk.gov.justice.services.fileservice.api.StorageException;
+
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,97 +18,90 @@ import java.util.UUID;
 
 /**
  * Class for handling inserts/updates/selects on the 'content' database table. This class is not
- * transactional. Each method takes a valid database connection and it is assumed that the transaction
- * would have already been started on that connection. Any failures during insert/update will throw
- * a {@link TransactionFailedException}. In which case the current transaction should be rolled
- * back
+ * transactional. Each method takes a valid database connection and it is assumed that the
+ * transaction would have already been started on that connection.
+ *
+ * There no update method on this class. This is because we should never update content. Delete and
+ * recreate if you need to change the file content.
+ *
+ * NB. This class does not have a unit test, but is tested instead by
+ * FilePersistenceIntegrationTest
  */
 public class ContentJdbcRepository {
 
-    private static final String SQL_FIND_BY_FILE_ID = "SELECT content FROM content WHERE file_id=? ";
-    private static final String SQL_INSERT_METADATA = "INSERT INTO content(content, file_id) VALUES(?, ?)";
-    private static final String SQL_UPDATE_METADATA = "UPDATE content set content = ? WHERE file_id = ?";
-
-    private final Closer closer = new Closer();
+    public static final String SQL_FIND_BY_FILE_ID = "SELECT content FROM content WHERE file_id = ? ";
+    public static final String SQL_INSERT_CONTENT = "INSERT INTO content(content, file_id) VALUES(?, ?)";
+    public static final String SQL_DELETE_CONTENT = "DELETE FROM content WHERE file_id = ? ";
 
     /**
      * Inserts the content into the content table as an array of bytes[]
      *
-     * @param fileId the file id of the content
-     * @param content a byte[] array of the file content
-     * @param connection the database connection. It is assumed that a transaction has previously been
-     *                   started on this connection.
-     * @throws TransactionFailedException if the insert fails and the transaction should be rolled back.
+     * @param fileId     the file id of the content
+     * @param content    an InputStream to the file content
+     * @param connection the database connection. It is assumed that a transaction has previously
+     *                   been started on this connection.
      */
-    public void insert(final UUID fileId, final byte[] content, final Connection connection) throws TransactionFailedException {
-        insertOrUpdate(fileId, content, connection, SQL_INSERT_METADATA);
-    }
+    public void insert(
+            final UUID fileId,
+            final InputStream content,
+            final Connection connection) throws FileServiceException {
 
-    /**
-     * Updates the content in the content table
-     *
-     * @param fileId the file id of the content
-     * @param content a byte[] array of the file content
-     * @param connection the database connection. It is assumed that a transaction has previously been
-     *                   started on this connection.
-     * @throws TransactionFailedException if the update fails and the transaction should be rolled back.
-     */
-    public void update(final UUID fileId, final byte[] content, final Connection connection) throws TransactionFailedException {
-        insertOrUpdate(fileId, content, connection, SQL_UPDATE_METADATA);
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_CONTENT)) {
+
+            preparedStatement.setBinaryStream(1, content);
+            preparedStatement.setObject(2, fileId);
+            final int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected != 1) {
+                throw new DataIntegrityException("Insert into content table affected " + rowsAffected + " rows!");
+            }
+
+        } catch (final SQLException e) {
+            throw new StorageException("Failed to insert file into database", e);
+        }
     }
 
     /**
      * Finds the file content for the specified file id, returned as a java {@link Optional}. If no
      * content found for that id then {@code empty()} is returned instead.
      *
-     * @param fileId the file id of the content
+     * @param fileId     the file id of the content
      * @param connection a live database connection
      * @return the file content as an array of bytes wrapped in a java {@link Optional}
-     * @throws TransactionFailedException if the read failed and so the current transaction should
-     * be rollled back.
+     * @throws FileServiceException if the read failed and so the current transaction should be
+     *                              rolled back.
      */
-    public Optional<byte[]> findByFileId(final UUID fileId, final Connection connection) throws TransactionFailedException {
+    public Optional<InputStream> findByFileId(
+            final UUID fileId,
+            final Connection connection) throws FileServiceException {
 
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(SQL_FIND_BY_FILE_ID);
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BY_FILE_ID)) {
             preparedStatement.setObject(1, fileId);
-            resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return of(resultSet.getBytes(1));
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return of(resultSet.getBinaryStream(1));
+                }
             }
         } catch (final SQLException e) {
-            throw new TransactionFailedException(format("Exception while reading metadata %s", fileId), e);
-        } finally {
-            closer.close(resultSet, preparedStatement);
+            throw new StorageException(format("Failed to read metadata using file id %s", fileId), e);
         }
 
         return empty();
     }
 
-    private void insertOrUpdate(
-            final UUID fileId,
-            final byte[] content,
-            final Connection connection,
-            final String sql) throws TransactionFailedException {
+    public void delete(final UUID fileId, final Connection connection) throws FileServiceException {
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_CONTENT)) {
 
-        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content);
+            preparedStatement.setObject(1, fileId);
+            final int rowsAffected = preparedStatement.executeUpdate();
 
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setBinaryStream(1, byteArrayInputStream, content.length);
-            preparedStatement.setObject(2, fileId);
-            preparedStatement.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DataIntegrityException("Delete from content table affected " + rowsAffected + " rows!");
+            }
 
         } catch (final SQLException e) {
-            throw new TransactionFailedException("Exception while inserting file", e);
-        } finally {
-            closer.close(byteArrayInputStream, preparedStatement);
+            throw new StorageException("Failed to delete file from database with id " + fileId, e);
         }
     }
 }

@@ -8,11 +8,11 @@ import javax.json.JsonObject;
 /**
  * Interface for a utility that allows a {@link JsonObject} to be set on a database column.
  *
- * The defualt implementation is {@link PostgresJsonSetter} which takes advantage of Postgres'
- * JsonB column type. For other databases that do not support this type (i.e. Hypersonic) then
+ * The default implementation is {@link PostgresJsonSetter} which takes advantage of Postgres'
+ * JsonB column type. For other databases that do not support this type (i.e. H2) then
  * JsonObject will be stored as a string of json.
  *
- * There is a test class for Hypersonic: uk.gov.justice.services.fileservice.repository.json.StringJsonSetter.
+ * There is a test class for H2: uk.gov.justice.services.fileservice.repository.json.StringJsonSetter.
  * This can be found in the test source
  */
 public interface JsonSetter {

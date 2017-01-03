@@ -2,26 +2,29 @@ package uk.gov.justice.services.fileservice.repository;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.UUID.randomUUID;
 
-import uk.gov.justice.services.fileservice.common.StorableFile;
+import uk.gov.justice.services.fileservice.api.DataIntegrityException;
+import uk.gov.justice.services.fileservice.api.FileServiceException;
+import uk.gov.justice.services.fileservice.api.StorageException;
+import uk.gov.justice.services.fileservice.domain.FileReference;
+import uk.gov.justice.services.fileservice.io.InputStreamWrapper;
 
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.transaction.Transactional;
 
 
 /**
  * Stores/finds file content and metadata in the database.
  *
- * The responsibility of this class is to select whether this is an insert or an update
- * and call the appropriate class to handle it.
- *
- * NB. This class does not consider transactions as each method considers itself to already
- * be running inside a transaction. Therefore, it is the responsibility of the calling class
- * to manage transactions on its connections.
+ * This class is the transaction boundary to the data access classes.
  */
 public class FileStore {
 
@@ -31,30 +34,31 @@ public class FileStore {
     @Inject
     MetadataJdbcRepository metadataJdbcRepository;
 
-    /**
-     * Stores file content and metadata in the database
-     *
-     * @param fileId the file id
-     * @param content the file content in bytes[]
-     * @param metadata the file metadata json
-     * @param connection the database connection. Assumes a transaction has been started on this
-     *                   Connection
-     * @throws TransactionFailedException if any of the database updates failed and the transaction
-     * should be rolled back
-     */
-    public void store(
-            final UUID fileId,
-            final byte[] content,
-            final JsonObject metadata,
-            final Connection connection) throws TransactionFailedException {
+    @Inject
+    DataSourceProvider dataSourceProvider;
 
-        if (contentJdbcRepository.findByFileId(fileId, connection).isPresent()) {
-            contentJdbcRepository.update(fileId, content, connection);
-            metadataJdbcRepository.update(fileId, metadata, connection);
-        } else {
-            contentJdbcRepository.insert(fileId, content, connection);
+    /**
+     * Stores file content and metadata in the database.
+     *
+     * @param metadata      the file metadata json
+     * @param contentStream InputStream from the file content
+     */
+    @Transactional
+    public UUID store(
+            final JsonObject metadata,
+            final InputStream contentStream) throws FileServiceException {
+
+        try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
+            final UUID fileId = randomUUID();
+
+            contentJdbcRepository.insert(fileId, contentStream, connection);
             metadataJdbcRepository.insert(fileId, metadata, connection);
+
+            return fileId;
+        } catch (SQLException e) {
+            throw new StorageException("Failed to insert file into database", e);
         }
+
     }
 
     /**
@@ -62,30 +66,95 @@ public class FileStore {
      * for that id then {@link Optional}.empty() is returned.
      *
      * If no metadata is found for that id then {@code empty()} is returned
-     * If metadata is found but no content, then an {@link TransactionFailedException} is thrown
      *
      * @param fileId the id of the file
-     * @param connection a database connection
-     * @return if found: the {@link StorableFile} for that id wrapped in an {@link Optional}
      * @return if not found: {@link Optional}.empty()
-     * @throws TransactionFailedException if any of the database updates failed and the transaction
-     * should be rolled back
      */
-    public Optional<StorableFile> find(final UUID fileId, final Connection connection) throws TransactionFailedException {
+    @Transactional
+    public Optional<FileReference> find(final UUID fileId) throws FileServiceException {
 
-        final Optional<JsonObject> metadata = metadataJdbcRepository.findByFileId(fileId, connection);
-        final Optional<byte[]> content = contentJdbcRepository.findByFileId(fileId, connection);
+        Connection connection = null;
+        try {
+            connection = dataSourceProvider.getDatasource().getConnection();
+            final Optional<JsonObject> metadata = metadataJdbcRepository.findByFileId(fileId, connection);
+            final Optional<InputStream> content = contentJdbcRepository.findByFileId(fileId, connection);
 
-        if (! metadata.isPresent()) {
-            return empty();
+            if (!metadata.isPresent()) {
+                if (content.isPresent()) {
+                    throw new DataIntegrityException("No metadata found for file id " + fileId + " but file content exists for that id");
+                }
+
+                return empty();
+            }
+            if (!content.isPresent()) {
+                throw new DataIntegrityException("No file content found for file id " + fileId + " but metadata exists for that id");
+            }
+
+            return of(new FileReference(
+                    fileId,
+                    metadata.get(),
+                    new InputStreamWrapper(content.get(), connection)));
+        } catch (final SQLException | StorageException e) {
+            close(connection);
+            throw new StorageException("Failed to read File from the database", e);
         }
-        if (! content.isPresent()) {
-            throw new TransactionFailedException("No file content found for file id " + fileId + " but metadata exists for that id");
-        }
+    }
 
-        return of(new StorableFile(
-                fileId,
-                metadata.get(),
-                content.get()));
+    /**
+     * Updates a file's metadata
+     *
+     * @param fileId   The id of the file who's metadata should be updated
+     * @param metadata The metadata to be updated
+     */
+    @Transactional
+    public void updateMetadata(final UUID fileId, final JsonObject metadata) throws FileServiceException {
+
+        try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
+            metadataJdbcRepository.update(fileId, metadata, connection);
+        } catch (SQLException e) {
+            throw new StorageException("Failed to update metadata", e);
+        }
+    }
+
+    /**
+     * Deletes a file from the file store
+     *
+     * @param fileId The id of the file to be deleted
+     */
+    @Transactional
+    public void delete(final UUID fileId) throws FileServiceException {
+
+        try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
+            metadataJdbcRepository.delete(fileId, connection);
+            contentJdbcRepository.delete(fileId, connection);
+        } catch (SQLException e) {
+            throw new StorageException("Failed to delete file from the database", e);
+        }
+    }
+
+    /**
+     * Retrieves metadata for a specified file
+     *
+     * @param fileId the id of the file who's metadata should be updated
+     * @return an {@link Optional} containing the files metadata, or if not found {@code empty()}
+     */
+    @Transactional
+    public Optional<JsonObject> retrieveMetadata(final UUID fileId) throws FileServiceException {
+
+        Connection connection = null;
+        try {
+            connection = dataSourceProvider.getDatasource().getConnection();
+            return metadataJdbcRepository.findByFileId(fileId, connection);
+        } catch (final SQLException | StorageException e) {
+            close(connection);
+            throw new StorageException("Failed to read metadata from the database", e);
+        }
+    }
+
+    private void close(final Connection connection) {
+        try {
+            connection.close();
+        } catch (SQLException ignored) {
+        }
     }
 }

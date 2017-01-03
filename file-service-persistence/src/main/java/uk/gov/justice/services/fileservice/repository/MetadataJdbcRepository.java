@@ -2,11 +2,12 @@ package uk.gov.justice.services.fileservice.repository;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static java.util.UUID.randomUUID;
 import static javax.json.Json.createReader;
 
+import uk.gov.justice.services.fileservice.api.DataIntegrityException;
+import uk.gov.justice.services.fileservice.api.FileServiceException;
+import uk.gov.justice.services.fileservice.api.StorageException;
 import uk.gov.justice.services.fileservice.repository.json.JsonSetter;
-import uk.gov.justice.services.fileservice.repository.json.PostgresJsonSetter;
 
 import java.io.StringReader;
 import java.sql.Connection;
@@ -16,37 +17,36 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.json.JsonObject;
-
-import com.google.common.annotations.VisibleForTesting;
 
 /**
  * Class for handling inserts/updates/selects on the 'metadata' database table. This class is not
  * transactional. Each method takes a valid database connection and it is assumed that the transaction
- * would have already been started on that connection. Any failures during insert/update will throw
- * a {@link TransactionFailedException}. In which case the current transaction should be rolled
- * back
+ * would have already been started on that connection.
+ *
+ * NB. This class does not have a unit test, but is tested instead by FilePersistenceIntegrationTest
  */
 public class MetadataJdbcRepository {
 
-    private static final String INSERT_SQL = "INSERT INTO metadata(metadata_id, json, file_id) values (?, ?, ?)";
-    private static final String UPDATE_SQL = "UPDATE metadata SET json = ? WHERE file_id = ?";
-    private static final String FIND_BY_FILE_ID_SQL = "SELECT json FROM metadata WHERE file_id = ?";
+    public static final String INSERT_SQL = "INSERT INTO metadata(metadata, file_id) values (?, ?)";
+    public static final String FIND_BY_FILE_ID_SQL = "SELECT metadata FROM metadata WHERE file_id = ?";
+    public static final String UPDATE_SQL = "UPDATE metadata SET metadata = ? WHERE file_id = ?";
+    public static final String DELETE_SQL = "DELETE FROM metadata WHERE file_id = ?";
 
-    private final JsonSetter jsonSetter;
-    private final  Closer closer = new Closer();
+    @Inject
+    JsonSetter jsonSetter;
 
     /**
-     * Default constructor for CDI
+     * inserts the json metadata of a file into a new row
+     *
+     * @param fileId the id of the file to insert
+     * @param metadata the json metadata of the file
+     * @param connection a live database connection. Assumes any transtactions will have already been
+     *                   started on this connection.
      */
-    @SuppressWarnings("unused")
-    public MetadataJdbcRepository() {
-        this(new PostgresJsonSetter());
-    }
-
-    @VisibleForTesting
-    public MetadataJdbcRepository(final JsonSetter jsonSetter) {
-        this.jsonSetter = jsonSetter;
+    public void insert(final UUID fileId, final JsonObject metadata, final Connection connection) throws FileServiceException {
+        insertOrUpdate(fileId, metadata, connection, INSERT_SQL);
     }
 
     /**
@@ -55,30 +55,22 @@ public class MetadataJdbcRepository {
      * @param fileId the file id of the metadata
      * @param connection a live database connection. Assumes any transtactions will have already been
      *                   started on this connection.
-     * @return TransactionFailedException if the operation failed and so any current transaction should
-     * be rolled back.
+     * @return an {@link Optional} containing the file's metadata as a {@link JsonObject} or
+     * {@code empty} if not found.
      */
-    public Optional<JsonObject> findByFileId(final UUID fileId, final Connection connection) {
+    public Optional<JsonObject> findByFileId(final UUID fileId, final Connection connection) throws StorageException {
 
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            preparedStatement = connection.prepareStatement(FIND_BY_FILE_ID_SQL);
-
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_FILE_ID_SQL)) {
             preparedStatement.setObject(1, fileId);
 
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                return of(toJsonObject(resultSet.getString(1)));
+            try(final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return of(toJsonObject(resultSet.getString(1)));
+                }
+                return empty();
             }
-
-            return empty();
-
         } catch (final SQLException e) {
-            throw new RuntimeException("Failed to find metadata. Sql: " + FIND_BY_FILE_ID_SQL, e);
-        } finally {
-            closer.close(resultSet, preparedStatement);
+            throw new StorageException("Failed to find metadata. Sql: " + FIND_BY_FILE_ID_SQL, e);
         }
     }
 
@@ -90,48 +82,36 @@ public class MetadataJdbcRepository {
      * @param connection a live database connection. Assumes any transtactions will have already been
      *                   started on this connection.
      */
-    public void update(final UUID fileId, final JsonObject metadata, final Connection connection) {
+    public void update(final UUID fileId, final JsonObject metadata, final Connection connection) throws FileServiceException {
+        insertOrUpdate(fileId, metadata, connection, UPDATE_SQL);
+    }
 
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(UPDATE_SQL);
+    public void delete(final UUID fileId, final Connection connection) throws FileServiceException {
+
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+            preparedStatement.setObject(1, fileId);
+
+            final int rowsUpdated = preparedStatement.executeUpdate();
+            if(rowsUpdated != 1) {
+                throw new DataIntegrityException("Delete from metadata table affected " + rowsUpdated + " rows!");
+            }
+        } catch (final SQLException e) {
+            throw new StorageException("Failed to update metadata table. Sql: " + DELETE_SQL, e);
+        }
+    }
+
+    private void insertOrUpdate(final UUID fileId, final JsonObject metadata, final Connection connection, final String sql) throws FileServiceException {
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             jsonSetter.setJson(1, metadata, preparedStatement);
             preparedStatement.setObject(2, fileId);
 
-            preparedStatement.executeUpdate();
+            final int rowsUpdated = preparedStatement.executeUpdate();
+            if(rowsUpdated != 1) {
+                throw new DataIntegrityException("Updating metadata table affected " + rowsUpdated + " rows!");
+            }
         } catch (final SQLException e) {
-            throw new RuntimeException("Failed to update metadata table. Sql: " + UPDATE_SQL, e);
-        } finally {
-            closer.close(preparedStatement);
-        }
-    }
-
-    /**
-     * inserts the json metadata of a file into a new row
-     *
-     * @param fileId the id of the file to insert
-     * @param metadata the json metadata of the file
-     * @param connection a live database connection. Assumes any transtactions will have already been
-     *                   started on this connection.
-     */
-    public void insert(final UUID fileId, final JsonObject metadata, final Connection connection) {
-
-        final UUID metadataId = randomUUID();
-
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(INSERT_SQL);
-
-            preparedStatement.setObject(1, metadataId);
-            jsonSetter.setJson(2, metadata, preparedStatement);
-            preparedStatement.setObject(3, fileId);
-
-            preparedStatement.executeUpdate();
-        } catch (final SQLException e) {
-            throw new RuntimeException("Failed to insert into metadata table. Sql: " + INSERT_SQL, e);
-        } finally {
-             closer.close(preparedStatement);
+            throw new StorageException("Failed to update metadata table. Sql: " + sql, e);
         }
     }
 

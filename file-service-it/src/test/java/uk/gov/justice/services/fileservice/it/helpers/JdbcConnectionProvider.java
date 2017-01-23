@@ -1,0 +1,29 @@
+package uk.gov.justice.services.fileservice.it.helpers;
+
+import static java.lang.String.format;
+import static java.sql.DriverManager.registerDriver;
+
+import uk.gov.justice.services.jdbc.persistence.DataAccessException;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class JdbcConnectionProvider {
+
+
+    public Connection getConnection(final String url, final String username, final String password, final String driverClassName) {
+        try {
+            final java.sql.Driver driver = (java.sql.Driver) Class.forName(driverClassName).newInstance();
+            registerDriver(driver);
+            return DriverManager.getConnection(url, username, password);
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            final String message = format("Failed to get JDBC connection. url: '%s', username '%s', password '%s'",
+                    url,
+                    username,
+                    password);
+
+            throw new DataAccessException(message, e);
+        }
+    }
+}

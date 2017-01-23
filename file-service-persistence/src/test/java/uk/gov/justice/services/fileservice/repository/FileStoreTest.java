@@ -6,22 +6,34 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.fileservice.common.StorableFile;
+import uk.gov.justice.services.fileservice.api.DataIntegrityException;
+import uk.gov.justice.services.fileservice.api.FileServiceException;
+import uk.gov.justice.services.fileservice.api.StorageException;
+import uk.gov.justice.services.fileservice.domain.FileReference;
+import uk.gov.justice.services.fileservice.io.InputStreamWrapper;
 
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.json.JsonObject;
+import javax.sql.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,111 +49,392 @@ public class FileStoreTest {
     @Mock
     private MetadataJdbcRepository metadataJdbcRepository;
 
+    @Mock
+    private DataSourceProvider dataSourceProvider;
+
+    @Captor
+    private ArgumentCaptor<UUID> fileIdCaptor_1;
+
+    @Captor
+    private ArgumentCaptor<UUID> fileIdCaptor_2;
+
     @InjectMocks
     private FileStore fileStore;
 
     @Test
-    public void shouldInsertTheMetadataAndContentIfFileDoesNotYetExistInDatabase() throws Exception {
-
-        final UUID fileId = randomUUID();
-        final JsonObject metadata = mock(JsonObject.class);
-        final byte[] content = "the file content".getBytes();
+    public void shouldInsertBothTheContentAndTheMetadata() throws Exception {
 
         final Connection connection = mock(Connection.class);
+        final DataSource dataSource = mock(DataSource.class);
+        final JsonObject metadata = mock(JsonObject.class);
+        final InputStream contentStream = mock(InputStream.class);
 
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
 
-        fileStore.store(fileId, content, metadata, connection);
+        final UUID fileId = fileStore.store(metadata, contentStream);
 
         final InOrder inOrder = inOrder(
+                dataSourceProvider,
                 contentJdbcRepository,
-                metadataJdbcRepository);
+                metadataJdbcRepository,
+                connection);
 
-        inOrder.verify(contentJdbcRepository).findByFileId(fileId, connection);
-        inOrder.verify(contentJdbcRepository).insert(fileId, content, connection);
-        inOrder.verify(metadataJdbcRepository).insert(fileId, metadata, connection);
+        inOrder.verify(dataSourceProvider).getDatasource();
+        inOrder.verify(contentJdbcRepository).insert(fileIdCaptor_1.capture(), eq(contentStream), eq(connection));
+        inOrder.verify(metadataJdbcRepository).insert(fileIdCaptor_2.capture(), eq(metadata), eq(connection));
+        inOrder.verify(connection).close();
 
-        verify(contentJdbcRepository, never()).update(fileId, content, connection);
-        verify(metadataJdbcRepository, never()).update(fileId, metadata, connection);
+        assertThat(fileIdCaptor_1.getValue(), is(fileId));
+        assertThat(fileIdCaptor_2.getValue(), is(fileId));
     }
 
     @Test
-    public void shouldUpdateTheMetadataAndContentWhenTheFileExistsInTheDatabase() throws Exception {
+    public void shouldCloseTheConnectionWhenAnExceptionIsThrownOnInsert() throws Exception {
 
-        final UUID fileId = randomUUID();
-        final JsonObject metadata = mock(JsonObject.class);
-        final byte[] content = "the file content".getBytes();
+        final StorageException fileServiceException = new StorageException("Ooops");
 
         final Connection connection = mock(Connection.class);
+        final DataSource dataSource = mock(DataSource.class);
+        final JsonObject metadata = mock(JsonObject.class);
+        final InputStream contentStream = mock(InputStream.class);
 
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(content));
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
 
-        fileStore.store(fileId, content, metadata, connection);
+        doThrow(fileServiceException).when(metadataJdbcRepository).insert(any(UUID.class), eq(metadata), eq(connection));
 
-        final InOrder inOrder = inOrder(
-                contentJdbcRepository,
-                metadataJdbcRepository);
+        try {
+            fileStore.store(metadata, contentStream);
+            fail();
+        } catch (StorageException ignored) {}
 
-        inOrder.verify(contentJdbcRepository).findByFileId(fileId, connection);
-        inOrder.verify(contentJdbcRepository).update(fileId, content, connection);
-        inOrder.verify(metadataJdbcRepository).update(fileId, metadata, connection);
-
-        verify(contentJdbcRepository, never()).insert(fileId, content, connection);
-        verify(metadataJdbcRepository, never()).insert(fileId, metadata, connection);
+        verify(connection).close();
     }
 
     @Test
-    public void shouldFindAFileUsingTheFileAndMetadataTables() throws Exception {
+    public void shouldThrowStorageExceptionAIfStoringAFileFails() throws Exception {
+
+        final SQLException sqlException = new SQLException("Ooops");
+
+        final DataSource dataSource = mock(DataSource.class);
+        final JsonObject metadata = mock(JsonObject.class);
+        final InputStream contentStream = mock(InputStream.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenThrow(sqlException);
+
+        try {
+            fileStore.store(metadata, contentStream);
+            fail();
+        } catch (FileServiceException expected) {
+            assertThat(expected.getCause(), is(sqlException));
+            assertThat(expected.getMessage(), is("Failed to insert file into database"));
+        }
+    }
+
+    @Test
+    public void shouldFindAFileReferenceByUsingTheContentAndMetadataRepositories() throws Exception {
 
         final UUID fileId = randomUUID();
-        final byte[] content = "the file content".getBytes();
+
+        final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
-
         final JsonObject metadata = mock(JsonObject.class);
+        final InputStream contentStream = mock(InputStream.class);
 
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(content));
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(contentStream));
 
-        final Optional<StorableFile> storableFile = fileStore.find(fileId, connection);
+        final Optional<FileReference> fileReferenceOptional = fileStore.find(fileId);
 
-        assertThat(storableFile.isPresent(), is(true));
+        final FileReference fileReference = fileReferenceOptional
+                .orElseThrow(() -> new AssertionError("Failed to find FileReference"));
 
-        assertThat(storableFile.get().getFileId(), is(fileId));
-        assertThat(storableFile.get().getContent(), is(content));
-        assertThat(storableFile.get().getMetadata(), is(metadata));
+        assertThat(fileReference.getFileId(), is(fileId));
+        assertThat(fileReference.getMetadata(), is(metadata));
+
+
+        final InputStreamWrapper inputStreamWrapper = (InputStreamWrapper) fileReference.getContentStream();
+        assertThat(inputStreamWrapper.getInputStream(), is(contentStream));
+        assertThat(inputStreamWrapper.getConnection(), is(connection));
+
+
+        final InOrder inOrder = inOrder(
+                dataSourceProvider,
+                metadataJdbcRepository,
+                contentJdbcRepository,
+                connection);
+
+        inOrder.verify(dataSourceProvider).getDatasource();
+        inOrder.verify(metadataJdbcRepository).findByFileId(fileId, connection);
+        inOrder.verify(contentJdbcRepository).findByFileId(fileId, connection);
+        inOrder.verify(connection, never()).close();
     }
 
     @Test
-    public void shouldReturnEmptyIfNoMetadataForAFileExistsInTheDatabase() throws Exception {
+    public void shouldReturnEmptyIfNoContentOrMetadataFoundForTheSpecifiedFileId() throws Exception {
 
         final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
 
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
         when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
 
-        final Optional<StorableFile> storableFile = fileStore.find(fileId, connection);
-
-        assertThat(storableFile.isPresent(), is(false));
+        assertThat(fileStore.find(fileId).isPresent(), is(false));
     }
 
     @Test
-    public void shouldThrowAnExceptionIfMetadataCanBeFoundForAFileButNotAnyContent() throws Exception {
+    public void shouldThrowADataIntegrityExceptionIfMetadataFoundButNoContent() throws Exception {
 
         final UUID fileId = randomUUID();
-        final Connection connection = mock(Connection.class);
 
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
         final JsonObject metadata = mock(JsonObject.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
 
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
         when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
 
         try {
-            fileStore.find(fileId, connection);
+            fileStore.find(fileId);
             fail();
-        } catch (final TransactionFailedException expected) {
+        } catch (DataIntegrityException expected) {
             assertThat(expected.getMessage(), is("No file content found for file id " + fileId + " but metadata exists for that id"));
         }
+    }
 
+    @Test
+    public void shouldThrowADataIntegrityExceptionIfContentFoundButNoMetadata() throws Exception {
+
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final InputStream contentStream = mock(InputStream.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(contentStream));
+
+        try {
+            fileStore.find(fileId);
+            fail();
+        } catch (DataIntegrityException expected) {
+            assertThat(expected.getMessage(), is("No metadata found for file id " + fileId + " but file content exists for that id"));
+        }
+    }
+
+    @Test
+    public void shouldCloseTheConnectionWhenAnExceptionIsThrownOnFind() throws Exception {
+
+        final StorageException storageException = new StorageException("Ooops");
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final JsonObject metadata = mock(JsonObject.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenThrow(storageException);
+
+        try {
+            fileStore.find(fileId);
+            fail();
+        } catch (final StorageException ignored) {
+        }
+
+        verify(connection).close();
+    }
+
+    @Test
+    public void shouldUpdateMetadata() throws Exception {
+
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final JsonObject metadata = mock(JsonObject.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        fileStore.updateMetadata(fileId, metadata);
+
+        final InOrder inOrder = inOrder(
+                dataSourceProvider,
+                metadataJdbcRepository,
+                connection);
+
+        inOrder.verify(dataSourceProvider).getDatasource();
+        inOrder.verify(metadataJdbcRepository).update(fileId, metadata, connection);
+        inOrder.verify(connection).close();
+    }
+
+    @Test
+    public void shouldCloseTheConnectionWhenAnExceptionIsThrownOnUpdateMetadata() throws Exception {
+
+        final StorageException storageException = new StorageException("Ooops");
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final JsonObject metadata = mock(JsonObject.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        doThrow(storageException).when(metadataJdbcRepository).update(fileId, metadata, connection);
+
+        try {
+            fileStore.updateMetadata(fileId, metadata);
+            fail();
+        } catch (final StorageException ignored) {
+        }
+
+        verify(connection).close();
+    }
+
+    @Test
+    public void shouldThrowStorageExceptionAIfUpdatingMetadataFails() throws Exception {
+
+        final UUID fileId = randomUUID();
+
+        final SQLException sqlException = new SQLException("Ooops");
+
+        final DataSource dataSource = mock(DataSource.class);
+        final JsonObject metadata = mock(JsonObject.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenThrow(sqlException);
+
+        try {
+            fileStore.updateMetadata(fileId, metadata);
+            fail();
+        } catch (StorageException expected) {
+            assertThat(expected.getCause(), is(sqlException));
+            assertThat(expected.getMessage(), is("Failed to update metadata"));
+        }
+    }
+
+    @Test
+    public void shouldDeleteBothTheContentAndMetadata() throws Exception {
+
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        fileStore.delete(fileId);
+
+        final InOrder inOrder = inOrder(
+                dataSourceProvider,
+                metadataJdbcRepository,
+                contentJdbcRepository,
+                connection);
+
+        inOrder.verify(dataSourceProvider).getDatasource();
+        inOrder.verify(metadataJdbcRepository).delete(fileId, connection);
+        inOrder.verify(contentJdbcRepository).delete(fileId, connection);
+        inOrder.verify(connection).close();
+    }
+
+    @Test
+    public void shouldCloseTheConnectionWhenAnExceptionIsThrownOnDelete() throws Exception {
+
+        final StorageException storageException = new StorageException("Ooops");
+
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        fileStore.delete(fileId);
+
+        doThrow(storageException).when(contentJdbcRepository).delete(fileId, connection);
+
+        verify(connection).close();
+    }
+
+    @Test
+    public void shouldThrowAStorageExceptionIfDeletingMetadataFails() throws Exception {
+
+        final UUID fileId = randomUUID();
+
+        final SQLException sqlException = new SQLException("Ooops");
+
+        final DataSource dataSource = mock(DataSource.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenThrow(sqlException);
+
+        try {
+            fileStore.delete(fileId);
+            fail();
+        } catch (FileServiceException expected) {
+            assertThat(expected.getCause(), is(sqlException));
+            assertThat(expected.getMessage(), is("Failed to delete file from the database"));
+        }
+    }
+
+    @Test
+    public void shouldRetrieveMetadata() throws Exception {
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final Optional<JsonObject> metadata = of(mock(JsonObject.class));
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(metadata);
+
+        assertThat(fileStore.retrieveMetadata(fileId), is(metadata));
+
+        verify(connection, never()).close();
+    }
+
+    @Test
+    public void shouldCloseTheConnectionWhenAnExceptionIsThrownOnRetrieveMetadata() throws Exception {
+
+        final StorageException storageException = new StorageException("Ooops");
+
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenThrow(storageException);
+
+        try {
+            fileStore.retrieveMetadata(fileId);
+            fail();
+        } catch (FileServiceException ignored) {
+        }
+
+        verify(connection).close();
     }
 }

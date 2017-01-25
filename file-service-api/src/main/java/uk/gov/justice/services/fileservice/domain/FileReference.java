@@ -12,7 +12,7 @@ import javax.json.JsonObject;
  * Reference to a file stored on the file server. Contains the file's id, the file's metadata as
  * a {@link JsonObject} and an {@link InputStream} of the file's content.
  */
-public class FileReference {
+public class FileReference implements AutoCloseable {
 
     private final UUID fileId;
     private final JsonObject metadata;
@@ -43,6 +43,21 @@ public class FileReference {
      */
     public InputStream getContentStream() {
         return contentStream;
+    }
+
+    /**
+     * Implementation of {@link AutoCloseable} {@code close()}. Closes
+     * the content stream of the file, which in turn closes the sql {@link java.sql.Connection}
+     * to the database.
+     *
+     * @throws Exception if closing the content stream fails
+     */
+    @Override
+    public void close() throws Exception {
+
+        if(contentStream != null) {
+            contentStream.close();
+        }
     }
 
     @Override

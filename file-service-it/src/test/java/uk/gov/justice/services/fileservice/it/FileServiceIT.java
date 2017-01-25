@@ -104,20 +104,18 @@ public class FileServiceIT {
 
         inputStream.close();
 
-        final FileReference fileReference = fileService
-                .retrieve(fileId)
-                .orElseThrow(() -> new AssertionError("Failed to get FileReference from File Store"));
-
-        assertThat(fileReference.getMetadata(), is(metadata));
-
-        final InputStream contentStream = fileReference.getContentStream();
-
         final File outputFile = createTempFile("created-for-testing-file-store-please-delete-me_2", "jpg");
         outputFile.deleteOnExit();
 
-        copy(contentStream, outputFile.toPath(), REPLACE_EXISTING);
+        try (final FileReference fileReference = fileService
+                .retrieve(fileId)
+                .orElseThrow(() -> new AssertionError("Failed to get FileReference from File Store"))) {
+            assertThat(fileReference.getMetadata(), is(metadata));
 
-        contentStream.close();
+            final InputStream contentStream = fileReference.getContentStream();
+
+            copy(contentStream, outputFile.toPath(), REPLACE_EXISTING);
+        }
 
         assertThat(outputFile.exists(), is(true));
         assertThat(outputFile.length(), is(greaterThan(0L)));

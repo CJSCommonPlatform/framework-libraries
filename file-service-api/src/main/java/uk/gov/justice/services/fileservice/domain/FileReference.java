@@ -17,11 +17,24 @@ public class FileReference implements AutoCloseable {
     private final UUID fileId;
     private final JsonObject metadata;
     private final InputStream contentStream;
+    private final Boolean deleted;
 
-    public FileReference(final UUID fileId, final JsonObject metadata, final InputStream contentStream) {
+    public FileReference(
+            final UUID fileId,
+            final JsonObject metadata,
+            final InputStream contentStream) {
+        this(fileId, metadata, contentStream, false);
+    }
+
+    public FileReference(
+            final UUID fileId,
+            final JsonObject metadata,
+            final InputStream contentStream,
+            final Boolean deleted) {
         this.fileId = fileId;
         this.metadata = metadata;
         this.contentStream = contentStream;
+        this.deleted = deleted;
     }
 
     /**
@@ -46,6 +59,13 @@ public class FileReference implements AutoCloseable {
     }
 
     /**
+     * @return the deleted flag of this File
+     */
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    /**
      * Implementation of {@link AutoCloseable} {@code close()}. Closes
      * the content stream of the file, which in turn closes the sql {@link java.sql.Connection}
      * to the database.
@@ -65,6 +85,7 @@ public class FileReference implements AutoCloseable {
         return "FileReference{" +
                 "fileId=" + fileId +
                 ", metadata=" + metadata +
+                ", deleted=" + deleted +
                 '}';
     }
 }

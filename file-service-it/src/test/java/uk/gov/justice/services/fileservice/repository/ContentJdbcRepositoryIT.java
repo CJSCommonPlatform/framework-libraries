@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -60,13 +59,12 @@ public class ContentJdbcRepositoryIT {
         final InputStream content = new ByteArrayInputStream(contentString.getBytes());
         contentJdbcRepository.insert(fileId, content, connection);
 
-        final Optional<InputStream> fileContents = contentJdbcRepository.findByFileId(fileId, connection);
+        final FileContent fileContent = contentJdbcRepository
+                .findByFileId(fileId, connection)
+                .orElseThrow(() -> new AssertionError("Failed to find file contents"));
 
-        assertThat(fileContents.isPresent(), is(true));
-
-        final InputStream contentStream = fileContents.orElseThrow(() -> new AssertionError("Failed to find file contents"));
-
-        assertThat(IOUtils.toString(contentStream), is(contentString));
+        assertThat(IOUtils.toString(fileContent.getContent()), is(contentString));
+        assertThat(fileContent.isDeleted(), is(false));
     }
 
     @Test
@@ -77,10 +75,19 @@ public class ContentJdbcRepositoryIT {
         final InputStream content = new ByteArrayInputStream(contentString.getBytes());
         contentJdbcRepository.insert(fileId, content, connection);
 
-        assertThat(contentJdbcRepository.findByFileId(fileId, connection).isPresent(), is(true));
+        final FileContent fileContent = contentJdbcRepository
+                .findByFileId(fileId, connection)
+                .orElseThrow(() -> new AssertionError("Failed to find file"));
+
+        assertThat(fileContent.isDeleted(), is(false));
 
         contentJdbcRepository.delete(fileId, connection);
 
-        assertThat(contentJdbcRepository.findByFileId(fileId, connection).isPresent(), is(false));
+        final FileContent foundContent = contentJdbcRepository
+                .findByFileId(fileId, connection)
+                .orElseThrow(() -> new AssertionError("Failed to find file"));
+
+        assertThat(foundContent.isDeleted(), is(true));
+        assertThat(IOUtils.toString(foundContent.getContent()), is(contentString));
     }
 }

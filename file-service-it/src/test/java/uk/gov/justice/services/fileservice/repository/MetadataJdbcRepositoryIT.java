@@ -24,7 +24,6 @@ import org.junit.Test;
 
 public class MetadataJdbcRepositoryIT {
 
-
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
 
     private static final String URL = "jdbc:h2:mem:test;MV_STORE=FALSE;MVCC=FALSE";

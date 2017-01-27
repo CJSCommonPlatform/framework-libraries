@@ -70,15 +70,16 @@ public class ContentJdbcRepositoryPostgresIT {
         contentJdbcRepository.insert(fileId, content, connection);
         content.close();
 
-        final Optional<InputStream> fileContents = contentJdbcRepository.findByFileId(fileId, connection);
+        final FileContent fileContent = contentJdbcRepository
+                .findByFileId(fileId, connection)
+                .orElseThrow(() -> new AssertionError("Failed to find file contents"));
 
-        assertThat(fileContents.isPresent(), is(true));
-
-        final InputStream contentStream = fileContents.orElseThrow(() -> new AssertionError("Failed to find file contents"));
+        assertThat(fileContent.isDeleted(), is(false));
 
         final File outputFile = createTempFile("/created-for-testing-file-store-please-delete-me_1", "jpg");
         outputFile.deleteOnExit();
 
+        final InputStream contentStream = fileContent.getContent();
         copy(contentStream, outputFile.toPath(), REPLACE_EXISTING);
 
         contentStream.close();
@@ -86,6 +87,8 @@ public class ContentJdbcRepositoryPostgresIT {
         assertThat(outputFile.exists(), is(true));
         assertThat(outputFile.length(), is(greaterThan(0L)));
         assertThat(outputFile.length(), is(inputFile.length()));
+
+        connection.commit();
     }
 
     @Test
@@ -99,15 +102,23 @@ public class ContentJdbcRepositoryPostgresIT {
 
         content.close();
 
-        final InputStream contentStream = contentJdbcRepository
+        final FileContent fileContent = contentJdbcRepository
                 .findByFileId(fileId, connection)
                 .orElseThrow(() -> new AssertionError("Failed to find file content"));
 
-        contentStream.close();
+        assertThat(fileContent.isDeleted(), is(false));
+        fileContent.getContent().close();
 
         contentJdbcRepository.delete(fileId, connection);
 
-        assertThat(contentJdbcRepository.findByFileId(fileId, connection).isPresent(), is(false));
+        final FileContent deletedFileContent = contentJdbcRepository
+                .findByFileId(fileId, connection)
+                .orElseThrow(() -> new AssertionError("Failed to find file content"));
+
+        assertThat(deletedFileContent.isDeleted(), is(true));
+        deletedFileContent.getContent().close();
+
+        connection.commit();
     }
 
     public File getFile(final String fileName) throws URISyntaxException {

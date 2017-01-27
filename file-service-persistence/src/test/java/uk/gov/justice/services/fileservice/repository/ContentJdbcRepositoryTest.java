@@ -2,33 +2,16 @@ package uk.gov.justice.services.fileservice.repository;
 
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
-import static org.junit.Assert.*;
-
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-import static uk.gov.justice.services.fileservice.repository.ContentJdbcRepository.SQL_DELETE_CONTENT;
-import static uk.gov.justice.services.fileservice.repository.ContentJdbcRepository.SQL_FIND_BY_FILE_ID;
-import static uk.gov.justice.services.fileservice.repository.ContentJdbcRepository.SQL_INSERT_CONTENT;
-
 import uk.gov.justice.services.fileservice.api.DataIntegrityException;
-import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.StorageException;
 
 import java.io.InputStream;
@@ -36,8 +19,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentJdbcRepositoryTest {
@@ -49,6 +37,7 @@ public class ContentJdbcRepositoryTest {
     public void shouldInsertFileContentIntoTheDatabase() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String sql = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
 
         final int rowsAffected = 1;
 
@@ -56,16 +45,17 @@ public class ContentJdbcRepositoryTest {
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(SQL_INSERT_CONTENT)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsAffected);
 
         contentJdbcRepository.insert(fileId, contentStream, connection);
 
         final InOrder inOrder = inOrder(connection, preparedStatement);
 
-        inOrder.verify(connection).prepareStatement(SQL_INSERT_CONTENT);
-        inOrder.verify(preparedStatement).setBinaryStream(1, contentStream);
-        inOrder.verify(preparedStatement).setObject(2, fileId);
+        inOrder.verify(connection).prepareStatement(sql);
+        inOrder.verify(preparedStatement).setObject(1, fileId);
+        inOrder.verify(preparedStatement).setBinaryStream(2, contentStream);
+        inOrder.verify(preparedStatement).setBoolean(3, false);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
 
@@ -77,12 +67,13 @@ public class ContentJdbcRepositoryTest {
 
         final UUID fileId = randomUUID();
         final int rowsAffected = 2;
+        final String sql = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
 
         final InputStream contentStream = mock(InputStream.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(SQL_INSERT_CONTENT)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsAffected);
 
         try {
@@ -101,18 +92,19 @@ public class ContentJdbcRepositoryTest {
 
         final UUID fileId = randomUUID();
         final SQLException sqlException = new SQLException("Ooops");
+        final String sql = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
 
         final InputStream contentStream = mock(InputStream.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(SQL_INSERT_CONTENT)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
         try {
             contentJdbcRepository.insert(fileId, contentStream, connection);
             fail();
-        } catch (StorageException expected) {
+        } catch (final StorageException expected) {
             assertThat(expected.getCause(), is(sqlException));
             assertThat(expected.getMessage(), is("Failed to insert file into database"));
         }
@@ -122,25 +114,30 @@ public class ContentJdbcRepositoryTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void shouldFindFileContentByFileId() throws Exception {
 
         final UUID fileId = randomUUID();
+        final Boolean deleted = true;
+        final String sql = "SELECT content, deleted FROM content WHERE file_id = ?";
 
         final InputStream contentStream = mock(InputStream.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final ResultSet resultSet = mock(ResultSet.class);
 
-        when(connection.prepareStatement(SQL_FIND_BY_FILE_ID)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
         when(resultSet.getBinaryStream(1)).thenReturn(contentStream);
+        when(resultSet.getBoolean(2)).thenReturn(deleted);
 
-        final InputStream inputStream = contentJdbcRepository
+        final FileContent fileContent = contentJdbcRepository
                 .findByFileId(fileId, connection)
                 .orElseThrow(() -> new AssertionError("Failed to find content"));
 
-        assertThat(inputStream, is(contentStream));
+        assertThat(fileContent.getContent(), is(contentStream));
+        assertThat(fileContent.isDeleted(), is(deleted));
 
         final InOrder inOrder = inOrder(
                 connection,
@@ -149,7 +146,7 @@ public class ContentJdbcRepositoryTest {
                 preparedStatement,
                 resultSet);
 
-        inOrder.verify(connection).prepareStatement(SQL_FIND_BY_FILE_ID);
+        inOrder.verify(connection).prepareStatement(sql);
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeQuery();
         inOrder.verify(resultSet).next();
@@ -164,12 +161,13 @@ public class ContentJdbcRepositoryTest {
     public void shouldReturnEmptyIfNoFileFound() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String sql = "SELECT content, deleted FROM content WHERE file_id = ?";
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final ResultSet resultSet = mock(ResultSet.class);
 
-        when(connection.prepareStatement(SQL_FIND_BY_FILE_ID)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(false);
 
@@ -182,7 +180,7 @@ public class ContentJdbcRepositoryTest {
                 preparedStatement,
                 resultSet);
 
-        inOrder.verify(connection).prepareStatement(SQL_FIND_BY_FILE_ID);
+        inOrder.verify(connection).prepareStatement(sql);
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeQuery();
         inOrder.verify(resultSet).next();
@@ -196,6 +194,7 @@ public class ContentJdbcRepositoryTest {
     public void shouldThrowAIfAnyOfTheSqlStatementsFail() throws Exception {
 
         final SQLException sqlException = new SQLException("Ooops");
+        final String sql = "SELECT content, deleted FROM content WHERE file_id = ?";
 
         final UUID fileId = randomUUID();
 
@@ -203,7 +202,7 @@ public class ContentJdbcRepositoryTest {
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final ResultSet resultSet = mock(ResultSet.class);
 
-        when(connection.prepareStatement(SQL_FIND_BY_FILE_ID)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
         when(resultSet.getBinaryStream(1)).thenThrow(sqlException);
@@ -211,7 +210,7 @@ public class ContentJdbcRepositoryTest {
         try {
             contentJdbcRepository.findByFileId(fileId, connection);
             fail();
-        } catch (StorageException expected) {
+        } catch (final StorageException expected) {
             assertThat(expected.getCause(), is(sqlException));
             assertThat(expected.getMessage(), is("Failed to read metadata using file id " + fileId));
         }
@@ -223,7 +222,7 @@ public class ContentJdbcRepositoryTest {
                 preparedStatement,
                 resultSet);
 
-        inOrder.verify(connection).prepareStatement(SQL_FIND_BY_FILE_ID);
+        inOrder.verify(connection).prepareStatement(sql);
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeQuery();
         inOrder.verify(resultSet).next();
@@ -237,19 +236,20 @@ public class ContentJdbcRepositoryTest {
     public void shouldDeleteAFileById() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String sql = "UPDATE content SET deleted = true WHERE file_id = ?";
         final int rowsAffected = 1;
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(SQL_DELETE_CONTENT)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsAffected);
 
         contentJdbcRepository.delete(fileId, connection);
 
         final InOrder inOrder = inOrder(connection, preparedStatement);
 
-        inOrder.verify(connection).prepareStatement(SQL_DELETE_CONTENT);
+        inOrder.verify(connection).prepareStatement(sql);
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
@@ -261,24 +261,25 @@ public class ContentJdbcRepositoryTest {
     public void shouldThrowAIfDeletingAFileAffectsMoreThanOneRow() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String sql = "UPDATE content SET deleted = true WHERE file_id = ?";
         final int rowsAffected = 2;
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(SQL_DELETE_CONTENT)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsAffected);
 
         try {
             contentJdbcRepository.delete(fileId, connection);
             fail();
-        } catch (DataIntegrityException expected) {
+        } catch (final DataIntegrityException expected) {
             assertThat(expected.getMessage(), is("Delete from content table affected 2 rows!"));
         }
 
         final InOrder inOrder = inOrder(connection, preparedStatement);
 
-        inOrder.verify(connection).prepareStatement(SQL_DELETE_CONTENT);
+        inOrder.verify(connection).prepareStatement(sql);
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
@@ -290,12 +291,13 @@ public class ContentJdbcRepositoryTest {
     public void shouldThrowAIfDeletingAFileThrowsAnSqlException() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String sql = "UPDATE content SET deleted = true WHERE file_id = ?";
         final SQLException sqlException = new SQLException("Ooops");
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(SQL_DELETE_CONTENT)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
         try {
@@ -308,7 +310,7 @@ public class ContentJdbcRepositoryTest {
 
         final InOrder inOrder = inOrder(connection, preparedStatement);
 
-        inOrder.verify(connection).prepareStatement(SQL_DELETE_CONTENT);
+        inOrder.verify(connection).prepareStatement(sql);
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();

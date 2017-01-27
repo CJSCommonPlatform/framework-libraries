@@ -29,9 +29,9 @@ import java.util.UUID;
  */
 public class ContentJdbcRepository {
 
-    public static final String SQL_FIND_BY_FILE_ID = "SELECT content FROM content WHERE file_id = ? ";
-    public static final String SQL_INSERT_CONTENT = "INSERT INTO content(content, file_id) VALUES(?, ?)";
-    public static final String SQL_DELETE_CONTENT = "DELETE FROM content WHERE file_id = ? ";
+    private static final String SQL_FIND_BY_FILE_ID = "SELECT content, deleted FROM content WHERE file_id = ?";
+    private static final String SQL_INSERT_CONTENT = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
+    private static final String SQL_DELETE_CONTENT = "UPDATE content SET deleted = true WHERE file_id = ?";
 
     /**
      * Inserts the content into the content table as an array of bytes[]
@@ -48,8 +48,9 @@ public class ContentJdbcRepository {
 
         try (final PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_CONTENT)) {
 
-            preparedStatement.setBinaryStream(1, content);
-            preparedStatement.setObject(2, fileId);
+            preparedStatement.setObject(1, fileId);
+            preparedStatement.setBinaryStream(2, content);
+            preparedStatement.setBoolean(3, false);
             final int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected != 1) {
@@ -71,7 +72,7 @@ public class ContentJdbcRepository {
      * @throws FileServiceException if the read failed and so the current transaction should be
      *                              rolled back.
      */
-    public Optional<InputStream> findByFileId(
+    public Optional<FileContent> findByFileId(
             final UUID fileId,
             final Connection connection) throws FileServiceException {
 
@@ -80,7 +81,9 @@ public class ContentJdbcRepository {
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return of(resultSet.getBinaryStream(1));
+                    final InputStream contentStream = resultSet.getBinaryStream(1);
+                    final boolean deleted = resultSet.getBoolean(2);
+                    return of(new FileContent(contentStream, deleted));
                 }
             }
         } catch (final SQLException e) {

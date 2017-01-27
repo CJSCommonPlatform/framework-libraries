@@ -107,7 +107,7 @@ public class FileStoreTest {
         try {
             fileStore.store(metadata, contentStream);
             fail();
-        } catch (StorageException ignored) {}
+        } catch (final StorageException ignored) {}
 
         verify(connection).close();
     }
@@ -127,16 +127,18 @@ public class FileStoreTest {
         try {
             fileStore.store(metadata, contentStream);
             fail();
-        } catch (FileServiceException expected) {
+        } catch (final FileServiceException expected) {
             assertThat(expected.getCause(), is(sqlException));
             assertThat(expected.getMessage(), is("Failed to insert file into database"));
         }
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void shouldFindAFileReferenceByUsingTheContentAndMetadataRepositories() throws Exception {
 
         final UUID fileId = randomUUID();
+        final Boolean deleted = true;
 
         final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
@@ -147,7 +149,7 @@ public class FileStoreTest {
         when(dataSource.getConnection()).thenReturn(connection);
 
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(contentStream));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream, deleted)));
 
         final Optional<FileReference> fileReferenceOptional = fileStore.find(fileId);
 
@@ -156,6 +158,7 @@ public class FileStoreTest {
 
         assertThat(fileReference.getFileId(), is(fileId));
         assertThat(fileReference.getMetadata(), is(metadata));
+        assertThat(fileReference.isDeleted(), is(deleted));
 
 
         final InputStreamWrapper inputStreamWrapper = (InputStreamWrapper) fileReference.getContentStream();
@@ -209,12 +212,13 @@ public class FileStoreTest {
         try {
             fileStore.find(fileId);
             fail();
-        } catch (DataIntegrityException expected) {
+        } catch (final DataIntegrityException expected) {
             assertThat(expected.getMessage(), is("No file content found for file id " + fileId + " but metadata exists for that id"));
         }
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void shouldThrowADataIntegrityExceptionIfContentFoundButNoMetadata() throws Exception {
 
         final UUID fileId = randomUUID();
@@ -222,17 +226,18 @@ public class FileStoreTest {
         final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
         final InputStream contentStream = mock(InputStream.class);
+        final Boolean deleted = true;
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
 
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(contentStream));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream, deleted)));
 
         try {
             fileStore.find(fileId);
             fail();
-        } catch (DataIntegrityException expected) {
+        } catch (final DataIntegrityException expected) {
             assertThat(expected.getMessage(), is("No metadata found for file id " + fileId + " but file content exists for that id"));
         }
     }
@@ -326,7 +331,7 @@ public class FileStoreTest {
         try {
             fileStore.updateMetadata(fileId, metadata);
             fail();
-        } catch (StorageException expected) {
+        } catch (final StorageException expected) {
             assertThat(expected.getCause(), is(sqlException));
             assertThat(expected.getMessage(), is("Failed to update metadata"));
         }
@@ -392,7 +397,7 @@ public class FileStoreTest {
         try {
             fileStore.delete(fileId);
             fail();
-        } catch (FileServiceException expected) {
+        } catch (final FileServiceException expected) {
             assertThat(expected.getCause(), is(sqlException));
             assertThat(expected.getMessage(), is("Failed to delete file from the database"));
         }
@@ -432,7 +437,7 @@ public class FileStoreTest {
         try {
             fileStore.retrieveMetadata(fileId);
             fail();
-        } catch (FileServiceException ignored) {
+        } catch (final FileServiceException ignored) {
         }
 
         verify(connection).close();

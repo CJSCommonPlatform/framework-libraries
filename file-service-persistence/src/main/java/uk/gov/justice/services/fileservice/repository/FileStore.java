@@ -77,7 +77,7 @@ public class FileStore {
         try {
             connection = dataSourceProvider.getDatasource().getConnection();
             final Optional<JsonObject> metadata = metadataJdbcRepository.findByFileId(fileId, connection);
-            final Optional<InputStream> content = contentJdbcRepository.findByFileId(fileId, connection);
+            final Optional<FileContent> content = contentJdbcRepository.findByFileId(fileId, connection);
 
             if (!metadata.isPresent()) {
                 if (content.isPresent()) {
@@ -90,10 +90,17 @@ public class FileStore {
                 throw new DataIntegrityException("No file content found for file id " + fileId + " but metadata exists for that id");
             }
 
+            final FileContent fileContent = content.get();
+            final InputStreamWrapper inputStreamWrapper = new InputStreamWrapper(
+                    fileContent.getContent(),
+                    connection);
+            final Boolean deleted = fileContent.isDeleted();
+
             return of(new FileReference(
                     fileId,
                     metadata.get(),
-                    new InputStreamWrapper(content.get(), connection)));
+                    inputStreamWrapper,
+                    deleted));
         } catch (final SQLException | StorageException e) {
             close(connection);
             throw new StorageException("Failed to read File from the database", e);
@@ -111,7 +118,7 @@ public class FileStore {
 
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
             metadataJdbcRepository.update(fileId, metadata, connection);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new StorageException("Failed to update metadata", e);
         }
     }
@@ -127,7 +134,7 @@ public class FileStore {
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
             metadataJdbcRepository.delete(fileId, connection);
             contentJdbcRepository.delete(fileId, connection);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new StorageException("Failed to delete file from the database", e);
         }
     }
@@ -154,7 +161,7 @@ public class FileStore {
     private void close(final Connection connection) {
         try {
             connection.close();
-        } catch (SQLException ignored) {
+        } catch (final SQLException ignored) {
         }
     }
 }

@@ -44,7 +44,17 @@ There is a liquibase script configured to run against a local database. This dat
 
 To run liquibase there is a bash script in the root folder which will create the tables for you. To run:
 
-    ./runLiquibase.sh    
+    ./runLiquibase.sh  
+      
+### File Deletion
+
+As of writing, files are no longer deleted when calling 'delete(...)' but instead are marked as deleted (there is a new column in the content table 'deleted' which would be set to true).
+There is no effect on retrieval of files: you can still get a 'deleted' file, just that FileReference.isDeleted() would now return true.
+
+### Testing
+There are few integration tests in the file-service-it module. To allow for the integration tests to be run as Continuous Integration these point to an in memory instance of H2.
+However, as we use Postgres specific features (namely JsonB column type) we override the json insert for the tests. There is one integration test 'ContentJdbcRepositoryPostgresIT' which points at a local instance of Postgres and will fail if none is found.
+This test is marked as @Ignored by default. To test against a Postgres instance just comment out the @Ignored annotation. 
 
 ### Issues
 

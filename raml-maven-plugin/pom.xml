@@ -156,6 +156,10 @@
             <classifier>raml</classifier>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.maven</groupId>
+            <artifactId>lint-checker-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
-
 </project>

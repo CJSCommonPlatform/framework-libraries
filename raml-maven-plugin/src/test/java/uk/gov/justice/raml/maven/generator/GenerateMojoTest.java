@@ -64,7 +64,7 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
         Path existingFilePath = Paths.get(project.getBasedir().toString(), "target", "generated-sources", "existing.file");
-        if (!Files.exists(existingFilePath, LinkOption.NOFOLLOW_LINKS)) {
+        if (!exists(existingFilePath, LinkOption.NOFOLLOW_LINKS)) {
             Files.createFile(existingFilePath);
         }
 
@@ -115,6 +115,7 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
     }
 
+    @SuppressWarnings("unchecked")
     public void testShouldIncludeRamlFilesFromTheClasspath() throws Exception {
         File pom = getTestFile("src/test/resources/includes-excludes-external/pom.xml");
 

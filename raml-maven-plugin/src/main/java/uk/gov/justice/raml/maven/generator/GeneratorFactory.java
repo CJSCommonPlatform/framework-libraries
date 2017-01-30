@@ -11,7 +11,7 @@ import java.util.Map;
  * Factory for generators
  */
 public class GeneratorFactory {
-    private Map<String, Generator> generators = new HashMap();
+    private Map<String, Generator> generators = new HashMap<>();
 
 
     /**

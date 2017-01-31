@@ -62,8 +62,6 @@ public class PathsProviderTest {
         final String[] includes = {"include_1"};
         final String[] excludes = {"exclude_1"};
 
-        final Collection<Path> paths = singletonList(get("."));
-
         when(scannerFactory.create()).thenReturn(fileTreeScanner);
         when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenThrow(ioException);
 
@@ -74,6 +72,5 @@ public class PathsProviderTest {
             assertThat(expected.getCause(), is(ioException));
             assertThat(expected.getMessage(), is("Failed to find paths for source directory my-directory"));
         }
-
     }
 }

@@ -41,7 +41,7 @@ public class LintCheckerMojoDelegate {
                 try {
                     rule.execute(raml);
                 } catch (final LintCheckerException e) {
-                    throw new MojoExecutionException("Lint checker rule failed", e);
+                    throw new MojoExecutionException("Lint checker rule failed for rule " + rule.getClass().getSimpleName(), e);
                 }
             }
         }

@@ -42,7 +42,6 @@ public class LintCheckerMojoDelegateTest {
     @Mock
     private PathsProvider pathsProvider;
 
-
     @InjectMocks
     private LintCheckerMojoDelegate lintCheckerMojoDelegate;
 
@@ -101,10 +100,9 @@ public class LintCheckerMojoDelegateTest {
             fail();
         } catch (final MojoExecutionException expected) {
             assertThat(expected.getCause(), is(lintCheckerException));
-            assertThat(expected.getMessage(), is("Lint checker rule failed"));
+            assertThat(expected.getMessage(), is("Lint checker rule failed for rule " + lintCheckRule_1.getClass().getSimpleName()));
         }
 
         verify(lintCheckRule_1).execute(raml_1);
-
     }
 }

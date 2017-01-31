@@ -34,7 +34,6 @@ public class GenerateMojo extends BasicMojo {
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources")
     private File outputDirectory;
 
-
     /**
      * Base package name used for generated Java classes.
      */
@@ -44,24 +43,32 @@ public class GenerateMojo extends BasicMojo {
     @Parameter(property = "generatorProperties", required = false)
     private Map<String, String> generatorProperties;
 
+    @Parameter(property = "skipGeneration", defaultValue = "false")
+    private boolean skip = false;
+
     @Override
     public void execute() throws MojoExecutionException {
 
-        configureDefaultFileIncludes();
+        if (!skip) {
+            configureDefaultFileIncludes();
 
-        project.addCompileSourceRoot(outputDirectory.getPath());
-        project.addTestCompileSourceRoot(outputDirectory.getPath());
+            project.addCompileSourceRoot(outputDirectory.getPath());
+            project.addTestCompileSourceRoot(outputDirectory.getPath());
 
-        final List<Path> sourcePaths = new ArrayList<>();
-        project.getCompileSourceRoots().stream().forEach(root -> sourcePaths.add(Paths.get(root)));
+            final List<Path> sourcePaths = new ArrayList<>();
+            project.getCompileSourceRoots().stream().forEach(root -> sourcePaths.add(Paths.get(root)));
 
-        try {
-            FileUtils.forceMkdir(outputDirectory);
-            new GenerateGoalProcessor(new GeneratorFactory(), new FileTreeScannerFactory())
-                    .generate(configuration(sourcePaths));
-        } catch (Exception e) {
-            throw new MojoExecutionException("Failed to apply generator to raml", e);
+            try {
+                FileUtils.forceMkdir(outputDirectory);
+                new GenerateGoalProcessor(new GeneratorFactory(), new FileTreeScannerFactory())
+                        .generate(configuration(sourcePaths));
+            } catch (Exception e) {
+                throw new MojoExecutionException("Failed to apply generator to raml", e);
+            }
+        } else {
+            getLog().info("Skipping generation plugin execution as generation.skip flag is enabled.");
         }
+
     }
 
     private GenerateGoalConfig configuration(final List<Path> sourcePaths) {

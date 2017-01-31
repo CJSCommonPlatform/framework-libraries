@@ -96,8 +96,6 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
         mojo.execute();
-
-
     }
 
     public void testShouldGenerateFromOnlyIncludedRaml() throws Exception {
@@ -130,4 +128,13 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
                 hasProperty("title", equalTo("external-2.raml"))));
     }
 
+    public void testShouldSkipExecution() throws Exception {
+        File pom = getTestFile("src/test/resources/skip-execution/pom.xml");
+        GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
+
+        mojo.execute();
+
+        List<Pair<Raml, GeneratorConfig>> capturedGeneratorArgs = DummyGeneratorCaptor.getInstance().capturedArgs();
+        assertThat(capturedGeneratorArgs, hasSize(0));
+    }
 }

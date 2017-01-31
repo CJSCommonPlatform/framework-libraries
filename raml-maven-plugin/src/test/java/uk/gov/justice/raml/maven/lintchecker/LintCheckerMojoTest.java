@@ -14,15 +14,14 @@ public class LintCheckerMojoTest extends BetterAbstractMojoTestCase {
 
     public void testShouldFindLintCheckMojo() throws Exception {
 
-        File pom = getTestFile("src/test/resources/lint-check/pom.xml");
-
-        LintCheckerMojo mojo = (LintCheckerMojo) lookupConfiguredMojo(pom, "lint-check");
+        final File pom = getTestFile("src/test/resources/lint-check/pom.xml");
+        final LintCheckerMojo mojo = (LintCheckerMojo) lookupConfiguredMojo(pom, "lint-check");
 
         try {
             mojo.execute();
             fail();
-        } catch (MojoExecutionException expected) {
-            assertThat(expected.getMessage(), is("Lint checker rule MockLintCheckRule has failed"));
+        } catch (final MojoExecutionException expected) {
+            assertThat(expected.getMessage(), is("Lint checker rule failed"));
             assertThat(expected.getCause(), is(instanceOf(LintCheckerException.class)));
         }
     }

@@ -6,11 +6,11 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.raml.core.Generator;
-import uk.gov.justice.raml.core.GeneratorConfig;
+import uk.gov.justice.raml.maven.generator.generators.NonInstantiableTestGenerator;
+import uk.gov.justice.raml.maven.generator.generators.TestGenerator;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.raml.model.Raml;
 
 /**
  * Unit tests for the {@link GeneratorFactory} class.
@@ -26,14 +26,14 @@ public class GeneratorFactoryTest {
 
     @Test
     public void shouldCreateGenerator() {
-        Generator generator = factory.instanceOf("uk.gov.justice.raml.maven.generator.GeneratorFactoryTest$TestGenerator");
+        final Generator generator = factory.instanceOf(TestGenerator.class.getName());
         assertThat(generator, is(instanceOf(TestGenerator.class)));
     }
 
     @Test
     public void shouldCreateOnlyOneInstanceOfGenerator() {
-        Generator generator1 = factory.instanceOf("uk.gov.justice.raml.maven.generator.GeneratorFactoryTest$TestGenerator");
-        Generator generator2 = factory.instanceOf("uk.gov.justice.raml.maven.generator.GeneratorFactoryTest$TestGenerator");
+        final Generator generator1 = factory.instanceOf(TestGenerator.class.getName());
+        final Generator generator2 = factory.instanceOf(TestGenerator.class.getName());
 
         assertThat(generator1, sameInstance(generator2));
     }
@@ -43,11 +43,14 @@ public class GeneratorFactoryTest {
         factory.instanceOf("nonexistent.GeneratorClass");
     }
 
-    public static class TestGenerator implements Generator {
+    @Test
+    public void shouldThrowAnIllegalArgumentExceptionIfThegeneratorCannotBeInstantiated() throws Exception {
 
-        @Override
-        public void run(Raml raml, GeneratorConfig generatorConfig) {
-
+        try {
+            factory.instanceOf(NonInstantiableTestGenerator.class.getName());
+        } catch (final IllegalArgumentException expected) {
+            assertThat(expected.getMessage(), is("Could not instantiate generator " + NonInstantiableTestGenerator.class.getName()));
+            assertThat(expected.getCause(), is(instanceOf(NoSuchMethodException.class)));
         }
     }
 }

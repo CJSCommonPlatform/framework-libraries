@@ -2,18 +2,25 @@ package uk.gov.justice.raml.maven.lintchecker;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.*;
-
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.raml.io.FileTreeScanner;
+import uk.gov.justice.raml.io.files.parser.RamlFileParser;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,29 +28,17 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.raml.model.Raml;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 @RunWith(MockitoJUnitRunner.class)
-public class LintCheckerMojoDelegateTest {
+public class LintCheckGoalProcessorTest {
 
     @Mock
-    private RamlProvider ramlProvider;
+    private RamlFileParser ramlFileParser;
 
     @Mock
-    private PathsProvider pathsProvider;
+    private FileTreeScanner fileTreeScanner;
 
     @InjectMocks
-    private LintCheckerMojoDelegate lintCheckerMojoDelegate;
+    private LintCheckGoalProcessor lintCheckGoalProcessor;
 
     @Test
     public void shouldExecuteAllRulesOnAllRamls() throws Exception {
@@ -58,18 +53,18 @@ public class LintCheckerMojoDelegateTest {
 
         final File sourceDirectory = new File(("."));
         final List<LintCheckRule> rules = asList(lintCheckRule_1, lintCheckRule_2);
-        final List<String> excludes = singletonList("exclude_1");
-        final List<String> includes = singletonList("include_1");
+        final String[] excludes = { "exclude_1" };
+        final String[] includes = { "include_1" };
 
-        when(pathsProvider.getPaths(sourceDirectory, includes, excludes)).thenReturn(paths);
-        when(ramlProvider.getRamls(sourceDirectory, paths)).thenReturn(ramls);
+        when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenReturn(paths);
+        when(ramlFileParser.ramlOf(sourceDirectory.toPath(), paths)).thenReturn(ramls);
 
-        lintCheckerMojoDelegate.execute(sourceDirectory, rules, includes, excludes);
+        lintCheckGoalProcessor.execute(sourceDirectory, rules, asList(includes), asList(excludes));
 
-        verify(lintCheckRule_1).execute(raml_1);
-        verify(lintCheckRule_1).execute(raml_2);
-        verify(lintCheckRule_2).execute(raml_1);
-        verify(lintCheckRule_2).execute(raml_2);
+        verify(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
+        verify(lintCheckRule_1).execute(eq(raml_2), any(LintCheckConfiguration.class));
+        verify(lintCheckRule_2).execute(eq(raml_1), any(LintCheckConfiguration.class));
+        verify(lintCheckRule_2).execute(eq(raml_2), any(LintCheckConfiguration.class));
     }
 
     @Test
@@ -87,22 +82,22 @@ public class LintCheckerMojoDelegateTest {
 
         final File sourceDirectory = new File(("."));
         final List<LintCheckRule> rules = asList(lintCheckRule_1, lintCheckRule_2);
-        final List<String> excludes = singletonList("exclude_1");
-        final List<String> includes = singletonList("include_1");
+        final String[] excludes = { "exclude_1" };
+        final String[] includes = { "include_1" };
 
-        when(pathsProvider.getPaths(sourceDirectory, includes, excludes)).thenReturn(paths);
-        when(ramlProvider.getRamls(sourceDirectory, paths)).thenReturn(ramls);
+        when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenReturn(paths);
+        when(ramlFileParser.ramlOf(sourceDirectory.toPath(), paths)).thenReturn(ramls);
 
-        doThrow(lintCheckerException).when(lintCheckRule_1).execute(raml_2);
+        doThrow(lintCheckerException).when(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
 
         try {
-            lintCheckerMojoDelegate.execute(sourceDirectory, rules, includes, excludes);
+            lintCheckGoalProcessor.execute(sourceDirectory, rules, asList(includes), asList(excludes));
             fail();
         } catch (final MojoExecutionException expected) {
             assertThat(expected.getCause(), is(lintCheckerException));
             assertThat(expected.getMessage(), is("Lint checker rule failed for rule " + lintCheckRule_1.getClass().getSimpleName()));
         }
 
-        verify(lintCheckRule_1).execute(raml_1);
+        verify(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
     }
 }

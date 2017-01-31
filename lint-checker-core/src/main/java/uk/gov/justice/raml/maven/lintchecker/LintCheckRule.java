@@ -7,6 +7,13 @@ import org.raml.model.Raml;
  */
 public interface LintCheckRule {
 
-    void execute(final Raml raml) throws LintCheckerException;
+    /**
+     * Validate that the Raml and project structure
+     *
+     * @param raml The raml file to be validated
+     * @param lintCheckConfiguration The global configuration that a rule may need
+     * @throws LintCheckerException if the validation fails
+     */
+    void execute(final Raml raml, final LintCheckConfiguration lintCheckConfiguration) throws LintCheckerException;
 
 }

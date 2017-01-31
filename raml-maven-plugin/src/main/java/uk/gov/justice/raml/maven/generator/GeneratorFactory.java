@@ -3,6 +3,7 @@ package uk.gov.justice.raml.maven.generator;
 import uk.gov.justice.raml.core.Generator;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class GeneratorFactory {
             final Constructor<?> constructor = clazz.getConstructor();
             generator = (Generator) constructor.newInstance();
             return generator;
-        } catch (final Exception e) {
+        } catch (final ReflectiveOperationException e) {
             throw new IllegalArgumentException(String.format("Could not instantiate generator %s", generatorName), e);
         }
     }

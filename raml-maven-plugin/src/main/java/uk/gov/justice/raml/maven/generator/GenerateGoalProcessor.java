@@ -34,7 +34,6 @@ public class GenerateGoalProcessor {
 
         new RamlFileParser()
                 .ramlOf(config.getSourceDirectory(), paths)
-                .stream()
                 .forEach(raml -> generatorFactory.instanceOf(config.getGeneratorName()).run(raml, generatorConfig));
     }
 }

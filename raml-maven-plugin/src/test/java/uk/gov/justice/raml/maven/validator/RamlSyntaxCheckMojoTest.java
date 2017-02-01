@@ -26,9 +26,9 @@ public class RamlSyntaxCheckMojoTest extends BetterAbstractMojoTestCase {
 
     public void testShouldFindRamlsAndThrowMojoFailureException() throws Exception {
 
-        File pom = getTestFile("src/test/resources/validator/bad-schema/pom.xml");
+        final File pom = getTestFile("src/test/resources/validator/bad-schema/pom.xml");
 
-        RamlSyntaxCheckMojo mojo = (RamlSyntaxCheckMojo) lookupConfiguredMojo(pom, "check-syntax");
+        final RamlSyntaxCheckMojo mojo = (RamlSyntaxCheckMojo) lookupConfiguredMojo(pom, "check-syntax");
 
         try {
             mojo.execute();
@@ -38,11 +38,12 @@ public class RamlSyntaxCheckMojoTest extends BetterAbstractMojoTestCase {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void testShouldFindMultipleRamlsAndThrowMojoFailureException() throws Exception {
 
-        File pom = getTestFile("src/test/resources/validator/multiple-ramls/pom.xml");
+        final File pom = getTestFile("src/test/resources/validator/multiple-ramls/pom.xml");
 
-        RamlSyntaxCheckMojo mojo = (RamlSyntaxCheckMojo) lookupConfiguredMojo(pom, "check-syntax");
+        final RamlSyntaxCheckMojo mojo = (RamlSyntaxCheckMojo) lookupConfiguredMojo(pom, "check-syntax");
 
         try {
             mojo.execute();
@@ -63,9 +64,9 @@ public class RamlSyntaxCheckMojoTest extends BetterAbstractMojoTestCase {
 
     public void testShouldValidateOkIfSchemaHasNoErrors() throws Exception {
 
-        File pom = getTestFile("src/test/resources/validator/good-raml/pom.xml");
+        final File pom = getTestFile("src/test/resources/validator/good-raml/pom.xml");
 
-        RamlSyntaxCheckMojo mojo = (RamlSyntaxCheckMojo) lookupConfiguredMojo(pom, "check-syntax");
+        final RamlSyntaxCheckMojo mojo = (RamlSyntaxCheckMojo) lookupConfiguredMojo(pom, "check-syntax");
 
         mojo.execute();
 

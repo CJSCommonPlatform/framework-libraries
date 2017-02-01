@@ -21,6 +21,7 @@
         <module>raml-parser</module>
         <module>raml-maven-plugin-it</module>
         <module>raml-generator-for-testing</module>
+        <module>lint-checker-core</module>
     </modules>
 
     <dependencyManagement>

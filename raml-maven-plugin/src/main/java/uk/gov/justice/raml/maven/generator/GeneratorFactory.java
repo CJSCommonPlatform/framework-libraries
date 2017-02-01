@@ -11,7 +11,7 @@ import java.util.Map;
  * Factory for generators
  */
 public class GeneratorFactory {
-    private Map<String, Generator> generators = new HashMap();
+    private Map<String, Generator> generators = new HashMap<>();
 
 
     /**
@@ -22,22 +22,25 @@ public class GeneratorFactory {
      */
     public Generator instanceOf(final String generatorName) {
 
-        try {
-            Generator generator = generators.get(generatorName);
-            if (generator == null) {
-                Class<?> clazz = Class.forName(generatorName);
-                Constructor<?> constructor = clazz.getConstructor();
-                generator = (Generator) constructor.newInstance();
-                generators.put(generatorName, generator);
+            if (!generators.containsKey(generatorName)) {
+                generators.put(generatorName, createGenerator(generatorName));
             }
-            return generator;
 
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-
-            throw new IllegalArgumentException(String.format("Could not instantiate generator %s", generatorName), e);
-
+            return generators.get(generatorName);
         }
 
+    private Generator createGenerator(final String generatorName) {
+
+        try {
+            final Generator generator;
+            final Class<?> clazz = Class.forName(generatorName);
+
+            final Constructor<?> constructor = clazz.getConstructor();
+            generator = (Generator) constructor.newInstance();
+            return generator;
+        } catch (final ReflectiveOperationException e) {
+            throw new IllegalArgumentException(String.format("Could not instantiate generator %s", generatorName), e);
+        }
     }
 
 }

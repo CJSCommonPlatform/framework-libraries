@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Added
+- New lint checker module to verify raml files. 
+
 ## [1.3.0] - 2016-11-15
 
 ### Changed

@@ -11,13 +11,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository.DELETE_SQL;
 import static uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository.FIND_BY_FILE_ID_SQL;
-import static uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository.INSERT_SQL;
-import static uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository.UPDATE_SQL;
 
 import uk.gov.justice.services.fileservice.api.DataIntegrityException;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.StorageException;
-import uk.gov.justice.services.fileservice.repository.json.JsonSetter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,33 +36,35 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class MetadataJdbcRepositoryTest {
 
     @Mock
-    private JsonSetter jsonSetter;
+    private MetadataSqlProvider metadataSqlProvider;
 
     @InjectMocks
     private MetadataJdbcRepository metadataJdbcRepository;
 
     @Test
     public void shouldInsertMetadata() throws Exception {
+
         final UUID fileId = randomUUID();
+        final String insertSql = "insert sql";
+
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
+
         final int rowsUpdated = 1;
 
-        when(connection.prepareStatement(INSERT_SQL)).thenReturn(preparedStatement);
+        when(metadataSqlProvider.getInsertSql()).thenReturn(insertSql);
+        when(connection.prepareStatement(insertSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 
         metadataJdbcRepository.insert(fileId, metadata, connection);
 
         final InOrder inOrder = inOrder(
                 connection,
-                preparedStatement,
-                jsonSetter
+                preparedStatement
         );
 
-        inOrder.verify(connection).prepareStatement(INSERT_SQL);
-
-        inOrder.verify(jsonSetter).setJson(1, metadata, preparedStatement);
+        inOrder.verify(connection).prepareStatement(insertSql);
         inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
@@ -79,11 +78,13 @@ public class MetadataJdbcRepositoryTest {
         final SQLException sqlException = new SQLException("Ooops");
 
         final UUID fileId = randomUUID();
+        final String insertSql = "insert sql";
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(INSERT_SQL)).thenReturn(preparedStatement);
+        when(metadataSqlProvider.getInsertSql()).thenReturn(insertSql);
+        when(connection.prepareStatement(insertSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
         try {
@@ -91,18 +92,16 @@ public class MetadataJdbcRepositoryTest {
             fail();
         } catch (FileServiceException expected) {
             assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + INSERT_SQL));
+            assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + insertSql));
         }
 
         final InOrder inOrder = inOrder(
                 connection,
-                preparedStatement,
-                jsonSetter
+                preparedStatement
         );
 
-        inOrder.verify(connection).prepareStatement(INSERT_SQL);
+        inOrder.verify(connection).prepareStatement(insertSql);
 
-        inOrder.verify(jsonSetter).setJson(1, metadata, preparedStatement);
         inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
@@ -114,12 +113,14 @@ public class MetadataJdbcRepositoryTest {
     public void shouldThrowADataIntegrityExceptionIfInsertingMetadataReturnsMoreThanOneRowAffected() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String insertSql = "insert sql";
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final int rowsUpdated = 2;
 
-        when(connection.prepareStatement(INSERT_SQL)).thenReturn(preparedStatement);
+        when(metadataSqlProvider.getInsertSql()).thenReturn(insertSql);
+        when(connection.prepareStatement(insertSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 
         try {
@@ -130,13 +131,11 @@ public class MetadataJdbcRepositoryTest {
 
         final InOrder inOrder = inOrder(
                 connection,
-                preparedStatement,
-                jsonSetter
+                preparedStatement
         );
 
-        inOrder.verify(connection).prepareStatement(INSERT_SQL);
+        inOrder.verify(connection).prepareStatement(insertSql);
 
-        inOrder.verify(jsonSetter).setJson(1, metadata, preparedStatement);
         inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
@@ -147,25 +146,26 @@ public class MetadataJdbcRepositoryTest {
     @Test
     public void shouldUpdateMetadata() throws Exception {
         final UUID fileId = randomUUID();
+        final String updateSql = "update sql";
+
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final int rowsUpdated = 1;
 
-        when(connection.prepareStatement(UPDATE_SQL)).thenReturn(preparedStatement);
+        when(metadataSqlProvider.getUpdateSql()).thenReturn(updateSql);
+        when(connection.prepareStatement(updateSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 
         metadataJdbcRepository.update(fileId, metadata, connection);
 
         final InOrder inOrder = inOrder(
                 connection,
-                preparedStatement,
-                jsonSetter
+                preparedStatement
         );
 
-        inOrder.verify(connection).prepareStatement(UPDATE_SQL);
+        inOrder.verify(connection).prepareStatement(updateSql);
 
-        inOrder.verify(jsonSetter).setJson(1, metadata, preparedStatement);
         inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
@@ -179,11 +179,14 @@ public class MetadataJdbcRepositoryTest {
         final SQLException sqlException = new SQLException("Ooops");
 
         final UUID fileId = randomUUID();
+        final String updateSql = "update sql";
+
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(connection.prepareStatement(UPDATE_SQL)).thenReturn(preparedStatement);
+        when(metadataSqlProvider.getUpdateSql()).thenReturn(updateSql);
+        when(connection.prepareStatement(updateSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
         try {
@@ -191,18 +194,16 @@ public class MetadataJdbcRepositoryTest {
             fail();
         } catch (final StorageException expected) {
             assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + UPDATE_SQL));
+            assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + updateSql));
         }
 
         final InOrder inOrder = inOrder(
                 connection,
-                preparedStatement,
-                jsonSetter
+                preparedStatement
         );
 
-        inOrder.verify(connection).prepareStatement(UPDATE_SQL);
+        inOrder.verify(connection).prepareStatement(updateSql);
 
-        inOrder.verify(jsonSetter).setJson(1, metadata, preparedStatement);
         inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
@@ -214,12 +215,15 @@ public class MetadataJdbcRepositoryTest {
     public void shouldThrowADataIntegrityExceptionIfUpdatingMetadataReturnsMoreThanOneRowAffected() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String updateSql = "update sql";
+
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final int rowsUpdated = 2;
 
-        when(connection.prepareStatement(UPDATE_SQL)).thenReturn(preparedStatement);
+        when(metadataSqlProvider.getUpdateSql()).thenReturn(updateSql);
+        when(connection.prepareStatement(updateSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 
         try {
@@ -230,13 +234,11 @@ public class MetadataJdbcRepositoryTest {
 
         final InOrder inOrder = inOrder(
                 connection,
-                preparedStatement,
-                jsonSetter
+                preparedStatement
         );
 
-        inOrder.verify(connection).prepareStatement(UPDATE_SQL);
+        inOrder.verify(connection).prepareStatement(updateSql);
 
-        inOrder.verify(jsonSetter).setJson(1, metadata, preparedStatement);
         inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();

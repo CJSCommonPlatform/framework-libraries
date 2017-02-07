@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 @Default
 public class DataSourceProvider {
 
-    private static final String JNDI_DATASOURCE = "java:/app/fileservice/DS.fileservice";
+    private static final String JNDI_DATASOURCE = "java:/DS.fileservice";
 
     @Inject
     InitialContextFactory initialContextFactory;

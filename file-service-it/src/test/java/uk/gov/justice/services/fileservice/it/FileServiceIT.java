@@ -16,9 +16,9 @@ import uk.gov.justice.services.fileservice.client.FileService;
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.fileservice.it.helpers.IntegrationTestDataSourceProvider;
 import uk.gov.justice.services.fileservice.it.helpers.LiquibaseDatabaseBootstrapper;
-import uk.gov.justice.services.fileservice.json.StringJsonSetter;
 import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
+import uk.gov.justice.services.fileservice.repository.H2MetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
@@ -70,7 +70,7 @@ public class FileServiceIT {
 
             IntegrationTestDataSourceProvider.class,
 
-            StringJsonSetter.class,
+            H2MetadataSqlProvider.class,
             ContentJdbcRepository.class,
             FileStore.class,
             MetadataJdbcRepository.class

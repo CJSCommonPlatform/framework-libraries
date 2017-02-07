@@ -11,10 +11,6 @@
 
     <artifactId>file-service-persistence</artifactId>
 
-    <properties>
-        <postgresql.version>9.4.1208</postgresql.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
@@ -29,11 +25,6 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

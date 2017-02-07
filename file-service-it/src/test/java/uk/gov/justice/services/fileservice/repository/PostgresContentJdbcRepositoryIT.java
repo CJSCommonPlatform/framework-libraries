@@ -18,7 +18,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.After;
@@ -26,8 +25,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore("Remove this ignore if you want to run the File Service against a local Postgres database")
-public class ContentJdbcRepositoryPostgresIT {
+@Ignore("Comment out this ignore if you want to run the File Service against a local Postgres database")
+public class PostgresContentJdbcRepositoryIT {
 
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
 

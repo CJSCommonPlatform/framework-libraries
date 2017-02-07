@@ -37,7 +37,7 @@ public class DataSourceProviderTest {
         final DataSource dataSource = mock(DataSource.class);
 
         when(initialContextFactory.create()).thenReturn(initialContext);
-        when(initialContext.lookup("java:/app/fileservice/DS.fileservice")).thenReturn(dataSource);
+        when(initialContext.lookup("java:/DS.fileservice")).thenReturn(dataSource);
 
         assertThat(dataSourceProvider.getDatasource(), is(dataSource));
     }
@@ -50,14 +50,14 @@ public class DataSourceProviderTest {
         final InitialContext initialContext = mock(InitialContext.class);
 
         when(initialContextFactory.create()).thenReturn(initialContext);
-        when(initialContext.lookup("java:/app/fileservice/DS.fileservice")).thenThrow(namingException);
+        when(initialContext.lookup("java:/DS.fileservice")).thenThrow(namingException);
 
         try {
             dataSourceProvider.getDatasource();
             fail();
         } catch (final ConfigurationException expected) {
             assertThat(expected.getCause(), is(namingException));
-            assertThat(expected.getMessage(), is("Failed to get Connection from container using JNDI name 'java:/app/fileservice/DS.fileservice'"));
+            assertThat(expected.getMessage(), is("Failed to get Connection from container using JNDI name 'java:/DS.fileservice'"));
         }
     }
 }

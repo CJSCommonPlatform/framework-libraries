@@ -7,7 +7,6 @@ import static javax.json.Json.createReader;
 import uk.gov.justice.services.fileservice.api.DataIntegrityException;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.StorageException;
-import uk.gov.justice.services.fileservice.repository.json.JsonSetter;
 
 import java.io.StringReader;
 import java.sql.Connection;
@@ -29,13 +28,11 @@ import javax.json.JsonObject;
  */
 public class MetadataJdbcRepository {
 
-    public static final String INSERT_SQL = "INSERT INTO metadata(metadata, file_id) values (?, ?)";
     public static final String FIND_BY_FILE_ID_SQL = "SELECT metadata FROM metadata WHERE file_id = ?";
-    public static final String UPDATE_SQL = "UPDATE metadata SET metadata = ? WHERE file_id = ?";
     public static final String DELETE_SQL = "DELETE FROM metadata WHERE file_id = ?";
 
     @Inject
-    JsonSetter jsonSetter;
+    MetadataSqlProvider metadataSqlProvider;
 
     /**
      * inserts the json metadata of a file into a new row
@@ -46,7 +43,8 @@ public class MetadataJdbcRepository {
      *                   started on this connection.
      */
     public void insert(final UUID fileId, final JsonObject metadata, final Connection connection) throws FileServiceException {
-        insertOrUpdate(fileId, metadata, connection, INSERT_SQL);
+
+        insertOrUpdate(fileId, metadata, connection, metadataSqlProvider.getInsertSql());
     }
 
     /**
@@ -83,7 +81,22 @@ public class MetadataJdbcRepository {
      *                   started on this connection.
      */
     public void update(final UUID fileId, final JsonObject metadata, final Connection connection) throws FileServiceException {
-        insertOrUpdate(fileId, metadata, connection, UPDATE_SQL);
+        insertOrUpdate(fileId, metadata, connection, metadataSqlProvider.getUpdateSql());
+    }
+
+    private void insertOrUpdate(final UUID fileId, final JsonObject metadata, final Connection connection, final String sql) throws DataIntegrityException, StorageException {
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, metadata.toString());
+            preparedStatement.setObject(2, fileId);
+
+            final int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated != 1) {
+                throw new DataIntegrityException("Updating metadata table affected " + rowsUpdated + " rows!");
+            }
+        } catch (final SQLException e) {
+            throw new StorageException("Failed to update metadata table. Sql: " + sql, e);
+        }
     }
 
     public void delete(final UUID fileId, final Connection connection) throws FileServiceException {
@@ -97,21 +110,6 @@ public class MetadataJdbcRepository {
             }
         } catch (final SQLException e) {
             throw new StorageException("Failed to update metadata table. Sql: " + DELETE_SQL, e);
-        }
-    }
-
-    private void insertOrUpdate(final UUID fileId, final JsonObject metadata, final Connection connection, final String sql) throws FileServiceException {
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            jsonSetter.setJson(1, metadata, preparedStatement);
-            preparedStatement.setObject(2, fileId);
-
-            final int rowsUpdated = preparedStatement.executeUpdate();
-            if(rowsUpdated != 1) {
-                throw new DataIntegrityException("Updating metadata table affected " + rowsUpdated + " rows!");
-            }
-        } catch (final SQLException e) {
-            throw new StorageException("Failed to update metadata table. Sql: " + sql, e);
         }
     }
 

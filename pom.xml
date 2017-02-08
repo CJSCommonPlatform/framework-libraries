@@ -64,6 +64,9 @@
         <jsonpath.version>2.2.0</jsonpath.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
+        <maven-plugin-testing-harness.version>3.3.0</maven-plugin-testing-harness.version>
+        <maven-compat.version>3.3.9</maven-compat.version>
+        <maven-core.version>3.3.9</maven-core.version>
         <maven-model.version>3.3.9</maven-model.version>
         <maven-plugin-api.version>3.3.9</maven-plugin-api.version>
         <metrics.version>3.1.2</metrics.version>
@@ -173,6 +176,23 @@
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-parameter-names</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugin-testing</groupId>
+                <artifactId>maven-plugin-testing-harness</artifactId>
+                <version>${maven-plugin-testing-harness.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-compat</artifactId>
+                <version>${maven-compat.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>${maven-core.version}</version>
             </dependency>
 
             <dependency>

@@ -5,6 +5,18 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.7.0] - 2017-02-10
+
+### Added
+- maven-plugin-testing-harness
+- maven-compat
+- maven-core
+
+## [1.6.0] - 2017-01-19
+
+### Added
+- Postgres driver, apache.commons-dbcp2 and hamcrest library versions
+
 ## [1.5.1] - 2016-12-15
 
 ### Changed

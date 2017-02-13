@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added 
+- dependency on rest easy-multipart
 
 ## [1.7.0] - 2017-02-10
 

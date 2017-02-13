@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.maven.generator;
+package uk.gov.justice.raml.maven.test.utils;
 
 import java.io.File;
 import java.util.Arrays;
@@ -30,6 +30,15 @@ import org.eclipse.aether.repository.LocalRepository;
  * methods. <p> This also provides new methods, {@link #newMavenSession()} to conveniently create a
  * maven session, and {@link #lookupConfiguredMojo(File, String)} so you don't have to always build
  * the project yourself.
+ *
+ * TODO: Determine how to unit test this class
+ * The only real way to test this class is to extend and create a concrete version
+ * and then build a MOJO to test, however this cannot be done without pulling in
+ * the extra dependencies into the project as MAIN. We are already doing this effectively
+ * in the raml-maven module and in the lint checker rules (in microservices framework).
+ * Originally this class was part of TEST in raml-maven-plugin and was moved into MAIN
+ * so it could be used across maven projects to test MOJOs.
+ *
  */
 public abstract class BetterAbstractMojoTestCase extends AbstractMojoTestCase {
 

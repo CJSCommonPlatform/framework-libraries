@@ -10,7 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.raml.maven.common.BasicGoalConfig;
-import uk.gov.justice.raml.maven.generator.BetterAbstractMojoTestCase;
+import uk.gov.justice.raml.maven.test.utils.BetterAbstractMojoTestCase;
 
 import java.io.File;
 import java.io.IOException;

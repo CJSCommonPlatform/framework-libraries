@@ -4,8 +4,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.8.0] - 2017-02-13
+
 ### Added 
 - dependency on rest easy-multipart
+- dependencies used by raml maven plugin
 
 ## [1.7.0] - 2017-02-10
 

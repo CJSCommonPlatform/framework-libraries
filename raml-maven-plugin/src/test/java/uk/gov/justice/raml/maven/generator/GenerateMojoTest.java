@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import uk.gov.justice.raml.core.GeneratorConfig;
+import uk.gov.justice.raml.maven.test.utils.BetterAbstractMojoTestCase;
 
 import java.io.File;
 import java.nio.file.Files;

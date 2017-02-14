@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.9.0] - 2017-02-14
+- Add maven-plugin-annotations
+
 ## [1.8.0] - 2017-02-13
 
 ### Added 

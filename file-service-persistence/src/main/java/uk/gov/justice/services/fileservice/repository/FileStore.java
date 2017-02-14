@@ -37,6 +37,9 @@ public class FileStore {
     @Inject
     DataSourceProvider dataSourceProvider;
 
+    @Inject
+    MetadataUpdater metadataUpdater;
+
     /**
      * Stores file content and metadata in the database.
      *
@@ -51,14 +54,15 @@ public class FileStore {
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
             final UUID fileId = randomUUID();
 
+            final JsonObject updatedMetadata = metadataUpdater.addCreatedTime(metadata);
+
             contentJdbcRepository.insert(fileId, contentStream, connection);
-            metadataJdbcRepository.insert(fileId, metadata, connection);
+            metadataJdbcRepository.insert(fileId, updatedMetadata, connection);
 
             return fileId;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new StorageException("Failed to insert file into database", e);
         }
-
     }
 
     /**

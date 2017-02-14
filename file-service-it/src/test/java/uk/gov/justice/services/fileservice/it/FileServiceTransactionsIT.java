@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.FileRetriever;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.FileStorer;
@@ -19,6 +20,7 @@ import uk.gov.justice.services.fileservice.it.helpers.MakeMetadataRepositoryInse
 import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
 import uk.gov.justice.services.fileservice.repository.H2MetadataSqlProvider;
+import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
 import java.io.ByteArrayInputStream;
@@ -72,6 +74,8 @@ public class FileServiceTransactionsIT {
             ContentJdbcRepository.class,
             FileStore.class,
             FailingMetadataJdbcRepository.class,
+            MetadataUpdater.class,
+            UtcClock.class
     })
     public WebApp war() {
         return new WebApp()
@@ -99,7 +103,7 @@ public class FileServiceTransactionsIT {
         try {
             fileService.store(metadata, new ByteArrayInputStream(fileContent.getBytes()));
             fail();
-        } catch (TransactionalException expected) {
+        } catch (final TransactionalException expected) {
             assertThat(expected.getCause(), is(instanceOf(MakeMetadataRepositoryInsertFailException.class)));
         }
 

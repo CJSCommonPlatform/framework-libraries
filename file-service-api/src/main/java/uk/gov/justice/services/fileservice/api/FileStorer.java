@@ -21,14 +21,6 @@ public interface FileStorer {
     UUID store(final JsonObject metadata, final InputStream fileContentStream) throws FileServiceException;
 
     /**
-     * Updates the metadata of the file stored with the specifed id
-     *
-     * @param fileId   The id of the file who's metadata is to be updated
-     * @param metadata The metadata to update.
-     */
-    void updateMetadata(final UUID fileId, final JsonObject metadata) throws FileServiceException;
-
-    /**
      * Deletes a file from the file server
      *
      * @param fileId The id of the file to be deleted.

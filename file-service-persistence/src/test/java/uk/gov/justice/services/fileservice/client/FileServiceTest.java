@@ -56,17 +56,6 @@ public class FileServiceTest {
     }
 
     @Test
-    public void shouldUpdateMetadata() throws Exception {
-
-        final UUID fileId = UUID.randomUUID();
-        final JsonObject metadata = mock(JsonObject.class);
-
-        fileService.updateMetadata(fileId, metadata);
-
-        verify(fileStore).updateMetadata(fileId, metadata);
-    }
-
-    @Test
     public void shouldDeleteAFile() throws Exception {
 
         final UUID fileId = UUID.randomUUID();

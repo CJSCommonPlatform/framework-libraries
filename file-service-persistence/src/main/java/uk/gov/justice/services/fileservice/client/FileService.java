@@ -49,7 +49,6 @@ public class FileService implements FileStorer, FileRetriever {
         return fileStore.find(fileId);
     }
 
-
     /**
      * Retrieves a file's metadata
      *
@@ -62,17 +61,6 @@ public class FileService implements FileStorer, FileRetriever {
     }
 
     /**
-     * Updates a stored file's metadata
-     *
-     * @param fileId   The id of the file who's metadata is to be updated
-     * @param metadata The metadata to update.
-     */
-    @Override
-    public void updateMetadata(final UUID fileId, final JsonObject metadata) throws FileServiceException {
-        fileStore.updateMetadata(fileId, metadata);
-    }
-
-    /**
      * Deletes a file stored on the file store
      *
      * @param fileId The id of the file to be deleted.
@@ -81,5 +69,4 @@ public class FileService implements FileStorer, FileRetriever {
     public void delete(final UUID fileId) throws FileServiceException {
         fileStore.delete(fileId);
     }
-
 }

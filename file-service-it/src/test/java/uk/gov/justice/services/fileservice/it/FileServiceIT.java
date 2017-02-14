@@ -9,6 +9,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.FileRetriever;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.FileStorer;
@@ -20,6 +21,7 @@ import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
 import uk.gov.justice.services.fileservice.repository.H2MetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
+import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
 import java.io.File;
@@ -73,7 +75,9 @@ public class FileServiceIT {
             H2MetadataSqlProvider.class,
             ContentJdbcRepository.class,
             FileStore.class,
-            MetadataJdbcRepository.class
+            MetadataJdbcRepository.class,
+            MetadataUpdater.class,
+            UtcClock.class
     })
     public WebApp war() {
         return new WebApp()
@@ -94,7 +98,7 @@ public class FileServiceIT {
         assertThat(fileService, is(notNullValue()));
 
         final JsonObject metadata = createObjectBuilder()
-                .add("Test", "test")
+                .add("metadataField", "metadataValue")
                 .build();
 
         final File inputFile = getFileFromClasspath();
@@ -110,7 +114,10 @@ public class FileServiceIT {
         try (final FileReference fileReference = fileService
                 .retrieve(fileId)
                 .orElseThrow(() -> new AssertionError("Failed to get FileReference from File Store"))) {
-            assertThat(fileReference.getMetadata(), is(metadata));
+
+            final JsonObject retrievedMetadata = fileReference.getMetadata();
+            assertThat(retrievedMetadata.getString("metadataField"), is("metadataValue"));
+            assertThat(retrievedMetadata.getString("createdAt"), is(notNullValue()  ));
 
             final InputStream contentStream = fileReference.getContentStream();
 

@@ -5,8 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.4.0] - 2017-02-14
+
 ### Added
-- New lint checker module to verify raml files. 
+- New lint checker module to verify raml files
+- Refactored BetterAbstractMojoTestCase to its own module so it can be reused to test lintcheck rules
 
 ## [1.3.0] - 2016-11-15
 

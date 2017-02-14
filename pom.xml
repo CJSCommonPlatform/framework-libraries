@@ -20,7 +20,7 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.7.0</common-bom.version>
+        <common-bom.version>1.6.0</common-bom.version>
     </properties>
 
     <dependencyManagement>

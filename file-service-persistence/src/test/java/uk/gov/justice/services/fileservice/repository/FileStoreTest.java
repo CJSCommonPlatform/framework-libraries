@@ -52,6 +52,9 @@ public class FileStoreTest {
     @Mock
     private DataSourceProvider dataSourceProvider;
 
+    @Mock
+    private MetadataUpdater metadataUpdater;
+
     @Captor
     private ArgumentCaptor<UUID> fileIdCaptor_1;
 
@@ -67,10 +70,12 @@ public class FileStoreTest {
         final Connection connection = mock(Connection.class);
         final DataSource dataSource = mock(DataSource.class);
         final JsonObject metadata = mock(JsonObject.class);
+        final JsonObject updatedMetadata = mock(JsonObject.class);
         final InputStream contentStream = mock(InputStream.class);
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
+        when(metadataUpdater.addCreatedTime(metadata)).thenReturn(updatedMetadata);
 
         final UUID fileId = fileStore.store(metadata, contentStream);
 
@@ -82,7 +87,7 @@ public class FileStoreTest {
 
         inOrder.verify(dataSourceProvider).getDatasource();
         inOrder.verify(contentJdbcRepository).insert(fileIdCaptor_1.capture(), eq(contentStream), eq(connection));
-        inOrder.verify(metadataJdbcRepository).insert(fileIdCaptor_2.capture(), eq(metadata), eq(connection));
+        inOrder.verify(metadataJdbcRepository).insert(fileIdCaptor_2.capture(), eq(updatedMetadata), eq(connection));
         inOrder.verify(connection).close();
 
         assertThat(fileIdCaptor_1.getValue(), is(fileId));
@@ -97,12 +102,14 @@ public class FileStoreTest {
         final Connection connection = mock(Connection.class);
         final DataSource dataSource = mock(DataSource.class);
         final JsonObject metadata = mock(JsonObject.class);
+        final JsonObject updatedMetadata = mock(JsonObject.class);
         final InputStream contentStream = mock(InputStream.class);
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
+        when(metadataUpdater.addCreatedTime(metadata)).thenReturn(updatedMetadata);
 
-        doThrow(fileServiceException).when(metadataJdbcRepository).insert(any(UUID.class), eq(metadata), eq(connection));
+        doThrow(fileServiceException).when(metadataJdbcRepository).insert(any(UUID.class), eq(updatedMetadata), eq(connection));
 
         try {
             fileStore.store(metadata, contentStream);

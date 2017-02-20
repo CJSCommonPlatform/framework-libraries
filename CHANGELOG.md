@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.1.0] - 2017-02-20
+
+### Fix
+- Fix javadoc error, breaking the release process
+
 ## [1.0.0] - 2017-02-15
 
 ### Added

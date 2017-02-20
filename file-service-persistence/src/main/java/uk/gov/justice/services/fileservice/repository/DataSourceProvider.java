@@ -39,9 +39,9 @@ public class DataSourceProvider {
     }
 
     /**
-     * Gets the JNDI name used to look up the container {@link DataSource). Extracted as a
-     * separate method to allow it to be overridden in integration tests
-     * @return
+     * Gets the JNDI name used to look up the container {@link DataSource}. Extracted as a separate
+     * method to allow it to be overrdiden in the integrationt ests.
+     * @return the File Service Datasource
      */
     protected String getJndiName() {
         return JNDI_DATASOURCE;

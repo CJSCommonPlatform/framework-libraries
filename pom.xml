@@ -88,6 +88,7 @@
         <wildfly.client.version>10.0.0.Final</wildfly.client.version>
         <wiremock.version>1.57</wiremock.version>
         <xbean.version>4.5</xbean.version>
+        <jboss-logging.version>3.3.0.Final</jboss-logging.version>
 
         <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
@@ -133,6 +134,11 @@
                 <version>${hamcrest.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${jboss-logging.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxrs</artifactId>
                 <version>${resteasy.version}</version>
@@ -140,10 +146,6 @@
                     <exclusion>
                         <groupId>javax.activation</groupId>
                         <artifactId>activation</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.logging</groupId>
-                        <artifactId>jboss-logging</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -160,10 +162,6 @@
                     <exclusion>
                         <groupId>javax.activation</groupId>
                         <artifactId>activation</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.logging</groupId>
-                        <artifactId>jboss-logging</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -619,12 +617,6 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
                 <version>${hibernate.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.logging</groupId>
-                        <artifactId>jboss-logging</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.xbean</groupId>

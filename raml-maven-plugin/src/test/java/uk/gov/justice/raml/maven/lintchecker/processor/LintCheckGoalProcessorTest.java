@@ -1,4 +1,4 @@
-package uk.gov.justice.raml.maven.lintchecker;
+package uk.gov.justice.raml.maven.lintchecker.processor;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -14,6 +14,10 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.raml.io.FileTreeScanner;
 import uk.gov.justice.raml.io.files.parser.RamlFileParser;
+import uk.gov.justice.raml.maven.lintchecker.LintCheckConfiguration;
+import uk.gov.justice.raml.maven.lintchecker.LintCheckRuleFailedException;
+import uk.gov.justice.raml.maven.lintchecker.LintCheckerException;
+import uk.gov.justice.raml.maven.lintchecker.rules.LintCheckRule;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -21,10 +25,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.raml.model.Raml;
 
@@ -59,7 +66,14 @@ public class LintCheckGoalProcessorTest {
         when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenReturn(paths);
         when(ramlFileParser.ramlOf(sourceDirectory.toPath(), paths)).thenReturn(ramls);
 
-        lintCheckGoalProcessor.execute(sourceDirectory, rules, asList(includes), asList(excludes));
+        lintCheckGoalProcessor.execute(
+                new LintCheckerGoalConfig(
+                        sourceDirectory,
+                        rules,
+                        asList(includes),
+                        asList(excludes),
+                        mock(MavenProject.class),
+                        mock(Log.class)));
 
         verify(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
         verify(lintCheckRule_1).execute(eq(raml_2), any(LintCheckConfiguration.class));
@@ -70,7 +84,7 @@ public class LintCheckGoalProcessorTest {
     @Test
     public void shouldThrowMojoExecutionExceptionAIfExecutingARuleFails() throws Exception {
 
-        final LintCheckerException lintCheckerException = new LintCheckerException("Ooops");
+        final LintCheckerException lintCheckerException = new LintCheckRuleFailedException("Ooops");
 
         final LintCheckRule lintCheckRule_1 = mock(LintCheckRule.class);
         final LintCheckRule lintCheckRule_2 = mock(LintCheckRule.class);
@@ -91,7 +105,17 @@ public class LintCheckGoalProcessorTest {
         doThrow(lintCheckerException).when(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
 
         try {
-            lintCheckGoalProcessor.execute(sourceDirectory, rules, asList(includes), asList(excludes));
+            lintCheckGoalProcessor
+                    .execute
+                            (
+                                    new LintCheckerGoalConfig(sourceDirectory,
+                                            rules,
+                                            asList(includes),
+                                            asList(excludes),
+                                            mock(MavenProject.class),
+                                            mock(Log.class)
+                                    )
+                            );
             fail();
         } catch (final MojoExecutionException expected) {
             assertThat(expected.getCause(), is(lintCheckerException));

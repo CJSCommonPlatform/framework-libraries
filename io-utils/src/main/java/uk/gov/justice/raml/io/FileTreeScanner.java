@@ -1,10 +1,12 @@
 package uk.gov.justice.raml.io;
 
-import com.google.common.base.Predicate;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.base.Predicates.or;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,13 +18,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Predicates.and;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.base.Predicates.or;
-import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
+import com.google.common.base.Predicate;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
 /**
  * Utility class for searching directories.
@@ -45,12 +45,14 @@ public class FileTreeScanner {
         if (!shouldSearchOnClasspath(baseDir) && !baseDir.toFile().exists()) {
             return emptyList();
         }
-        Reflections reflections = new Reflections(
+
+        final Reflections reflections = new Reflections(
                 new ConfigurationBuilder()
                         .filterInputsBy(filterOf(includes, excludes))
                         .setUrls(urlsToScan(baseDir))
                         .setScanners(new ResourcesScanner()));
         Set<String> resources = reflections.getResources(Pattern.compile(".*"));
+
         return resources.stream().map(Paths::get).collect(toList());
     }
 

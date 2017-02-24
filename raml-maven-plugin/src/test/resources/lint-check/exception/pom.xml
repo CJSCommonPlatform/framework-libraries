@@ -20,7 +20,6 @@
                     <excludes>
                     </excludes>
                     <rules>
-                        <MatchHandersActions implementation = "uk.gov.justice.raml.maven.lintchecker.rules.SucceedingLintCheckRule"/>
                         <MatchHandersActions implementation = "uk.gov.justice.raml.maven.lintchecker.rules.FailingLintCheckRule"/>
                     </rules>
                 </configuration>

@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.1.0] - 2017-02-28
+- JsonObjects and other utility classes moved to here from framework
+
 ## [1.0.0] - 2017-02-28
 
 ### Added

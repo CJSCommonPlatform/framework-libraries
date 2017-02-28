@@ -3,14 +3,11 @@ package uk.gov.justice.services.fileservice.it.helpers;
 import static java.lang.String.format;
 import static java.sql.DriverManager.registerDriver;
 
-import uk.gov.justice.services.jdbc.persistence.DataAccessException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class JdbcConnectionProvider {
-
 
     public Connection getConnection(final String url, final String username, final String password, final String driverClassName) {
         try {
@@ -23,7 +20,7 @@ public class JdbcConnectionProvider {
                     username,
                     password);
 
-            throw new DataAccessException(message, e);
+            throw new RuntimeException(message, e);
         }
     }
 }

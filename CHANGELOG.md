@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.0.0] - yyyy-mm-dd
+## [1.0.0] - 2017-02-28
 
 ### Added
 - Initial project configuration

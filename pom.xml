@@ -22,8 +22,9 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.6.0</common-bom.version>
+        <common-bom.version>1.10.0</common-bom.version>
         <cpp.framework.version>1.4.1</cpp.framework.version>
+        <cpp.utilities.version>1.1.0</cpp.utilities.version>
     </properties>
 
     <dependencyManagement>
@@ -41,6 +42,11 @@
                 <version>${cpp.framework.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.utils</groupId>
+                <artifactId>utilities-core</artifactId>
+                <version>${cpp.utilities.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

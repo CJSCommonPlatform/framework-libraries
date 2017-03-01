@@ -23,22 +23,13 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-            <version>2.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-core</artifactId>
-            <!--TODO: move version to common bom-->
-            <version>1.1.0</version>
         </dependency>
-
 
         <!-- Test dependencies -->
         <dependency>

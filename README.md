@@ -1,4 +1,6 @@
-# File Service [![Build Status](https://travis-ci.org/CJSCommonPlatform/file-service.svg?branch=master)](https://github.com/CJSCommonPlatform/file-service)
+# File Service 
+[![Build Status](https://travis-ci.org/CJSCommonPlatform/file-service.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/file-service)
+
 
 A simple drop in library for storing binary files in Postgres. This library assumes that it is running inside a JEE container with a datasource configured to point at Postgres
 

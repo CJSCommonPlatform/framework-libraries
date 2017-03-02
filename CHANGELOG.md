@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [1.12.0] - 2017-03-02
+- Re-release failed previous release
 
 ## [1.11.0] - 2017-03-02
 - Remove jboss exclusions

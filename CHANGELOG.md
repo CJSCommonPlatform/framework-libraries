@@ -6,6 +6,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## Unreleased
 
 ## [1.3.0] - 2017-02-28
+### Fixed
+- Re-released due to a failed artifactory deployment
+
+## [1.3.0] - 2017-02-28
 
 ### Changed
 - Upgraded version of utilities to 1.1.0

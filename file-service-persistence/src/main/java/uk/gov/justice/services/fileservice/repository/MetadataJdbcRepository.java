@@ -32,7 +32,7 @@ public class MetadataJdbcRepository {
     public static final String DELETE_SQL = "DELETE FROM metadata WHERE file_id = ?";
 
     @Inject
-    MetadataSqlProvider metadataSqlProvider;
+    protected MetadataSqlProvider metadataSqlProvider;
 
     /**
      * inserts the json metadata of a file into a new row

@@ -15,12 +15,12 @@ import uk.gov.justice.services.fileservice.client.FileService;
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.fileservice.it.helpers.FailingMetadataJdbcRepository;
 import uk.gov.justice.services.fileservice.it.helpers.IntegrationTestDataSourceProvider;
-import uk.gov.justice.services.fileservice.it.helpers.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.fileservice.it.helpers.MakeMetadataRepositoryInsertFailException;
 import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
-import uk.gov.justice.services.fileservice.repository.H2MetadataSqlProvider;
+import uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
+import uk.gov.justice.services.fileservice.utils.test.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
 import java.io.ByteArrayInputStream;
@@ -70,7 +70,7 @@ public class FileServiceTransactionsIT {
 
             IntegrationTestDataSourceProvider.class,
 
-            H2MetadataSqlProvider.class,
+            AnsiMetadataSqlProvider.class,
             ContentJdbcRepository.class,
             FileStore.class,
             FailingMetadataJdbcRepository.class,

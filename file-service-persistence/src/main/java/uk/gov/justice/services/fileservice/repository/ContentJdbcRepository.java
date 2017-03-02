@@ -29,9 +29,9 @@ import java.util.UUID;
  */
 public class ContentJdbcRepository {
 
-    private static final String SQL_FIND_BY_FILE_ID = "SELECT content, deleted FROM content WHERE file_id = ?";
-    private static final String SQL_INSERT_CONTENT = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
-    private static final String SQL_DELETE_CONTENT = "UPDATE content SET deleted = true WHERE file_id = ?";
+    public static final String SQL_FIND_BY_FILE_ID = "SELECT content, deleted FROM content WHERE file_id = ?";
+    public static final String SQL_INSERT_CONTENT = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
+    public static final String SQL_DELETE_CONTENT = "UPDATE content SET deleted = true WHERE file_id = ?";
 
     /**
      * Inserts the content into the content table as an array of bytes[]

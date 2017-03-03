@@ -21,9 +21,9 @@ import uk.gov.justice.services.fileservice.repository.FileStore;
 import uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
-import uk.gov.justice.services.fileservice.utils.test.ClasspathFileResource;
-import uk.gov.justice.services.fileservice.utils.test.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
+import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.File;
 import java.io.FileInputStream;

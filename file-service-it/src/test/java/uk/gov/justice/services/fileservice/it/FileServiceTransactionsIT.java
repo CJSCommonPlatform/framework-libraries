@@ -20,8 +20,8 @@ import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
 import uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
-import uk.gov.justice.services.fileservice.utils.test.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
+import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;

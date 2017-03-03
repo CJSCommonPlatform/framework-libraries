@@ -8,8 +8,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.services.fileservice.utils.test.JdbcConnectionProvider;
-import uk.gov.justice.services.fileservice.utils.test.LiquibaseDatabaseBootstrapper;
+import uk.gov.justice.services.test.utils.core.jdbc.JdbcConnectionProvider;
+import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.File;
 import java.io.FileInputStream;

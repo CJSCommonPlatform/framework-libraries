@@ -5,8 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.0.0] - 2017-03-03
+## [1.2.0] - 2017-03-03
+### Fixed
+- Re-release failed previous release
 
+## [1.1.0] - 2017-03-03
 ### Added
 - Utility class for bootstrapping database
 - Utility class for creating JDBC connections

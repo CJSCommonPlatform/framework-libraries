@@ -16,19 +16,18 @@ import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.fileservice.client.FileService;
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.fileservice.it.helpers.IntegrationTestDataSourceProvider;
-import uk.gov.justice.services.fileservice.it.helpers.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
-import uk.gov.justice.services.fileservice.repository.H2MetadataSqlProvider;
+import uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
+import uk.gov.justice.services.fileservice.utils.test.ClasspathFileResource;
+import uk.gov.justice.services.fileservice.utils.test.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -36,6 +35,7 @@ import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.LogFactory;
 import org.apache.openejb.jee.Application;
 import org.apache.openejb.jee.WebApp;
 import org.apache.openejb.junit.ApplicationComposer;
@@ -51,6 +51,7 @@ public class FileServiceIT {
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
 
     private final LiquibaseDatabaseBootstrapper liquibaseDatabaseBootstrapper = new LiquibaseDatabaseBootstrapper();
+    private final ClasspathFileResource classpathFileResource = new ClasspathFileResource();
 
     @Resource(name = "openejb/Resource/DS.fileservice")
     private DataSource dataSource;
@@ -72,12 +73,13 @@ public class FileServiceIT {
 
             IntegrationTestDataSourceProvider.class,
 
-            H2MetadataSqlProvider.class,
+            AnsiMetadataSqlProvider.class,
             ContentJdbcRepository.class,
             FileStore.class,
             MetadataJdbcRepository.class,
             MetadataUpdater.class,
-            UtcClock.class
+            UtcClock.class,
+            LogFactory.class
     })
     public WebApp war() {
         return new WebApp()
@@ -101,7 +103,7 @@ public class FileServiceIT {
                 .add("metadataField", "metadataValue")
                 .build();
 
-        final File inputFile = getFileFromClasspath();
+        final File inputFile = classpathFileResource.getFileFromClasspath("/for-testing-file-store.jpg");
         final FileInputStream inputStream = new FileInputStream(inputFile);
 
         final UUID fileId = fileService.store(metadata, inputStream);
@@ -127,10 +129,5 @@ public class FileServiceIT {
         assertThat(outputFile.exists(), is(true));
         assertThat(outputFile.length(), is(greaterThan(0L)));
         assertThat(outputFile.length(), is(inputFile.length()));
-    }
-
-    public File getFileFromClasspath() throws URISyntaxException {
-        final URL url = getClass().getResource("/for-testing-file-store.jpg");
-        return new File(url.toURI());
     }
 }

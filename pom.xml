@@ -19,6 +19,7 @@
         <module>file-service-persistence</module>
         <module>file-service-api</module>
         <module>file-service-it</module>
+        <module>file-service-test-utils</module>
     </modules>
 
     <properties>

@@ -1,4 +1,4 @@
-package uk.gov.justice.services.fileservice.it.helpers;
+package uk.gov.justice.services.fileservice.utils.test;
 
 import java.sql.Connection;
 

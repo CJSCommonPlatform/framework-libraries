@@ -5,8 +5,8 @@ import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.services.fileservice.it.helpers.JdbcConnectionProvider;
-import uk.gov.justice.services.fileservice.it.helpers.LiquibaseDatabaseBootstrapper;
+import uk.gov.justice.services.fileservice.utils.test.JdbcConnectionProvider;
+import uk.gov.justice.services.fileservice.utils.test.LiquibaseDatabaseBootstrapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

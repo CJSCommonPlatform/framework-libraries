@@ -1,4 +1,4 @@
-package uk.gov.justice.services.fileservice.it.helpers;
+package uk.gov.justice.services.fileservice.utils.test;
 
 import static java.lang.String.format;
 import static java.sql.DriverManager.registerDriver;
@@ -14,7 +14,7 @@ public class JdbcConnectionProvider {
             final java.sql.Driver driver = (java.sql.Driver) Class.forName(driverClassName).newInstance();
             registerDriver(driver);
             return DriverManager.getConnection(url, username, password);
-        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (final Exception e) {
             final String message = format("Failed to get JDBC connection. url: '%s', username '%s', password '%s'",
                     url,
                     username,

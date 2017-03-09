@@ -10,6 +10,9 @@ import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.fileservice.utils.test.DatabaseDialect.ANSI_SQL;
 
 import uk.gov.justice.services.fileservice.domain.FileReference;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
+import uk.gov.justice.services.test.utils.core.jdbc.JdbcConnectionProvider;
+import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,7 +58,7 @@ public class FileServiceTestClientTest {
     }
 
     @Test
-    public void shouldName() throws Exception {
+    public void shouldStoreAndGetAnImage() throws Exception {
 
         final String fileName = "some.jpg";
         final String mediaType = "image/jpeg";

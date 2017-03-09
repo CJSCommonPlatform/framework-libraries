@@ -22,15 +22,12 @@
             <artifactId>file-service-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
 
         <!--Test dependencies-->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>uk.gov.justice.utils</groupId>
+            <artifactId>test-utils-core</artifactId>
+            <version>${cpp.test.utilities.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

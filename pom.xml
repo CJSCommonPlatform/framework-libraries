@@ -20,7 +20,8 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.10.0</common-bom.version>
+        <common-bom.version>1.13.0</common-bom.version>
+        <test-utils.version>1.2.0</test-utils.version>
     </properties>
 
     <dependencyManagement>

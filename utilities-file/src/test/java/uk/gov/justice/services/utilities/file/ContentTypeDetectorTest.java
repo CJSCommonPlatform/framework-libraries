@@ -1,4 +1,4 @@
-package uk.gov.justice.services.common.file;
+package uk.gov.justice.services.utilities.file;
 
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
@@ -10,6 +10,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Optional;
+
+import javax.ws.rs.core.MediaType;
 
 import org.junit.Test;
 
@@ -25,10 +27,10 @@ public class ContentTypeDetectorTest {
         final File file = classpathFileResource.getFileFromClasspath("/test-files/croydon.jpg");
 
         try(final BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-            final Optional<String> contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
+            final MediaType contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
 
-            assertThat(contentType.isPresent(), is(true));
-            assertThat(contentType.get(), is("image/jpeg"));
+            assertThat(contentType.getType(), is("image"));
+            assertThat(contentType.getSubtype(), is("jpeg"));
         }
     }
 
@@ -40,10 +42,10 @@ public class ContentTypeDetectorTest {
 
 
         try(final BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-            final Optional<String> contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
+            final MediaType contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
 
-            assertThat(contentType.isPresent(), is(true));
-            assertThat(contentType.get(), is("image/jpeg"));
+            assertThat(contentType.getType(), is("image"));
+            assertThat(contentType.getSubtype(), is("jpeg"));
 
             final byte[] bytes = toByteArray(bufferedInputStream);
 
@@ -57,23 +59,23 @@ public class ContentTypeDetectorTest {
         final File file = classpathFileResource.getFileFromClasspath("/test-files/Onion.pdf");
 
         try(final BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-            final Optional<String> contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
+            final MediaType contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
 
-            assertThat(contentType.isPresent(), is(true));
-            assertThat(contentType.get(), is("application/pdf"));
+            assertThat(contentType.getType(), is("application"));
+            assertThat(contentType.getSubtype(), is("pdf"));
         }
     }
-    
+
     @Test
     public void shouldDetectTheContentTypeOfPng() throws Exception {
 
         final File file = classpathFileResource.getFileFromClasspath("/test-files/ScreenShot.png");
 
         try(final BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-            final Optional<String> contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
+            final MediaType contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
 
-            assertThat(contentType.isPresent(), is(true));
-            assertThat(contentType.get(), is("image/png"));
+            assertThat(contentType.getType(), is("image"));
+            assertThat(contentType.getSubtype(), is("png"));
         }
     }
 
@@ -83,10 +85,10 @@ public class ContentTypeDetectorTest {
         final File file = classpathFileResource.getFileFromClasspath("/test-files/zipfile.zip");
 
         try(final BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-            final Optional<String> contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
+            final MediaType contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
 
-            assertThat(contentType.isPresent(), is(true));
-            assertThat(contentType.get(), is("application/zip"));
+            assertThat(contentType.getType(), is("application"));
+            assertThat(contentType.getSubtype(), is("zip"));
         }
     }
 
@@ -96,10 +98,10 @@ public class ContentTypeDetectorTest {
         final File file = classpathFileResource.getFileFromClasspath("/test-files/values.csv");
 
         try(final BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-            final Optional<String> contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
+            final MediaType contentType = contentTypeDetector.detectContentTypeOf(bufferedInputStream);
 
-            assertThat(contentType.isPresent(), is(true));
-            assertThat(contentType.get(), is("text/plain"));
+            assertThat(contentType.getType(), is("text"));
+            assertThat(contentType.getSubtype(), is("plain"));
         }
     }
 }

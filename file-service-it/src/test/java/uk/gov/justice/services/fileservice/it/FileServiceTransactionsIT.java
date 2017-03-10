@@ -22,6 +22,7 @@ import uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
+import uk.gov.justice.services.utilities.file.ContentTypeDetector;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;
@@ -75,7 +76,8 @@ public class FileServiceTransactionsIT {
             FileStore.class,
             FailingMetadataJdbcRepository.class,
             MetadataUpdater.class,
-            UtcClock.class
+            UtcClock.class,
+            ContentTypeDetector.class
     })
     public WebApp war() {
         return new WebApp()

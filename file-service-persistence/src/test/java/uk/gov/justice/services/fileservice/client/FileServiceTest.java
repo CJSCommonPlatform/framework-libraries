@@ -3,6 +3,7 @@ package uk.gov.justice.services.fileservice.client;
 import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +11,7 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.fileservice.repository.FileStore;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Optional;
@@ -17,8 +19,11 @@ import java.util.UUID;
 
 import javax.json.JsonObject;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -32,15 +37,23 @@ public class FileServiceTest {
     @InjectMocks
     private FileService fileService;
 
+    @Captor
+    private ArgumentCaptor<BufferedInputStream>  streamCaptor;
+
     @Test
     public void shouldStoreAFile() throws Exception {
 
         final JsonObject metadata = mock(JsonObject.class);
-        final InputStream content = new ByteArrayInputStream("the file content".getBytes());
+        final String content = "the file content";
+        final InputStream contentStream = new ByteArrayInputStream(content.getBytes());
 
-        fileService.store(metadata, content);
+        fileService.store(metadata, contentStream);
 
-        verify(fileStore).store(metadata, content);
+        verify(fileStore).store(eq(metadata), streamCaptor.capture());
+
+        final BufferedInputStream bufferedInputStream = streamCaptor.getValue();
+
+        assertThat(IOUtils.toString(bufferedInputStream), is(content));
     }
 
     @Test

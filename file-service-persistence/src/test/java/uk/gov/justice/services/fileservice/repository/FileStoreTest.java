@@ -21,6 +21,7 @@ import uk.gov.justice.services.fileservice.api.StorageException;
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.fileservice.io.InputStreamWrapper;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -71,11 +72,11 @@ public class FileStoreTest {
         final DataSource dataSource = mock(DataSource.class);
         final JsonObject metadata = mock(JsonObject.class);
         final JsonObject updatedMetadata = mock(JsonObject.class);
-        final InputStream contentStream = mock(InputStream.class);
+        final BufferedInputStream contentStream = mock(BufferedInputStream.class);
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
-        when(metadataUpdater.addCreatedTime(metadata)).thenReturn(updatedMetadata);
+        when(metadataUpdater.addMediaTypeAndCreatedTime(metadata, contentStream)).thenReturn(updatedMetadata);
 
         final UUID fileId = fileStore.store(metadata, contentStream);
 
@@ -103,11 +104,11 @@ public class FileStoreTest {
         final DataSource dataSource = mock(DataSource.class);
         final JsonObject metadata = mock(JsonObject.class);
         final JsonObject updatedMetadata = mock(JsonObject.class);
-        final InputStream contentStream = mock(InputStream.class);
+        final BufferedInputStream contentStream = mock(BufferedInputStream.class);
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
-        when(metadataUpdater.addCreatedTime(metadata)).thenReturn(updatedMetadata);
+        when(metadataUpdater.addMediaTypeAndCreatedTime(metadata, contentStream)).thenReturn(updatedMetadata);
 
         doThrow(fileServiceException).when(metadataJdbcRepository).insert(any(UUID.class), eq(updatedMetadata), eq(connection));
 
@@ -126,7 +127,7 @@ public class FileStoreTest {
 
         final DataSource dataSource = mock(DataSource.class);
         final JsonObject metadata = mock(JsonObject.class);
-        final InputStream contentStream = mock(InputStream.class);
+        final BufferedInputStream contentStream = mock(BufferedInputStream.class);
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenThrow(sqlException);

@@ -7,6 +7,7 @@ import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.fileservice.repository.FileStore;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +35,9 @@ public class FileService implements FileStorer, FileRetriever {
      */
     @Override
     public UUID store(final JsonObject metadata, final InputStream fileContentStream) throws FileServiceException {
-        return fileStore.store(metadata, fileContentStream);
+
+
+        return fileStore.store(metadata, new BufferedInputStream(fileContentStream));
     }
 
     /**

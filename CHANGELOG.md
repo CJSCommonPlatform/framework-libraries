@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- Utility class for detecting the content type of an InputStream
+- Upgrade common bom to 1.13.0
+
 ## [1.1.0] - 2017-02-28
 - JsonObjects and other utility classes moved to here from framework
 

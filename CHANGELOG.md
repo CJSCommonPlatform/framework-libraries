@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.2.0] - 2017-03-10
+
 ### Added
 - Utility class for detecting the content type of an InputStream
 - Upgrade common bom to 1.13.0

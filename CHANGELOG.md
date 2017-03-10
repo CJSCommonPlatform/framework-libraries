@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [1.13.0] - 2017-03-10
 - Add Apache Tika
 
 ## [1.12.0] - 2017-03-02

@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [1.5.0] - 2017-02-28
 ### Added
 - add automatic detection of the file content type
 

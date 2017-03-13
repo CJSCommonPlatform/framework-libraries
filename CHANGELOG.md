@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [1.5.0] - 2017-02-28
+## [1.5.0] - 2017-03-13
 ### Added
 - add automatic detection of the file content type
 

@@ -24,6 +24,7 @@ import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
+import uk.gov.justice.services.utilities.file.ContentTypeDetector;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,7 +80,10 @@ public class FileServiceIT {
             MetadataJdbcRepository.class,
             MetadataUpdater.class,
             UtcClock.class,
-            LogFactory.class
+            LogFactory.class,
+
+            MetadataUpdater.class,
+            ContentTypeDetector.class
     })
     public WebApp war() {
         return new WebApp()
@@ -119,6 +123,7 @@ public class FileServiceIT {
 
             final JsonObject retrievedMetadata = fileReference.getMetadata();
             assertThat(retrievedMetadata.getString("metadataField"), is("metadataValue"));
+            assertThat(retrievedMetadata.getString("mediaType"), is("image/jpeg"));
             assertThat(retrievedMetadata.getString("createdAt"), is(notNullValue()  ));
 
             final InputStream contentStream = fileReference.getContentStream();

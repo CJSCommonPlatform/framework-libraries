@@ -1,5 +1,8 @@
 package uk.gov.justice.services.fileservice.repository;
 
+/**
+ * Gets the sql for insert/updates when not using postgres JsonB
+ */
 public class AnsiMetadataSqlProvider implements MetadataSqlProvider {
 
     static final String INSERT_SQL = "INSERT INTO metadata(metadata, file_id) values (?, ?)";

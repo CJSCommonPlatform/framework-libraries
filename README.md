@@ -9,7 +9,7 @@ A simple drop in library for storing binary files in Postgres. This library assu
     <dependency>
         <groupId>uk.gov.justice.services</groupId>
         <artifactId>file-service-persistence</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.5.0</version>
     </dependency>
     
     

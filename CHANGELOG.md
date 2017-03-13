@@ -4,8 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- add automatic detection of the file content type
 
-## [1.3.0] - 2017-02-28
+## [1.4.0] - 2017-02-28
 ### Fixed
 - Re-released due to a failed artifactory deployment
 

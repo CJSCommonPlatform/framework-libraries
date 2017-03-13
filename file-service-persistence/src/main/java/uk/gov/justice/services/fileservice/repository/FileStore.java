@@ -10,6 +10,7 @@ import uk.gov.justice.services.fileservice.api.StorageException;
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.fileservice.io.InputStreamWrapper;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -49,12 +50,12 @@ public class FileStore {
     @Transactional
     public UUID store(
             final JsonObject metadata,
-            final InputStream contentStream) throws FileServiceException {
+            final BufferedInputStream contentStream) throws FileServiceException {
 
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
             final UUID fileId = randomUUID();
 
-            final JsonObject updatedMetadata = metadataUpdater.addCreatedTime(metadata);
+            final JsonObject updatedMetadata = metadataUpdater.addMediaTypeAndCreatedTime(metadata, contentStream);
 
             contentJdbcRepository.insert(fileId, contentStream, connection);
             metadataJdbcRepository.insert(fileId, updatedMetadata, connection);

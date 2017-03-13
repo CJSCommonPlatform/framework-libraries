@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.3.0] - 2017-03-13
+
+### Added
+Created new 'file' module and moved content detection into it
+
 ## [1.2.0] - 2017-03-10
 
 ### Added

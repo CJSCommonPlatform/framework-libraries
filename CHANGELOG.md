@@ -5,6 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.7.0] - 2017-03-14
 ### Changed
 - upgrade utilities to 1.5.0
 

@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- beans.xml for CDI for file module
+
 ## [1.4.0] - 2017-03-13
 
 ### Added

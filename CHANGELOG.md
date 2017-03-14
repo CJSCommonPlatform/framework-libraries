@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Changed
+- upgrade utilities to 1.5.0
+
 ## [1.6.0] - 2017-03-13
 ### Changed
 - Move sql providers into their own modules

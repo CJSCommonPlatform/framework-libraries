@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.8.0] - 2017-03-15
 ### Added
 - Metadata SQL provider strategy producer that allows setting of strategy Class as JNDI GlobalValue 
 fileservice.metadata.sql.provider.strategy 

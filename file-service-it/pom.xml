@@ -30,13 +30,7 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
-            <artifactId>file-service-persistence-core</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.services</groupId>
-            <artifactId>file-service-persistence-ansi</artifactId>
+            <artifactId>file-service-persistence</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

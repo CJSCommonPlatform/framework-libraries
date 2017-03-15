@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
-            <artifactId>file-service-persistence-core</artifactId>
+            <artifactId>file-service-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -28,6 +28,11 @@
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>test-utils-core</artifactId>
             <version>${cpp.test.utilities.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -42,11 +47,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.services</groupId>
-            <artifactId>test-utils-persistence</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
             <scope>test</scope>
@@ -55,16 +55,6 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path-assert</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.services</groupId>
-            <artifactId>file-service-persistence-ansi</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.services</groupId>
-            <artifactId>file-service-persistence-postgres</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

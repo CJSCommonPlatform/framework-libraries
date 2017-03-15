@@ -90,7 +90,9 @@
         <wiremock.version>1.57</wiremock.version>
         <xbean.version>4.5</xbean.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
-
+        <restassured.version>2.5.0</restassured.version>
+        <elasticsearch.version>5.2.2</elasticsearch.version>
+        <jackson.dataformat.csv.version>2.7.0</jackson.dataformat.csv.version>
         <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
         <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
         <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
@@ -521,6 +523,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.jayway.restassured</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${restassured.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
@@ -718,6 +726,26 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.driver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>rest</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.plugin</groupId>
+                <artifactId>transport-netty4-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-csv</artifactId>
+                <version>${jackson.dataformat.csv.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

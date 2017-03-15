@@ -24,8 +24,7 @@
 
     <properties>
         <common-bom.version>1.13.0</common-bom.version>
-        <cpp.framework.version>1.4.1</cpp.framework.version>
-        <cpp.utilities.version>1.5.0</cpp.utilities.version>
+        <cpp.utilities.version>1.6.0</cpp.utilities.version>
         <cpp.test.utilities.version>1.2.0</cpp.test.utilities.version>
     </properties>
 
@@ -38,14 +37,7 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <dependency>
-                <groupId>uk.gov.justice.services</groupId>
-                <artifactId>framework-bom</artifactId>
-                <version>${cpp.framework.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <dependency>
+             <dependency>
                 <groupId>uk.gov.justice.utils</groupId>
                 <artifactId>utilities-core</artifactId>
                 <version>${cpp.utilities.version}</version>

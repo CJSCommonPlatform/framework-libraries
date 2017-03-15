@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.14.0] - 2017-03-15
+###
+- add Http Mime
+
 ## [1.13.0] - 2017-03-10
 - Add Apache Tika
 

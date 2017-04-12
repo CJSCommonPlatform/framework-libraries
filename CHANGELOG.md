@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.5.0] - 2017-04-12
+
+### changed
+- Updated lintchecker to pass MavenProject for reflections
+- Restructured lintchecker mojo tests
+
 ## [1.4.0] - 2017-02-14
 
 ### Added

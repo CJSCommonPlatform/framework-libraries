@@ -1,7 +1,10 @@
-package uk.gov.justice.raml.maven.lintchecker;
+package uk.gov.justice.raml.maven.lintchecker.processor;
 
 import uk.gov.justice.raml.io.FileTreeScanner;
 import uk.gov.justice.raml.io.files.parser.RamlFileParser;
+import uk.gov.justice.raml.maven.lintchecker.LintCheckConfiguration;
+import uk.gov.justice.raml.maven.lintchecker.LintCheckerException;
+import uk.gov.justice.raml.maven.lintchecker.rules.LintCheckRule;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,19 +27,16 @@ public class LintCheckGoalProcessor {
         this.fileTreeScanner = fileTreeScanner;
     }
 
-    public void execute(
-            final File sourceDirectory,
-            final List<LintCheckRule> rules,
-            final List<String> includes,
-            final List<String> excludes) throws MojoExecutionException {
+    public void execute(final LintCheckerGoalConfig lintCheckerGoalConfig) throws MojoExecutionException {
 
-        final Collection<Path> paths = getPaths(sourceDirectory, includes, excludes);
-        final Collection<Raml> ramls = ramlFileParser.ramlOf(sourceDirectory.toPath(), paths);
+        final Collection<Path> paths = getPaths(lintCheckerGoalConfig.getSourceDirectory(), lintCheckerGoalConfig.getIncludes(), lintCheckerGoalConfig.getExcludes());
+        final Collection<Raml> ramls = ramlFileParser.ramlOf(lintCheckerGoalConfig.getSourceDirectory().toPath(), paths);
 
         for (final Raml raml : ramls) {
-            for (final LintCheckRule rule : rules) {
+            for (final LintCheckRule rule : lintCheckerGoalConfig.getRules()) {
                 try {
-                    rule.execute(raml, new LintCheckConfiguration());
+                    rule.execute(raml, new LintCheckConfiguration(lintCheckerGoalConfig.getCurrentProject(),
+                            lintCheckerGoalConfig.getLog()));
                 } catch (final LintCheckerException e) {
                     throw new MojoExecutionException("Lint checker rule failed for rule " + rule.getClass().getSimpleName(), e);
                 }

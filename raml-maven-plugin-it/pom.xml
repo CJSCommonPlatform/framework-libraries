@@ -3,16 +3,48 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>uk.gov.justice.maven</groupId>
-    <artifactId>raml-maven-plugin-it</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <parent>
+        <groupId>uk.gov.justice.maven</groupId>
+        <artifactId>raml-maven</artifactId>
+        <version>1.5.0-SNAPSHOT</version>
+    </parent>
 
-    <!-- TODO add parent after extracting framewrok specific parent pom that does not contain raml-maven-plugin configuration-->
-    <!-- remember to manually update version -->
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>raml-maven-plugin-it</artifactId>
 
     <build>
         <plugins>
+            <!--
+                    we need to override the maven enforcer rules here because
+                    we are testing with snapshot plugin versions
+            -->
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-rules</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>enforce-rules-local</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <!--Available rules - http://maven.apache.org/enforcer/enforcer-rules/-->
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>${enforcer.java.version.range}</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${enforcer.maven.version.range}</version>
+                                </requireMavenVersion>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

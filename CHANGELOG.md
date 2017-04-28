@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [Unreleased]
 
 ### Changed
 - Upgrade to use parent POM [1.4.1](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.4.1)
@@ -12,13 +12,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 - add Http Mime
 
-### Added
 ## [1.13.0] - 2017-03-10
+### Added
 - Add Apache Tika
 
 ## [1.12.0] - 2017-03-02
 
-### Added
+### Removed
 - Remove JBoss exclusions
 
 ## [1.11.0] - 2017-03-02

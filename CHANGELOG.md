@@ -7,6 +7,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ### Changed
 - Upgrade to use parent POM [1.4.1](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.4.1)
+- Uplift wiremock to the forked version
 
 ## [1.14.0] - 2017-03-15
 ### Added

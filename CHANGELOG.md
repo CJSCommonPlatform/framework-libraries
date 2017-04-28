@@ -3,15 +3,22 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+## [1.3.0] - 2017-04-28
+
+### Changed
+ - Upgrade to use parent POM [1.4.1](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.4.1)
+
 ## [1.2.0] - 2016-11-15
 
-### Updated
- - To maven-parent-pom version 1.2.0
+### Changed
+ - Upgrade to use parent POM [1.2.0](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.2.0)
 
 ## [1.1.0] - 2016-11-01
 
-### Updated
- - To maven-parent-pom version 1.1.0
+### Changed
+ - Upgrade to use parent POM [1.1.0](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.1.0)
 
 ### Removed
  - Common plugin configuration from POM as this is now held in parent
@@ -21,3 +28,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 
 - Initial release of parent POM for framework components
+
+[Unreleased]: https://github.com/CJSCommonPlatform/maven-framework-parent-pom/compare/release-1.3.0...HEAD
+[1.3.0]: https://github.com/CJSCommonPlatform/maven-framework-parent-pom/compare/release-1.2.0...release-1.3.0
+[1.2.0]: https://github.com/CJSCommonPlatform/maven-framework-parent-pom/compare/release-1.1.0...release-1.2.0
+[1.1.0]: https://github.com/CJSCommonPlatform/maven-framework-parent-pom/compare/release-1.0.0...release-1.1.0
+[1.0.0]: https://github.com/CJSCommonPlatform/maven-framework-parent-pom/commits/release-1.0.0

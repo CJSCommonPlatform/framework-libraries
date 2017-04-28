@@ -5,23 +5,31 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Changed
+- Upgrade to use parent POM [1.4.1](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.4.1)
+
 ## [1.14.0] - 2017-03-15
-###
+### Added
 - add Http Mime
 
+### Added
 ## [1.13.0] - 2017-03-10
 - Add Apache Tika
 
 ## [1.12.0] - 2017-03-02
-- Re-release failed previous release
+
+### Added
+- Remove JBoss exclusions
 
 ## [1.11.0] - 2017-03-02
-- Remove jboss exclusions
+- Failed release; do not use
 
 ## [1.10.0] - 2017-02-22
-- Uplift Resteasy version and exclude conflicting dependencies
+### Added 
+- Uplift RESTEasy version and exclude conflicting dependencies
 
 ## [1.9.0] - 2017-02-14
+### Added
 - Add maven-plugin-annotations
 
 ## [1.8.0] - 2017-02-13
@@ -102,7 +110,20 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 - Initial release of common BOM
 
-[Unreleased]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.2.0...HEAD
+[Unreleased]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.14.0...HEAD
+[1.14.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.13.0...release-1.14.0
+[1.13.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.12.0...release-1.13.0
+[1.12.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.11.0...release-1.12.0
+[1.11.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.0.0...release-1.11.0
+[1.10.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.9.0...release-1.10.0
+[1.9.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.8.0...release-1.9.0
+[1.8.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.7.0...release-1.8.0
+[1.7.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.6.0...release-1.7.0
+[1.6.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.5.0...release-1.6.0
+[1.5.1]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.5.0...release-1.5.1
+[1.5.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.4.0...release-1.5.0
+[1.4.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.3.0...release-1.4.0
+[1.3.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.2.0...release-1.3.0
 [1.2.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.1.0...release-1.2.0
 [1.1.0]: https://github.com/CJSCommonPlatform/maven-common-bom/compare/release-1.0.0...release-1.1.0
 [1.0.0]: https://github.com/CJSCommonPlatform/maven-common-bom/commits/release-1.0.0

@@ -425,7 +425,7 @@ public class FileStoreTest {
 
         assertThat(fileStore.retrieveMetadata(fileId), is(metadata));
 
-        verify(connection, never()).close();
+        verify(connection).close();
     }
 
     @Test

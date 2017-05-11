@@ -151,13 +151,9 @@ public class FileStore {
      */
     @Transactional
     public Optional<JsonObject> retrieveMetadata(final UUID fileId) throws FileServiceException {
-
-        Connection connection = null;
-        try {
-            connection = dataSourceProvider.getDatasource().getConnection();
+        try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
             return metadataJdbcRepository.findByFileId(fileId, connection);
         } catch (final SQLException | StorageException e) {
-            close(connection);
             throw new StorageException("Failed to read metadata from the database", e);
         }
     }

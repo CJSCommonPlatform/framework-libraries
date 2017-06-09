@@ -41,7 +41,7 @@ import com.google.common.annotations.VisibleForTesting;
  * @author gopal
  *
  */
-public class DeadLetterQueueBrowser {
+public class DeadLetterQueueBrowser implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeadLetterQueueBrowser.class);
 
     private static final String DLQ_QUEUE_URI = artemisQueueUri();
@@ -59,7 +59,7 @@ public class DeadLetterQueueBrowser {
     }
 
     @VisibleForTesting
-    public DeadLetterQueueBrowser(final Queue dlqQueue, final Session session,
+    DeadLetterQueueBrowser(final Queue dlqQueue, final Session session,
             final JmsSessionFactory jmsSessionFactory, final ConsumerClient consumerClient) {
         super();
         this.session = session;

@@ -88,7 +88,7 @@
         <version.org.wildfly>10.0.0.Final</version.org.wildfly>
         <weld.version>2.4.0.Final</weld.version>
         <wildfly.client.version>10.0.0.Final</wildfly.client.version>
-        <wiremock.version>2.6.0.2.MoJ.Fork</wiremock.version>
+        <wiremock.version>1.58</wiremock.version>
         <xbean.version>4.5</xbean.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <restassured.version>2.5.0</restassured.version>

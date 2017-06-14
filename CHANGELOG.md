@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+## [2.0.0] - 2017-06-14
+
+### Changed
+- Upgrade to use parent POM [1.5.0](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.5.0)
+- Revert Wiremock to 1.x for backwards compatibility
+- Upgrade JSON Schema library to 1.5.1 so forked version is no longer required
+- Upgrade RAML parser to 0.8.18
+- Exclude logging dependencies where appropriate
+
 ## [1.15.0] - 2017-04-28
 
 ### Changed

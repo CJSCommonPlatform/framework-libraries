@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Made dead letter queue browser auto-closable
+
 ## [1.3.0] - 2017-05-26
 ### Added
 - Utility for browsing and deleting DLQ messages

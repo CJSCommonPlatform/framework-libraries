@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>1.2.0</version>
+        <version>1.5.0</version>
     </parent>
 
     <groupId>uk.gov.justice.utils</groupId>
@@ -17,10 +17,12 @@
 
     <modules>
         <module>test-utils-core</module>
+        <module>test-utils-logging-log4j</module>
+        <module>test-utils-logging-simple</module>
     </modules>
 
     <properties>
-        <common-bom.version>1.14.0</common-bom.version>
+        <common-bom.version>1.16.0</common-bom.version>
     </properties>
 
     <dependencyManagement>

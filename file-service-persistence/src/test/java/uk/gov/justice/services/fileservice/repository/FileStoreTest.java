@@ -450,4 +450,15 @@ public class FileStoreTest {
 
         verify(connection).close();
     }
+
+    @Test
+    public void shouldNotTryToCloseANullConnection() throws Exception {
+
+        when(dataSourceProvider.getDatasource()).thenThrow(new StorageException("Ooops"));
+
+        try {
+            fileStore.find(randomUUID());
+        } catch (final FileServiceException ignored) {
+        }
+    }
 }

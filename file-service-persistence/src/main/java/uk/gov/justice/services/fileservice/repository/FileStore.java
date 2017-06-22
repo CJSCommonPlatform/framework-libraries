@@ -159,6 +159,11 @@ public class FileStore {
     }
 
     private void close(final Connection connection) {
+
+        if(connection == null) {
+            return;
+        }
+        
         try {
             connection.close();
         } catch (final SQLException ignored) {

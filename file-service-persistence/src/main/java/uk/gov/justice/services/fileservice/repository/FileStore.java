@@ -84,13 +84,14 @@ public class FileStore {
             final Optional<FileContent> content = contentJdbcRepository.findByFileId(fileId, connection);
 
             if (!metadata.isPresent()) {
+                close(connection);
                 if (content.isPresent()) {
                     throw new DataIntegrityException("No metadata found for file id " + fileId + " but file content exists for that id");
                 }
-
                 return empty();
             }
             if (!content.isPresent()) {
+                close(connection);
                 throw new DataIntegrityException("No file content found for file id " + fileId + " but metadata exists for that id");
             }
 

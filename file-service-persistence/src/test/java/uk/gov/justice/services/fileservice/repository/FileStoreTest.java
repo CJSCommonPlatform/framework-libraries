@@ -203,6 +203,26 @@ public class FileStoreTest {
     }
 
     @Test
+    public void shouldCloseTheConnectionIfNoMetadataFoundForTheSpecifiedFileId() throws Exception {
+
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
+
+        fileStore.find(fileId);
+
+        verify(connection).close();
+
+    }
+
+
+    @Test
     public void shouldThrowADataIntegrityExceptionIfMetadataFoundButNoContent() throws Exception {
 
         final UUID fileId = randomUUID();
@@ -223,6 +243,31 @@ public class FileStoreTest {
         } catch (final DataIntegrityException expected) {
             assertThat(expected.getMessage(), is("No file content found for file id " + fileId + " but metadata exists for that id"));
         }
+    }
+
+    @Test
+    public void shouldCloseTheConnectionIfMetadataFoundButNoContent() throws Exception {
+
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final JsonObject metadata = mock(JsonObject.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
+
+        try {
+            fileStore.find(fileId);
+            fail();
+        } catch (final DataIntegrityException expected) {
+
+        }
+
+        verify(connection).close();
     }
 
     @Test
@@ -251,6 +296,33 @@ public class FileStoreTest {
     }
 
     @Test
+    public void shouldCloseTheConnectionIfContentFoundButNoMetadata() throws Exception {
+        final UUID fileId = randomUUID();
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final InputStream contentStream = mock(InputStream.class);
+        final Boolean deleted = true;
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream, deleted)));
+
+        try {
+            fileStore.find(fileId);
+            fail();
+        } catch (final DataIntegrityException expected) {
+
+        }
+
+        verify(connection).close();
+
+
+    }
+
+    @Test
     public void shouldCloseTheConnectionWhenAnExceptionIsThrownOnFind() throws Exception {
 
         final StorageException storageException = new StorageException("Ooops");
@@ -273,6 +345,30 @@ public class FileStoreTest {
         }
 
         verify(connection).close();
+    }
+
+    @Test
+    public void shouldDoNothingWhenAnExceptionIsThrownOnFindAndConnectionIsNull() throws Exception {
+
+        final StorageException storageException = new StorageException("Ooops");
+
+        final DataSource dataSource = mock(DataSource.class);
+
+        final JsonObject metadata = mock(JsonObject.class);
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(null);
+
+        when(metadataJdbcRepository.findByFileId(any(UUID.class), any(Connection.class))).thenReturn(of(metadata));
+        when(contentJdbcRepository.findByFileId(any(UUID.class), any(Connection.class))).thenThrow(storageException);
+
+        try {
+            fileStore.find(randomUUID());
+            fail();
+        } catch (final StorageException ignored) {
+        }
+
+
     }
 
     @Test

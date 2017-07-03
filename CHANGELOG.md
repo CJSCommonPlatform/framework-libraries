@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.8.2] - 2017-07-03
+### Changed
+- Close the connection when file not found or inconsistent data 
 
 ## [1.8.0] - 2017-03-15
 ### Added

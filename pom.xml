@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-parent-pom</artifactId>
-        <version>1.4.1</version>
+        <version>1.6.0</version>
     </parent>
 
     <artifactId>maven-common-bom</artifactId>
@@ -94,10 +94,7 @@
         <restassured.version>2.5.0</restassured.version>
         <elasticsearch.version>5.2.2</elasticsearch.version>
         <jackson.dataformat.csv.version>2.7.0</jackson.dataformat.csv.version>
-        <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-common-bom.git</cpp.scm.git.url>
-        <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
-        <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
-        <cpp.scm.url>https://github.com/CJSCommonPlatform/maven-common-bom</cpp.scm.url>
+        <cpp.repo.name>maven-common-bom</cpp.repo.name>
     </properties>
 
     <scm>

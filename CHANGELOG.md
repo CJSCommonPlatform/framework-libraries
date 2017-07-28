@@ -7,6 +7,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ### Changed
 
+- use newer versions of parent pom and common bom
+- use dependencies in the common bom properly
+- use common Travis build process
+- use SCM variables from parent
 - EmbeddedArtemisServer utility class has been refactored into multiple 
   classes mentioned below (added section), clean separation of responsibilities 
   SRP(Single Responsibility Principle)

@@ -20,7 +20,7 @@
         <plugins.maven.wildfly.version>1.0.2.Final</plugins.maven.wildfly.version>
         <plugins.maven.wildfly.skip>true</plugins.maven.wildfly.skip>
 
-        <cpp.repo.name>maven-parent-pom</cpp.repo.name>
+        <cpp.repo.name>maven-framework-parent-pom</cpp.repo.name>
     </properties>
 
     <scm>

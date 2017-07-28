@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- Updated to use parent POM [1.6.0](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.6.0)
+- Use bintray for releases
+- Improve Travis build process (use common one)
+
 ## [1.16.0] - 2017-06-14
 
 ### Changed

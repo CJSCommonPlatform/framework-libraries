@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>1.2.0</version>
+        <version>1.6.0</version>
     </parent>
 
     <groupId>uk.gov.justice.utils</groupId>
@@ -21,8 +21,10 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.13.0</common-bom.version>
-        <test-utils.version>1.2.0</test-utils.version>
+        <common-bom.version>1.17.0</common-bom.version>
+        <test-utils.version>1.5.0</test-utils.version>
+
+        <cpp.repo.name>utilities</cpp.repo.name>
     </properties>
 
     <dependencyManagement>

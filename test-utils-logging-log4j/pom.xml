@@ -11,6 +11,14 @@
 
     <artifactId>test-utils-logging-log4j</artifactId>
     <packaging>pom</packaging>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+
     <dependencies>
 
         <!-- Redirect other logging implementations over SLF4J -->

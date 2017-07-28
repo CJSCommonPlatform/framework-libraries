@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-parent-pom</artifactId>
-        <version>1.4.0</version>
+        <version>1.6.0</version>
     </parent>
 
     <groupId>uk.gov.justice.maven</groupId>
@@ -25,12 +25,24 @@
         <module>raml-maven-test-utils</module>
     </modules>
 
+    <properties>
+        <common-bom.version>1.17.0</common-bom.version>
+
+        <cpp.repo.name>raml-maven</cpp.repo.name>
+    </properties>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>uk.gov.justice</groupId>
                 <artifactId>maven-common-bom</artifactId>
-                <version>1.9.0</version>
+                <version>${common-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

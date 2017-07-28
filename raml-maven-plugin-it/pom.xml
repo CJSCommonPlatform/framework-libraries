@@ -12,6 +12,12 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>raml-maven-plugin-it</artifactId>
 
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
     <build>
         <plugins>
             <!--

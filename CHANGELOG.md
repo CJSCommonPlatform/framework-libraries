@@ -5,9 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Changed
+- Switch to bintray for releases
+- Use common Travis CI build process
+- Set SCM section consistently in all poms
+
 ## [1.5.0] - 2017-04-12
 
-### changed
+### Changed
 - Updated lintchecker to pass MavenProject for reflections
 - Restructured lintchecker mojo tests
 

@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.1.0] - 2017-07-28
+
 ### Changed
 
 - use newer versions of parent pom and common bom

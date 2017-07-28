@@ -8,6 +8,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Changed
 - Switch to bintray for releases
 - Use improved Travis CI build process
+- Consistent SCM settings
 
 ## [1.6.0] - 2017-03-15
 ### Added

@@ -27,6 +27,12 @@
         <cpp.repo.name>utilities</cpp.repo.name>
     </properties>
 
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>1.2.0</version>
+        <version>1.6.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,10 +22,18 @@
         <module>file-service-test-utils</module>
     </modules>
 
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
     <properties>
-        <common-bom.version>1.13.0</common-bom.version>
-        <cpp.utilities.version>1.6.0</cpp.utilities.version>
-        <cpp.test.utilities.version>1.2.0</cpp.test.utilities.version>
+        <common-bom.version>1.17.0</common-bom.version>
+        <cpp.utilities.version>1.7.0</cpp.utilities.version>
+        <cpp.test.utilities.version>1.5.0</cpp.test.utilities.version>
+
+        <cpp.repo.name>file-service</cpp.repo.name>
     </properties>
 
     <dependencyManagement>

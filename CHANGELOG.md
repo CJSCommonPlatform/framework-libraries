@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to 
 [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Changed
+- Use more recent parent and common-boms (that are in Bintray)
+- Use bintray for releases
+- Use common Travis CI build process
+
 ## [1.8.2] - 2017-07-03
 ### Changed
 - Close the connection when file not found or inconsistent data 

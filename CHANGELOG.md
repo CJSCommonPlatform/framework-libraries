@@ -5,6 +5,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.5.0] - 2017-07-28
+
+### Changed
+- use newer parent pom (builds from bintray), no other changes
+- Improve Travis CI process, use container based builds
+
+### Fixed
+- Ensure SCM information is correct on all modules
+
 ## [1.4.0] - 2017-06-15
 
 ### Added

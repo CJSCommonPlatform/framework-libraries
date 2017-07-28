@@ -5,12 +5,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.7.0] - 2017-07-28
+
 ### Changed
 - Switch to bintray for releases
 - Use improved Travis CI build process
 - Consistent SCM settings
 
 ## [1.6.0] - 2017-03-15
+
 ### Added
 - configuration GlobalValue and Value annotation implementations from framework
 

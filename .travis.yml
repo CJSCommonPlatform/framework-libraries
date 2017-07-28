@@ -1,23 +1,23 @@
+dist: trusty
+sudo: false
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
+git:
+  depth: 3
 cache:
   directories:
-    - "$HOME/.m2"
+  - "$HOME/.m2"
 before_install:
-  - git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
-install:
-  - cp -f $JAVA_HOME/jre/lib/security/cacerts target/travis-settings/cacerts
-  - chmod u+w target/travis-settings/cacerts
-  - $JAVA_HOME/jre/bin/keytool -import -v -noprompt -storepass changeit -storetype jks -trustcacerts -alias IndigoBlueRoot -file target/travis-settings/ROOT-CA.crt -keystore target/travis-settings/cacerts
-script: mvn -Djavax.net.ssl.trustStore=$PWD/target/travis-settings/cacerts -B -C -V -U --settings target/travis-settings/settings.xml verify coveralls:report
-after_success:
-  - '[[ $TRAVIS_BRANCH == "master" && $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_TAG != release-* ]] && mvn -Djavax.net.ssl.trustStore=$PWD/target/travis-settings/cacerts -DskipTests=true -B -C -V --errors deploy --settings target/travis-settings/settings.xml'
-  - '[[ $TRAVIS_TAG == release-* ]] && mvn -Prelease -Djavax.net.ssl.trustStore=$PWD/target/travis-settings/cacerts -DskipTests=true -B -C -V --errors deploy --settings target/travis-settings/settings.xml'
+- git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
+- ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
+install: "${PWD}/target/travis-settings/java/install.sh"
+script: "${PWD}/target/travis-settings/java/script.sh coveralls:report"
+after_success: "${PWD}/target/travis-settings/java/after_success.sh"
 notifications:
   slack:
-    secure: "RcwiuQ/avAXchkwkFRSpjqw7QS68iXpP2cxLNul7pEEH2V4jqGgnonjRGANBqwqQfOibXdoZRsXQvHzKEXNgAUzfB9YwSABhJpmZGwj4u/jtzkf4zQuBPR/upOYrDgQBgH0zFB2Haum/lh60QYRzJjA9YtwxpOHoRPKCoab/Qo+w4gaL4WauxiygltfIPhCfDhDNa8TMsufV43jYemI9Ah8YB1jaKBHhVCZdBdxvYHV/FlkZEk2DeDQ7NWlaZ1iQv7QVlQp8sN0n4+7M4igqYYZJJ8IBrRq0S+pTvsbGCWf0GCTCzuXrIKXF8T2VFEaX22cAKLQAOkNW+d64L7QAPJ+c1lQWufnSYgbiSfSS5X4fNLN8BwrWWEUqLslQmQo5sJBrAzTCR9EX0I+N/Y0m808effghWwIHrcD+RTwS9/tV8oa5vR5s49Psba8KFKe5o7e31NjCRCXJ5jB6hcU1nVxjVwIDXMME7x/HRXpUt4dy0pQQES8i4PjqzB5DH4+7IX9um5VQuVDqlOvIXthLUDRTNPBJjmovGuwvaKX+1RMViqlC+uATCVA/wr8fW6JPmz3zLl7ldpqnr5+0BrbAwTnaQiCMteQJ1v23dYMekM+kQBzwbS3TcDCTZk5tNf/UWCxOm3YFiX3ReP/0hvs/PSyp04rw3e82gS1+hfR+Reg="
+    secure: RcwiuQ/avAXchkwkFRSpjqw7QS68iXpP2cxLNul7pEEH2V4jqGgnonjRGANBqwqQfOibXdoZRsXQvHzKEXNgAUzfB9YwSABhJpmZGwj4u/jtzkf4zQuBPR/upOYrDgQBgH0zFB2Haum/lh60QYRzJjA9YtwxpOHoRPKCoab/Qo+w4gaL4WauxiygltfIPhCfDhDNa8TMsufV43jYemI9Ah8YB1jaKBHhVCZdBdxvYHV/FlkZEk2DeDQ7NWlaZ1iQv7QVlQp8sN0n4+7M4igqYYZJJ8IBrRq0S+pTvsbGCWf0GCTCzuXrIKXF8T2VFEaX22cAKLQAOkNW+d64L7QAPJ+c1lQWufnSYgbiSfSS5X4fNLN8BwrWWEUqLslQmQo5sJBrAzTCR9EX0I+N/Y0m808effghWwIHrcD+RTwS9/tV8oa5vR5s49Psba8KFKe5o7e31NjCRCXJ5jB6hcU1nVxjVwIDXMME7x/HRXpUt4dy0pQQES8i4PjqzB5DH4+7IX9um5VQuVDqlOvIXthLUDRTNPBJjmovGuwvaKX+1RMViqlC+uATCVA/wr8fW6JPmz3zLl7ldpqnr5+0BrbAwTnaQiCMteQJ1v23dYMekM+kQBzwbS3TcDCTZk5tNf/UWCxOm3YFiX3ReP/0hvs/PSyp04rw3e82gS1+hfR+Reg=
 env:
   global:
-    - secure: "p/m3+8jh+i0WuFA4fXxraiClPrzbmSSz4UIu/oMnCOHg8+yBZNvRIqmyIzcMlbEIf/VLNAs1PMwY6xG+gYsGmoWYKft/BjMc32CAnjjzcV5M6+lwT/AclPp5fYu2fP67matoUUnpnrLu/8uDIf34ZSJvrNLvzeOs1qnJVhIUwJFq9AZbX1vZklDwbkKSaI0K3v9pihMmYDS52TJDIvx+ySh76hDJoPeOSuTmM27/Z1hPMN/2HFFsWKL1p8i4mvNnUMqmiPp0RlRgORl2LzEdlYTOl01uw0oebyiMcUNKh2wdcYTGuNm078e+8RqyAK+ioSwGiju09cYI09Zd1Ytp9eTLJqje9G3H6QNLwpeZdVAhOtktVsC3M4XGJzgWgucSYFgbh/9oh3apT7p3GL8sIQ3HgCX+Ns7ivzrpI2O9n0A+qCHFrirggBI5zoQ9NCvc9JgsTB6MDrz5ysyeIpIbHjjIpsGFTXsCW1EflYiPkVxJbfvF8k6m+4E5ZEiB6UWz3Go5b6RjTzGwGQ94DJreWILrF0/VsMtIUog6YKftw7ryF2GG1zCaNw9AyjAwzDDBiTFoMatUMHNiTEGxWd3VaHN5+Cal+nUGL4olkvYawuNJaReERu7f9zVJWZMMqUr+00wmUfUimSn4WHsDXnfE+ToH1n/+BHI1zyNokfjoRgc="
-    - secure: "gSOwgkqUwkqQVQIvCfTigWUPwYXGymX22SVAA5JlvhHYAhwsEY6XJTtqAxjS9WkWUYgCwAwGiDBrytTFQxl28k90Arh/ZMjKwtfhiUuiRnHJyPZOSrrxrHR8Y5I0tDwJZiC96cwzFXhM4Rqlgc+1X+NAqKjBzMg/EGM+vOXS7YOQByjReD0fUbMFNFjEImSbhP+J7dCHP3q20xAts426J2Mp1TeG70Sy+di1bNBQO49ubRJWi4s00E3d69S7jEULgC1XRokINjbDYdw1Rr1qzwcMc7Vm8BMKpy/LHlsITBd9sJg8Y9QDthJG36j1u2sjl4lbfTAYecUirhLxsZSBUZlE+kmblbLsnuj7rjg9VZfIPxt+Vkg6mRus17X2WrOQjY8csR2Y+g0aqLv3042hnk2MIMaaqkml8km1Y42GOFP4GRuE060brFIWXjCDg5UurUH0s9Rd1IcC3cHeSzOroUChKHvH0bRScRiOb+Xkx860V/S/4qP/fzKEqsEgdht9XAhaLqjo9ebUmvHQNF/qxyJrxJjkAEtxyWX9Wl+bAPGnd62z0JU+U1DReCnfvYQ9tXL8DSASpQ0U6Y5V9K3gxgJOPYAAwa8OQ/pUnwz/1fudKGlOZdfMi7EFVg9G/J4Q3JuewYEM3nCi2ZEzXmnqNTB2M8dcgVkgcqA4pSMBNfk="
+  - secure: DQmPRZrOIOTQPAj0jr6d937vi2TPZAaWQJUy+3ozzG89PtWLLqJavBaBZGwm87R+q6D8C+AR13WIMdLTozQVsj4Q8PzK+ZGu6UZiW5McY2e9xpCPajNgBjgU4QU7uxUS8cKKh7QQOfCqI/F+qTT05+z+FEMRXEU9E+bqazX7jLHV/MKkq7IuH29HVbB/vNz1Zd3R6md+f2w5OBgAjShHCDCLMj7QZaJ4QvFgZdoWhUFSQq9CfB2JYdRM3Gb9CMvY1ogESOf9kopLL0bC2H1pwJ1SK8LrC2MvYRpWO2IfG9X1C1BoHEmGnOVcI9uCY8lBnukQeqDl46QNqRnPm75uOt96As/oVkGRDVdMWsQaBOoAgD6R+42ewSaCPES6vp00CL5XnXk3hweaVTRF128WxruSKnuELGKklE/EV2EGwrEcrpIz8qgFEW/80FJKeK7YQ9u2xaN/ZWobG+Ukk7JED59E113OWC45+MbC633jwvbT6zeVCTzVTZSp4TLkWCf+OaGTlB4wyqzsYMJVoUZtSo91/+ZQCsbmTDZaMi09at4lIXbyAJ/twWIr/Jx6XL1Hy21T7SPKu7B6lEleQ1S+GDPs9vLBZhfeP1ecMWGYzxqFxGM2kiAkRk7wEd60wf1Xf7k6p4Oxvtb5klr+KQ8RHyhhN7/KG2vaAWUdfFIyJPw=
+  - secure: yZVwYXRySwL/LmOOZFe3GQfrnqXVpjoPNUGvLaRKSdrMtj3k99EV8VpakW6o2Fxtfqkff0TnKiQYMOU+E2Kr1xK8p+608ullAmtb+7VwnCvLE3N16Fvy6ObkeETz80sE/PzKiV4tOIFxpUiJDvOmNMZdICPpulJBmyA86DRUqxdqW8XwJJH5RfwvY0n+xww9TxRIitkqDCWorM9lduvAsZEbOA3dz7aVBNAxZbmShIzhuwsHM3GAOMivCb7kJmVuL5hKSJHO9oNHFTxaCjBkklRUQVGLwTRerOOdv0R/PO1Fi1P92p+sFFrMteiPrfQ3IrmHqDAnLaoJzenl/SP8xB1O/Zi9kGmDBfYasSGPgrKClvudzcMDUGxHf1oIeq1kl3czYOAbf1wlYe/LLCSLZtci5bKrOgVNorknYUPYdy6Q2bDCiRjw8h8rLdh7Mii7e+FZirhd2X0xpHvWqOgy9uQkusbDuAx2UEiapLILoFLYQCWHe7pGOt02+hb3zhaqeK+++wB6CQIiN4pxQdQwDMGzRO0/L7SrYt9TShXALymk8Yx7/kkdlmoG6Tmba2DsfcqbEs3HKxzHce2RDiadviXf8DjbppGcZRRqVl19GLQtesv6qHs5NmnhrBHnyzJO0IVeFnlNvWhvPj2oE4KktoEkTEOSfGfHEtWqX5OCUx0=

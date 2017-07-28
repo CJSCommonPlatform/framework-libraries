@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-parent-pom</artifactId>
-        <version>1.5.0</version>
+        <version>1.6.0</version>
     </parent>
 
     <artifactId>maven-framework-parent-pom</artifactId>
@@ -20,11 +20,7 @@
         <plugins.maven.wildfly.version>1.0.2.Final</plugins.maven.wildfly.version>
         <plugins.maven.wildfly.skip>true</plugins.maven.wildfly.skip>
 
-        <cpp.scm.git.url>git@github.com:CJSCommonPlatform/maven-framework-parent-pom.git
-        </cpp.scm.git.url>
-        <cpp.scm.connection>scm:git:${cpp.scm.git.url}/</cpp.scm.connection>
-        <cpp.scm.developerConnection>${project.scm.connection}</cpp.scm.developerConnection>
-        <cpp.scm.url>https://github.com/CJSCommonPlatform/maven-framework-parent-pom</cpp.scm.url>
+        <cpp.repo.name>maven-parent-pom</cpp.repo.name>
     </properties>
 
     <scm>

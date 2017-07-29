@@ -12,6 +12,12 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>raml-maven-plugin-it</artifactId>
 
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
     <build>
         <plugins>
             <!--
@@ -120,17 +126,6 @@
             </plugin>
         </plugins>
     </build>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>uk.gov.justice</groupId>
-                <artifactId>maven-common-bom</artifactId>
-                <version>1.9.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

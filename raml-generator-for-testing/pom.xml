@@ -10,6 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>raml-generator-for-testing</artifactId>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>

@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.6.0] - 2017-07-29
+
 ### Changed
 - Switch to bintray for releases
 - Use common Travis CI build process

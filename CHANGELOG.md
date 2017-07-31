@@ -5,6 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.6.1] - 2017-07-31
 ### Changed
  - Don't add the wildfly plugin to the build process in "skipped" mode. Leave it out entirely
 

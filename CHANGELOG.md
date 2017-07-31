@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+ - Don't add the wildfly plugin to the build process in "skipped" mode. Leave it out entirely
+
 ## [1.6.0] - 2017-07-28
 ### Changed
  - Upgrade to use parent POM [1.6.0](https://github.com/CJSCommonPlatform/maven-parent-pom/releases/tag/release-1.6.0)

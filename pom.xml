@@ -17,8 +17,7 @@
     <description>Parent POM for the Microservices framework</description>
 
     <properties>
-        <plugins.maven.wildfly.version>1.0.2.Final</plugins.maven.wildfly.version>
-        <plugins.maven.wildfly.skip>true</plugins.maven.wildfly.skip>
+        <plugins.maven.wildfly.version>1.2.0.Alpha6</plugins.maven.wildfly.version>
 
         <cpp.repo.name>maven-framework-parent-pom</cpp.repo.name>
     </properties>
@@ -143,18 +142,6 @@
 
         <!-- Plugin configuration -->
         <plugins>
-
-            <!-- The WildFly plugin deploys your war to a local WildFly container -->
-            <!-- Skip modules by default. To enable a module configure the plugin for that specific module -->
-            <!-- To use, run: mvn package wildfly:deploy -->
-            <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <configuration>
-                    <skip>${plugins.maven.wildfly.skip}</skip>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

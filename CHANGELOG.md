@@ -5,7 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-### Changed
+### [1.10.0]
+- Fix for BLOB columns with updated liquibase
 - Use more recent parent and common-boms (that are in Bintray)
 - Use bintray for releases
 - Use common Travis CI build process

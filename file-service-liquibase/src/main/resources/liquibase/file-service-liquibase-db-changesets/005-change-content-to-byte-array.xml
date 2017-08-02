@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="005-change-content-to-byte-array" author="TechPod">
+    <changeSet id="005-change-content-to-byte-array" author="TechPod" dbms="postgresql">
 
         <preConditions onFail="MARK_RAN"
                        onFailMessage=

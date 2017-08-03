@@ -15,6 +15,7 @@
                 <configuration>
                     <generatorName>uk.gov.justice.raml.maven.generator.DummyGenerator
                     </generatorName>
+                    <parserName>uk.gov.justice.raml.io.files.parser.RamlFileParser</parserName>
                     <basePackageName>uk.gov.justice.api</basePackageName>
                     <sourceDirectory>${basedir}/src/raml</sourceDirectory>
                     <includes>

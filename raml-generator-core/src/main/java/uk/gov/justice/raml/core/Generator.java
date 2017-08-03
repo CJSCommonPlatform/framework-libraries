@@ -1,9 +1,6 @@
 package uk.gov.justice.raml.core;
 
-import org.raml.model.Raml;
+public interface Generator<T> {
 
-public interface Generator {
-
-    void run(Raml raml, GeneratorConfig generatorConfig);
-
+    void run(T source, GeneratorConfig generatorConfig);
 }

@@ -19,7 +19,7 @@ import org.raml.model.Raml;
 /**
  * Generator for testing - RAML titles are appended to a text file.
  */
-public class RamlTitleAppendingGenerator implements Generator {
+public class RamlTitleAppendingGenerator implements Generator<Raml> {
     public static final String FILE_NAME = "raml-titles.txt";
 
     @Override

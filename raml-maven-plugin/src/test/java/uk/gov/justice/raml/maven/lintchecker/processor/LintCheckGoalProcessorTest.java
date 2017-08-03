@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.raml.model.Raml;
 
@@ -64,7 +63,7 @@ public class LintCheckGoalProcessorTest {
         final String[] includes = { "include_1" };
 
         when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenReturn(paths);
-        when(ramlFileParser.ramlOf(sourceDirectory.toPath(), paths)).thenReturn(ramls);
+        when(ramlFileParser.parse(sourceDirectory.toPath(), paths)).thenReturn(ramls);
 
         lintCheckGoalProcessor.execute(
                 new LintCheckerGoalConfig(
@@ -100,7 +99,7 @@ public class LintCheckGoalProcessorTest {
         final String[] includes = { "include_1" };
 
         when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenReturn(paths);
-        when(ramlFileParser.ramlOf(sourceDirectory.toPath(), paths)).thenReturn(ramls);
+        when(ramlFileParser.parse(sourceDirectory.toPath(), paths)).thenReturn(ramls);
 
         doThrow(lintCheckerException).when(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
 

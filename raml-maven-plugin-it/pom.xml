@@ -70,6 +70,7 @@
                             <generatorName>
                                 uk.gov.justice.raml.maven.test.RamlTitleAppendingGenerator
                             </generatorName>
+                            <parserName>uk.gov.justice.raml.io.files.parser.RamlFileParser</parserName>
                             <basePackageName>uk.gov.justice.api</basePackageName>
                             <outputDirectory>${project.build.directory}/generated-sources
                             </outputDirectory>
@@ -92,6 +93,7 @@
                             <generatorName>
                                 uk.gov.justice.raml.maven.test.RamlTitleAppendingGenerator
                             </generatorName>
+                            <parserName>uk.gov.justice.raml.io.files.parser.RamlFileParser</parserName>
                             <basePackageName>uk.gov.justice.api</basePackageName>
                             <sourceDirectory>${basedir}/src/raml</sourceDirectory>
                             <outputDirectory>${project.build.directory}/generated-sources

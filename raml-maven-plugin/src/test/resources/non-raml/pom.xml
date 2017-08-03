@@ -14,6 +14,7 @@
                 <groupId>uk.gov.justice.maven</groupId>
                 <configuration>
                     <generatorName>uk.gov.justice.raml.jaxrs.maven.NonExisting</generatorName>
+                    <parserName>uk.gov.justice.raml.io.files.parser.RamlFileParser</parserName>
                     <basePackageName>uk.gov.justice.api</basePackageName>
                     <sourceDirectory>${basedir}/src/raml</sourceDirectory>
                 </configuration>

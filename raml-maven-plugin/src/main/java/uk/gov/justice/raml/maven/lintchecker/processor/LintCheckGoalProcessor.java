@@ -30,7 +30,7 @@ public class LintCheckGoalProcessor {
     public void execute(final LintCheckerGoalConfig lintCheckerGoalConfig) throws MojoExecutionException {
 
         final Collection<Path> paths = getPaths(lintCheckerGoalConfig.getSourceDirectory(), lintCheckerGoalConfig.getIncludes(), lintCheckerGoalConfig.getExcludes());
-        final Collection<Raml> ramls = ramlFileParser.ramlOf(lintCheckerGoalConfig.getSourceDirectory().toPath(), paths);
+        final Collection<Raml> ramls = ramlFileParser.parse(lintCheckerGoalConfig.getSourceDirectory().toPath(), paths);
 
         for (final Raml raml : ramls) {
             for (final LintCheckRule rule : lintCheckerGoalConfig.getRules()) {

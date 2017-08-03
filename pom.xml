@@ -23,6 +23,8 @@
         <module>raml-generator-for-testing</module>
         <module>lint-checker-core</module>
         <module>raml-maven-test-utils</module>
+        <module>schema-parser</module>
+        <module>parser-common</module>
     </modules>
 
     <properties>

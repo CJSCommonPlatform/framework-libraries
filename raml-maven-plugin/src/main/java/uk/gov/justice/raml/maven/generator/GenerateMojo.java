@@ -1,8 +1,10 @@
 package uk.gov.justice.raml.maven.generator;
 
+import static java.lang.Class.forName;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
+import uk.gov.justice.raml.io.files.parser.FileParser;
 import uk.gov.justice.raml.maven.common.BasicMojo;
 
 import java.io.File;
@@ -21,12 +23,17 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "generate", requiresDependencyResolution = COMPILE_PLUS_RUNTIME, defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateMojo extends BasicMojo {
 
-
     /**
      * The fully qualified classname for the generator to use
      */
     @Parameter(property = "generatorName", required = true)
     private String generatorName;
+
+    /**
+     * The fully qualified file parser for the generator to use
+     */
+    @Parameter(property = "parserName", required = true)
+    private String parserName;
 
     /**
      * Target directory for generated Java source files.
@@ -60,10 +67,12 @@ public class GenerateMojo extends BasicMojo {
 
             try {
                 FileUtils.forceMkdir(outputDirectory);
-                new GenerateGoalProcessor(new GeneratorFactory(), new FileTreeScannerFactory())
+                new GenerateGoalProcessor(new GeneratorFactory(),
+                        new FileTreeScannerFactory(),
+                        (FileParser) forName(parserName).newInstance())
                         .generate(configuration(sourcePaths));
             } catch (Exception e) {
-                throw new MojoExecutionException("Failed to apply generator to raml", e);
+                throw new MojoExecutionException("Failed to apply generator to source file", e);
             }
         } else {
             getLog().info("Skipping generation plugin execution as generation.skip flag is enabled.");

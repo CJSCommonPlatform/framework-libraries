@@ -18,6 +18,8 @@ import uk.gov.justice.raml.core.Generator;
 import uk.gov.justice.raml.core.GeneratorConfig;
 import uk.gov.justice.raml.io.FileTreeScanner;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
+import uk.gov.justice.raml.io.files.parser.FileParser;
+import uk.gov.justice.raml.io.files.parser.RamlFileParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +35,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.raml.emitter.RamlEmitter;
 import org.raml.model.Raml;
@@ -55,6 +58,8 @@ public class GenerateGoalProcessorTest {
     private FileTreeScannerFactory scannerFactory;
     @Mock
     private GenerateGoalConfig config;
+    @Spy
+    private FileParser<Raml> ramlFileParserFileParser = new RamlFileParser();
     @Mock
     private FileTreeScanner scanner;
     @InjectMocks

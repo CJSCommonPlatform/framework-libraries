@@ -2,6 +2,7 @@ package uk.gov.justice.raml.maven.generator;
 
 import uk.gov.justice.raml.core.GeneratorConfig;
 import uk.gov.justice.raml.io.FileTreeScannerFactory;
+import uk.gov.justice.raml.io.files.parser.FileParser;
 import uk.gov.justice.raml.io.files.parser.RamlFileParser;
 
 import java.io.IOException;
@@ -14,12 +15,16 @@ import java.util.Collection;
 public class GenerateGoalProcessor {
 
     private final GeneratorFactory generatorFactory;
+    private final FileParser parser;
 
     private final FileTreeScannerFactory scannerFactory;
 
-    public GenerateGoalProcessor(final GeneratorFactory generatorFactory, final FileTreeScannerFactory scannerFactory) {
+    public GenerateGoalProcessor(final GeneratorFactory generatorFactory,
+                                 final FileTreeScannerFactory scannerFactory,
+                                 final FileParser parser) {
         this.generatorFactory = generatorFactory;
         this.scannerFactory = scannerFactory;
+        this.parser = parser;
     }
 
     public void generate(final GenerateGoalConfig config) throws IOException {
@@ -32,8 +37,8 @@ public class GenerateGoalProcessor {
 
         final Collection<Path> paths = scannerFactory.create().find(config.getSourceDirectory(), includes, excludes);
 
-        new RamlFileParser()
-                .ramlOf(config.getSourceDirectory(), paths)
-                .forEach(raml -> generatorFactory.instanceOf(config.getGeneratorName()).run(raml, generatorConfig));
+        parser
+                .parse(config.getSourceDirectory(), paths)
+                .forEach(file -> generatorFactory.instanceOf(config.getGeneratorName()).run(file, generatorConfig));
     }
 }

@@ -25,7 +25,7 @@ public class RamlFileParserTest {
     @SuppressWarnings("unchecked")
     public void shouldParseRamlFilesFromRamlDirectory() throws Exception {
 
-        Collection<Raml> ramls = parser.ramlOf(
+        Collection<Raml> ramls = parser.parse(
                 get("src/test/resources/raml/"),
                 asList(
                         get("example-1.raml"),
@@ -57,7 +57,7 @@ public class RamlFileParserTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldParseRamlFilesFromClassPath() {
-        Collection<Raml> ramls = parser.ramlOf(
+        Collection<Raml> ramls = parser.parse(
                 get("CLASSPATH"),
                 asList(
                         get("raml/external-3.raml"),

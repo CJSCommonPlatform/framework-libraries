@@ -5,11 +5,12 @@ import uk.gov.justice.raml.core.GeneratorConfig;
 
 import org.raml.model.Raml;
 
-public class NonInstantiableTestGenerator implements Generator {
+public class NonInstantiableTestGenerator implements Generator<Raml> {
 
     private NonInstantiableTestGenerator() {}
 
     @Override
-    public void run(final Raml raml, final GeneratorConfig generatorConfig) {
+    public void run(Raml source, GeneratorConfig generatorConfig) {
+
     }
 }

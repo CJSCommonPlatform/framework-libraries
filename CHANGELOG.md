@@ -5,6 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- Travis CI user updated to common CI user
+
+### Added
+
+- Added Sonarcloud analysis
+
 ## [1.7.0] - 2017-07-28
 
 ### Changed

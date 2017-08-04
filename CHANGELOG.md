@@ -5,6 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## Added
+
+- Sonarcloud analysis
+
+## Changed
+
+- Switched to common CI user
+
 ## [1.6.0] - 2017-07-29
 
 ### Changed

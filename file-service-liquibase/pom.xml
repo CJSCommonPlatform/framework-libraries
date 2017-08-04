@@ -5,11 +5,15 @@
     <parent>
         <artifactId>file-service</artifactId>
         <groupId>uk.gov.justice.services</groupId>
-        <version>1.11.0-SNAPSHOT-SNAPSHOT</version>
+        <version>1.11.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>file-service-liquibase</artifactId>
+
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
 
     <scm>
         <connection>${cpp.scm.connection}</connection>

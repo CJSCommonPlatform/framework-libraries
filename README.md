@@ -1,5 +1,7 @@
 # Domain Test DSL
 
+[![Build Status](https://travis-ci.org/CJSCommonPlatform/domain-test-dsl.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/domain-test-dsl) [![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/domain-test-dsl/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/domain-test-dsl?branch=master)
+
 A DSL for testing aggregates and events using domain language
 
 * Given/When/Then based

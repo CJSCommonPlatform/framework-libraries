@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "stringProperty": {
+      "type": "string"
+    },
+    "emailProperty": {
+      "type": "string",
+      "format": "email"
+    },
+    "dateProperty": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "integerProperty": {
+      "type": "integer"
+    },
+    "regExProperty": {
+      "type": "string",
+      "pattern": "(?:fred_)*(?:(?:dead_)+(?:in_bed_)*)*"
+    },
+    "booleanProperty": {
+      "type": "boolean"
+    }
+  }
+}

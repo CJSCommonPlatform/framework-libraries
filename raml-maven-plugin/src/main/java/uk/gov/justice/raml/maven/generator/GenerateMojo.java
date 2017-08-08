@@ -55,16 +55,14 @@ public class GenerateMojo extends BasicMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-
+        System.out.println("outputDirectory >>>>>>>>>>>>" + outputDirectory);
+        System.out.println("parserName >>>>>>>>>>>>" + parserName);
         if (!skip) {
             configureDefaultFileIncludes();
-
             project.addCompileSourceRoot(outputDirectory.getPath());
             project.addTestCompileSourceRoot(outputDirectory.getPath());
-
             final List<Path> sourcePaths = new ArrayList<>();
             project.getCompileSourceRoots().stream().forEach(root -> sourcePaths.add(Paths.get(root)));
-
             try {
                 FileUtils.forceMkdir(outputDirectory);
                 new GenerateGoalProcessor(new GeneratorFactory(),

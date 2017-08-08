@@ -5,11 +5,11 @@
     <parent>
         <artifactId>raml-maven</artifactId>
         <groupId>uk.gov.justice.maven</groupId>
-        <version>1.6.0-SNAPSHOT</version>
+        <version>1.7.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>json-generator-for-testing</artifactId>
 
-    <artifactId>json-generator</artifactId>
     <dependencies>
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>
@@ -19,9 +19,13 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -38,6 +42,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>raml-for-testing-io</artifactId>
+    <artifactId>files-for-testing-io</artifactId>
 
     <scm>
         <connection>${cpp.scm.connection}</connection>

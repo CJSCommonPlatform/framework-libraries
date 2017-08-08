@@ -1,11 +1,10 @@
-package uk.gov.justice.maven.raml.plugin.it;
+package uk.gov.justice.maven.json.plugin.it;
 
 
 import static org.apache.commons.lang.StringUtils.substringBefore;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
-
-import uk.gov.justice.raml.maven.test.RamlTitleAppendingGenerator;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,18 +16,18 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class RamlFilesScanningIT {
+public class JsonFilesScanningTest {
 
     @Test
-    public void shouldProcessInternalAndExternalRamlFiles() throws Exception {
+    public void shouldProcessInternalAndExternalJsonFiles() throws Exception {
 
-        List<String> recordedRamlTitles = Files.readAllLines(recordedRamlTitlesFile());
-        assertThat(recordedRamlTitles, containsInAnyOrder("external-1.raml", "external-2.raml", "internal-1.raml"));
+        List<String> recordedJsonTitles = Files.readAllLines(recordedJsonTitlesFile());
+        assertThat(recordedJsonTitles, hasItems("one", "two"));
     }
 
-    private Path recordedRamlTitlesFile() throws URISyntaxException {
+    private Path recordedJsonTitlesFile() throws URISyntaxException {
         URL classUrl = this.getClass().getResource(this.getClass().getSimpleName() + ".class");
         String generatedSourcesFolder = substringBefore(classUrl.toString(), "test-classes") + "generated-sources/";
-        return Paths.get(new URI(generatedSourcesFolder + RamlTitleAppendingGenerator.FILE_NAME));
+        return Paths.get(new URI(generatedSourcesFolder + "json-titles.txt"));
     }
 }

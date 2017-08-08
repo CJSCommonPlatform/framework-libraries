@@ -36,7 +36,6 @@ public class GenerateGoalProcessor {
                 config.getOutputDirectory(), config.getBasePackageName(), config.getProperties(), config.getSourcePaths());
 
         final Collection<Path> paths = scannerFactory.create().find(config.getSourceDirectory(), includes, excludes);
-
         parser
                 .parse(config.getSourceDirectory(), paths)
                 .forEach(file -> generatorFactory.instanceOf(config.getGeneratorName()).run(file, generatorConfig));

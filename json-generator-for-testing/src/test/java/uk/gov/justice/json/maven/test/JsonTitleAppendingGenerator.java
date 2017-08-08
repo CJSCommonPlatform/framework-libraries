@@ -24,6 +24,7 @@ public class JsonTitleAppendingGenerator implements Generator<JsonObject> {
     @Override
     public void run(final JsonObject jsonObject, final GeneratorConfig generatorConfig) {
         try {
+            System.out.println("Entered JsonTitleAppendingGenerator");
             Files.write(filePath(generatorConfig), asList(jsonObject.getString("value")), UTF_8, APPEND, CREATE);
         } catch (IOException e) {
             throw new IllegalStateException(e);

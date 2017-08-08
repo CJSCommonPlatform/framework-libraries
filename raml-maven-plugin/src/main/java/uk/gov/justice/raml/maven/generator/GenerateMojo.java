@@ -55,8 +55,6 @@ public class GenerateMojo extends BasicMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        System.out.println("outputDirectory >>>>>>>>>>>>" + outputDirectory);
-        System.out.println("parserName >>>>>>>>>>>>" + parserName);
         if (!skip) {
             configureDefaultFileIncludes();
             project.addCompileSourceRoot(outputDirectory.getPath());

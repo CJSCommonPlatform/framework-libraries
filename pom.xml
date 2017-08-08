@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>raml-for-testing-io</module>
+        <module>files-for-testing-io</module>
         <module>raml-maven-plugin</module>
         <module>raml-generator-core</module>
         <module>io-utils</module>
@@ -26,7 +26,6 @@
         <module>raml-maven-test-utils</module>
         <module>schema-parser</module>
         <module>parser-common</module>
-        <module>json-generator</module>
     </modules>
 
     <properties>

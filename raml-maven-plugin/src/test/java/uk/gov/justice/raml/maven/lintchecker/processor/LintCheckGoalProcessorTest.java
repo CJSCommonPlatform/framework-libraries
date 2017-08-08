@@ -20,6 +20,7 @@ import uk.gov.justice.raml.maven.lintchecker.LintCheckerException;
 import uk.gov.justice.raml.maven.lintchecker.rules.LintCheckRule;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -122,5 +123,30 @@ public class LintCheckGoalProcessorTest {
         }
 
         verify(lintCheckRule_1).execute(eq(raml_1), any(LintCheckConfiguration.class));
+    }
+
+    @Test(expected = MojoExecutionException.class)
+    public void shouldThrowMojoExecutionExceptionAIfFileScannerFails() throws Exception {
+
+        final LintCheckRule lintCheckRule_1 = mock(LintCheckRule.class);
+        final File sourceDirectory = new File(("."));
+        final List<LintCheckRule> rules = asList(lintCheckRule_1);
+        final String[] excludes = { "exclude_1" };
+        final String[] includes = { "include_1" };
+
+        when(fileTreeScanner.find(sourceDirectory.toPath(), includes, excludes)).thenThrow(IOException.class);
+
+            lintCheckGoalProcessor
+                    .execute
+                            (
+                                    new LintCheckerGoalConfig(sourceDirectory,
+                                            rules,
+                                            asList(includes),
+                                            asList(excludes),
+                                            mock(MavenProject.class),
+                                            mock(Log.class)
+                                    )
+                            );
+            fail();
     }
 }

@@ -1,25 +1,18 @@
 package uk.gov.justice.raml.io.files.parser;
 
-import static java.nio.file.Paths.get;
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
-
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import org.junit.Test;
 
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 
-import org.junit.Test;
+import static java.nio.file.Paths.get;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class JsonSchemaFileParserTest {
 
@@ -51,5 +44,14 @@ public class JsonSchemaFileParserTest {
                 )
                 )
         );
+    }
+
+    @Test
+    public void shouldThrowFileNotFoundException() {
+        final Path baseDir = get("");
+        final List<Path> paths = asList(get("test-schema1.json"));
+        Collection<JsonObject> result = parser.parse(baseDir, paths);
+        assertThat(result, hasSize(1));
+        assertThat(result, hasItem(nullValue()));
     }
 }

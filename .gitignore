@@ -17,7 +17,11 @@
 *.zip
 *.tar.gz
 *.rar
+*.iml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/file-service-alfresco.iml
+/.idea/
+/file-api/target/
+/file-alfresco/target/
+/file-alfresco-example/target/

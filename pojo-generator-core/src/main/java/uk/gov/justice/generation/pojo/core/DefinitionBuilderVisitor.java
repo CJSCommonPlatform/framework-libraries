@@ -37,6 +37,8 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visitEnter(final ObjectSchema schema) {
+        validate(schema);
+
         final String fieldName = schema.getId();
         final ClassDefinition definition = new ClassDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)));
 
@@ -58,18 +60,21 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visit(final StringSchema schema) {
+        validate(schema);
         definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), new ClassName(String.class))));
     }
 
     @Override
     public void visit(final BooleanSchema schema) {
+        validate(schema);
         definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), new ClassName(Boolean.class))));
     }
 
     @Override
     public void visit(final NumberSchema schema) {
-        final ClassName className = schema.requiresInteger() ? new ClassName(Integer.class) : new ClassName(BigDecimal.class);
+        validate(schema);
 
+        final ClassName className = schema.requiresInteger() ? new ClassName(Integer.class) : new ClassName(BigDecimal.class);
         definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), className)));
     }
 
@@ -106,6 +111,12 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public List<ClassDefinition> getDefinitions() {
         return classDefinitions;
+    }
+
+    private void validate(final Schema schema) {
+        if (schema.getId() == null || schema.getId().isEmpty()) {
+            throw new UnsupportedSchemaException("Invalid Schema: all schema value types must have the id set for correct source generation.");
+        }
     }
 
     private class Entry {

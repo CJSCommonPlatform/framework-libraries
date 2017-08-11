@@ -11,13 +11,19 @@ import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.StringSchema;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefinitionBuilderVisitorTest {
+
+    private static final String INVALID_SCHEMA_ID_MESSAGE = "Invalid Schema: all schema value types must have the id set for correct source generation.";
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldGenerateClassDefinitionsWithStringSchemaProperties() throws Exception {
@@ -89,7 +95,8 @@ public class DefinitionBuilderVisitorTest {
         final ObjectSchema objectSchema = ObjectSchema.builder()
                 .addPropertySchema("numberProperty", numberProperty)
                 .addPropertySchema("integerProperty", integerProperty)
-                .id(outerClass).build();
+                .id(outerClass)
+                .build();
 
         definitionBuilderVisitor.visitEnter(objectSchema);
         definitionBuilderVisitor.visit(numberProperty);
@@ -110,4 +117,51 @@ public class DefinitionBuilderVisitorTest {
         assertThat(definitions.get(0).getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.Integer"));
     }
 
+    @Test
+    public void shouldThrowExceptionIfSchemaIdIsNotSetOnObjectSchema() throws Exception {
+        expectedException.expect(UnsupportedSchemaException.class);
+        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
+
+        final String packageName = "org.bloggs.fred";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final ObjectSchema objectSchema = ObjectSchema.builder().build();
+
+        definitionBuilderVisitor.visitEnter(objectSchema);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfSchemaIdIsNotSetOnStringSchema() throws Exception {
+        expectedException.expect(UnsupportedSchemaException.class);
+        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
+
+        final String packageName = "org.bloggs.fred";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final StringSchema stringSchema = StringSchema.builder().build();
+
+        definitionBuilderVisitor.visit(stringSchema);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfSchemaIdIsNotSetOnBooleanSchema() throws Exception {
+        expectedException.expect(UnsupportedSchemaException.class);
+        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
+
+        final String packageName = "org.bloggs.fred";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final BooleanSchema booleanSchema = BooleanSchema.builder().build();
+
+        definitionBuilderVisitor.visit(booleanSchema);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfSchemaIdIsNotSetOnNumberSchema() throws Exception {
+        expectedException.expect(UnsupportedSchemaException.class);
+        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
+
+        final String packageName = "org.bloggs.fred";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final NumberSchema numberSchema = NumberSchema.builder().build();
+
+        definitionBuilderVisitor.visit(numberSchema);
+    }
 }

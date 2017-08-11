@@ -8,9 +8,9 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.everit.json.schema.ArraySchema;
@@ -27,7 +27,7 @@ import org.everit.json.schema.StringSchema;
 
 public class DefinitionBuilderVisitor implements Visitor {
 
-    private final Deque<Entry> definitions = new LinkedList<>();
+    private final Deque<Entry> definitions = new ArrayDeque<>();
     private final List<ClassDefinition> classDefinitions = new ArrayList<>();
     private final String packageName;
 
@@ -37,6 +37,8 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visitEnter(final ObjectSchema schema) {
+        validate(schema);
+
         final String fieldName = schema.getId();
         final ClassDefinition definition = new ClassDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)));
 
@@ -45,36 +47,34 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visitLeave(final ObjectSchema schema) {
-        final Deque<Definition> tmpStack = new LinkedList<>();
+        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
 
         while (definitions.peek().getSchema() != schema) {
-            tmpStack.push(definitions.pop().getDefinition());
+            fieldDefinitions.push(definitions.pop().getDefinition());
         }
 
         final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
-
-        while (!tmpStack.isEmpty()) {
-            final Definition definition = tmpStack.pop();
-            classDefinition.addFieldDefinition(definition);
-        }
-
+        fieldDefinitions.forEach(classDefinition::addFieldDefinition);
         classDefinitions.add(classDefinition);
     }
 
     @Override
     public void visit(final StringSchema schema) {
+        validate(schema);
         definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), new ClassName(String.class))));
     }
 
     @Override
     public void visit(final BooleanSchema schema) {
+        validate(schema);
         definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), new ClassName(Boolean.class))));
     }
 
     @Override
     public void visit(final NumberSchema schema) {
-        final ClassName className = schema.requiresInteger() ? new ClassName(Integer.class) : new ClassName(BigDecimal.class);
+        validate(schema);
 
+        final ClassName className = schema.requiresInteger() ? new ClassName(Integer.class) : new ClassName(BigDecimal.class);
         definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), className)));
     }
 
@@ -111,6 +111,12 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public List<ClassDefinition> getDefinitions() {
         return classDefinitions;
+    }
+
+    private void validate(final Schema schema) {
+        if (schema.getId() == null || schema.getId().isEmpty()) {
+            throw new UnsupportedSchemaException("Invalid Schema: all schema value types must have the id set for correct source generation.");
+        }
     }
 
     private class Entry {

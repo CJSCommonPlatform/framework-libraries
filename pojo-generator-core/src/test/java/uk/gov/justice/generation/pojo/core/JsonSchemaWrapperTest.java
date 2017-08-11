@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.core;
 
 import static org.everit.json.schema.CombinedSchema.ANY_CRITERION;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.everit.json.schema.ArraySchema;
@@ -12,8 +13,11 @@ import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
+import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -21,6 +25,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JsonSchemaWrapperTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private Visitor visitor;
@@ -152,4 +159,26 @@ public class JsonSchemaWrapperTest {
         verify(visitor).visitLeave(objectSchema);
     }
 
+    @Test
+    public void shouldThrowExceptionIfUnknownSchemaProcessed() throws Exception {
+        expectedException.expect(UnsupportedSchemaException.class);
+        expectedException.expectMessage("Schema of type: DummySchema is not supported.");
+
+        final Schema.Builder builder = mock(Schema.Builder.class);
+        final DummySchema dummySchema = new DummySchema(builder);
+
+        new JsonSchemaWrapper(dummySchema).accept(mock(Visitor.class));
+    }
+
+    private class DummySchema extends Schema {
+
+        DummySchema(final Builder<?> builder) {
+            super(builder);
+        }
+
+        @Override
+        public void validate(final Object o) {
+            //do nothing
+        }
+    }
 }

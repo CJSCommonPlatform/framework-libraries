@@ -283,7 +283,7 @@ public class RestPoller {
                     requestParams.getMediaType(),
                     requestParams.getHeaders());
 
-            return new ResponseData(fromStatusCode(response.getStatus()), response.readEntity(String.class));
+            return new ResponseData(fromStatusCode(response.getStatus()), response.readEntity(String.class), response.getHeaders());
         }
     }
 

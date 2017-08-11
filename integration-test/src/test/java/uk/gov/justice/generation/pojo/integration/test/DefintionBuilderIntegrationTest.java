@@ -15,6 +15,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.ObjectSchema;
@@ -52,16 +53,22 @@ public class DefintionBuilderIntegrationTest {
 
         final String lastName = "lastName";
         final String firstName = "firstName";
+        final Boolean required = true;
+        final Integer signedInCount = 25;
+        final BigDecimal ratio = BigDecimal.valueOf(2.5);
 
-        final Constructor<?> personConstructor = personClass.getConstructor(String.class, String.class);
+        final Constructor<?> personConstructor = personClass.getConstructor(String.class, String.class, Boolean.class, Integer.class, BigDecimal.class);
 
-        final Object person = personConstructor.newInstance(firstName, lastName);
+        final Object person = personConstructor.newInstance(firstName, lastName, required, signedInCount, ratio);
 
         final String personJson = objectMapper.writeValueAsString(person);
 
         with(personJson)
                 .assertThat("$.firstName", is(firstName))
                 .assertThat("$.lastName", is(lastName))
+                .assertThat("$.required", is(required))
+                .assertThat("$.signedInCount", is(signedInCount))
+                .assertThat("$.ratio", is(ratio.doubleValue()))
         ;
     }
 }

@@ -8,9 +8,9 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.everit.json.schema.ArraySchema;
@@ -27,7 +27,7 @@ import org.everit.json.schema.StringSchema;
 
 public class DefinitionBuilderVisitor implements Visitor {
 
-    private final Deque<Entry> definitions = new LinkedList<>();
+    private final Deque<Entry> definitions = new ArrayDeque<>();
     private final List<ClassDefinition> classDefinitions = new ArrayList<>();
     private final String packageName;
 
@@ -45,19 +45,14 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visitLeave(final ObjectSchema schema) {
-        final Deque<Definition> tmpStack = new LinkedList<>();
+        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
 
         while (definitions.peek().getSchema() != schema) {
-            tmpStack.push(definitions.pop().getDefinition());
+            fieldDefinitions.push(definitions.pop().getDefinition());
         }
 
         final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
-
-        while (!tmpStack.isEmpty()) {
-            final Definition definition = tmpStack.pop();
-            classDefinition.addFieldDefinition(definition);
-        }
-
+        fieldDefinitions.forEach(classDefinition::addFieldDefinition);
         classDefinitions.add(classDefinition);
     }
 

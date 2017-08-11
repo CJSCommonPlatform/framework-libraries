@@ -1,5 +1,7 @@
 package uk.gov.justice.generation.pojo.core;
 
+import static java.lang.String.format;
+
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
@@ -59,7 +61,7 @@ public class JsonSchemaWrapper implements Visitable {
                 visitor.visit((CombinedSchema) schema);
                 break;
             default:
-                throw new UnsupportedSchemaException(String.format("Schema of type: %s is not supported.", schema.getClass().getSimpleName()));
+                throw new UnsupportedSchemaException(format("Schema of type: %s is not supported.", schema.getClass().getSimpleName()));
         }
     }
 

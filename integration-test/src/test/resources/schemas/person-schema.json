@@ -10,11 +10,26 @@
     "lastName": {
       "type": "string",
       "id": "lastName"
+    },
+    "required": {
+      "type": "boolean",
+      "id": "required"
+    },
+    "signedInCount": {
+      "type": "integer",
+      "id": "signedInCount"
+    },
+    "ratio": {
+      "type": "number",
+      "id": "ratio"
     }
   },
   "additionalProperties": false,
   "required": [
     "firstName",
-    "lastName"
+    "lastName",
+    "required",
+    "signedInCount",
+    "ratio"
   ]
 }

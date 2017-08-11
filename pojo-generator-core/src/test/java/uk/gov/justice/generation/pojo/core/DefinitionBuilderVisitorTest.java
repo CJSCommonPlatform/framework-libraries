@@ -7,6 +7,8 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 
 import java.util.List;
 
+import org.everit.json.schema.BooleanSchema;
+import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.StringSchema;
 import org.junit.Test;
@@ -18,7 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class DefinitionBuilderVisitorTest {
 
     @Test
-    public void shouldGenerateClassDefinitions() throws Exception {
+    public void shouldGenerateClassDefinitionsWithStringSchemaProperties() throws Exception {
         final String packageName = "org.bloggs.fred";
         final String outerClass = "OuterClass";
         final String innerClass = "InnerClass";
@@ -40,7 +42,7 @@ public class DefinitionBuilderVisitorTest {
         final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
 
         assertThat(definitions.size(), is(2));
-        
+
         assertThat(definitions.get(0).getClassName().getPackageName(), is(packageName));
         assertThat(definitions.get(0).getClassName().getSimpleName(), is(innerClass));
         assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is("innerProperty"));
@@ -50,6 +52,62 @@ public class DefinitionBuilderVisitorTest {
         assertThat(definitions.get(1).getClassName().getSimpleName(), is(outerClass));
         assertThat(definitions.get(1).getFieldDefinitions().get(1).getFieldName(), is("outerProperty"));
         assertThat(definitions.get(1).getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.String"));
+    }
+
+    @Test
+    public void shouldGenerateClassDefinitionWithBooleanSchemaProperty() throws Exception {
+        final String packageName = "org.bloggs.fred";
+        final String outerClass = "OuterClass";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+
+        final BooleanSchema outerProperty = BooleanSchema.builder().id("outerProperty").build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema("outerProperty", outerProperty).id(outerClass).build();
+
+        definitionBuilderVisitor.visitEnter(objectSchema);
+        definitionBuilderVisitor.visit(outerProperty);
+        definitionBuilderVisitor.visitLeave(objectSchema);
+
+        final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(1));
+
+        assertThat(definitions.get(0).getClassName().getPackageName(), is(packageName));
+        assertThat(definitions.get(0).getClassName().getSimpleName(), is(outerClass));
+        assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is("outerProperty"));
+        assertThat(definitions.get(0).getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.Boolean"));
+    }
+
+    @Test
+    public void shouldGenerateClassDefinitionWithNumberSchemaProperty() throws Exception {
+        final String packageName = "org.bloggs.fred";
+        final String outerClass = "OuterClass";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+
+        final NumberSchema numberProperty = NumberSchema.builder().id("numberProperty").build();
+        final NumberSchema integerProperty = NumberSchema.builder().requiresInteger(true).id("integerProperty").build();
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .addPropertySchema("numberProperty", numberProperty)
+                .addPropertySchema("integerProperty", integerProperty)
+                .id(outerClass).build();
+
+        definitionBuilderVisitor.visitEnter(objectSchema);
+        definitionBuilderVisitor.visit(numberProperty);
+        definitionBuilderVisitor.visit(integerProperty);
+        definitionBuilderVisitor.visitLeave(objectSchema);
+
+        final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(1));
+
+        assertThat(definitions.get(0).getClassName().getPackageName(), is(packageName));
+        assertThat(definitions.get(0).getClassName().getSimpleName(), is(outerClass));
+
+        assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is("numberProperty"));
+        assertThat(definitions.get(0).getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.math.BigDecimal"));
+
+        assertThat(definitions.get(0).getFieldDefinitions().get(1).getFieldName(), is("integerProperty"));
+        assertThat(definitions.get(0).getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.Integer"));
     }
 
 }

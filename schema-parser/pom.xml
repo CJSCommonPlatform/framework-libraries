@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>raml-maven</artifactId>
-        <groupId>uk.gov.justice.maven</groupId>
-        <version>1.7.0-SNAPSHOT</version>
+        <artifactId>generator-maven-plugin</artifactId>
+        <groupId>uk.gov.justice.maven.generator</groupId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>schema-parser</artifactId>
@@ -20,7 +20,7 @@
             <version>7.0</version>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.maven</groupId>
+            <groupId>uk.gov.justice.maven.generator</groupId>
             <artifactId>parser-common</artifactId>
             <version>${project.version}</version>
         </dependency>

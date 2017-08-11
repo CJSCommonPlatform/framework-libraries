@@ -4,14 +4,18 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 
-public class SourceCodeGeneratorFactory {
+public class JavaGeneratorFactory {
 
-    public SourceCodeGenerator createFor(final Definition definition) {
+    public ElementGeneratable createGeneratorFor(final Definition definition) {
 
         if (definition.getClass() == FieldDefinition.class) {
             return new FieldGenerator((FieldDefinition) definition);
         }
 
-        return new ClassGenerator((ClassDefinition) definition);
+        return new ElementGenerator((ClassDefinition) definition);
+    }
+
+    public ClassGeneratable createClassGeneratorFor(final ClassDefinition classDefinition) {
+        return new ClassGenerator(classDefinition, this);
     }
 }

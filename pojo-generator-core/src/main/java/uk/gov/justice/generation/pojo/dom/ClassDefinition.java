@@ -1,8 +1,6 @@
 package uk.gov.justice.generation.pojo.dom;
 
 import static java.util.Collections.unmodifiableList;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import java.util.ArrayList;

@@ -6,12 +6,15 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.pojo.core.SourceWriter;
+import uk.gov.justice.generation.bootstrap.GenerationContextFactory;
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.generators.ClassGenerator;
+import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
+import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -27,7 +30,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ClassGeneratorTest {
+public class ClassGeneratorIT {
 
     private final SourceWriter sourceWriter = new SourceWriter();
     private final ClassCompiler classCompiler = new ClassCompiler();
@@ -42,19 +45,25 @@ public class ClassGeneratorTest {
 
         final ClassDefinition addressDefinition = addressDefinition(packageName);
         final ClassDefinition employeeDefinition = employeeDefinition(packageName, addressDefinition);
+        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
 
-        final List<ClassGenerator> classGenerators = asList(
-                new ClassGenerator(addressDefinition),
-                new ClassGenerator(employeeDefinition)
+        final List<ClassGeneratable> classGenerators = asList(
+                javaGeneratorFactory.createClassGeneratorFor(addressDefinition),
+                javaGeneratorFactory.createClassGeneratorFor(employeeDefinition)
         );
 
         final File sourceOutputDirectory = new File("./target/test-generation");
         final File classesOutputDirectory = new File("./target/test-classes");
 
+        sourceOutputDirectory.mkdirs();
+        classesOutputDirectory.mkdirs();
+
+        final GenerationContext generationContext = new GenerationContextFactory().create(sourceOutputDirectory);
+
         sourceOutputDirectory.delete();
 
         final List<? extends Class<?>> classes = classGenerators.stream().map(classGenerator -> {
-            sourceWriter.write(classGenerator, sourceOutputDirectory);
+            sourceWriter.write(classGenerator, generationContext);
             return classCompiler.compile(classGenerator, sourceOutputDirectory, classesOutputDirectory);
         }).collect(toList());
 

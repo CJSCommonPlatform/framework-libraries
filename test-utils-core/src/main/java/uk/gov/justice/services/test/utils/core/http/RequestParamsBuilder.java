@@ -21,6 +21,12 @@ public class RequestParamsBuilder {
         this.url = url;
         this.mediaType = mediaType;
     }
+    
+    private RequestParamsBuilder(final String url, final String mediaType, final MultivaluedMap<String, Object> headers ) {
+        this.url = url;
+        this.mediaType = mediaType;
+		this.headers = headers;
+    }
 
     /**
      * Convenience method for creating a new RequestParamsBuilder
@@ -31,6 +37,18 @@ public class RequestParamsBuilder {
      */
     public static RequestParamsBuilder requestParams(final String url, final String mediaType) {
         return new RequestParamsBuilder(url, mediaType);
+    }
+    
+    /**
+     * Convenience method for creating a new RequestParamsBuilder
+     *
+     * @param url       the url of the rest endpoint
+     * @param mediaType the media type
+     * @param headers	Request headers
+     * @return a new RequestParamsBuilder
+     */
+    public static RequestParamsBuilder requestParamswithHeaders(final String url, final String mediaType, final MultivaluedMap<String, Object> headers) {
+        return new RequestParamsBuilder(url, mediaType, headers);
     }
 
     /**

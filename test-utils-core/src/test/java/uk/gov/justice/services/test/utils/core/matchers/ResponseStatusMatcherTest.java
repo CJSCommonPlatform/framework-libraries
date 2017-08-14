@@ -19,13 +19,13 @@ public class ResponseStatusMatcherTest {
 
     @Test
     public void shouldMatchForStatusFromResponse() throws Exception {
-        assertThat(new ResponseData(ACCEPTED, null), status().is(ACCEPTED));
+        assertThat(new ResponseData(ACCEPTED, null,null), status().is(ACCEPTED));
     }
 
     @Test
     public void shouldFailWhenResponseStatusDoesNotMatch() {
         expectedException.expect(AssertionError.class);
 
-        assertThat(new ResponseData(NOT_FOUND, null), status().is(ACCEPTED));
+        assertThat(new ResponseData(NOT_FOUND, null,null), status().is(ACCEPTED));
     }
 }

@@ -5,9 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.6.0] - 2017-08-14
+
 ### Added
 
 - Added Sonarcloud analysis
+- Added matcher for response headers in rest poller
 
 ## [1.5.0] - 2017-07-28
 

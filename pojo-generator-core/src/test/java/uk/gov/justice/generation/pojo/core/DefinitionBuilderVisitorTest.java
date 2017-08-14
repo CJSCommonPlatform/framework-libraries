@@ -21,7 +21,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DefinitionBuilderVisitorTest {
 
-    private static final String INVALID_SCHEMA_ID_MESSAGE = "Invalid Schema: all schema value types must have the id set for correct source generation.";
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -30,20 +29,21 @@ public class DefinitionBuilderVisitorTest {
         final String packageName = "org.bloggs.fred";
         final String outerClass = "OuterClass";
         final String innerClass = "InnerClass";
+
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
 
-        final StringSchema innerProperty = StringSchema.builder().id("innerProperty").build();
-        final StringSchema outerProperty = StringSchema.builder().id("outerProperty").build();
+        final StringSchema innerProperty = StringSchema.builder().build();
+        final StringSchema outerProperty = StringSchema.builder().build();
 
         final ObjectSchema objectSchema_1 = ObjectSchema.builder().addPropertySchema("innerProperty", innerProperty).id(outerClass).build();
         final ObjectSchema objectSchema_2 = ObjectSchema.builder().addPropertySchema("outerProperty", outerProperty).id(innerClass).build();
 
-        definitionBuilderVisitor.visitEnter(objectSchema_1);
-        definitionBuilderVisitor.visitEnter(objectSchema_2);
-        definitionBuilderVisitor.visit(innerProperty);
-        definitionBuilderVisitor.visitLeave(objectSchema_2);
-        definitionBuilderVisitor.visit(outerProperty);
-        definitionBuilderVisitor.visitLeave(objectSchema_1);
+        definitionBuilderVisitor.enter(outerClass, objectSchema_1);
+        definitionBuilderVisitor.enter(innerClass, objectSchema_2);
+        definitionBuilderVisitor.visit("innerProperty", innerProperty);
+        definitionBuilderVisitor.leave(objectSchema_2);
+        definitionBuilderVisitor.visit("outerProperty", outerProperty);
+        definitionBuilderVisitor.leave(objectSchema_1);
 
         final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
 
@@ -66,12 +66,12 @@ public class DefinitionBuilderVisitorTest {
         final String outerClass = "OuterClass";
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
 
-        final BooleanSchema outerProperty = BooleanSchema.builder().id("outerProperty").build();
+        final BooleanSchema outerProperty = BooleanSchema.builder().build();
         final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema("outerProperty", outerProperty).id(outerClass).build();
 
-        definitionBuilderVisitor.visitEnter(objectSchema);
-        definitionBuilderVisitor.visit(outerProperty);
-        definitionBuilderVisitor.visitLeave(objectSchema);
+        definitionBuilderVisitor.enter("outerClass", objectSchema);
+        definitionBuilderVisitor.visit("outerProperty", outerProperty);
+        definitionBuilderVisitor.leave(objectSchema);
 
         final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
 
@@ -89,7 +89,7 @@ public class DefinitionBuilderVisitorTest {
         final String outerClass = "OuterClass";
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
 
-        final NumberSchema numberProperty = NumberSchema.builder().id("numberProperty").build();
+        final NumberSchema numberProperty = NumberSchema.builder().build();
         final NumberSchema integerProperty = NumberSchema.builder().requiresInteger(true).id("integerProperty").build();
 
         final ObjectSchema objectSchema = ObjectSchema.builder()
@@ -98,10 +98,10 @@ public class DefinitionBuilderVisitorTest {
                 .id(outerClass)
                 .build();
 
-        definitionBuilderVisitor.visitEnter(objectSchema);
-        definitionBuilderVisitor.visit(numberProperty);
-        definitionBuilderVisitor.visit(integerProperty);
-        definitionBuilderVisitor.visitLeave(objectSchema);
+        definitionBuilderVisitor.enter("outerClass", objectSchema);
+        definitionBuilderVisitor.visit("numberProperty", numberProperty);
+        definitionBuilderVisitor.visit("integerProperty", integerProperty);
+        definitionBuilderVisitor.leave(objectSchema);
 
         final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
 
@@ -115,53 +115,5 @@ public class DefinitionBuilderVisitorTest {
 
         assertThat(definitions.get(0).getFieldDefinitions().get(1).getFieldName(), is("integerProperty"));
         assertThat(definitions.get(0).getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.Integer"));
-    }
-
-    @Test
-    public void shouldThrowExceptionIfSchemaIdIsNotSetOnObjectSchema() throws Exception {
-        expectedException.expect(UnsupportedSchemaException.class);
-        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
-
-        final String packageName = "org.bloggs.fred";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
-        final ObjectSchema objectSchema = ObjectSchema.builder().build();
-
-        definitionBuilderVisitor.visitEnter(objectSchema);
-    }
-
-    @Test
-    public void shouldThrowExceptionIfSchemaIdIsNotSetOnStringSchema() throws Exception {
-        expectedException.expect(UnsupportedSchemaException.class);
-        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
-
-        final String packageName = "org.bloggs.fred";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
-        final StringSchema stringSchema = StringSchema.builder().build();
-
-        definitionBuilderVisitor.visit(stringSchema);
-    }
-
-    @Test
-    public void shouldThrowExceptionIfSchemaIdIsNotSetOnBooleanSchema() throws Exception {
-        expectedException.expect(UnsupportedSchemaException.class);
-        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
-
-        final String packageName = "org.bloggs.fred";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
-        final BooleanSchema booleanSchema = BooleanSchema.builder().build();
-
-        definitionBuilderVisitor.visit(booleanSchema);
-    }
-
-    @Test
-    public void shouldThrowExceptionIfSchemaIdIsNotSetOnNumberSchema() throws Exception {
-        expectedException.expect(UnsupportedSchemaException.class);
-        expectedException.expectMessage(INVALID_SCHEMA_ID_MESSAGE);
-
-        final String packageName = "org.bloggs.fred";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
-        final NumberSchema numberSchema = NumberSchema.builder().build();
-
-        definitionBuilderVisitor.visit(numberSchema);
     }
 }

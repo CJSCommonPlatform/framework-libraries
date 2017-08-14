@@ -19,16 +19,18 @@ public class JsonSchemaLoader {
     /**
      * Locate a JSON schema file on the classpath and load it.
      * @param path the path to the JSON schema file
+     * @param clazz The type of the Schema. Must extend org.everit.json.schema.Schema.
      * @return the schema
      */
-    public static Schema loadSchema(final String path) {
+    @SuppressWarnings("unchecked")
+    public static <T extends Schema> T loadSchema(final String path, @SuppressWarnings("unused") final Class<T> clazz) {
 
         // TODO: load from classpath rather than working directory
         final JSONObject schemaJsonObject = new JSONObject(new FileLoader().loadAsJsonSting(path));
-        return SchemaLoader.load(schemaJsonObject);
+        return (T) SchemaLoader.load(schemaJsonObject);
     }
 
     public static ArraySchema loadArraySchema(final String path) {
-        return (ArraySchema) loadSchema(path);
+        return loadSchema(path, ArraySchema.class);
     }
 }

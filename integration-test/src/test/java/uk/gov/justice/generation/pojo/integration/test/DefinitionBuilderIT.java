@@ -31,8 +31,8 @@ public class DefinitionBuilderIT {
 
     @Test
     public void shouldBuildTypeSpecFromSchema() throws Exception {
-        final ObjectSchema schema = (ObjectSchema) JsonSchemaLoader
-                .loadSchema("src/test/resources/schemas/person-schema.json");
+        final ObjectSchema schema = JsonSchemaLoader
+                .loadSchema("src/test/resources/schemas/person-schema.json", ObjectSchema.class);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo");
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);

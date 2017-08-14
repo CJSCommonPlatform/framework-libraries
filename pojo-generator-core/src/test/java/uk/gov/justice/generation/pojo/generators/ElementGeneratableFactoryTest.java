@@ -10,21 +10,21 @@ import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 
 import org.junit.Test;
 
-public class SourceCodeGeneratorFactoryTest {
+public class ElementGeneratableFactoryTest {
 
     @Test
     public void shouldCreateFieldGeneratorForFieldDefinition() throws Exception {
         final FieldDefinition fieldDefinition = new FieldDefinition("fieldName", new ClassName(String.class));
-        final SourceCodeGenerator sourceCodeGenerator = new SourceCodeGeneratorFactory().createFor(fieldDefinition);
+        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory().createGeneratorFor(fieldDefinition);
 
-        assertThat(sourceCodeGenerator, is(instanceOf(FieldGenerator.class)));
+        assertThat(elementGeneratable, is(instanceOf(FieldGenerator.class)));
     }
 
     @Test
-    public void shouldCreateClassGeneratorForClassDefinition() throws Exception {
+    public void shouldCreatElementGeneratorForClassDefinition() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition("fieldName", new ClassName("", ""));
-        final SourceCodeGenerator sourceCodeGenerator = new SourceCodeGeneratorFactory().createFor(classDefinition);
+        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory().createGeneratorFor(classDefinition);
 
-        assertThat(sourceCodeGenerator, is(instanceOf(ClassGenerator.class)));
+        assertThat(elementGeneratable, is(instanceOf(ElementGenerator.class)));
     }
 }

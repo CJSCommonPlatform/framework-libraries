@@ -1,6 +1,5 @@
 package uk.gov.justice.generation.pojo.generators;
 
-import static com.squareup.javapoet.ClassName.get;
 import static com.squareup.javapoet.FieldSpec.builder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static javax.lang.model.element.Modifier.FINAL;
@@ -16,13 +15,13 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
-public class FieldGenerator implements SourceCodeGenerator {
+public class FieldGenerator implements ElementGeneratable {
 
     private final FieldDefinition fieldDefinition;
 
     private final DefinitionToTypeNameConverter definitionToTypeNameConverter = new DefinitionToTypeNameConverter();
 
-    public FieldGenerator(final FieldDefinition fieldDefinition) {
+    FieldGenerator(final FieldDefinition fieldDefinition) {
         this.fieldDefinition = fieldDefinition;
     }
 

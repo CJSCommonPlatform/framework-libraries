@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>uk.gov.justice</groupId>
@@ -8,27 +8,29 @@
         <version>1.6.0</version>
     </parent>
 
-    <groupId>uk.gov.justice.maven</groupId>
-    <artifactId>raml-maven</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <groupId>uk.gov.justice.maven.generator</groupId>
+    <artifactId>generator-maven-plugin</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>raml-for-testing-io</module>
-        <module>raml-maven-plugin</module>
-        <module>raml-generator-core</module>
+        <module>files-for-testing-io</module>
+        <module>generator-plugin</module>
+        <module>generator-core</module>
         <module>io-utils</module>
         <module>raml-parser</module>
-        <module>raml-maven-plugin-it</module>
+        <module>generator-plugin-it</module>
         <module>raml-generator-for-testing</module>
-        <module>lint-checker-core</module>
-        <module>raml-maven-test-utils</module>
+        <module>json-generator-for-testing</module>
+        <module>generator-maven-test-utils</module>
+        <module>schema-parser</module>
+        <module>parser-common</module>
     </modules>
 
     <properties>
         <common-bom.version>1.17.0</common-bom.version>
 
-        <cpp.repo.name>raml-maven</cpp.repo.name>
+        <cpp.repo.name>generator-maven-plugin</cpp.repo.name>
     </properties>
 
     <scm>

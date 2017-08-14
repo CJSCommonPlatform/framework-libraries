@@ -4,24 +4,19 @@
   "id": "person",
   "properties": {
     "firstName": {
-      "type": "string",
-      "id": "firstName"
+      "type": "string"
     },
     "lastName": {
-      "type": "string",
-      "id": "lastName"
+      "type": "string"
     },
     "required": {
-      "type": "boolean",
-      "id": "required"
+      "type": "boolean"
     },
     "signedInCount": {
-      "type": "integer",
-      "id": "signedInCount"
+      "type": "integer"
     },
     "ratio": {
-      "type": "number",
-      "id": "ratio"
+      "type": "number"
     }
   },
   "additionalProperties": false,

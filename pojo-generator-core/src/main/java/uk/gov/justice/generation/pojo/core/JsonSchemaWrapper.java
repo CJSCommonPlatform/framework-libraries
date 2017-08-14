@@ -24,48 +24,54 @@ public class JsonSchemaWrapper implements Visitable {
 
     @Override
     public void accept(final Visitor visitor) {
+        final String fieldName = schema.getId();
+        accept(fieldName, visitor);
+    }
+
+    private void accept(final String fieldName, final Visitor visitor) {
+
         switch (schema.getClass().getSimpleName()) {
             case "ObjectSchema":
                 final ObjectSchema objectSchema = (ObjectSchema) schema;
 
-                visitor.visitEnter(objectSchema);
-                objectSchema.getPropertySchemas().values()
-                        .forEach(childSchema -> visitChildSchema(visitor, childSchema));
-                visitor.visitLeave(objectSchema);
+                visitor.enter(fieldName, objectSchema);
+                objectSchema.getPropertySchemas()
+                        .forEach((childName, childSchema) -> visitChildSchema(childName, visitor, childSchema));
+                visitor.leave(objectSchema);
                 break;
             case "StringSchema":
-                visitor.visit((StringSchema) schema);
+                visitor.visit(fieldName, (StringSchema) schema);
                 break;
             case "BooleanSchema":
-                visitor.visit((BooleanSchema) schema);
+                visitor.visit(fieldName, (BooleanSchema) schema);
                 break;
             case "NumberSchema":
-                visitor.visit((NumberSchema) schema);
+                visitor.visit(fieldName, (NumberSchema) schema);
                 break;
             case "EnumSchema":
-                visitor.visit((EnumSchema) schema);
+                visitor.visit(fieldName, (EnumSchema) schema);
                 break;
             case "NullSchema":
-                visitor.visit((NullSchema) schema);
+                visitor.visit(fieldName, (NullSchema) schema);
                 break;
             case "EmptySchema":
-                visitor.visit((EmptySchema) schema);
+                visitor.visit(fieldName, (EmptySchema) schema);
                 break;
             case "ReferenceSchema":
-                visitor.visit((ReferenceSchema) schema);
+                visitor.visit(fieldName, (ReferenceSchema) schema);
                 break;
             case "ArraySchema":
-                visitor.visit((ArraySchema) schema);
+                visitor.visit(fieldName, (ArraySchema) schema);
                 break;
             case "CombinedSchema":
-                visitor.visit((CombinedSchema) schema);
+                visitor.visit(fieldName, (CombinedSchema) schema);
                 break;
             default:
                 throw new UnsupportedSchemaException(format("Schema of type: %s is not supported.", schema.getClass().getSimpleName()));
         }
     }
 
-    private void visitChildSchema(final Visitor visitor, final Schema childSchema) {
-        new JsonSchemaWrapper(childSchema).accept(visitor);
+    private void visitChildSchema(final String fieldName, final Visitor visitor, final Schema childSchema) {
+        new JsonSchemaWrapper(childSchema).accept(fieldName, visitor);
     }
 }

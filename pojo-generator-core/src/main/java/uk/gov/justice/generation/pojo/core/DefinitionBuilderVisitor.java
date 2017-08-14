@@ -36,20 +36,18 @@ public class DefinitionBuilderVisitor implements Visitor {
     }
 
     @Override
-    public void visitEnter(final ObjectSchema schema) {
-        validate(schema);
-
-        final String fieldName = schema.getId();
+    public void enter(final String fieldName, final ObjectSchema schema) {
         final ClassDefinition definition = new ClassDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)));
 
         definitions.push(new Entry(schema, definition));
     }
 
     @Override
-    public void visitLeave(final ObjectSchema schema) {
+    public void leave(final ObjectSchema schema) {
         final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
 
         while (definitions.peek().getSchema() != schema) {
+
             fieldDefinitions.push(definitions.pop().getDefinition());
         }
 
@@ -59,64 +57,54 @@ public class DefinitionBuilderVisitor implements Visitor {
     }
 
     @Override
-    public void visit(final StringSchema schema) {
-        validate(schema);
-        definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), new ClassName(String.class))));
+    public void visit(final String fieldName, final StringSchema schema) {
+        definitions.push(new Entry(schema, new FieldDefinition(fieldName, new ClassName(String.class))));
     }
 
     @Override
-    public void visit(final BooleanSchema schema) {
-        validate(schema);
-        definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), new ClassName(Boolean.class))));
+    public void visit(final String fieldName, final BooleanSchema schema) {
+        definitions.push(new Entry(schema, new FieldDefinition(fieldName, new ClassName(Boolean.class))));
     }
 
     @Override
-    public void visit(final NumberSchema schema) {
-        validate(schema);
-
+    public void visit(final String fieldName, final NumberSchema schema) {
         final ClassName className = schema.requiresInteger() ? new ClassName(Integer.class) : new ClassName(BigDecimal.class);
-        definitions.push(new Entry(schema, new FieldDefinition(schema.getId(), className)));
+        definitions.push(new Entry(schema, new FieldDefinition(fieldName, className)));
     }
 
     @Override
-    public void visit(final CombinedSchema schema) {
+    public void visit(final String fieldName, final CombinedSchema schema) {
         //TODO: Implement Combined Schema
     }
 
     @Override
-    public void visit(final ArraySchema schema) {
+    public void visit(final String fieldName, final ArraySchema schema) {
         //TODO: Implement Array Schema
     }
 
     @Override
-    public void visit(final ReferenceSchema schema) {
+    public void visit(final String fieldName, final ReferenceSchema schema) {
         //TODO: Implement Reference Schema
     }
 
     @Override
-    public void visit(final EmptySchema schema) {
+    public void visit(final String fieldName, final EmptySchema schema) {
         //TODO: Implement Empty Schema
     }
 
     @Override
-    public void visit(final EnumSchema schema) {
+    public void visit(final String fieldName, final EnumSchema schema) {
         //TODO: Implement Enum Schema
     }
 
     @Override
-    public void visit(final NullSchema schema) {
+    public void visit(final String fieldName, final NullSchema schema) {
         //TODO: Implement Null Schema
     }
 
     @Override
     public List<ClassDefinition> getDefinitions() {
         return classDefinitions;
-    }
-
-    private void validate(final Schema schema) {
-        if (schema.getId() == null || schema.getId().isEmpty()) {
-            throw new UnsupportedSchemaException("Invalid Schema: all schema value types must have the id set for correct source generation.");
-        }
     }
 
     private class Entry {

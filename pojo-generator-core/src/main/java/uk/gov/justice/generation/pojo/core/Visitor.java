@@ -17,27 +17,27 @@ import org.everit.json.schema.StringSchema;
 
 public interface Visitor {
 
-    void visitEnter(final ObjectSchema schema);
+    void enter(final String fieldName, final ObjectSchema schema);
 
-    void visitLeave(final ObjectSchema schema);
+    void leave(final ObjectSchema schema);
 
-    void visit(final CombinedSchema schema);
+    void visit(final String fieldName, final CombinedSchema schema);
 
-    void visit(final ArraySchema schema);
+    void visit(final String fieldName, final ArraySchema schema);
 
-    void visit(final ReferenceSchema schema);
+    void visit(final String fieldName, final ReferenceSchema schema);
 
-    void visit(final BooleanSchema schema);
+    void visit(final String fieldName, final BooleanSchema schema);
 
-    void visit(final EmptySchema schema);
+    void visit(final String fieldName, final EmptySchema schema);
 
-    void visit(final EnumSchema schema);
+    void visit(final String fieldName, final EnumSchema schema);
 
-    void visit(final NullSchema schema);
+    void visit(final String fieldName, final NullSchema schema);
 
-    void visit(final NumberSchema schema);
+    void visit(final String fieldName, final NumberSchema schema);
 
-    void visit(final StringSchema schema);
+    void visit(final String fieldName, final StringSchema schema);
 
     List<ClassDefinition> getDefinitions();
 }

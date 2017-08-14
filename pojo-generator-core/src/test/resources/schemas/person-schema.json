@@ -4,12 +4,10 @@
   "id": "person",
   "properties": {
     "firstName": {
-      "type": "string",
-      "id": "firstName"
+      "type": "string"
     },
     "lastName": {
-      "type": "string",
-      "id": "lastName"
+      "type": "string"
     }
   },
   "additionalProperties": false,

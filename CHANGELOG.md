@@ -5,8 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.0.0] - 2017-08-14
 ### Added
 - Json schema parser
 - Specify a parser alongside a generator
-
-

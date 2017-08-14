@@ -1,12 +1,8 @@
 # RAML Maven Plugin
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/raml-maven.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/raml-maven) 
-[![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/raml-maven/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/raml-maven?branch=master)
+[![Build Status](https://travis-ci.org/CJSCommonPlatform/generator-maven-plugin.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/generator-maven-plugin) 
+[![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/generator-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/generator-maven-plugin?branch=master)
 
-This project contains a plugin for using [RAML](http://raml.org/) documents within Maven projects.
-Currently, it has two purposes:
-
-- _Code generation_ - the plugin can be configured with arbitrary code generation modules to generate custom code from RAML documents
-- _RAML syntax checking_ - for validating the syntax of RAML documents and imported JSON schemas
+This project contains a plugin for using [RAML](http://raml.org/) or other documents like Json Schema within Maven projects for generation of code.
 
 ## Usage
 
@@ -26,6 +22,7 @@ Maven dependency:
                         <generatorName>
                             uk.gov.justice.raml.maven.test.ExampleGenerator
                         </generatorName>
+                        <parserName>uk.gov.justice.maven.generator.io.files.parser.RamlFileParser</parserName>
                         <basePackageName>uk.gov.justice.api</basePackageName>
                         <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
                         <sourceDirectory>CLASSPATH</sourceDirectory>
@@ -46,8 +43,13 @@ Maven dependency:
                 <dependency>
                     <groupId>uk.gov.justice.maven</groupId>
                     <artifactId>raml-for-testing-io</artifactId>
-                    <version>${project.version}</version>
+                    <version>1.0.0</version>
                     <classifier>raml</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>uk.gov.justice.maven.generator</groupId>
+                    <artifactId>raml-parser</artifactId>
+                    <version>1.0.0</version>
                 </dependency>
             </dependencies>
         </plugin>

@@ -38,7 +38,7 @@ public class JsonSchemaWrapperTest {
         final ObjectSchema objectSchema = ObjectSchema.builder().id(fieldName).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
     }
@@ -49,10 +49,10 @@ public class JsonSchemaWrapperTest {
         final StringSchema stringSchema = StringSchema.builder().build();
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, stringSchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, stringSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, stringSchema);
@@ -64,10 +64,10 @@ public class JsonSchemaWrapperTest {
         final BooleanSchema booleanSchema = BooleanSchema.INSTANCE;
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, booleanSchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, booleanSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, booleanSchema);
@@ -79,10 +79,10 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
         final NumberSchema numberSchema = NumberSchema.builder().build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, numberSchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, numberSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, numberSchema);
@@ -94,10 +94,10 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
         final EnumSchema enumSchema = EnumSchema.builder().build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, enumSchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, enumSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, enumSchema);
@@ -109,10 +109,10 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
         final NullSchema nullSchema = NullSchema.INSTANCE;
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, nullSchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, nullSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, nullSchema);
@@ -124,10 +124,10 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
         final EmptySchema emptySchema = EmptySchema.INSTANCE;
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, emptySchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, emptySchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, emptySchema);
@@ -139,10 +139,10 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
         final ReferenceSchema referenceSchema = ReferenceSchema.builder().build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, referenceSchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, referenceSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, referenceSchema);
@@ -154,10 +154,10 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
         final ArraySchema arraySchema = ArraySchema.builder().build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, arraySchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, arraySchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, arraySchema);
@@ -169,10 +169,10 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
         final CombinedSchema combinedSchema = CombinedSchema.builder().criterion(ANY_CRITERION).build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, combinedSchema).id(fieldName).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, combinedSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(visitor);
+        jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
         verify(visitor).visit(childFieldName, combinedSchema);
@@ -185,20 +185,29 @@ public class JsonSchemaWrapperTest {
         expectedException.expectMessage("Schema of type: DummySchema is not supported.");
 
         final Schema.Builder builder = mock(Schema.Builder.class);
-        final DummySchema dummySchema = new DummySchema(builder);
+        final String fieldName = "myDummy";
+        final DummySchema dummySchema = new DummySchema(builder, fieldName);
 
-        new JsonSchemaWrapper(dummySchema).accept(mock(Visitor.class));
+        new JsonSchemaWrapper(dummySchema).accept(fieldName, mock(Visitor.class));
     }
 
     private class DummySchema extends Schema {
 
-        DummySchema(final Builder<?> builder) {
+        private final String id;
+
+        DummySchema(final Builder<?> builder, final String id) {
             super(builder);
+            this.id = id;
         }
 
         @Override
         public void validate(final Object o) {
             //do nothing
+        }
+
+        @Override
+        public String getId() {
+            return id;
         }
     }
 }

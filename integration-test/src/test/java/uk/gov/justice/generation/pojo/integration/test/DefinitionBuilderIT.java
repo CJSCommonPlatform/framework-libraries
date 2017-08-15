@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
+import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -28,16 +29,19 @@ public class DefinitionBuilderIT {
     private final SourceWriter sourceWriter = new SourceWriter();
     private final ClassCompiler classCompiler = new ClassCompiler();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+    private final RootFieldNameGenerator rootFieldNameGenerator = new RootFieldNameGenerator();
 
     @Test
     public void shouldBuildTypeSpecFromSchema() throws Exception {
+        final File schemaFile = new File("src/test/resources/schemas/person-schema.json");
         final ObjectSchema schema = JsonSchemaLoader
-                .loadSchema("src/test/resources/schemas/person-schema.json", ObjectSchema.class);
+                .loadSchema(schemaFile, ObjectSchema.class);
+        final String fieldName = rootFieldNameGenerator.generateNameFrom(schemaFile);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo");
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
 
-        jsonSchemaWrapper.accept(definitionBuilderVisitor);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
+        jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);
 
         final ClassDefinition personClassDefinition = definitionBuilderVisitor.getDefinitions().get(0);
         final ClassGeneratable personClassGenerator = new JavaGeneratorFactory().createClassGeneratorFor(personClassDefinition);

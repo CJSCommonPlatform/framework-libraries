@@ -77,18 +77,4 @@ public class SourceWriterIT {
 
         return addressDefinition;
     }
-
-    private ClassDefinition employeeDefinition(final String packageName, final ClassDefinition addressDefinition) {
-        final ClassDefinition employeeDefinition = new ClassDefinition("employee", new ClassName(packageName, "Employee"));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("firstName", new ClassName(String.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("lastName", new ClassName(String.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("poundsPerHour", new ClassName(BigDecimal.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("startDate", new ClassName(ZonedDateTime.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("favouriteColours", new ClassName(List.class), new ClassName(String.class)));
-        employeeDefinition.addFieldDefinition(addressDefinition);
-
-        return employeeDefinition;
-    }
-
-
 }

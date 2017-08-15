@@ -21,7 +21,6 @@ import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
-import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
 
@@ -29,6 +28,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     private final Deque<Entry> definitions = new ArrayDeque<>();
     private final List<ClassDefinition> classDefinitions = new ArrayList<>();
+    private final ClassNameProvider classNameProvider = new ClassNameProvider();
     private final String packageName;
 
     public DefinitionBuilderVisitor(final String packageName) {
@@ -58,7 +58,10 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final StringSchema schema) {
-        definitions.push(new Entry(schema, new FieldDefinition(fieldName, new ClassName(String.class))));
+
+        final ClassName className = classNameProvider.classNameFor(schema.getDescription());
+
+        definitions.push(new Entry(schema, new FieldDefinition(fieldName, className)));
     }
 
     @Override
@@ -80,11 +83,6 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void visit(final String fieldName, final ArraySchema schema) {
         //TODO: Implement Array Schema
-    }
-
-    @Override
-    public void visit(final String fieldName, final ReferenceSchema schema) {
-        //TODO: Implement Reference Schema
     }
 
     @Override

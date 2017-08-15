@@ -17,9 +17,6 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;

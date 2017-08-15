@@ -4,7 +4,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;

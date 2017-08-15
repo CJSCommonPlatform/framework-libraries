@@ -138,14 +138,16 @@ public class JsonSchemaWrapperTest {
     public void shouldVisitObjectAndReferenceSchema() {
         final String fieldName = "fieldName";
         final String childFieldName = "childFieldName";
+        final StringSchema referredSchema = StringSchema.builder().build();
         final ReferenceSchema referenceSchema = ReferenceSchema.builder().build();
+        referenceSchema.setReferredSchema(referredSchema);
         final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, referenceSchema).build();
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
         verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, referenceSchema);
+        verify(visitor).visit(childFieldName, referredSchema);
         verify(visitor).leave(objectSchema);
     }
 

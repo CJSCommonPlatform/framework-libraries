@@ -31,7 +31,7 @@ public class RootFieldNameGenerator {
     }
 
     private String getNameFrom(final String fileName) {
-        final String name = fileName.substring(0, fileName.lastIndexOf("."));
+        final String name = fileName.substring(0, fileName.lastIndexOf('.'));
 
         final int index = name.lastIndexOf('.');
         if (index > -1) {

@@ -34,4 +34,10 @@ public class ClassNameTest {
         assertThat(integerClassName.getSimpleName(), is("Integer"));
         assertThat(integerClassName.getFullyQualifiedName(), is("java.lang.Integer"));
     }
+
+    @Test
+    public void shouldReturnTheFullyQualifiedNameForToString() throws Exception {
+
+        assertThat(new ClassName(String.class).toString(), is(String.class.getName()));
+    }
 }

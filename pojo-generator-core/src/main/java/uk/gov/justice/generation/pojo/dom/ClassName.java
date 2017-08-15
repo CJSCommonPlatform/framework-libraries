@@ -26,4 +26,9 @@ public class ClassName {
     public String getFullyQualifiedName() {
         return packageName + "." + simpleName;
     }
+
+    @Override
+    public String toString() {
+        return getFullyQualifiedName();
+    }
 }

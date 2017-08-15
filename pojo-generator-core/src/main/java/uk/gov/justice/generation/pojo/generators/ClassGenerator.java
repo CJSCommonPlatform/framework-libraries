@@ -24,7 +24,7 @@ public class ClassGenerator implements ClassGeneratable {
     private final JavaGeneratorFactory javaGeneratorFactory;
     private final DefinitionToTypeNameConverter definitionToTypeNameConverter = new DefinitionToTypeNameConverter();
 
-    ClassGenerator(final ClassDefinition classDefinition, final JavaGeneratorFactory javaGeneratorFactory) {
+    public ClassGenerator(final ClassDefinition classDefinition, final JavaGeneratorFactory javaGeneratorFactory) {
         this.classDefinition = classDefinition;
         this.javaGeneratorFactory = javaGeneratorFactory;
     }

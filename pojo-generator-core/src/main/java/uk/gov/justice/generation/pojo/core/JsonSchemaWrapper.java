@@ -23,12 +23,7 @@ public class JsonSchemaWrapper implements Visitable {
     }
 
     @Override
-    public void accept(final Visitor visitor) {
-        final String fieldName = schema.getId();
-        accept(fieldName, visitor);
-    }
-
-    private void accept(final String fieldName, final Visitor visitor) {
+    public void accept(final String fieldName, final Visitor visitor) {
 
         switch (schema.getClass().getSimpleName()) {
             case "ObjectSchema":

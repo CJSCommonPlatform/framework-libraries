@@ -1,5 +1,7 @@
 package uk.gov.justice.generation.pojo.integration.utils;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 import org.everit.json.schema.ArraySchema;
@@ -23,14 +25,10 @@ public class JsonSchemaLoader {
      * @return the schema
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Schema> T loadSchema(final String path, @SuppressWarnings("unused") final Class<T> clazz) {
+    public static <T extends Schema> T loadSchema(final File path, @SuppressWarnings("unused") final Class<T> clazz) {
 
         // TODO: load from classpath rather than working directory
-        final JSONObject schemaJsonObject = new JSONObject(new FileLoader().loadAsJsonSting(path));
+        final JSONObject schemaJsonObject = new JSONObject(new FileLoader().loadAsJsonString(path));
         return (T) SchemaLoader.load(schemaJsonObject);
-    }
-
-    public static ArraySchema loadArraySchema(final String path) {
-        return loadSchema(path, ArraySchema.class);
     }
 }

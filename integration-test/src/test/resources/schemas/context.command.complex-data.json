@@ -1,0 +1,404 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "recordId": {
+      "$ref": "#/definitions/uuid"
+    },
+    "person": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "$ref": "#/definitions/nameTitle"
+        },
+        "surname": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "forenames": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "initials": {
+          "type": "string",
+          "maxLength": 2
+        },
+        "dateOfBirth": {
+          "$ref": "#/definitions/dateString"
+        },
+        "companyName": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "age": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "addressLine1": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "addressLine2": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "addressLine3": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "addressLine4": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "addressLine5": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "postCode": {
+          "type": "string",
+          "maxLength": 8
+        },
+        "alias": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "aliasForenames": {
+                "type": "string",
+                "maxLength": 20
+              },
+              "aliasInitials": {
+                "type": "string",
+                "maxLength": 2
+              },
+              "aliasSurname": {
+                "type": "string",
+                "maxLength": 30
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "nationalInsuranceNumber": {
+          "type": "string",
+          "maxLength": 9
+        },
+        "telephoneNumberHome": {
+          "$ref": "#/definitions/phoneNumber"
+        },
+        "telephoneNumberBusiness": {
+          "$ref": "#/definitions/phoneNumber"
+        },
+        "telephoneNumberMobile": {
+          "$ref": "#/definitions/phoneNumber"
+        },
+        "emailAddress1": {
+          "type": "string",
+          "maxLength": 76
+        },
+        "emailAddress2": {
+          "type": "string",
+          "maxLength": 76
+        },
+        "vehicleMake": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "vehicleRegistrationMark": {
+          "type": "string",
+          "maxLength": 11
+        },
+        "documentLanguage": {
+          "type": "string",
+          "enum": [
+            "",
+            "W"
+          ]
+        },
+        "accountComment": {
+          "type": "string",
+          "maxLength": 30
+        }
+      }
+    },
+    "result": {
+      "type": "array",
+      "items": {
+        "sequenceNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "resultCode": {
+          "type": "string",
+          "enum": [
+            "GF",
+            "ABHY",
+            "SW",
+            "COPI",
+            "FFF",
+            "FCOMP",
+            "BBC"
+          ]
+        },
+        "majorCreditorCode": {
+          "type": "string",
+          "maxLength": 4
+        },
+        "minorCreditorSequenceNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        }
+      }
+    },
+    "parentGuardian": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 30
+        }
+      },
+      "addressLine1": {
+        "type": "string",
+        "maxLength": 50
+      },
+      "addressLine2": {
+        "type": "string",
+        "maxLength": 50
+      },
+      "addressLine3": {
+        "type": "string",
+        "maxLength": 50
+      },
+      "addressLine4": {
+        "type": "string",
+        "maxLength": 50
+      },
+      "addressLine5": {
+        "type": "string",
+        "maxLength": 50
+      }
+    },
+    "paymentTerms": {
+      "type": "object",
+      "properties": {
+        "paymentType": {
+          "type": "string",
+          "enum": [
+            "BD",
+            "WK",
+            "FN",
+            "MO",
+            "WL",
+            "FL",
+            "ML",
+            "PD"
+          ]
+        },
+        "payByDate": {
+          "$ref": "#/definitions/dateString"
+        },
+        "lumpSumAmount": {
+          "$ref": "#/definitions/money"
+        },
+        "instalmentAmount": {
+          "$ref": "#/definitions/money"
+        },
+        "instalmentStartDate": {
+          "$ref": "#/definitions/dateString"
+        },
+        "parentGuardianToPay": {
+          "type": "string",
+          "enum": [
+            "",
+            "Y"
+          ]
+        }
+      }
+    },
+    "minorCreditor": {
+      "type": "array",
+      "items": {
+        "sequenceNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "minorCreditorTitle": {
+          "$ref": "#/definitions/nameTitle"
+        },
+        "minorCreditorSurname": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "minorCreditorInitials": {
+          "type": "string",
+          "maxLength": 2
+        },
+        "minorCreditorForenames": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "companyName": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "minorCreditorAddressLine1": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "minorCreditorAddressLine2": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "minorCreditorAddressLine3": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "minorCreditorAddressLine4": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "minorCreditorAddressLine5": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "minorCreditorPostcode": {
+          "type": "string",
+          "maxLength": 8
+        },
+        "minorCreditorPayByBACS": {
+          "type": "string",
+          "enum": {
+            "items": [
+              "Y",
+              "N"
+            ]
+          }
+        },
+        "bankAccountType": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9
+        },
+        "bankSortCode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999999
+        },
+        "BankAccountNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99999999
+        },
+        "accountName": {
+          "type": "string",
+          "maxLength": 18
+        },
+        "bankAccountReference": {
+          "type": "string",
+          "maxLength": 18
+        }
+      }
+    },
+    "accountNote": {
+      "type": "array",
+      "items": {
+        "sequenceNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "accountNoteText": {
+          "type": "String",
+          "maxLength": 28
+        }
+      }
+    },
+    "employer": {
+      "type": "object",
+      "properties": {
+        "employerReference": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "employerCompanyName": {
+          "type": "string",
+          "maxLength": 35
+        },
+        "employerAddressLine1": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "employerAddressLine2": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "employerAddressLine3": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "employerAddressLine4": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "employerAddressLine5": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "employerPostcode": {
+          "type": "string",
+          "maxLength": 8
+        },
+        "employerTelephoneNumber": {
+          "$ref": "#/definitions/phoneNumber"
+        },
+        "employerEmailAddress": {
+          "type": "string",
+          "maxLength": 32
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "enterpriseId",
+    "personId",
+    "person",
+    "result",
+    "paymentTerms",
+    "accountNote"
+  ],
+  "definitions": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+    },
+    "dateString": {
+      "type": "string",
+      "pattern": "^[1|2][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$"
+    },
+    "money": {
+      "type": "number",
+      "multipleOf": 0.01
+    },
+    "nameTitle": {
+      "type": "string",
+      "enum": [
+        "Mr",
+        "Mrs",
+        "Ms",
+        "Miss",
+        "Co"
+      ]
+    },
+    "phoneNumber": {
+      "type": "string",
+      "maxLength": 35,
+      "pattern": "^[\\d -]*$"
+    }
+  }
+}

@@ -10,8 +10,11 @@ import org.apache.commons.io.IOUtils;
 
 public class FileLoader {
 
-    public String loadAsJsonSting(final String pathname) {
-        final File file = new File(pathname);
+    public String loadAsJsonString(final String pathname) {
+        return loadAsJsonString(new File(pathname));
+    }
+
+    public String loadAsJsonString(final File file) {
         try(final FileInputStream input = new FileInputStream(file)) {
             return IOUtils.toString(input, defaultCharset());
         } catch (IOException e) {

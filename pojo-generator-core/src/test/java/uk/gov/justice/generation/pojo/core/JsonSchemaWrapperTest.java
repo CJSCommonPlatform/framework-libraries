@@ -154,16 +154,16 @@ public class JsonSchemaWrapperTest {
     @Test
     public void shouldVisitObjectAndArraySchema() {
         final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
-        final ArraySchema arraySchema = ArraySchema.builder().build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, arraySchema).build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().build();
+        final ArraySchema arraySchema = ArraySchema.builder().allItemSchema(objectSchema).build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(arraySchema);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
+        verify(visitor).enter(fieldName, arraySchema);
         verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, arraySchema);
         verify(visitor).leave(objectSchema);
+        verify(visitor).leave(arraySchema);
     }
 
     @Test

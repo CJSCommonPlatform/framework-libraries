@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.NumberSchema;
@@ -115,5 +116,30 @@ public class DefinitionBuilderVisitorTest {
 
         assertThat(definitions.get(0).getFieldDefinitions().get(1).getFieldName(), is("integerProperty"));
         assertThat(definitions.get(0).getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.Integer"));
+    }
+
+    @Test
+    public void shouldGenerateClassDefinitionsWithDescriptionOfTheClassName() throws Exception {
+        final String packageName = "org.bloggs.fred";
+        final String propertyName = "uuidProperty";
+
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+
+        final StringSchema uuidProperty = StringSchema.builder().description("UUID").build();
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .addPropertySchema(propertyName, uuidProperty)
+                .build();
+
+        definitionBuilderVisitor.enter("outerClass", objectSchema);
+        definitionBuilderVisitor.visit(propertyName, uuidProperty);
+        definitionBuilderVisitor.leave(objectSchema);
+
+        final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(1));
+
+        assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is(propertyName));
+        assertThat(definitions.get(0).getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is(UUID.class.getName()));
     }
 }

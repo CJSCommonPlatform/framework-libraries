@@ -53,7 +53,9 @@ public class JsonSchemaWrapper implements Visitable {
                 visitor.visit(fieldName, (EmptySchema) schema);
                 break;
             case "ReferenceSchema":
-                visitor.visit(fieldName, (ReferenceSchema) schema);
+                final ReferenceSchema referenceSchema = (ReferenceSchema) this.schema;
+                final Schema referredSchema = referenceSchema.getReferredSchema();
+                visitChildSchema(fieldName, visitor, referredSchema);
                 break;
             case "ArraySchema":
                 visitor.visit(fieldName, (ArraySchema) schema);

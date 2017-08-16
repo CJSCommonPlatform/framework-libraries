@@ -20,13 +20,14 @@
     <modules>
         <module>pojo-generator-core</module>
         <module>integration-test</module>
+        <module>pojo-plugin-it</module>
     </modules>
 
     <properties>
         <common-bom.version>1.17.0</common-bom.version>
         <framework-version>2.2.0</framework-version>
         <utilities.version>1.7.0</utilities.version>
-        <raml-maven-plugin.version>1.6.0</raml-maven-plugin.version>
+        <generator-maven-plugin.version>1.7.0</generator-maven-plugin.version>
     </properties>
 
     <dependencyManagement>

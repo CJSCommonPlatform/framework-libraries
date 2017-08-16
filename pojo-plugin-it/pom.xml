@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jsonschema-pojo-generator</artifactId>
+        <groupId>uk.gov.justice.generators</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>pojo-plugin-it</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>uk.gov.justice.generators</groupId>
+            <artifactId>pojo-generation-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                    we need to override the maven enforcer rules here because
+                    we are testing with snapshot plugin versions
+            -->
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-rules</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>enforce-rules-local</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <!--Available rules - http://maven.apache.org/enforcer/enforcer-rules/-->
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>${enforcer.java.version.range}</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${enforcer.maven.version.range}</version>
+                                </requireMavenVersion>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>generator-plugin</artifactId>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <version>${generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>internal-jsons</id>
+                        <configuration>
+                            <generatorName>
+                                uk.gov.justice.generation.SchemaToJavaGenerator
+                            </generatorName>
+                            <parserName>
+                                uk.gov.justice.generation.io.files.parser.FileTypeParser
+                            </parserName>
+                            <basePackageName>uk.gov.justice.events.pojo</basePackageName>
+                            <sourceDirectory>${basedir}/src/main/resources/events/json/schema
+                            </sourceDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources
+                            </outputDirectory>
+                            <includes>
+                                <include>**/*.json</include>
+                            </includes>
+                            <excludes>
+                            </excludes>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>uk.gov.justice.generators</groupId>
+                        <artifactId>pojo-generation-core</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

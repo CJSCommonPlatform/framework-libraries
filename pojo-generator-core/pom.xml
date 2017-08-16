@@ -17,9 +17,14 @@
             <artifactId>javaee-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>raml-generator-core</artifactId>
-            <version>${raml-maven-plugin.version}</version>
+            <groupId>uk.gov.justice.maven.generator</groupId>
+            <artifactId>generator-core</artifactId>
+            <version>${generator-maven-plugin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.maven.generator</groupId>
+            <artifactId>parser-common</artifactId>
+            <version>${generator-maven-plugin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.everit.json</groupId>

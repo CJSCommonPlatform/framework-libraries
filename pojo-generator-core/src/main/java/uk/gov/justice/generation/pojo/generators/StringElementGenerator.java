@@ -14,12 +14,12 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
-public class ElementGenerator implements ElementGeneratable {
+public class StringElementGenerator implements ElementGeneratable {
 
     private final Definition classTypeDefinition;
     private final DefinitionToTypeNameConverter definitionToTypeNameConverter = new DefinitionToTypeNameConverter();
 
-    ElementGenerator(final Definition classTypeDefinition) {
+    StringElementGenerator(final Definition classTypeDefinition) {
         this.classTypeDefinition = classTypeDefinition;
     }
 
@@ -32,8 +32,8 @@ public class ElementGenerator implements ElementGeneratable {
     public Stream<MethodSpec> generateMethods() {
         return Stream.of(methodBuilder(toGetterMethodName())
                 .addModifiers(PUBLIC)
-                .returns(definitionToTypeNameConverter.getTypeName(classTypeDefinition))
-                .addCode(CodeBlock.builder().addStatement("return $L", classTypeDefinition.getFieldName()).build())
+                .returns(String.class)
+                .addCode(CodeBlock.builder().addStatement("return $L.toString()", classTypeDefinition.getFieldName()).build())
                 .build());
     }
 

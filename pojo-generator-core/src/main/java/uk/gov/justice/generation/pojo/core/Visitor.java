@@ -1,6 +1,6 @@
 package uk.gov.justice.generation.pojo.core;
 
-import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.dom.Definition;
 
 import java.util.List;
 
@@ -36,5 +36,5 @@ public interface Visitor {
 
     void visit(final String fieldName, final StringSchema schema);
 
-    List<ClassDefinition> getDefinitions();
+    List<Definition> getDefinitions();
 }

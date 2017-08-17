@@ -35,6 +35,10 @@
             <artifactId>javapoet</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>generators-commons</artifactId>
             <version>${framework-version}</version>

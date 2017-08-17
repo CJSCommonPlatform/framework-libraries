@@ -1,10 +1,12 @@
 package uk.gov.justice.generation.pojo.core;
 
-import static org.apache.commons.lang.StringUtils.capitalize;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 
 import java.math.BigDecimal;
@@ -12,6 +14,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Set;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
@@ -27,7 +30,7 @@ import org.everit.json.schema.StringSchema;
 public class DefinitionBuilderVisitor implements Visitor {
 
     private final Deque<Entry> definitions = new ArrayDeque<>();
-    private final List<ClassDefinition> classDefinitions = new ArrayList<>();
+    private final List<Definition> classDefinitions = new ArrayList<>();
     private final ClassNameProvider classNameProvider = new ClassNameProvider();
     private final String packageName;
 
@@ -58,9 +61,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final StringSchema schema) {
-
         final ClassName className = classNameProvider.classNameFor(schema.getDescription());
-
         definitions.push(new Entry(schema, new FieldDefinition(fieldName, className)));
     }
 
@@ -73,6 +74,15 @@ public class DefinitionBuilderVisitor implements Visitor {
     public void visit(final String fieldName, final NumberSchema schema) {
         final ClassName className = schema.requiresInteger() ? new ClassName(Integer.class) : new ClassName(BigDecimal.class);
         definitions.push(new Entry(schema, new FieldDefinition(fieldName, className)));
+    }
+
+    @Override
+    public void visit(final String fieldName, final EnumSchema schema) {
+        final Set<Object> possibleValues = schema.getPossibleValues();
+        final List<String> enumValues = possibleValues.stream().map(i -> (String) i).collect(toList());
+        final EnumDefinition enumDefinition = new EnumDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)), enumValues);
+        definitions.push(new Entry(schema, enumDefinition));
+        classDefinitions.add(enumDefinition);
     }
 
     @Override
@@ -91,17 +101,12 @@ public class DefinitionBuilderVisitor implements Visitor {
     }
 
     @Override
-    public void visit(final String fieldName, final EnumSchema schema) {
-        //TODO: Implement Enum Schema
-    }
-
-    @Override
     public void visit(final String fieldName, final NullSchema schema) {
         //TODO: Implement Null Schema
     }
 
     @Override
-    public List<ClassDefinition> getDefinitions() {
+    public List<Definition> getDefinitions() {
         return classDefinitions;
     }
 

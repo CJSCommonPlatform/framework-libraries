@@ -3,6 +3,7 @@ package uk.gov.justice.generation.pojo.integration.test;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -11,7 +12,6 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -25,6 +25,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -36,36 +37,41 @@ public class ClassGeneratorIT {
     private final ClassCompiler classCompiler = new ClassCompiler();
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+    private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
 
+    private File sourceOutputDirectory;
+    private File classesOutputDirectory;
+
+    @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void setup() throws Exception {
+        sourceOutputDirectory = new File("./target/test-generation");
+        classesOutputDirectory = new File("./target/test-classes");
+
+        sourceOutputDirectory.mkdirs();
+        classesOutputDirectory.mkdirs();
+
+        if (sourceOutputDirectory.exists()) {
+            cleanDirectory(sourceOutputDirectory);
+        }
+    }
+
     @Test
     public void shouldGenerateJavaClassSourceCode() throws Exception {
 
         final String packageName = "uk.gov.justice.pojo";
 
+        final GenerationContext generationContext = new GenerationContextFactory().create(sourceOutputDirectory);
         final ClassDefinition addressDefinition = addressDefinition(packageName);
         final ClassDefinition employeeDefinition = employeeDefinition(packageName, addressDefinition);
-        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
 
-        final List<ClassGeneratable> classGenerators = asList(
-                javaGeneratorFactory.createClassGeneratorFor(addressDefinition),
-                javaGeneratorFactory.createClassGeneratorFor(employeeDefinition)
-        );
-
-        final File sourceOutputDirectory = new File("./target/test-generation");
-        final File classesOutputDirectory = new File("./target/test-classes");
-
-        sourceOutputDirectory.mkdirs();
-        classesOutputDirectory.mkdirs();
-
-        final GenerationContext generationContext = new GenerationContextFactory().create(sourceOutputDirectory);
-
-        sourceOutputDirectory.delete();
-
-        final List<? extends Class<?>> classes = classGenerators.stream().map(classGenerator -> {
-            sourceWriter.write(classGenerator, generationContext);
-            return classCompiler.compile(classGenerator, sourceOutputDirectory, classesOutputDirectory);
-        }).collect(toList());
+        final List<? extends Class<?>> classes = javaGeneratorFactory
+                .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition))
+                .stream()
+                .map(classGenerator -> {
+                    sourceWriter.write(classGenerator, generationContext);
+                    return classCompiler.compile(classGenerator, sourceOutputDirectory, classesOutputDirectory);
+                }).collect(toList());
 
         assertThat(classes.get(0).getName(), is(addressDefinition.getClassName().getFullyQualifiedName()));
         assertThat(classes.get(1).getName(), is(employeeDefinition.getClassName().getFullyQualifiedName()));

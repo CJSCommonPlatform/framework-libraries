@@ -41,7 +41,7 @@ Maven dependency:
             </executions>
             <dependencies>
                 <dependency>
-                    <groupId>uk.gov.justice.maven</groupId>
+                    <groupId>uk.gov.justice.maven.generator</groupId>
                     <artifactId>raml-for-testing-io</artifactId>
                     <version>1.7.0</version>
                     <classifier>raml</classifier>

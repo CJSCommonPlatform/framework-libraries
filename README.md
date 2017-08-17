@@ -1,4 +1,4 @@
-# RAML Maven Plugin
+# Generator Maven Plugin
 [![Build Status](https://travis-ci.org/CJSCommonPlatform/generator-maven-plugin.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/generator-maven-plugin) 
 [![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/generator-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/generator-maven-plugin?branch=master)
 
@@ -13,8 +13,8 @@ Maven dependency:
 <build>
     <plugins>
         <plugin>
-            <artifactId>raml-maven-plugin</artifactId>
-            <groupId>uk.gov.justice.maven</groupId>
+            <groupId>uk.gov.justice.maven.generator</groupId>
+            <artifactId>generator-maven-plugin</artifactId>
             <version>1.7.0</version>
             <executions>
                 <execution>
@@ -43,13 +43,13 @@ Maven dependency:
                 <dependency>
                     <groupId>uk.gov.justice.maven</groupId>
                     <artifactId>raml-for-testing-io</artifactId>
-                    <version>1.0.0</version>
+                    <version>1.7.0</version>
                     <classifier>raml</classifier>
                 </dependency>
                 <dependency>
                     <groupId>uk.gov.justice.maven.generator</groupId>
                     <artifactId>raml-parser</artifactId>
-                    <version>1.0.0</version>
+                    <version>1.7.0</version>
                 </dependency>
             </dependencies>
         </plugin>

@@ -14,7 +14,7 @@ Maven dependency:
     <plugins>
         <plugin>
             <groupId>uk.gov.justice.maven.generator</groupId>
-            <artifactId>generator-maven-plugin</artifactId>
+            <artifactId>generator-plugin</artifactId>
             <version>1.7.0</version>
             <executions>
                 <execution>

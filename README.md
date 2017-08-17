@@ -15,7 +15,7 @@ Maven dependency:
         <plugin>
             <artifactId>raml-maven-plugin</artifactId>
             <groupId>uk.gov.justice.maven</groupId>
-            <version>1.1.1</version>
+            <version>1.7.0</version>
             <executions>
                 <execution>
                     <configuration>

@@ -1,6 +1,8 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.Collections.singletonList;
+import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -22,6 +24,7 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.ObjectSchema;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DefinitionBuilderIT {
@@ -31,6 +34,23 @@ public class DefinitionBuilderIT {
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final RootFieldNameGenerator rootFieldNameGenerator = new RootFieldNameGenerator();
     private final ObjectSchemaLoader objectSchemaLoader = new ObjectSchemaLoader();
+
+    private File sourceOutputDirectory;
+    private File classesOutputDirectory;
+
+    @Before
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void setup() throws Exception {
+        sourceOutputDirectory = new File("./target/test-generation");
+        classesOutputDirectory = new File("./target/test-classes");
+
+        sourceOutputDirectory.mkdirs();
+        classesOutputDirectory.mkdirs();
+
+        if (sourceOutputDirectory.exists()) {
+            cleanDirectory(sourceOutputDirectory);
+        }
+    }
 
     @Test
     public void shouldBuildTypeSpecFromSchema() throws Exception {
@@ -43,14 +63,11 @@ public class DefinitionBuilderIT {
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
         jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);
 
-        final ClassDefinition personClassDefinition = definitionBuilderVisitor.getDefinitions().get(0);
-        final ClassGeneratable personClassGenerator = new JavaGeneratorFactory().createClassGeneratorFor(personClassDefinition);
+        final ClassDefinition personClassDefinition = (ClassDefinition) definitionBuilderVisitor.getDefinitions().get(0);
 
-
-        final File sourceOutputDirectory = new File("./target/test-generation");
-        final File classesOutputDirectory = new File("./target/test-classes");
-
-        sourceOutputDirectory.delete();
+        final ClassGeneratable personClassGenerator = new JavaGeneratorFactory()
+                .createClassGeneratorsFor(singletonList(personClassDefinition))
+                .get(0);
 
         sourceWriter.write(personClassGenerator, new GenerationContext(sourceOutputDirectory));
         final Class<?> personClass = classCompiler.compile(personClassGenerator, sourceOutputDirectory, classesOutputDirectory);

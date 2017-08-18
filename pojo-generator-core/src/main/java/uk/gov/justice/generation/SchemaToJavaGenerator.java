@@ -31,9 +31,8 @@ public class SchemaToJavaGenerator implements Generator<File> {
 
         new JsonSchemaWrapper(schema).accept(fieldName, definitionBuilderVisitor);
 
-        definitionBuilderVisitor.getDefinitions()
-                .stream()
-                .map(javaGeneratorFactory::createClassGeneratorFor)
+        javaGeneratorFactory
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions())
                 .forEach(classGeneratable -> sourceWriter.write(classGeneratable, generationContext));
     }
 }

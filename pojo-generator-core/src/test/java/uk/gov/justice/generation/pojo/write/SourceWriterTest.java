@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.write;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -8,7 +9,6 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.io.File;
@@ -37,8 +37,9 @@ public class SourceWriterTest {
 
         sourceOutputDirectory.delete();
 
-        final ClassGeneratable addressGenerator = new JavaGeneratorFactory().createClassGeneratorFor(addressDefinition);
-        sourceWriter.write(addressGenerator, generationContext);
+        new JavaGeneratorFactory()
+                .createClassGeneratorsFor(singletonList(addressDefinition))
+                .forEach(classGeneratable -> sourceWriter.write(classGeneratable, generationContext));
 
         assertThat(Paths.get(sourceOutputDirectory.toPath().toString(), "org/bloggs/fred/Address.java").toFile().exists(), is(true));
     }

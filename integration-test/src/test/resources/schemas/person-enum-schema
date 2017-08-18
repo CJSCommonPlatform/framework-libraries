@@ -3,20 +3,19 @@
   "type": "object",
   "id": "person",
   "properties": {
-    "title": {
-      "type": "string",
-      "enum": [
-        "",
-        "Mr",
-        "Mrs",
-        "Ms"
-      ]
-    },
     "firstName": {
       "type": "string"
     },
     "lastName": {
       "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "enum": [
+        "Mr",
+        "Mrs",
+        "Ms"
+      ]
     },
     "required": {
       "type": "boolean"
@@ -30,6 +29,7 @@
   },
   "additionalProperties": false,
   "required": [
+    "title",
     "firstName",
     "lastName",
     "required",

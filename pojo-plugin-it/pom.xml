@@ -12,13 +12,23 @@
     <artifactId>pojo-plugin-it</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>uk.gov.justice.generators</groupId>
-            <artifactId>pojo-generation-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.utils</groupId>
+            <artifactId>utilities-core</artifactId>
+            <version>${utilities.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path-assert</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -28,45 +38,6 @@
 
     <build>
         <plugins>
-            <!--
-                    we need to override the maven enforcer rules here because
-                    we are testing with snapshot plugin versions
-            -->
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-rules</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>enforce-rules-local</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <!--Available rules - http://maven.apache.org/enforcer/enforcer-rules/-->
-                            <rules>
-                                <requireJavaVersion>
-                                    <version>${enforcer.java.version.range}</version>
-                                </requireJavaVersion>
-                                <requireMavenVersion>
-                                    <version>${enforcer.maven.version.range}</version>
-                                </requireMavenVersion>
-                                <dependencyConvergence/>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <artifactId>generator-plugin</artifactId>
                 <groupId>uk.gov.justice.maven.generator</groupId>

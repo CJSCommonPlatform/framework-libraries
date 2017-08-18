@@ -1,6 +1,8 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.Collections.singletonList;
+import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -19,6 +21,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 
 public class SourceWriterIT {
@@ -28,24 +31,35 @@ public class SourceWriterIT {
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
 
+    private File sourceOutputDirectory;
+    private File classesOutputDirectory;
+
+    @Before
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void setup() throws Exception {
+        sourceOutputDirectory = new File("./target/test-generation");
+        classesOutputDirectory = new File("./target/test-classes");
+
+        sourceOutputDirectory.mkdirs();
+        classesOutputDirectory.mkdirs();
+
+        if (sourceOutputDirectory.exists()) {
+            cleanDirectory(sourceOutputDirectory);
+        }
+    }
+
     @Test
     public void shouldWriteASingleSourceFile() throws Exception {
 
-        final File rootOutputDirectory = new File("target/sources-generated-from-tests");
-        rootOutputDirectory.delete();
         final String packageName = "org.bloggs.fred";
-
         final ClassDefinition addressDefinition = addressDefinition(packageName);
-
-
-        final File sourceOutputDirectory = new File("./target/test-generation");
-        final File classesOutputDirectory = new File("./target/test-classes");
 
         final GenerationContext generationContext = new GenerationContextFactory().create(sourceOutputDirectory);
 
-        sourceOutputDirectory.delete();
+        final ClassGeneratable addressGenerator = new JavaGeneratorFactory()
+                .createClassGeneratorsFor(singletonList(addressDefinition))
+                .get(0);
 
-        final ClassGeneratable addressGenerator = new JavaGeneratorFactory().createClassGeneratorFor(addressDefinition);
         sourceWriter.write(addressGenerator, generationContext);
         final Class<?> addressClass = classCompiler.compile(addressGenerator, sourceOutputDirectory, classesOutputDirectory);
 
@@ -57,7 +71,6 @@ public class SourceWriterIT {
         final Constructor<?> addressConstructor = addressClass.getConstructor(String.class, String.class);
         final Object address = addressConstructor.newInstance(firstLine, postCode);
 
-
         final String addressJson = objectMapper.writeValueAsString(address);
 
         with(addressJson)
@@ -65,7 +78,6 @@ public class SourceWriterIT {
                 .assertThat("$.postCode", is(postCode))
         ;
     }
-
 
     private ClassDefinition addressDefinition(final String packageName) {
         final ClassDefinition addressDefinition = new ClassDefinition("address", new ClassName(packageName, "Address"));

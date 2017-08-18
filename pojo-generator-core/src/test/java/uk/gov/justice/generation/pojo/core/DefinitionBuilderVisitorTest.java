@@ -1,14 +1,18 @@
 package uk.gov.justice.generation.pojo.core;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.everit.json.schema.BooleanSchema;
+import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.StringSchema;
@@ -46,19 +50,21 @@ public class DefinitionBuilderVisitorTest {
         definitionBuilderVisitor.visit("outerProperty", outerProperty);
         definitionBuilderVisitor.leave(objectSchema_1);
 
-        final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
 
         assertThat(definitions.size(), is(2));
+        final ClassDefinition classTypeDefinition1 = (ClassDefinition) definitions.get(0);
+        final ClassDefinition classTypeDefinition2 = (ClassDefinition) definitions.get(1);
 
-        assertThat(definitions.get(0).getClassName().getPackageName(), is(packageName));
-        assertThat(definitions.get(0).getClassName().getSimpleName(), is(innerClass));
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is("innerProperty"));
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.String"));
+        assertThat(classTypeDefinition1.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition1.getClassName().getSimpleName(), is(innerClass));
+        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getFieldName(), is("innerProperty"));
+        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.String"));
 
-        assertThat(definitions.get(1).getClassName().getPackageName(), is(packageName));
-        assertThat(definitions.get(1).getClassName().getSimpleName(), is(outerClass));
-        assertThat(definitions.get(1).getFieldDefinitions().get(1).getFieldName(), is("outerProperty"));
-        assertThat(definitions.get(1).getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.String"));
+        assertThat(classTypeDefinition2.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition2.getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition2.getFieldDefinitions().get(1).getFieldName(), is("outerProperty"));
+        assertThat(classTypeDefinition2.getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.String"));
     }
 
     @Test
@@ -74,14 +80,43 @@ public class DefinitionBuilderVisitorTest {
         definitionBuilderVisitor.visit("outerProperty", outerProperty);
         definitionBuilderVisitor.leave(objectSchema);
 
-        final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
 
         assertThat(definitions.size(), is(1));
+        final ClassDefinition classTypeDefinition1 = (ClassDefinition) definitions.get(0);
 
+        assertThat(classTypeDefinition1.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition1.getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getFieldName(), is("outerProperty"));
+        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.Boolean"));
+    }
+
+    @Test
+    public void shouldGenerateClassDefinitionWithEnumSchemaProperty() throws Exception {
+        final String packageName = "org.bloggs.fred";
+        final String outerClass = "OuterClass";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+
+        final EnumSchema outerProperty = EnumSchema.builder().build();
+        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema("outerProperty", outerProperty).id(outerClass).build();
+
+        definitionBuilderVisitor.enter("outerClass", objectSchema);
+        definitionBuilderVisitor.visit("outerProperty", outerProperty);
+        definitionBuilderVisitor.leave(objectSchema);
+
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(2));
+
+        assertThat(definitions.get(0), is(instanceOf(EnumDefinition.class)));
         assertThat(definitions.get(0).getClassName().getPackageName(), is(packageName));
-        assertThat(definitions.get(0).getClassName().getSimpleName(), is(outerClass));
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is("outerProperty"));
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.Boolean"));
+        assertThat(definitions.get(0).getClassName().getSimpleName(), is("OuterProperty"));
+
+        final ClassDefinition classTypeDefinition = (ClassDefinition) definitions.get(1);
+        assertThat(classTypeDefinition.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition.getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getFieldName(), is("outerProperty"));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("org.bloggs.fred.OuterProperty"));
     }
 
     @Test
@@ -104,18 +139,19 @@ public class DefinitionBuilderVisitorTest {
         definitionBuilderVisitor.visit("integerProperty", integerProperty);
         definitionBuilderVisitor.leave(objectSchema);
 
-        final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
 
         assertThat(definitions.size(), is(1));
+        final ClassDefinition classTypeDefinition = (ClassDefinition) definitions.get(0);
 
-        assertThat(definitions.get(0).getClassName().getPackageName(), is(packageName));
-        assertThat(definitions.get(0).getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition.getClassName().getSimpleName(), is(outerClass));
 
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is("numberProperty"));
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.math.BigDecimal"));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getFieldName(), is("numberProperty"));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.math.BigDecimal"));
 
-        assertThat(definitions.get(0).getFieldDefinitions().get(1).getFieldName(), is("integerProperty"));
-        assertThat(definitions.get(0).getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.Integer"));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(1).getFieldName(), is("integerProperty"));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.Integer"));
     }
 
     @Test
@@ -135,11 +171,12 @@ public class DefinitionBuilderVisitorTest {
         definitionBuilderVisitor.visit(propertyName, uuidProperty);
         definitionBuilderVisitor.leave(objectSchema);
 
-        final List<ClassDefinition> definitions = definitionBuilderVisitor.getDefinitions();
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
 
         assertThat(definitions.size(), is(1));
+        final ClassDefinition classTypeDefinition = (ClassDefinition) definitions.get(0);
 
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getFieldName(), is(propertyName));
-        assertThat(definitions.get(0).getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is(UUID.class.getName()));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getFieldName(), is(propertyName));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is(UUID.class.getName()));
     }
 }

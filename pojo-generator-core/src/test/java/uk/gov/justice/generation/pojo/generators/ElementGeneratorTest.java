@@ -35,7 +35,7 @@ public class ElementGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateMethod() throws Exception {
+    public void shouldGenerateMethodFromClassDefintion() throws Exception {
         final ClassName className = new ClassName("org.something", "Address");
         final ClassDefinition classDefinition = new ClassDefinition("address", className);
 

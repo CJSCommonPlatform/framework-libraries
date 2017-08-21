@@ -13,8 +13,9 @@ public class ClassDefinition extends FieldDefinition {
         super(fieldName, className);
     }
 
-    public void addFieldDefinition(final Definition fieldDefinition) {
+    public ClassDefinition addFieldDefinition(final Definition fieldDefinition) {
         fieldDefinitions.add(fieldDefinition);
+        return this;
     }
 
     public List<Definition> getFieldDefinitions() {

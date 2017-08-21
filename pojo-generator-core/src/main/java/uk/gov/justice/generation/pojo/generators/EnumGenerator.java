@@ -12,6 +12,7 @@ import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 
 import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeSpec.Builder;
 
 public class EnumGenerator implements ClassGeneratable {
 
@@ -20,7 +21,7 @@ public class EnumGenerator implements ClassGeneratable {
 
     private final EnumDefinition enumDefinition;
 
-    public EnumGenerator(EnumDefinition enumDefinition) {
+    public EnumGenerator(final EnumDefinition enumDefinition) {
         this.enumDefinition = enumDefinition;
     }
 
@@ -28,7 +29,7 @@ public class EnumGenerator implements ClassGeneratable {
     public TypeSpec generate() {
         final String className = enumDefinition.getClassName().getSimpleName();
 
-        TypeSpec.Builder enumBuilder = enumBuilder(className).addModifiers(PUBLIC);
+        final Builder enumBuilder = enumBuilder(className).addModifiers(PUBLIC);
 
         enumDefinition.getEnumValues().forEach(enumValue -> {
             final String enumName = enumValue.isEmpty() ? BLANK_ENUM_NAME : enumValue.toUpperCase();

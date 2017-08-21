@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.8.0] - 2017-08-21
+
 ### Changed
 
 - Travis CI user updated to common CI user
@@ -12,6 +14,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 
 - Added Sonarcloud analysis
+- Moved compiler classes to Utilities from Microservices Framework
 
 ## [1.7.0] - 2017-07-28
 

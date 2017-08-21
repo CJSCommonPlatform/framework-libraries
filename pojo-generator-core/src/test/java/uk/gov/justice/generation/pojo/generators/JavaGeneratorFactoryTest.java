@@ -41,7 +41,7 @@ public class JavaGeneratorFactoryTest {
         final EnumDefinition enumDefinition = new EnumDefinition("test", mock(ClassName.class), emptyList());
         final ElementGeneratable elementGeneratable = new JavaGeneratorFactory().createGeneratorFor(enumDefinition);
 
-        assertThat(elementGeneratable, is(instanceOf(StringElementGenerator.class)));
+        assertThat(elementGeneratable, is(instanceOf(ElementGenerator.class)));
     }
 
     @Test

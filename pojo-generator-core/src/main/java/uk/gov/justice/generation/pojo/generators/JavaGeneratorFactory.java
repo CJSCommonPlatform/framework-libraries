@@ -13,12 +13,8 @@ public class JavaGeneratorFactory {
 
     public ElementGeneratable createGeneratorFor(final Definition definition) {
 
-        if (definition.getClass() == ClassDefinition.class) {
+        if (definition.getClass() == ClassDefinition.class || definition.getClass() == EnumDefinition.class) {
             return new ElementGenerator(definition);
-        }
-
-        if (definition.getClass() == EnumDefinition.class) {
-            return new StringElementGenerator(definition);
         }
 
         return new FieldGenerator((FieldDefinition) definition);

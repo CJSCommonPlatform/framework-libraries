@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,7 @@ import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.generators.ClassGenerator;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,12 +44,12 @@ public class NonDuplicatingSourceWriterTest {
 
         final GenerationContext generationContext = mock(GenerationContext.class);
         final ClassGenerator classGenerator = mock(ClassGenerator.class);
-        final File sourceRootDirectory = mock(File.class);
+        final Path sourceRootDirectory = mock(Path.class);
         final File sourceFile = mock(File.class);
         final ClassName className = mock(ClassName.class);
         final Logger logger = mock(Logger.class);
 
-        when(generationContext.getSourceRootDirectory()).thenReturn(sourceRootDirectory);
+        when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
         when(classGenerator.getClassName()).thenReturn(className);
         when(javaSourceFileProvider.getJavaFile(sourceRootDirectory, className)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(false).thenReturn(true);
@@ -58,8 +60,8 @@ public class NonDuplicatingSourceWriterTest {
 
         final InOrder inOrder = inOrder(sourceWriter, logger);
 
-        inOrder.verify(sourceWriter).write(classGenerator, generationContext);
-        inOrder.verify(logger).info("Wrote new Java file '" + fileName + "'");
+        inOrder.verify(sourceWriter).write(classGenerator, sourceRootDirectory);
+        inOrder.verify(logger).info("Wrote new Java file '%s'", fileName);
     }
 
     @Test
@@ -67,18 +69,22 @@ public class NonDuplicatingSourceWriterTest {
 
         final GenerationContext generationContext = mock(GenerationContext.class);
         final ClassGenerator classGenerator = mock(ClassGenerator.class);
-        final File sourceRootDirectory = mock(File.class);
+        final Path sourceRootDirectory = mock(Path.class);
         final File sourceFile = mock(File.class);
         final ClassName className = mock(ClassName.class);
+        final Logger logger = mock(Logger.class);
 
-        when(generationContext.getSourceRootDirectory()).thenReturn(sourceRootDirectory);
+        when(generationContext.getLoggerFor(NonDuplicatingSourceWriter.class)).thenReturn(logger);
+        when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
         when(classGenerator.getClassName()).thenReturn(className);
         when(javaSourceFileProvider.getJavaFile(sourceRootDirectory, className)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(true);
+        when(sourceFile.getAbsolutePath()).thenReturn("org/test");
 
         assertThat(nonDuplicatingSourceWriter.write(classGenerator, generationContext), is(sourceFile));
 
         verifyZeroInteractions(sourceWriter);
+        verify(logger).info("Skipping generation, Java file already exists '%s'", "org/test");
     }
 
     @Test
@@ -88,12 +94,12 @@ public class NonDuplicatingSourceWriterTest {
 
         final GenerationContext generationContext = mock(GenerationContext.class);
         final ClassGenerator classGenerator = mock(ClassGenerator.class);
-        final File sourceRootDirectory = mock(File.class);
+        final Path sourceRootDirectory = mock(Path.class);
         final File sourceFile = mock(File.class);
         final ClassName className = mock(ClassName.class);
         final Logger logger = mock(Logger.class);
 
-        when(generationContext.getSourceRootDirectory()).thenReturn(sourceRootDirectory);
+        when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
         when(classGenerator.getClassName()).thenReturn(className);
         when(javaSourceFileProvider.getJavaFile(sourceRootDirectory, className)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(false).thenReturn(false);

@@ -8,7 +8,6 @@ import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.io.files.loader.ObjectSchemaLoader;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
@@ -69,7 +68,7 @@ public class DefinitionBuilderIT {
                 .createClassGeneratorsFor(singletonList(personClassDefinition))
                 .get(0);
 
-        sourceWriter.write(personClassGenerator, new GenerationContext(sourceOutputDirectory));
+        sourceWriter.write(personClassGenerator, sourceOutputDirectory.toPath());
         final Class<?> personClass = classCompiler.compile(personClassGenerator, sourceOutputDirectory, classesOutputDirectory);
 
         assertThat(personClass.getName(), is(personClassDefinition.getClassName().getFullyQualifiedName()));

@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.write;
 import static java.lang.String.format;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.generators.ClassGenerator;
+import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 
 import java.io.File;
 
@@ -19,21 +19,23 @@ public class NonDuplicatingSourceWriter {
         this.sourceWriter = sourceWriter;
     }
 
-    public File write(final ClassGenerator classGenerator, final GenerationContext generationContext) {
+    public File write(final ClassGeneratable classGeneratable, final GenerationContext generationContext) {
 
+        final Logger logger = generationContext.getLoggerFor(getClass());
         final File sourceFile = javaSourceFileProvider.getJavaFile(
-                generationContext.getSourceRootDirectory(),
-                classGenerator.getClassName());
+                generationContext.getOutputDirectoryPath(),
+                classGeneratable.getClassName());
 
         if (!sourceFile.exists()) {
-            sourceWriter.write(classGenerator, generationContext);
-            final Logger logger = generationContext.getLoggerFor(getClass());
+            sourceWriter.write(classGeneratable, generationContext.getOutputDirectoryPath());
 
             if (sourceFile.exists()) {
-                logger.info(format("Wrote new Java file '%s'", sourceFile.getName()));
+                logger.info("Wrote new Java file '%s'", sourceFile.getName());
             } else {
                 throw new SourceCodeWriteException(format("Failed to write java file '%s'", sourceFile.getAbsolutePath()));
             }
+        } else {
+            logger.info("Skipping generation, Java file already exists '%s'", sourceFile.getAbsolutePath());
         }
 
         return sourceFile;

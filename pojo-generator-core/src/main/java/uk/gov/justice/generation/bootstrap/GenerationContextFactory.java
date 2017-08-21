@@ -6,23 +6,26 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.write.SourceCodeWriteException;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public class GenerationContextFactory {
 
-    public GenerationContext create(final File sourceRootDirectory) {
+    public GenerationContext createWith(final Path outputDirectoryPath) {
 
-        if (! sourceRootDirectory.exists()) {
-            throw new SourceCodeWriteException(format("Source code root directory '%s' does not exist", sourceRootDirectory.getAbsolutePath()));
+        final File directory = outputDirectoryPath.toFile();
+
+        if (!directory.exists()) {
+            throw new SourceCodeWriteException(format("Source code root directory '%s' does not exist", outputDirectoryPath.toAbsolutePath()));
         }
 
-        if (! sourceRootDirectory.isDirectory()) {
-            throw new SourceCodeWriteException(format("Source code root directory '%s' is not a directory", sourceRootDirectory.getAbsolutePath()));
+        if (!directory.isDirectory()) {
+            throw new SourceCodeWriteException(format("Source code root directory '%s' is not a directory", outputDirectoryPath.toAbsolutePath()));
         }
 
-        if (! sourceRootDirectory.canWrite()) {
-            throw new SourceCodeWriteException(format("Source code root directory '%s' is not writable", sourceRootDirectory.getAbsolutePath()));
+        if (!directory.canWrite()) {
+            throw new SourceCodeWriteException(format("Source code root directory '%s' is not writable", outputDirectoryPath.toAbsolutePath()));
         }
 
-        return new GenerationContext(sourceRootDirectory);
+        return new GenerationContext(outputDirectoryPath);
     }
 }

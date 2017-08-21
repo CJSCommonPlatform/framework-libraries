@@ -58,7 +58,6 @@ public class EnumGeneratorIT {
 
         final String packageName = "uk.gov.justice.pojo";
 
-        final GenerationContext generationContext = new GenerationContextFactory().create(sourceOutputDirectory);
         final ClassDefinition studentDefinition = studentDefinition(packageName);
         final EnumDefinition colourDefinition = colourDefinition(packageName);
 
@@ -66,7 +65,7 @@ public class EnumGeneratorIT {
                 .createClassGeneratorsFor(asList(colourDefinition, studentDefinition))
                 .stream()
                 .map(classGenerator -> {
-                    sourceWriter.write(classGenerator, generationContext);
+                    sourceWriter.write(classGenerator, sourceOutputDirectory.toPath());
                     return classCompiler.compile(classGenerator, sourceOutputDirectory, classesOutputDirectory);
                 }).collect(toList());
 

@@ -6,6 +6,8 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
+import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
@@ -23,16 +25,18 @@ public class SchemaToJavaGenerator implements Generator<File> {
 
     @Override
     public void run(final File source, final GeneratorConfig generatorConfig) {
+        final NonDuplicatingSourceWriter writer = new NonDuplicatingSourceWriter(new JavaSourceFileProvider(), sourceWriter);
+        final GenerationContext generationContext = new GenerationContext(generatorConfig.getOutputDirectory());
+
         final ObjectSchema schema = objectSchemaLoader.loadFrom(source);
         final String fieldName = rootFieldNameGenerator.generateNameFrom(source);
 
-        final GenerationContext generationContext = new GenerationContext(generatorConfig.getOutputDirectory().toFile());
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(generatorConfig.getBasePackageName());
 
         new JsonSchemaWrapper(schema).accept(fieldName, definitionBuilderVisitor);
 
         javaGeneratorFactory
                 .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions())
-                .forEach(classGeneratable -> sourceWriter.write(classGeneratable, generationContext));
+                .forEach(classGeneratable -> writer.write(classGeneratable, generationContext));
     }
 }

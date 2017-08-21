@@ -6,8 +6,6 @@ import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.bootstrap.GenerationContextFactory;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
@@ -54,13 +52,11 @@ public class SourceWriterIT {
         final String packageName = "org.bloggs.fred";
         final ClassDefinition addressDefinition = addressDefinition(packageName);
 
-        final GenerationContext generationContext = new GenerationContextFactory().create(sourceOutputDirectory);
-
         final ClassGeneratable addressGenerator = new JavaGeneratorFactory()
                 .createClassGeneratorsFor(singletonList(addressDefinition))
                 .get(0);
 
-        sourceWriter.write(addressGenerator, generationContext);
+        sourceWriter.write(addressGenerator, sourceOutputDirectory.toPath());
         final Class<?> addressClass = classCompiler.compile(addressGenerator, sourceOutputDirectory, classesOutputDirectory);
 
         assertThat(addressClass.getName(), is(addressDefinition.getClassName().getFullyQualifiedName()));

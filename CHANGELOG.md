@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- JavaCompilerUtil copied from generators-test-utils
+
 ## [1.6.0] - 2017-08-14
 
 ### Added

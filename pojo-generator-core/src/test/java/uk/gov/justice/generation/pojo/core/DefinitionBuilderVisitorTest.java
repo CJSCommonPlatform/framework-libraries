@@ -11,6 +11,7 @@ import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import java.util.List;
 import java.util.UUID;
 
+import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
@@ -20,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 
@@ -28,6 +30,9 @@ public class DefinitionBuilderVisitorTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @Mock
+    private Visitor visitor;
 
     @Test
     public void shouldGenerateClassDefinitionsWithStringSchemaProperties() throws Exception {
@@ -152,6 +157,47 @@ public class DefinitionBuilderVisitorTest {
 
         assertThat(classTypeDefinition.getFieldDefinitions().get(1).getFieldName(), is("integerProperty"));
         assertThat(classTypeDefinition.getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.Integer"));
+    }
+
+    @Test
+    public void shouldGenerateClassDefinitionWithArraySchemaProperty() throws Exception {
+        final String packageName = "org.bloggs.fred";
+        final String outerClass = "OuterClass";
+        final String arrayObject = "ArrayObject";
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+
+        final ArraySchema arraySchema = ArraySchema.builder().build();
+
+        final ObjectSchema arrayObjectSchema = ObjectSchema.builder()
+                .id(outerClass)
+                .build();
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .addPropertySchema("arrayProperty", arraySchema)
+                .id(outerClass)
+                .build();
+
+        definitionBuilderVisitor.enter("outerClass", objectSchema);
+        definitionBuilderVisitor.enter("arrayProperty", arraySchema);
+        definitionBuilderVisitor.enter("arrayObject", arrayObjectSchema);
+        definitionBuilderVisitor.leave(arrayObjectSchema);
+        definitionBuilderVisitor.leave(arraySchema);
+        definitionBuilderVisitor.leave(objectSchema);
+
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(2));
+        final ClassDefinition outerClassDefinition = (ClassDefinition) definitions.get(1);
+        final ClassDefinition arrayObjectDefinition = (ClassDefinition) definitions.get(0);
+
+        assertThat(outerClassDefinition.getClassName().getPackageName(), is(packageName));
+        assertThat(outerClassDefinition.getClassName().getSimpleName(), is(outerClass));
+
+        assertThat(arrayObjectDefinition.getClassName().getPackageName(), is(packageName));
+        assertThat(arrayObjectDefinition.getClassName().getSimpleName(), is(arrayObject));
+
+        assertThat(outerClassDefinition.getFieldDefinitions().get(0).getFieldName(), is("arrayPropertyList"));
+        assertThat(outerClassDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.util.List"));
     }
 
     @Test

@@ -22,8 +22,6 @@ public interface Visitor {
 
     void visit(final String fieldName, final CombinedSchema schema);
 
-    void visit(final String fieldName, final ArraySchema schema);
-
     void visit(final String fieldName, final BooleanSchema schema);
 
     void visit(final String fieldName, final EmptySchema schema);
@@ -33,6 +31,10 @@ public interface Visitor {
     void visit(final String fieldName, final NullSchema schema);
 
     void visit(final String fieldName, final NumberSchema schema);
+
+    void enter(String fieldName, ArraySchema schema);
+
+    void leave(ArraySchema schema);
 
     void visit(final String fieldName, final StringSchema schema);
 

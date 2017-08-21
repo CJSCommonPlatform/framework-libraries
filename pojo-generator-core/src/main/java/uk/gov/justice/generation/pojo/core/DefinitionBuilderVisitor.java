@@ -29,6 +29,8 @@ import org.everit.json.schema.StringSchema;
 
 public class DefinitionBuilderVisitor implements Visitor {
 
+    private static final String ARRAY_FIELD_NAME_SUFFIX = "List";
+
     private final Deque<Entry> definitions = new ArrayDeque<>();
     private final List<Definition> classDefinitions = new ArrayList<>();
     private final ClassNameProvider classNameProvider = new ClassNameProvider();
@@ -60,6 +62,23 @@ public class DefinitionBuilderVisitor implements Visitor {
     }
 
     @Override
+    public void enter(final String fieldName, final ArraySchema schema) {
+        final String className = capitalize(fieldName);
+        final ClassName listClassName = new ClassName(List.class);
+        final ClassName genericTypeName = new ClassName(packageName, className);
+        final FieldDefinition definition = new FieldDefinition(fieldName + ARRAY_FIELD_NAME_SUFFIX, listClassName, genericTypeName);
+
+        definitions.push(new Entry(schema, definition));
+    }
+
+    @Override
+    public void leave(final ArraySchema schema) {
+        while (definitions.peek().getSchema() != schema) {
+            definitions.pop();
+        }
+    }
+
+    @Override
     public void visit(final String fieldName, final StringSchema schema) {
         final ClassName className = classNameProvider.classNameFor(schema.getDescription());
         definitions.push(new Entry(schema, new FieldDefinition(fieldName, className)));
@@ -88,11 +107,6 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void visit(final String fieldName, final CombinedSchema schema) {
         //TODO: Implement Combined Schema
-    }
-
-    @Override
-    public void visit(final String fieldName, final ArraySchema schema) {
-        //TODO: Implement Array Schema
     }
 
     @Override

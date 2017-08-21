@@ -2,7 +2,7 @@ package uk.gov.justice.generation.pojo.integration.utils;
 
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
-import uk.gov.justice.services.generators.test.utils.compiler.JavaCompilerUtil;
+import uk.gov.justice.services.test.utils.core.compiler.JavaCompilerUtil;
 
 import java.io.File;
 

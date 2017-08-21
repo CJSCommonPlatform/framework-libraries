@@ -1,11 +1,13 @@
 package uk.gov.justice.services.common.converter;
 
+import static com.jayway.jsonassert.JsonAssert.with;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
+import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Colour.BLUE;
 
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -77,6 +79,40 @@ public class ObjectMapperProducerTest {
 
     }
 
+    @Test
+    public void shouldParseAnEnumIntoJson() throws Exception {
+
+        final String name = "Fred";
+        final int age = 42;
+        final Colour favouriteColour = BLUE;
+
+        final Person fred = new Person(name, age, favouriteColour);
+
+        final String json = mapper.writeValueAsString(fred);
+
+        with(json)
+                .assertThat("$.name", is(name))
+                .assertThat("age", is(age))
+                .assertThat("$.favouriteColour", is("Blue"))
+        ;
+    }
+
+    @Test
+    public void shouldParseJsonIntoAnEnum() throws Exception {
+
+        final String name = "Fred";
+        final int age = 42;
+        final Colour favouriteColour = BLUE;
+
+        final String json = "{\"name\":\"Fred\",\"age\":42,\"favouriteColour\":\"Blue\"}";
+
+        final Person person = mapper.readValue(json, Person.class);
+
+        assertThat(person.getName(), is(name));
+        assertThat(person.getAge(), is(age));
+        assertThat(person.getFavouriteColour(), is(favouriteColour));
+    }
+
     public static class DummyBeanWithSingleArgConstructor {
         private final String name;
 
@@ -99,6 +135,52 @@ public class ObjectMapperProducerTest {
         @Override
         public int hashCode() {
             return Objects.hash(getName());
+        }
+    }
+
+    public static enum Colour {
+        RED("Red"),
+        GREEN("Green"),
+        BLUE("Blue");
+
+        private final String name;
+
+        Colour(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
+    public static class Person {
+
+        private final String name;
+        private final int age;
+        private final Colour favouriteColour;
+
+        public Person(final String name, final int age, final Colour favouriteColour) {
+            this.name = name;
+            this.age = age;
+            this.favouriteColour = favouriteColour;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public Colour getFavouriteColour() {
+            return favouriteColour;
         }
     }
 }

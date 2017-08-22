@@ -35,7 +35,7 @@ public class SourceWriterIT {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation");
+        sourceOutputDirectory = new File("./target/test-generation/source-writer");
         classesOutputDirectory = new File("./target/test-classes");
 
         sourceOutputDirectory.mkdirs();

@@ -43,7 +43,7 @@ public class ClassGeneratorIT {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation");
+        sourceOutputDirectory = new File("./target/test-generation/class-generator");
         classesOutputDirectory = new File("./target/test-classes");
 
         sourceOutputDirectory.mkdirs();
@@ -57,7 +57,7 @@ public class ClassGeneratorIT {
     @Test
     public void shouldGenerateJavaClassSourceCode() throws Exception {
 
-        final String packageName = "uk.gov.justice.pojo";
+        final String packageName = "uk.gov.justice.pojo.classgenerator";
 
         final ClassDefinition addressDefinition = addressDefinition(packageName);
         final ClassDefinition employeeDefinition = employeeDefinition(packageName, addressDefinition);

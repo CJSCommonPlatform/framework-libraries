@@ -2,12 +2,11 @@ package uk.gov.justice.generation.pojo.core;
 
 import static java.lang.String.format;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
-import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
-import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
@@ -17,9 +16,16 @@ import org.everit.json.schema.StringSchema;
 public class JsonSchemaWrapper implements Visitable {
 
     private final Schema schema;
+    private final JsonSchemaWrapperDelegate jsonSchemaWrapperDelegate;
 
     public JsonSchemaWrapper(final Schema schema) {
+        this(schema, new JsonSchemaWrapperDelegate());
+    }
+
+    @VisibleForTesting
+    JsonSchemaWrapper(final Schema schema, final JsonSchemaWrapperDelegate jsonSchemaWrapperDelegate) {
         this.schema = schema;
+        this.jsonSchemaWrapperDelegate = jsonSchemaWrapperDelegate;
     }
 
     @Override
@@ -27,12 +33,7 @@ public class JsonSchemaWrapper implements Visitable {
 
         switch (schema.getClass().getSimpleName()) {
             case "ObjectSchema":
-                final ObjectSchema objectSchema = (ObjectSchema) schema;
-
-                visitor.enter(fieldName, objectSchema);
-                objectSchema.getPropertySchemas()
-                        .forEach((childName, childSchema) -> visitChildSchema(childName, visitor, childSchema));
-                visitor.leave(objectSchema);
+                jsonSchemaWrapperDelegate.acceptObjectSchema(fieldName, visitor, (ObjectSchema) schema);
                 break;
             case "StringSchema":
                 visitor.visit(fieldName, (StringSchema) schema);
@@ -46,34 +47,21 @@ public class JsonSchemaWrapper implements Visitable {
             case "EnumSchema":
                 visitor.visit(fieldName, (EnumSchema) schema);
                 break;
-            case "NullSchema":
-                visitor.visit(fieldName, (NullSchema) schema);
-                break;
-            case "EmptySchema":
-                visitor.visit(fieldName, (EmptySchema) schema);
-                break;
             case "ReferenceSchema":
-                final ReferenceSchema referenceSchema = (ReferenceSchema) this.schema;
-                final Schema referredSchema = referenceSchema.getReferredSchema();
-                visitChildSchema(fieldName, visitor, referredSchema);
-                break;                               
+                jsonSchemaWrapperDelegate.acceptReferenceSchema(fieldName, visitor, (ReferenceSchema) schema);
+                break;
             case "ArraySchema":
-                final ArraySchema arraySchema = (ArraySchema) schema;
-                final Schema allItemSchema = arraySchema.getAllItemSchema();
-
-                visitor.enter(fieldName, arraySchema);
-                visitChildSchema(fieldName, visitor, allItemSchema);
-                visitor.leave(arraySchema);
+                jsonSchemaWrapperDelegate.acceptArraySchema(fieldName, visitor, (ArraySchema) schema);
                 break;
             case "CombinedSchema":
-                visitor.visit(fieldName, (CombinedSchema) schema);
+                jsonSchemaWrapperDelegate.acceptCombinedSchema(fieldName, visitor, (CombinedSchema) schema);
                 break;
             default:
-                throw new UnsupportedSchemaException(format("Schema of type: %s is not supported.", schema.getClass().getSimpleName()));
+                throw new UnsupportedSchemaException(format("Schema of type: %s is not supported.", this.schema.getClass().getSimpleName()));
         }
     }
 
-    private void visitChildSchema(final String fieldName, final Visitor visitor, final Schema childSchema) {
-        new JsonSchemaWrapper(childSchema).accept(fieldName, visitor);
+    public Schema getSchema() {
+        return schema;
     }
 }

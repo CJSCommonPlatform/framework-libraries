@@ -18,12 +18,8 @@ import java.util.Set;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
-import org.everit.json.schema.CombinedSchema;
-import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
-import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
-import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
 
@@ -41,14 +37,14 @@ public class DefinitionBuilderVisitor implements Visitor {
     }
 
     @Override
-    public void enter(final String fieldName, final ObjectSchema schema) {
+    public void enter(final String fieldName, final Schema schema) {
         final ClassDefinition definition = new ClassDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)));
 
         definitions.push(new Entry(schema, definition));
     }
 
     @Override
-    public void leave(final ObjectSchema schema) {
+    public void leave(final Schema schema) {
         final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
 
         while (definitions.peek().getSchema() != schema) {
@@ -102,21 +98,6 @@ public class DefinitionBuilderVisitor implements Visitor {
         final EnumDefinition enumDefinition = new EnumDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)), enumValues);
         definitions.push(new Entry(schema, enumDefinition));
         classDefinitions.add(enumDefinition);
-    }
-
-    @Override
-    public void visit(final String fieldName, final CombinedSchema schema) {
-        //TODO: Implement Combined Schema
-    }
-
-    @Override
-    public void visit(final String fieldName, final EmptySchema schema) {
-        //TODO: Implement Empty Schema
-    }
-
-    @Override
-    public void visit(final String fieldName, final NullSchema schema) {
-        //TODO: Implement Null Schema
     }
 
     @Override

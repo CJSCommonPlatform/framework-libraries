@@ -7,6 +7,8 @@ import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.Definition;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +24,7 @@ public class JavaSourceFileProviderTest {
     @Test
     public void shouldReturnAnExistingJavaFile() throws Exception {
 
-        final File sourceRootDirectory = new File("src/main/java");
+        final Path sourceRootDirectory = Paths.get("src/main/java");
 
         final Class<Definition> definitionClass = Definition.class;
         final ClassName className = new ClassName(definitionClass.getPackage().getName(), definitionClass.getSimpleName());
@@ -37,7 +39,7 @@ public class JavaSourceFileProviderTest {
     @Test
     public void shouldReturnANonExistentJavaFile() throws Exception {
 
-        final File sourceRootDirectory = new File("src/main/java");
+        final Path sourceRootDirectory = Paths.get("src/main/java");
 
         final Class<Definition> definitionClass = Definition.class;
         final ClassName className = new ClassName(definitionClass.getPackage().getName(), "NotAYetExistingClass");

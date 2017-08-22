@@ -7,8 +7,6 @@ import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.bootstrap.GenerationContextFactory;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
@@ -61,7 +59,6 @@ public class ClassGeneratorIT {
 
         final String packageName = "uk.gov.justice.pojo";
 
-        final GenerationContext generationContext = new GenerationContextFactory().create(sourceOutputDirectory);
         final ClassDefinition addressDefinition = addressDefinition(packageName);
         final ClassDefinition employeeDefinition = employeeDefinition(packageName, addressDefinition);
 
@@ -69,7 +66,7 @@ public class ClassGeneratorIT {
                 .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition))
                 .stream()
                 .map(classGenerator -> {
-                    sourceWriter.write(classGenerator, generationContext);
+                    sourceWriter.write(classGenerator, sourceOutputDirectory.toPath());
                     return classCompiler.compile(classGenerator, sourceOutputDirectory, classesOutputDirectory);
                 }).collect(toList());
 

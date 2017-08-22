@@ -1,20 +1,20 @@
 package uk.gov.justice.generation.pojo.core;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GenerationContext {
 
-    private final File sourceRootDirectory;
+    private final Path outputDirectoryPath;
 
-    public GenerationContext(final File sourceRootDirectory) {
-        this.sourceRootDirectory = sourceRootDirectory;
+    public GenerationContext(final Path outputDirectoryPath) {
+        this.outputDirectoryPath = outputDirectoryPath;
     }
 
-    public File getSourceRootDirectory() {
-        return sourceRootDirectory;
+    public Path getOutputDirectoryPath() {
+        return outputDirectoryPath;
     }
 
     public Logger getLoggerFor(final Class<?> clazz) {

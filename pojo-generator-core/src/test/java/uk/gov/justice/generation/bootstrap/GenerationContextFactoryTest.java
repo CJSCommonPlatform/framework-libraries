@@ -8,6 +8,8 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.write.SourceCodeWriteException;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,23 +22,24 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class GenerationContextFactoryTest {
 
-    private final File deletableTestDirectory = new File("target/for-testing-please-delete");
+    private final Path deletableTestPath = Paths.get("target/for-testing-please-delete");
 
     @Before
     public void createTemporaryTestDirectory() throws Exception {
+        final File directory = deletableTestPath.toFile();
 
-        deletableTestDirectory.delete();
-        deletableTestDirectory.mkdirs();
-        deletableTestDirectory.deleteOnExit();
-        assertThat(deletableTestDirectory.exists(), is(true));
-        assertThat(deletableTestDirectory.isDirectory(), is(true));
-        assertThat(deletableTestDirectory.canWrite(), is(true));
+        directory.delete();
+        directory.mkdirs();
+        directory.deleteOnExit();
+        assertThat(directory.exists(), is(true));
+        assertThat(directory.isDirectory(), is(true));
+        assertThat(directory.canWrite(), is(true));
     }
 
     @After
     public void deleteTemporaryTestDirectory() throws Exception {
 
-        deletableTestDirectory.delete();
+        deletableTestPath.toFile().delete();
     }
 
     @InjectMocks
@@ -45,49 +48,50 @@ public class GenerationContextFactoryTest {
     @Test
     public void shouldCreateAGenerationContext() throws Exception {
 
-        final File sourceRootDirectory = new File(deletableTestDirectory, "source-root-directory");
-        sourceRootDirectory.createNewFile();
+        final Path sourceRootPath = deletableTestPath.resolve("source-root-directory");
+        sourceRootPath.toFile().createNewFile();
 
-        final GenerationContext generationContext = generationContextFactory.create(sourceRootDirectory);
+        final GenerationContext generationContext = generationContextFactory.createWith(sourceRootPath);
 
-        assertThat(generationContext.getSourceRootDirectory(), is(sourceRootDirectory));
+        assertThat(generationContext.getOutputDirectoryPath(), is(sourceRootPath));
     }
 
     @Test
     public void shouldFailIfTheSourceRootDirectoryDoesNotExist() throws Exception {
-        final File sourceRootDirectory = new File("non-existent-directory");
+        final Path sourceRootPath = Paths.get("non-existent-directory");
 
-        assertThat(sourceRootDirectory.exists(), is(false));
+        assertThat(sourceRootPath.toFile().exists(), is(false));
 
         try {
-            generationContextFactory.create(sourceRootDirectory);
+            generationContextFactory.createWith(sourceRootPath);
             fail();
         } catch (final SourceCodeWriteException expected) {
-            assertThat(expected.getMessage(), is("Source code root directory '" + sourceRootDirectory.getAbsolutePath() + "' does not exist"));
+            assertThat(expected.getMessage(), is("Source code root directory '" + sourceRootPath.toAbsolutePath() + "' does not exist"));
         }
     }
 
     @Test
     public void shouldFailIfTheSourceRootDirectoryIsNotADirectory() throws Exception {
-        final File sourceRootDirectory = new File(pathToThisFile());
-
-        System.out.println(sourceRootDirectory.getAbsolutePath());
+        final Path sourceRootPath = Paths.get(pathToThisFile());
+        final File sourceRootDirectory = sourceRootPath.toFile();
 
         assertThat(sourceRootDirectory.exists(), is(true));
         assertThat(sourceRootDirectory.isDirectory(), is(false));
 
         try {
-            generationContextFactory.create(sourceRootDirectory);
+            generationContextFactory.createWith(sourceRootPath);
             fail();
         } catch (final SourceCodeWriteException expected) {
-            assertThat(expected.getMessage(), is("Source code root directory '" + sourceRootDirectory.getAbsolutePath() + "' is not a directory"));
+            assertThat(expected.getMessage(), is("Source code root directory '" + sourceRootPath.toAbsolutePath() + "' is not a directory"));
         }
     }
 
     @Test
     public void shouldFailIfTheSourceRootDirectoryIsNotWritable() throws Exception {
 
-        final File sourceRootDirectory = new File(deletableTestDirectory, "source-root-directory");
+        final Path sourceRootPath = deletableTestPath.resolve("source-root-directory");
+        final File sourceRootDirectory = sourceRootPath.toFile();
+
         sourceRootDirectory.mkdirs();
 
         assertThat(sourceRootDirectory.isDirectory(), is(true));
@@ -97,10 +101,10 @@ public class GenerationContextFactoryTest {
             assertThat(sourceRootDirectory.canWrite(), is(false));
 
             try {
-                generationContextFactory.create(sourceRootDirectory);
+                generationContextFactory.createWith(sourceRootPath);
                 fail();
             } catch (final SourceCodeWriteException expected) {
-                assertThat(expected.getMessage(), is("Source code root directory '" + sourceRootDirectory.getAbsolutePath() + "' is not writable"));
+                assertThat(expected.getMessage(), is("Source code root directory '" + sourceRootPath.toAbsolutePath() + "' is not writable"));
             }
 
         } finally {

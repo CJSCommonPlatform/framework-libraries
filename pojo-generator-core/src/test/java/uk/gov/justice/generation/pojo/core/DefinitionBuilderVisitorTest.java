@@ -9,6 +9,7 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.everit.json.schema.ArraySchema;
@@ -37,10 +38,11 @@ public class DefinitionBuilderVisitorTest {
     @Test
     public void shouldGenerateClassDefinitionsWithStringSchemaProperties() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final String eventName = "example.events";
         final String outerClass = "OuterClass";
         final String innerClass = "InnerClass";
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName, eventName);
 
         final StringSchema innerProperty = StringSchema.builder().build();
         final StringSchema outerProperty = StringSchema.builder().build();
@@ -58,25 +60,28 @@ public class DefinitionBuilderVisitorTest {
         final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
 
         assertThat(definitions.size(), is(2));
-        final ClassDefinition classTypeDefinition1 = (ClassDefinition) definitions.get(0);
-        final ClassDefinition classTypeDefinition2 = (ClassDefinition) definitions.get(1);
+        final ClassDefinition classTypeDefinition_1 = (ClassDefinition) definitions.get(0);
+        final ClassDefinition classTypeDefinition_2 = (ClassDefinition) definitions.get(1);
 
-        assertThat(classTypeDefinition1.getClassName().getPackageName(), is(packageName));
-        assertThat(classTypeDefinition1.getClassName().getSimpleName(), is(innerClass));
-        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getFieldName(), is("innerProperty"));
-        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.String"));
+        assertThat(classTypeDefinition_1.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition_1.getClassName().getSimpleName(), is(innerClass));
+        assertThat(classTypeDefinition_1.getEventName(), is(Optional.empty()));
+        assertThat(classTypeDefinition_1.getFieldDefinitions().get(0).getFieldName(), is("innerProperty"));
+        assertThat(classTypeDefinition_1.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.String"));
 
-        assertThat(classTypeDefinition2.getClassName().getPackageName(), is(packageName));
-        assertThat(classTypeDefinition2.getClassName().getSimpleName(), is(outerClass));
-        assertThat(classTypeDefinition2.getFieldDefinitions().get(1).getFieldName(), is("outerProperty"));
-        assertThat(classTypeDefinition2.getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.String"));
+        assertThat(classTypeDefinition_2.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition_2.getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition_2.getEventName(), is(Optional.of(eventName)));
+        assertThat(classTypeDefinition_2.getFieldDefinitions().get(1).getFieldName(), is("outerProperty"));
+        assertThat(classTypeDefinition_2.getFieldDefinitions().get(1).getClassName().getFullyQualifiedName(), is("java.lang.String"));
     }
 
     @Test
     public void shouldGenerateClassDefinitionWithBooleanSchemaProperty() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final String eventName = "example.events";
         final String outerClass = "OuterClass";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName, eventName);
 
         final BooleanSchema outerProperty = BooleanSchema.builder().build();
         final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema("outerProperty", outerProperty).id(outerClass).build();
@@ -88,19 +93,21 @@ public class DefinitionBuilderVisitorTest {
         final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
 
         assertThat(definitions.size(), is(1));
-        final ClassDefinition classTypeDefinition1 = (ClassDefinition) definitions.get(0);
+        final ClassDefinition classTypeDefinition = (ClassDefinition) definitions.get(0);
 
-        assertThat(classTypeDefinition1.getClassName().getPackageName(), is(packageName));
-        assertThat(classTypeDefinition1.getClassName().getSimpleName(), is(outerClass));
-        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getFieldName(), is("outerProperty"));
-        assertThat(classTypeDefinition1.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.Boolean"));
+        assertThat(classTypeDefinition.getClassName().getPackageName(), is(packageName));
+        assertThat(classTypeDefinition.getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition.getEventName(), is(Optional.of(eventName)));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getFieldName(), is("outerProperty"));
+        assertThat(classTypeDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.lang.Boolean"));
     }
 
     @Test
     public void shouldGenerateClassDefinitionWithEnumSchemaProperty() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final String eventName = "example.events";
         final String outerClass = "OuterClass";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName, eventName);
 
         final EnumSchema outerProperty = EnumSchema.builder().build();
         final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema("outerProperty", outerProperty).id(outerClass).build();
@@ -120,6 +127,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition classTypeDefinition = (ClassDefinition) definitions.get(1);
         assertThat(classTypeDefinition.getClassName().getPackageName(), is(packageName));
         assertThat(classTypeDefinition.getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition.getEventName(), is(Optional.of(eventName)));
         assertThat(classTypeDefinition.getFieldDefinitions().get(0).getFieldName(), is("outerProperty"));
         assertThat(classTypeDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("org.bloggs.fred.OuterProperty"));
     }
@@ -127,8 +135,9 @@ public class DefinitionBuilderVisitorTest {
     @Test
     public void shouldGenerateClassDefinitionWithNumberSchemaProperty() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final String eventName = "example.events";
         final String outerClass = "OuterClass";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName, eventName);
 
         final NumberSchema numberProperty = NumberSchema.builder().build();
         final NumberSchema integerProperty = NumberSchema.builder().requiresInteger(true).id("integerProperty").build();
@@ -151,6 +160,7 @@ public class DefinitionBuilderVisitorTest {
 
         assertThat(classTypeDefinition.getClassName().getPackageName(), is(packageName));
         assertThat(classTypeDefinition.getClassName().getSimpleName(), is(outerClass));
+        assertThat(classTypeDefinition.getEventName(), is(Optional.of(eventName)));
 
         assertThat(classTypeDefinition.getFieldDefinitions().get(0).getFieldName(), is("numberProperty"));
         assertThat(classTypeDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.math.BigDecimal"));
@@ -162,9 +172,10 @@ public class DefinitionBuilderVisitorTest {
     @Test
     public void shouldGenerateClassDefinitionWithArraySchemaProperty() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final String eventName = "example.events";
         final String outerClass = "OuterClass";
         final String arrayObject = "ArrayObject";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName, eventName);
 
         final ArraySchema arraySchema = ArraySchema.builder().build();
 
@@ -192,6 +203,7 @@ public class DefinitionBuilderVisitorTest {
 
         assertThat(outerClassDefinition.getClassName().getPackageName(), is(packageName));
         assertThat(outerClassDefinition.getClassName().getSimpleName(), is(outerClass));
+        assertThat(outerClassDefinition.getEventName(), is(Optional.of(eventName)));
 
         assertThat(arrayObjectDefinition.getClassName().getPackageName(), is(packageName));
         assertThat(arrayObjectDefinition.getClassName().getSimpleName(), is(arrayObject));
@@ -203,9 +215,10 @@ public class DefinitionBuilderVisitorTest {
     @Test
     public void shouldGenerateClassDefinitionsWithDescriptionOfTheClassName() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final String eventName = "example.events";
         final String propertyName = "uuidProperty";
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(packageName, eventName);
 
         final StringSchema uuidProperty = StringSchema.builder().description("UUID").build();
 

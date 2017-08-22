@@ -4,8 +4,9 @@ import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
-import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
+import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.validation.FileNameValidator;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
 import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -20,7 +21,8 @@ public class SchemaToJavaGenerator implements Generator<File> {
 
     private final SourceWriter sourceWriter = new SourceWriter();
     private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
-    private final RootFieldNameGenerator rootFieldNameGenerator = new RootFieldNameGenerator();
+    private final NameGenerator nameGenerator = new NameGenerator();
+    private final FileNameValidator fileNameValidator = new FileNameValidator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
 
     @Override
@@ -29,14 +31,24 @@ public class SchemaToJavaGenerator implements Generator<File> {
         final GenerationContext generationContext = new GenerationContext(generatorConfig.getOutputDirectory());
 
         final Schema schema = schemaLoader.loadFrom(source);
-        final String fieldName = rootFieldNameGenerator.generateNameFrom(source);
+        final String fieldName = nameGenerator.rootFieldNameFrom(source);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(generatorConfig.getBasePackageName());
+        final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor(source, generatorConfig.getBasePackageName());
 
         new JsonSchemaWrapper(schema).accept(fieldName, definitionBuilderVisitor);
 
         javaGeneratorFactory
                 .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions())
                 .forEach(classGeneratable -> writer.write(classGeneratable, generationContext));
+    }
+
+    private DefinitionBuilderVisitor constructDefinitionBuilderVisitor(final File source, final String basePackageName) {
+        if (fileNameValidator.isEventSchema(source)) {
+            return new DefinitionBuilderVisitor(
+                    basePackageName,
+                    nameGenerator.eventNameFrom(source));
+        }
+
+        return new DefinitionBuilderVisitor(basePackageName);
     }
 }

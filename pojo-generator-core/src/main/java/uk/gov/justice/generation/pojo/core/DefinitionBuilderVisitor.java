@@ -14,6 +14,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.everit.json.schema.ArraySchema;
@@ -31,14 +32,28 @@ public class DefinitionBuilderVisitor implements Visitor {
     private final List<Definition> classDefinitions = new ArrayList<>();
     private final ClassNameProvider classNameProvider = new ClassNameProvider();
     private final String packageName;
+    private final Optional<String> eventName;
 
     public DefinitionBuilderVisitor(final String packageName) {
         this.packageName = packageName;
+        this.eventName = Optional.empty();
+    }
+
+    public DefinitionBuilderVisitor(final String packageName, final String eventName) {
+        this.packageName = packageName;
+        this.eventName = Optional.ofNullable(eventName);
     }
 
     @Override
     public void enter(final String fieldName, final Schema schema) {
-        final ClassDefinition definition = new ClassDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)));
+        final ClassName className = new ClassName(packageName, capitalize(fieldName));
+
+        final ClassDefinition definition;
+        if (definitions.isEmpty() && eventName.isPresent()) {
+            definition = new ClassDefinition(fieldName, className, eventName.get());
+        } else {
+            definition = new ClassDefinition(fieldName, className);
+        }
 
         definitions.push(new Entry(schema, definition));
     }

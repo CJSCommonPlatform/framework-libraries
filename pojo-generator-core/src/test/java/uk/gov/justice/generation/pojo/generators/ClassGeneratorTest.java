@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.generators;
 
+import static com.squareup.javapoet.AnnotationSpec.builder;
 import static com.squareup.javapoet.FieldSpec.builder;
 import static com.squareup.javapoet.MethodSpec.constructorBuilder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
@@ -12,6 +13,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
@@ -41,6 +43,27 @@ public class ClassGeneratorTest {
         final ClassGenerator classGenerator = new ClassGenerator(classDefinition, javaGeneratorFactory);
         final TypeSpec typeSpec = classGenerator.generate();
 
+        assertThat(typeSpec.annotations.isEmpty(), is(true));
+        assertThat(typeSpec.name, is("Address"));
+        assertThat(typeSpec.modifiers.size(), is(1));
+        assertThat(typeSpec.modifiers, hasItem(PUBLIC));
+        assertThat(typeSpec.fieldSpecs.size(), is(0));
+        assertThat(typeSpec.methodSpecs.size(), is(1));
+        assertThat(typeSpec.methodSpecs, hasItem(constructorBuilder().addModifiers(PUBLIC).build()));
+    }
+
+    @Test
+    public void shouldGenerateTypeSpecForClassDefinitionWithEventAnnotation() throws Exception {
+        final ClassName className = new ClassName("org.something", "Address");
+        final ClassDefinition classDefinition = new ClassDefinition("address", className, "example.events.address");
+
+        final ClassGenerator classGenerator = new ClassGenerator(classDefinition, javaGeneratorFactory);
+        final TypeSpec typeSpec = classGenerator.generate();
+
+        assertThat(typeSpec.annotations.size(), is(1));
+        assertThat(typeSpec.annotations, hasItem(builder(Event.class)
+                .addMember("value", "$S", "example.events.address")
+                .build()));
         assertThat(typeSpec.name, is("Address"));
         assertThat(typeSpec.modifiers.size(), is(1));
         assertThat(typeSpec.modifiers, hasItem(PUBLIC));

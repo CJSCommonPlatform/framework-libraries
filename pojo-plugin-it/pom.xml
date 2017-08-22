@@ -12,6 +12,12 @@
     <artifactId>pojo-plugin-it</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>uk.gov.justice.services</groupId>
+            <artifactId>framework-api-domain</artifactId>
+            <version>${framework-version}</version>
+        </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.glassfish</groupId>

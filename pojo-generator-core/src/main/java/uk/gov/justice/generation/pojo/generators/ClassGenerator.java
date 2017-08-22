@@ -6,12 +6,14 @@ import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
+import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.Definition;
 
 import java.util.List;
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -50,9 +52,15 @@ public class ClassGenerator implements ClassGeneratable {
                 .flatMap(ElementGeneratable::generateMethods)
                 .collect(toList());
 
-        return classBuilder(className)
-                .addModifiers(PUBLIC)
-                .addMethod(buildConstructor(definitions))
+        final TypeSpec.Builder builder = classBuilder(className)
+                .addModifiers(PUBLIC);
+
+        classDefinition.getEventName().ifPresent(eventName ->
+                builder.addAnnotation(AnnotationSpec.builder(Event.class)
+                        .addMember("value", "$S", eventName)
+                        .build()));
+
+        return builder.addMethod(buildConstructor(definitions))
                 .addFields(fields)
                 .addMethods(methods)
                 .build();

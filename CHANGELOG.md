@@ -5,7 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### [1.11.0]
+
+### Changed
+- Upgrade Utilities to 1.8.0
+
 ### [1.10.0]
+
+### Changed
 - Fix for BLOB columns with updated liquibase
 - Use more recent parent and common-boms (that are in Bintray)
 - Use bintray for releases

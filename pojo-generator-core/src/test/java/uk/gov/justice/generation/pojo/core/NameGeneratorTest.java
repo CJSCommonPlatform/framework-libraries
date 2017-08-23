@@ -13,10 +13,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class RootFieldNameGeneratorTest {
+public class NameGeneratorTest {
 
     @InjectMocks
-    private RootFieldNameGenerator rootFieldNameGenerator;
+    private NameGenerator nameGenerator;
 
     @Test
     public void shouldParseTheFileNameIntoAValidJavaClassName() throws Exception {
@@ -25,17 +25,17 @@ public class RootFieldNameGeneratorTest {
 
         assertThat(schemaFile.exists(), is(true));
 
-        assertThat(rootFieldNameGenerator.generateNameFrom(schemaFile), is("objectPropertySchema"));
+        assertThat(nameGenerator.rootFieldNameFrom(schemaFile), is("objectPropertySchema"));
     }
 
     @Test
-    public void shouldRmoveAnyPrependingDotsFromTheFileName() throws Exception {
+    public void shouldRemoveAnyPrependingDotsFromTheFileName() throws Exception {
 
         final File schemaFile = new File("src/test/resources/schemas/context.command.do-something-or-other.json");
 
         assertThat(schemaFile.exists(), is(true));
 
-        assertThat(rootFieldNameGenerator.generateNameFrom(schemaFile), is("doSomethingOrOther"));
+        assertThat(nameGenerator.rootFieldNameFrom(schemaFile), is("doSomethingOrOther"));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class RootFieldNameGeneratorTest {
         final File schemaFile = new File("src/test/resources/schemas/object-property-schema");
         assertThat(schemaFile.exists(), is(true));
         try {
-            rootFieldNameGenerator.generateNameFrom(schemaFile);
+            nameGenerator.rootFieldNameFrom(schemaFile);
             fail();
         } catch (final JsonSchemaParseException expected) {
             assertThat(expected.getMessage(), is("Failed to load json schema file '" + schemaFile.getAbsolutePath() + "'. File does not have a '.json' extension"));
@@ -56,7 +56,7 @@ public class RootFieldNameGeneratorTest {
 
         final File schemaFile = new File("src/test/resources/schemas/.json");
         try {
-            rootFieldNameGenerator.generateNameFrom(schemaFile);
+            nameGenerator.rootFieldNameFrom(schemaFile);
             fail();
         } catch (final JsonSchemaParseException expected) {
             assertThat(expected.getMessage(), is("Failed to load json schema file '" + schemaFile.getAbsolutePath() + "'. File name is invalid"));
@@ -68,10 +68,18 @@ public class RootFieldNameGeneratorTest {
 
         final File schemaFile = new File("src/test/resources/schemas/..json");
         try {
-            rootFieldNameGenerator.generateNameFrom(schemaFile);
+            nameGenerator.rootFieldNameFrom(schemaFile);
             fail();
         } catch (final JsonSchemaParseException expected) {
             assertThat(expected.getMessage(), is("Failed to load json schema file '" + schemaFile.getAbsolutePath() + "'. File name is invalid"));
         }
+    }
+
+    @Test
+    public void shouldParseFileNameIntoEventName() throws Exception {
+
+        final File schemaFile = new File("src/test/resources/schemas/example.events.do-something-or-other.json");
+
+        assertThat(nameGenerator.eventNameFrom(schemaFile), is("example.events.do-something-or-other"));
     }
 }

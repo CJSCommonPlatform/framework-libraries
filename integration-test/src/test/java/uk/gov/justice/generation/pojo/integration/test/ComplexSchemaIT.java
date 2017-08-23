@@ -5,7 +5,7 @@ import static org.apache.commons.io.FileUtils.cleanDirectory;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
-import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
+import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -22,7 +22,7 @@ public class ComplexSchemaIT {
     private final ClassCompiler classCompiler = new ClassCompiler();
 
     private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
-    private final RootFieldNameGenerator rootFieldNameGenerator = new RootFieldNameGenerator();
+    private final NameGenerator nameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
 
     private File sourceOutputDirectory;
@@ -47,7 +47,7 @@ public class ComplexSchemaIT {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/context.command.complex-data.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-        final String fieldName = rootFieldNameGenerator.generateNameFrom(jsonSchemaFile);
+        final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.complex.schema");
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);

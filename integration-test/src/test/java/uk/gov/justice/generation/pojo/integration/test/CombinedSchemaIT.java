@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
-import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
+import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -31,7 +31,7 @@ public class CombinedSchemaIT {
     private final ClassCompiler classCompiler = new ClassCompiler();
 
     private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
-    private final RootFieldNameGenerator rootFieldNameGenerator = new RootFieldNameGenerator();
+    private final NameGenerator rootFieldNameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
 
@@ -57,7 +57,7 @@ public class CombinedSchemaIT {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/address.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-        final String fieldName = rootFieldNameGenerator.generateNameFrom(jsonSchemaFile);
+        final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.combined.schema");
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);

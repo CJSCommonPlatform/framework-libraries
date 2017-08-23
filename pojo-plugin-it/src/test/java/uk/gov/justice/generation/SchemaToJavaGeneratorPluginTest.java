@@ -4,7 +4,7 @@ import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
 
 import uk.gov.justice.events.pojo.Alias;
-import uk.gov.justice.events.pojo.PersonSchema;
+import uk.gov.justice.events.pojo.PersonUpdated;
 import uk.gov.justice.events.pojo.Title;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -31,7 +31,7 @@ public class SchemaToJavaGeneratorPluginTest {
                 new Alias("1", "forename_1", "surname_1"),
                 new Alias("2", "forename_2", "surname_2"));
 
-        final PersonSchema person = new PersonSchema(firstName, lastName, aliases, title, required, signedInCount, ratio);
+        final PersonUpdated person = new PersonUpdated(firstName, lastName, aliases, title, required, signedInCount, ratio);
 
         final String personJson = objectMapper.writeValueAsString(person);
 

@@ -18,6 +18,8 @@ public class EnumGenerator implements ClassGeneratable {
 
     private static final String VALUE_VARIABLE_NAME = "value";
     private static final String BLANK_ENUM_NAME = "BLANK";
+    private static final String SPACE = " ";
+    private static final String UNDERSCORE = "_";
 
     private final EnumDefinition enumDefinition;
 
@@ -32,7 +34,7 @@ public class EnumGenerator implements ClassGeneratable {
         final Builder enumBuilder = enumBuilder(className).addModifiers(PUBLIC);
 
         enumDefinition.getEnumValues().forEach(enumValue -> {
-            final String enumName = enumValue.isEmpty() ? BLANK_ENUM_NAME : enumValue.toUpperCase();
+            final String enumName = constructEnumNameFrom(enumValue);
 
             enumBuilder.addEnumConstant(enumName, anonymousClassBuilder("$S", enumValue)
                     .build());
@@ -56,5 +58,9 @@ public class EnumGenerator implements ClassGeneratable {
     @Override
     public ClassName getClassName() {
         return enumDefinition.getClassName();
+    }
+
+    private String constructEnumNameFrom(final String enumValue) {
+        return enumValue.isEmpty() ? BLANK_ENUM_NAME : enumValue.toUpperCase().replace(SPACE, UNDERSCORE);
     }
 }

@@ -19,7 +19,7 @@ public class EnumGeneratorTest {
     private final ClassName className = new ClassName("org.something", "Title");
 
     @Test
-    public void shouldGenerateTypeSpec() {
+    public void shouldGenerateTypeSpecForSingleWordEnumValue() {
         final EnumDefinition enumDefinition = new EnumDefinition("title", className, singletonList("Mr"));
         final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition);
 
@@ -27,6 +27,21 @@ public class EnumGeneratorTest {
 
         assertThat(typeSpec.name, is("Title"));
         assertThat(typeSpec.enumConstants.keySet(), hasItem("MR"));
+        assertThat(typeSpec.modifiers.size(), is(1));
+        assertThat(typeSpec.modifiers, hasItem(PUBLIC));
+        assertThat(typeSpec.fieldSpecs.size(), is(1));
+        assertThat(typeSpec.methodSpecs.size(), is(2));
+    }
+
+    @Test
+    public void shouldGenerateTypeSpecForMultiWordEnumValue() {
+        final EnumDefinition enumDefinition = new EnumDefinition("title", className, singletonList("Multi word value"));
+        final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition);
+
+        final TypeSpec typeSpec = enumGenerator.generate();
+
+        assertThat(typeSpec.name, is("Title"));
+        assertThat(typeSpec.enumConstants.keySet(), hasItem("MULTI_WORD_VALUE"));
         assertThat(typeSpec.modifiers.size(), is(1));
         assertThat(typeSpec.modifiers, hasItem(PUBLIC));
         assertThat(typeSpec.fieldSpecs.size(), is(1));

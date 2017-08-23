@@ -9,7 +9,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.module.jsonSchema.types.NumberSchema;
 import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.ObjectSchema;

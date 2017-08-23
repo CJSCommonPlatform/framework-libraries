@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.core;
 
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -111,7 +112,7 @@ public class JsonSchemaWrapperDelegateTest {
     }
 
     @Test
-    public void shouldAcceptAnArraySchema() throws Exception {
+    public void shouldAcceptAnArraySchemaWithAnAllItemSchema() throws Exception {
 
         final String fieldName = "fieldName";
         final Visitor visitor = mock(Visitor.class);
@@ -128,6 +129,31 @@ public class JsonSchemaWrapperDelegateTest {
 
         inOrder.verify(visitor).enter(fieldName, arraySchema);
         inOrder.verify(jsonSchemaWrapper).accept(fieldName, visitor);
+        inOrder.verify(visitor).leave(arraySchema);
+    }
+
+    @Test
+    public void shouldAcceptAnArraySchemaWithAListOfItemSchemas() throws Exception {
+
+        final String fieldName = "fieldName";
+        final Visitor visitor = mock(Visitor.class);
+        final ArraySchema arraySchema = mock(ArraySchema.class);
+        final Schema itemSchema_1 = mock(Schema.class);
+        final Schema itemSchema_2 = mock(Schema.class);
+        final JsonSchemaWrapper jsonSchemaWrapper_1 = mock(JsonSchemaWrapper.class);
+        final JsonSchemaWrapper jsonSchemaWrapper_2 = mock(JsonSchemaWrapper.class);
+
+        when(arraySchema.getItemSchemas()).thenReturn(asList(itemSchema_1, itemSchema_2));
+        when(jsonSchemaWrapperFactory.create(itemSchema_1)).thenReturn(jsonSchemaWrapper_1);
+        when(jsonSchemaWrapperFactory.create(itemSchema_2)).thenReturn(jsonSchemaWrapper_2);
+
+        jsonSchemaWrapperDelegate.acceptArraySchema(fieldName, visitor, arraySchema);
+
+        final InOrder inOrder = inOrder(visitor, jsonSchemaWrapper_1, jsonSchemaWrapper_2);
+
+        inOrder.verify(visitor).enter(fieldName, arraySchema);
+        inOrder.verify(jsonSchemaWrapper_1).accept(fieldName, visitor);
+        inOrder.verify(jsonSchemaWrapper_2).accept(fieldName, visitor);
         inOrder.verify(visitor).leave(arraySchema);
     }
 }

@@ -52,8 +52,19 @@ public class JsonSchemaWrapperDelegate {
 
         final Schema allItemSchema = arraySchema.getAllItemSchema();
 
+        if (allItemSchema != null) {
+            doAcceptArraySchema(fieldName, arraySchema, allItemSchema, visitor);
+        } else {
+            arraySchema
+                    .getItemSchemas()
+                    .forEach(schema -> doAcceptArraySchema(fieldName, arraySchema, schema, visitor));
+        }
+
+    }
+
+    private void doAcceptArraySchema(final String fieldName, final ArraySchema arraySchema, final Schema schema, final Visitor visitor) {
         visitor.enter(fieldName, arraySchema);
-        visitChildSchema(fieldName, visitor, allItemSchema);
+        visitChildSchema(fieldName, visitor, schema);
         visitor.leave(arraySchema);
     }
 

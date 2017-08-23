@@ -6,7 +6,7 @@ import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.io.files.loader.ObjectSchemaLoader;
+import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
@@ -22,7 +22,7 @@ import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.Schema;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class DefinitionBuilderIT {
     private final ClassCompiler classCompiler = new ClassCompiler();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final RootFieldNameGenerator rootFieldNameGenerator = new RootFieldNameGenerator();
-    private final ObjectSchemaLoader objectSchemaLoader = new ObjectSchemaLoader();
+    private final SchemaLoader schemaLoader = new SchemaLoader();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -40,7 +40,7 @@ public class DefinitionBuilderIT {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation");
+        sourceOutputDirectory = new File("./target/test-generation/definition-builder");
         classesOutputDirectory = new File("./target/test-classes");
 
         sourceOutputDirectory.mkdirs();
@@ -54,10 +54,10 @@ public class DefinitionBuilderIT {
     @Test
     public void shouldBuildTypeSpecFromSchema() throws Exception {
         final File schemaFile = new File("src/test/resources/schemas/person-schema.json");
-        final ObjectSchema schema = objectSchemaLoader.loadFrom(schemaFile);
+        final Schema schema = schemaLoader.loadFrom(schemaFile);
         final String fieldName = rootFieldNameGenerator.generateNameFrom(schemaFile);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo");
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.definition.builder");
 
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
         jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);

@@ -2,14 +2,11 @@ package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.bootstrap.GenerationContextFactory;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
@@ -41,7 +38,7 @@ public class EnumGeneratorIT {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation");
+        sourceOutputDirectory = new File("./target/test-generation/enum-generator");
         classesOutputDirectory = new File("./target/test-classes");
 
         sourceOutputDirectory.mkdirs();
@@ -56,7 +53,7 @@ public class EnumGeneratorIT {
     @Test
     public void shouldGenerateJavaClassSourceCode() throws Exception {
 
-        final String packageName = "uk.gov.justice.pojo";
+        final String packageName = "uk.gov.justice.pojo.enumgenerator";
 
         final ClassDefinition studentDefinition = studentDefinition(packageName);
         final EnumDefinition colourDefinition = colourDefinition(packageName);

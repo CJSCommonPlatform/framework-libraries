@@ -7,9 +7,7 @@ import static org.mockito.Mockito.verify;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
-import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
-import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
@@ -32,153 +30,96 @@ public class JsonSchemaWrapperTest {
     @Mock
     private Visitor visitor;
 
+    @Mock
+    private JsonSchemaWrapperDelegate jsonSchemaWrapperDelegate;
+
     @Test
-    public void shouldWrapObjectSchema() {
+    public void shouldVisitObjectSchema() {
         final String fieldName = "myFieldName";
         final ObjectSchema objectSchema = ObjectSchema.builder().id(fieldName).build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, objectSchema);
+        verify(jsonSchemaWrapperDelegate).acceptObjectSchema(fieldName, visitor, objectSchema);
     }
 
     @Test
-    public void shouldVisitObjectAndStringSchema() {
+    public void shouldVisitStringSchema() {
 
+        final String fieldName = "myFieldName";
         final StringSchema stringSchema = StringSchema.builder().build();
-        final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, stringSchema).build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(stringSchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, stringSchema);
-        verify(visitor).leave(objectSchema);
+        verify(visitor).visit(fieldName, stringSchema);
     }
 
     @Test
-    public void shouldVisitObjectAndBooleanSchema() {
-        final BooleanSchema booleanSchema = BooleanSchema.INSTANCE;
-        final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, booleanSchema).build();
+    public void shouldVisitBooleanSchema() {
+        final String fieldName = "myFieldName";
+        final BooleanSchema booleanSchema = BooleanSchema.builder().build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(booleanSchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, booleanSchema);
-        verify(visitor).leave(objectSchema);
+        verify(visitor).visit(fieldName, booleanSchema);
     }
 
     @Test
-    public void shouldVisitObjectAndNumberSchema() {
-        final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
+    public void shouldVisitNumberSchema() {
+        final String fieldName = "myFieldName";
         final NumberSchema numberSchema = NumberSchema.builder().build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, numberSchema).build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(numberSchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, numberSchema);
-        verify(visitor).leave(objectSchema);
+        verify(visitor).visit(fieldName, numberSchema);
     }
 
     @Test
-    public void shouldVisitObjectAndEnumSchema() {
-        final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
+    public void shouldVisitEnumSchema() {
+        final String fieldName = "myFieldName";
         final EnumSchema enumSchema = EnumSchema.builder().build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, enumSchema).build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(enumSchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, enumSchema);
-        verify(visitor).leave(objectSchema);
+        verify(visitor).visit(fieldName, enumSchema);
     }
 
     @Test
-    public void shouldVisitObjectAndNullSchema() {
+    public void shouldReferenceSchema() {
         final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
-        final NullSchema nullSchema = NullSchema.INSTANCE;
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, nullSchema).build();
-
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(fieldName, visitor);
-
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, nullSchema);
-        verify(visitor).leave(objectSchema);
-    }
-
-    @Test
-    public void shouldVisitObjectAndEmptySchema() {
-        final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
-        final EmptySchema emptySchema = EmptySchema.INSTANCE;
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, emptySchema).build();
-
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
-        jsonSchemaWrapper.accept(fieldName, visitor);
-
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, emptySchema);
-        verify(visitor).leave(objectSchema);
-    }
-
-    @Test
-    public void shouldVisitObjectAndReferenceSchema() {
-        final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
-        final StringSchema referredSchema = StringSchema.builder().build();
         final ReferenceSchema referenceSchema = ReferenceSchema.builder().build();
-        referenceSchema.setReferredSchema(referredSchema);
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, referenceSchema).build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(referenceSchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, referredSchema);
-        verify(visitor).leave(objectSchema);
+        verify(jsonSchemaWrapperDelegate).acceptReferenceSchema(fieldName, visitor, referenceSchema);
     }
 
     @Test
-    public void shouldVisitObjectAndArraySchema() {
+    public void shouldVisitArraySchema() {
         final String fieldName = "fieldName";
-        final ObjectSchema objectSchema = ObjectSchema.builder().build();
-        final ArraySchema arraySchema = ArraySchema.builder().allItemSchema(objectSchema).build();
+        final ArraySchema arraySchema = ArraySchema.builder().build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(arraySchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(arraySchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, arraySchema);
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).leave(objectSchema);
-        verify(visitor).leave(arraySchema);
+        verify(jsonSchemaWrapperDelegate).acceptArraySchema(fieldName, visitor, arraySchema);
     }
 
     @Test
-    public void shouldVisitObjectAndCombinedSchema() {
+    public void shouldVisitCombinedSchema() {
         final String fieldName = "fieldName";
-        final String childFieldName = "childFieldName";
         final CombinedSchema combinedSchema = CombinedSchema.builder().criterion(ANY_CRITERION).build();
-        final ObjectSchema objectSchema = ObjectSchema.builder().addPropertySchema(childFieldName, combinedSchema).build();
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(combinedSchema, jsonSchemaWrapperDelegate);
         jsonSchemaWrapper.accept(fieldName, visitor);
 
-        verify(visitor).enter(fieldName, objectSchema);
-        verify(visitor).visit(childFieldName, combinedSchema);
-        verify(visitor).leave(objectSchema);
+        verify(jsonSchemaWrapperDelegate).acceptCombinedSchema(fieldName, visitor, combinedSchema);
     }
 
     @Test

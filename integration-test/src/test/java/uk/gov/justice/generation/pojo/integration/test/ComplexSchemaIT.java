@@ -2,7 +2,7 @@ package uk.gov.justice.generation.pojo.integration.test;
 
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 
-import uk.gov.justice.generation.io.files.loader.ObjectSchemaLoader;
+import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.RootFieldNameGenerator;
@@ -12,7 +12,7 @@ import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
 
-import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.Schema;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class ComplexSchemaIT {
 
     private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
     private final RootFieldNameGenerator rootFieldNameGenerator = new RootFieldNameGenerator();
-    private final ObjectSchemaLoader objectSchemaLoader = new ObjectSchemaLoader();
+    private final SchemaLoader schemaLoader = new SchemaLoader();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -31,7 +31,7 @@ public class ComplexSchemaIT {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation");
+        sourceOutputDirectory = new File("./target/test-generation/complex-schema");
         classesOutputDirectory = new File("./target/test-classes");
 
         sourceOutputDirectory.mkdirs();
@@ -46,10 +46,10 @@ public class ComplexSchemaIT {
     public void shouldParseAVeryComplexSchemaDocument() throws Exception {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/context.command.complex-data.json");
-        final ObjectSchema schema = objectSchemaLoader.loadFrom(jsonSchemaFile);
+        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.generateNameFrom(jsonSchemaFile);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo");
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.complex.schema");
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
 
         jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);

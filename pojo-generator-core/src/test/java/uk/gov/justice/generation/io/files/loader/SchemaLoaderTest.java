@@ -16,26 +16,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class ObjectSchemaLoaderTest {
+public class SchemaLoaderTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldLoadObjectSchema() throws Exception {
-        final ObjectSchema objectSchema = new ObjectSchemaLoader().loadFrom(get("src/test/resources/schemas/person-schema.json").toFile());
+        final ObjectSchema objectSchema = (ObjectSchema) new SchemaLoader().loadFrom(get("src/test/resources/schemas/person-schema.json").toFile());
 
         final Map<String, Schema> propertySchemas = objectSchema.getPropertySchemas();
         assertThat(propertySchemas.get("firstName"), is(instanceOf(StringSchema.class)));
         assertThat(propertySchemas.get("lastName"), is(instanceOf(StringSchema.class)));
-    }
-
-    @Test
-    public void shouldThrowExceptionIfBaseSchemaIsNotOfTypeObject() throws Exception {
-        expectedException.expect(SchemaLoaderException.class);
-        expectedException.expectMessage("Base schema must be of type object in: src/test/resources/schemas/strings-schema.json");
-
-        new ObjectSchemaLoader().loadFrom(get("src/test/resources/schemas/strings-schema.json").toFile());
     }
 
     @Test
@@ -44,6 +36,6 @@ public class ObjectSchemaLoaderTest {
         expectedException.expectMessage("File failed to load: src/test/resources/schemas/unknown-file.json");
         expectedException.expectCause(isA(FileNotFoundException.class));
 
-        new ObjectSchemaLoader().loadFrom(get("src/test/resources/schemas/unknown-file.json").toFile());
+        new SchemaLoader().loadFrom(get("src/test/resources/schemas/unknown-file.json").toFile());
     }
 }

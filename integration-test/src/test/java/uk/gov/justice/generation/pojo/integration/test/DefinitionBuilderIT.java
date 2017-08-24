@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -92,5 +93,7 @@ public class DefinitionBuilderIT {
                 .assertThat("$.signedInCount", is(signedInCount))
                 .assertThat("$.ratio", is(ratio.doubleValue()))
         ;
+
+        schema.validate(new JSONObject(personJson));
     }
 }

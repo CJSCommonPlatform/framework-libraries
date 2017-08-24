@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "person",
+  "properties": {
+    "invalidArray": {
+      "type": "array",
+      "items": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "Street",
+            "Avenue",
+            "Boulevard"
+          ]
+        },
+        {
+          "type": "string",
+          "enum": [
+            "NW",
+            "NE",
+            "SW",
+            "SE"
+          ]
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "title"
+  ]
+}
+
+

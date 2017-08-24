@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,22 +89,23 @@ public class CombinedSchemaIT {
 
         assertThat(constructor, is(notNullValue()));
 
-        final String zipCode = "zipCode";
         final String city = "city";
         final String county = "county";
         final String addressLine1 = "addressLine1";
         final String addressLine2 = "addressLine2";
         final String postCode = "postCode";
-        final String state = "state";
+
+        final String nullZipCode = null;
+        final String nullState = null;
 
         final Object addressObject = constructor.newInstance(
-                zipCode,
+                nullZipCode,
                 city,
                 county,
                 addressLine1,
                 addressLine2,
                 postCode,
-                state
+                nullState
         );
 
         final String json = objectMapper.writeValueAsString(addressObject);
@@ -114,8 +116,10 @@ public class CombinedSchemaIT {
                 .assertThat("$.city", is("city"))
                 .assertThat("$.county", is("county"))
                 .assertThat("$.postCode", is("postCode"))
-                .assertThat("$.state", is("state"))
-                .assertThat("$.zipCode", is("zipCode"))
+                .assertNotDefined("$.state")
+                .assertNotDefined("$.zipCode")
         ;
+
+        schema.validate(new JSONObject(json));
     }
 }

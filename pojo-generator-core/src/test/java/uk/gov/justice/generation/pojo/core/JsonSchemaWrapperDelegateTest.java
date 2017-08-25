@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.everit.json.schema.ArraySchema;
@@ -26,9 +27,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class JsonSchemaWrapperDelegateTest {
 
     @Mock
-    private CombinedSchemaPropertyExtractor combinedSchemaPropertyExtractor;
-
-    @Mock
     private JsonSchemaWrapperFactory jsonSchemaWrapperFactory;
 
     @InjectMocks
@@ -46,11 +44,9 @@ public class JsonSchemaWrapperDelegateTest {
         final JsonSchemaWrapper jsonSchemaWrapper_1 = mock(JsonSchemaWrapper.class);
         final JsonSchemaWrapper jsonSchemaWrapper_2 = mock(JsonSchemaWrapper.class);
 
-        final Map<String, Schema> propertySchemas = new HashMap<>();
-        propertySchemas.put("childSchema_1", childSchema_1);
-        propertySchemas.put("childSchema_2", childSchema_2);
+        final List<Schema> propertySchemas = asList(childSchema_1, childSchema_2);
 
-        when(combinedSchemaPropertyExtractor.getAllPropertiesFrom(combinedSchema)).thenReturn(propertySchemas);
+        when(combinedSchema.getSubschemas()).thenReturn(propertySchemas);
         when(jsonSchemaWrapperFactory.create(childSchema_1)).thenReturn(jsonSchemaWrapper_1);
         when(jsonSchemaWrapperFactory.create(childSchema_2)).thenReturn(jsonSchemaWrapper_2);
 
@@ -59,8 +55,8 @@ public class JsonSchemaWrapperDelegateTest {
         final InOrder inOrder = inOrder(visitor, jsonSchemaWrapper_1, jsonSchemaWrapper_2);
 
         inOrder.verify(visitor).enter(fieldName, combinedSchema);
-        inOrder.verify(jsonSchemaWrapper_1).accept("childSchema_1", visitor);
-        inOrder.verify(jsonSchemaWrapper_2).accept("childSchema_2", visitor);
+        inOrder.verify(jsonSchemaWrapper_1).accept("fieldName", visitor);
+        inOrder.verify(jsonSchemaWrapper_2).accept("fieldName", visitor);
         inOrder.verify(visitor).leave(combinedSchema);
     }
 

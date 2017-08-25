@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.core;
 
+import java.util.Collection;
 import java.util.Map;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -11,27 +12,22 @@ import org.everit.json.schema.Schema;
 
 public class JsonSchemaWrapperDelegate {
 
-    private final CombinedSchemaPropertyExtractor combinedSchemaPropertyExtractor;
     private final JsonSchemaWrapperFactory jsonSchemaWrapperFactory;
 
     public JsonSchemaWrapperDelegate() {
-        this(new CombinedSchemaPropertyExtractor(), new JsonSchemaWrapperFactory());
+        this(new JsonSchemaWrapperFactory());
     }
 
     @VisibleForTesting
-    JsonSchemaWrapperDelegate(
-            final CombinedSchemaPropertyExtractor combinedSchemaPropertyExtractor,
-            final JsonSchemaWrapperFactory jsonSchemaWrapperFactory) {
-        this.combinedSchemaPropertyExtractor = combinedSchemaPropertyExtractor;
+    JsonSchemaWrapperDelegate(final JsonSchemaWrapperFactory jsonSchemaWrapperFactory) {
         this.jsonSchemaWrapperFactory = jsonSchemaWrapperFactory;
     }
 
     public void acceptCombinedSchema(final String fieldName, final Visitor visitor, final CombinedSchema combinedSchema) {
-
-        final Map<String, Schema> propertySchemas = combinedSchemaPropertyExtractor.getAllPropertiesFrom(combinedSchema);
+        final Collection<Schema> subschemas = combinedSchema.getSubschemas();
 
         visitor.enter(fieldName, combinedSchema);
-        propertySchemas.forEach((childName, childSchema) -> visitChildSchema(childName, visitor, childSchema));
+        subschemas.forEach(childSchema -> visitChildSchema(fieldName, visitor, childSchema));
         visitor.leave(combinedSchema);
     }
 
@@ -49,7 +45,6 @@ public class JsonSchemaWrapperDelegate {
     }
 
     public void acceptArraySchema(final String fieldName, final Visitor visitor, final ArraySchema arraySchema) {
-
         final Schema allItemSchema = arraySchema.getAllItemSchema();
 
         if (allItemSchema != null) {

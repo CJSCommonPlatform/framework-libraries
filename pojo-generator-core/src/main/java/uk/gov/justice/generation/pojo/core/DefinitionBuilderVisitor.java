@@ -1,82 +1,77 @@
 package uk.gov.justice.generation.pojo.core;
 
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.capitalize;
+import static com.google.common.collect.Lists.reverse;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.dom.EnumDefinition;
-import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 
-import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
+import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
+import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
 
 public class DefinitionBuilderVisitor implements Visitor {
 
     private final Deque<Entry> definitions = new ArrayDeque<>();
+    private final Deque<Entry> combinedDefinitions = new ArrayDeque<>();
+
     private final List<Definition> classDefinitions = new ArrayList<>();
-    private final ClassNameProvider classNameProvider = new ClassNameProvider();
+    private final DefinitionFactory definitionFactory;
+
     private final String packageName;
-    private final Optional<String> eventName;
 
-    public DefinitionBuilderVisitor(final String packageName) {
+    public DefinitionBuilderVisitor(final String packageName, final DefinitionFactory definitionFactory) {
         this.packageName = packageName;
-        this.eventName = Optional.empty();
-    }
-
-    public DefinitionBuilderVisitor(final String packageName, final String eventName) {
-        this.packageName = packageName;
-        this.eventName = Optional.ofNullable(eventName);
+        this.definitionFactory = definitionFactory;
     }
 
     @Override
-    public void enter(final String fieldName, final Schema schema) {
-        final ClassName className = new ClassName(packageName, capitalize(fieldName));
+    public void enter(final String fieldName, final ObjectSchema schema) {
+        final Definition definition = definitionFor(fieldName, schema);
 
-        final ClassDefinition definition;
-        if (definitions.isEmpty() && eventName.isPresent()) {
-            definition = new ClassDefinition(fieldName, className, eventName.get());
-        } else {
-            definition = new ClassDefinition(fieldName, className);
-        }
+        addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
 
         definitions.push(new Entry(schema, definition));
     }
 
     @Override
-    public void leave(final Schema schema) {
-        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
+    public void leave(final ObjectSchema schema) {
+        addFieldDefinitionsFor(schema);
+    }
 
-        while (definitions.peek().getSchema() != schema) {
+    @Override
+    public void enter(final String fieldName, final CombinedSchema schema) {
+        final Definition definition = definitionFor(fieldName, schema);
 
-            fieldDefinitions.push(definitions.pop().getDefinition());
+        addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
+
+        final Entry entry = new Entry(schema, definition, fieldName);
+        definitions.push(entry);
+        combinedDefinitions.push(entry);
+    }
+
+    @Override
+    public void leave(final CombinedSchema schema) {
+        addFieldDefinitionsFor(schema);
+
+        if (!combinedDefinitions.isEmpty() && combinedDefinitions.peek().getSchema() == schema) {
+            combinedDefinitions.pop();
         }
-
-        final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
-        fieldDefinitions.forEach(classDefinition::addFieldDefinition);
-        classDefinitions.add(classDefinition);
     }
 
     @Override
     public void enter(final String fieldName, final ArraySchema schema) {
-        final String className = capitalize(fieldName);
-        final ClassName listClassName = new ClassName(List.class);
-        final ClassName genericTypeName = new ClassName(packageName, className);
-        final FieldDefinition definition = new FieldDefinition(fieldName, listClassName, genericTypeName);
-
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, packageName, schema);
         definitions.push(new Entry(schema, definition));
     }
 
@@ -89,43 +84,81 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final StringSchema schema) {
-        final ClassName className = classNameProvider.classNameFor(schema.getDescription());
-        definitions.push(new Entry(schema, new FieldDefinition(fieldName, className)));
+        definitions.push(new Entry(schema, definitionFactory.constructFieldDefinition(fieldName, schema)));
     }
 
     @Override
     public void visit(final String fieldName, final BooleanSchema schema) {
-        definitions.push(new Entry(schema, new FieldDefinition(fieldName, new ClassName(Boolean.class))));
+        definitions.push(new Entry(schema, definitionFactory.constructFieldDefinition(fieldName, schema)));
     }
 
     @Override
     public void visit(final String fieldName, final NumberSchema schema) {
-        final ClassName className = schema.requiresInteger() ? new ClassName(Integer.class) : new ClassName(BigDecimal.class);
-        definitions.push(new Entry(schema, new FieldDefinition(fieldName, className)));
+        definitions.push(new Entry(schema, definitionFactory.constructFieldDefinition(fieldName, schema)));
     }
 
     @Override
     public void visit(final String fieldName, final EnumSchema schema) {
-        final Set<Object> possibleValues = schema.getPossibleValues();
-        final List<String> enumValues = possibleValues.stream().map(i -> (String) i).collect(toList());
-        final EnumDefinition enumDefinition = new EnumDefinition(fieldName, new ClassName(packageName, capitalize(fieldName)), enumValues);
-        definitions.push(new Entry(schema, enumDefinition));
-        classDefinitions.add(enumDefinition);
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, packageName, schema);
+        definitions.push(new Entry(schema, definition));
+        classDefinitions.add(definition);
     }
 
     @Override
     public List<Definition> getDefinitions() {
-        return classDefinitions;
+        return reverse(classDefinitions);
+    }
+
+    private Definition definitionFor(final String fieldName, final Schema schema) {
+
+        final Definition definition;
+        if (definitions.isEmpty()) {
+            definition = definitionFactory.constructDefinitionWithEventFor(fieldName, packageName, schema);
+        } else {
+            definition = definitionFactory.constructDefinitionFor(fieldName, packageName, schema);
+        }
+        return definition;
+    }
+
+    private void addToClassDefinitionsIfNotPartOfCombinedDefinition(final String fieldName, final Definition definition) {
+        if (combinedDefinitions.isEmpty() || !combinedFieldNameEqualTo(fieldName)) {
+            classDefinitions.add(definition);
+        }
+    }
+
+    private boolean combinedFieldNameEqualTo(final String fieldName) {
+        final Optional<String> combinedFieldName = combinedDefinitions.peek().fieldName;
+
+        return combinedFieldName.isPresent() && combinedFieldName.get().equals(fieldName);
+    }
+
+    private void addFieldDefinitionsFor(final Schema schema) {
+        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
+
+        while (definitions.peek().getSchema() != schema) {
+            fieldDefinitions.push(definitions.pop().getDefinition());
+        }
+
+        final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
+        fieldDefinitions.forEach(classDefinition::addFieldDefinition);
     }
 
     private class Entry {
 
         private final Schema schema;
         private final Definition definition;
+        private final Optional<String> fieldName;
 
         Entry(final Schema schema, final Definition definition) {
             this.schema = schema;
             this.definition = definition;
+            this.fieldName = Optional.empty();
+        }
+
+        Entry(final Schema schema, final Definition definition, final String fieldName) {
+            this.schema = schema;
+            this.definition = definition;
+            this.fieldName = Optional.ofNullable(fieldName);
         }
 
         Schema getSchema() {

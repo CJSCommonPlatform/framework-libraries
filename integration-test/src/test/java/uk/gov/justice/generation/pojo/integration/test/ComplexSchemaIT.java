@@ -3,7 +3,9 @@ package uk.gov.justice.generation.pojo.integration.test;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
+import uk.gov.justice.generation.pojo.core.DefinitionFactory;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -24,6 +26,7 @@ public class ComplexSchemaIT {
     private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
     private final NameGenerator nameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
+    private final DefinitionFactory definitionFactory = new DefinitionFactory(new ClassNameProvider());
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -49,7 +52,7 @@ public class ComplexSchemaIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.complex.schema");
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.complex.schema", definitionFactory);
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
 
         jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);

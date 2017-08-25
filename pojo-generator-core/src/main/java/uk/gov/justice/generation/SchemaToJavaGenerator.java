@@ -1,7 +1,9 @@
 package uk.gov.justice.generation;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
+import uk.gov.justice.generation.pojo.core.DefinitionFactory;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
@@ -46,9 +48,9 @@ public class SchemaToJavaGenerator implements Generator<File> {
         if (fileNameValidator.isEventSchema(source)) {
             return new DefinitionBuilderVisitor(
                     basePackageName,
-                    nameGenerator.eventNameFrom(source));
+                    new DefinitionFactory(new ClassNameProvider(), nameGenerator.eventNameFrom(source)));
         }
 
-        return new DefinitionBuilderVisitor(basePackageName);
+        return new DefinitionBuilderVisitor(basePackageName, new DefinitionFactory(new ClassNameProvider()));
     }
 }

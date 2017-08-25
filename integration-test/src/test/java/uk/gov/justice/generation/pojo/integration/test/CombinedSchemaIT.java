@@ -7,7 +7,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
+import uk.gov.justice.generation.pojo.core.DefinitionFactory;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -35,6 +37,7 @@ public class CombinedSchemaIT {
     private final NameGenerator rootFieldNameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+    private final DefinitionFactory definitionFactory = new DefinitionFactory(new ClassNameProvider());
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -60,7 +63,7 @@ public class CombinedSchemaIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.combined.schema");
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.combined.schema", definitionFactory);
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
 
         jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);
@@ -75,15 +78,25 @@ public class CombinedSchemaIT {
                     newClasses.add(newClass);
                 });
 
-        assertThat(newClasses.size(), is(1));
-        assertThat(newClasses.get(0).getSimpleName(), is("Address"));
+        assertThat(newClasses.size(), is(4));
+        assertThat(newClasses.get(0).getSimpleName(), is("UkComms"));
+        assertThat(newClasses.get(1).getSimpleName(), is("UsComms"));
+        assertThat(newClasses.get(2).getSimpleName(), is("Communication"));
+        assertThat(newClasses.get(3).getSimpleName(), is("Address"));
 
-        final Constructor<?> constructor = newClasses.get(0).getConstructor(
+        final Object ukComms = newClasses.get(0).getConstructor(Boolean.class).newInstance(true);
+        final Object usComms = newClasses.get(1).getConstructor(Boolean.class).newInstance(true);
+        final Object communtication = newClasses.get(2).getConstructor(Boolean.class).newInstance(true);
+
+        final Constructor<?> constructor = newClasses.get(3).getConstructor(
                 String.class,
                 String.class,
                 String.class,
+                communtication.getClass(),
                 String.class,
+                usComms.getClass(),
                 String.class,
+                ukComms.getClass(),
                 String.class,
                 String.class);
 
@@ -99,13 +112,16 @@ public class CombinedSchemaIT {
         final String nullState = null;
 
         final Object addressObject = constructor.newInstance(
-                nullZipCode,
                 city,
-                county,
                 addressLine1,
                 addressLine2,
-                postCode,
-                nullState
+                communtication,
+                nullZipCode,
+                usComms,
+                nullState,
+                ukComms,
+                county,
+                postCode
         );
 
         final String json = objectMapper.writeValueAsString(addressObject);
@@ -118,6 +134,9 @@ public class CombinedSchemaIT {
                 .assertThat("$.postCode", is("postCode"))
                 .assertNotDefined("$.state")
                 .assertNotDefined("$.zipCode")
+                .assertThat("$.communication.telephone", is(true))
+                .assertThat("$.usComms.telephone", is(true))
+                .assertThat("$.ukComms.telephone", is(true))
         ;
 
         schema.validate(new JSONObject(json));

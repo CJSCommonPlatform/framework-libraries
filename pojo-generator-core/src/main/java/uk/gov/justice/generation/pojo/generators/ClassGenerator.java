@@ -1,16 +1,20 @@
 package uk.gov.justice.generation.pojo.generators;
 
 import static com.squareup.javapoet.MethodSpec.constructorBuilder;
+import static com.squareup.javapoet.TypeName.LONG;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.Definition;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.squareup.javapoet.AnnotationSpec;
@@ -21,6 +25,9 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
 public class ClassGenerator implements ClassGeneratable {
+
+    private static final String SERIAL_VERSION_FIELD_NAME = "serialVersionUID";
+    private static final String SERIAL_VERSION_VALUE = "1L";
 
     private final ClassDefinition classDefinition;
     private final JavaGeneratorFactory javaGeneratorFactory;
@@ -52,15 +59,20 @@ public class ClassGenerator implements ClassGeneratable {
                 .flatMap(ElementGeneratable::generateMethods)
                 .collect(toList());
 
-        final TypeSpec.Builder builder = classBuilder(className)
-                .addModifiers(PUBLIC);
+        final TypeSpec.Builder typeSpecBuilder = classBuilder(className)
+                .addModifiers(PUBLIC)
+                .addSuperinterface(Serializable.class)
+                .addField(FieldSpec
+                        .builder(LONG, SERIAL_VERSION_FIELD_NAME, PRIVATE, STATIC, FINAL)
+                        .initializer(SERIAL_VERSION_VALUE)
+                        .build());
 
         classDefinition.getEventName().ifPresent(eventName ->
-                builder.addAnnotation(AnnotationSpec.builder(Event.class)
+                typeSpecBuilder.addAnnotation(AnnotationSpec.builder(Event.class)
                         .addMember("value", "$S", eventName)
                         .build()));
 
-        return builder.addMethod(buildConstructor(definitions))
+        return typeSpecBuilder.addMethod(buildConstructor(definitions))
                 .addFields(fields)
                 .addMethods(methods)
                 .build();

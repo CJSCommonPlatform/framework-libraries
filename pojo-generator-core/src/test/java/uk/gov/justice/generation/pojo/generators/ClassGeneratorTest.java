@@ -5,7 +5,9 @@ import static com.squareup.javapoet.FieldSpec.builder;
 import static com.squareup.javapoet.MethodSpec.constructorBuilder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.core.Is.is;
@@ -18,11 +20,13 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 
+import java.io.Serializable;
 import java.util.stream.Stream;
 
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +51,7 @@ public class ClassGeneratorTest {
         assertThat(typeSpec.name, is("Address"));
         assertThat(typeSpec.modifiers.size(), is(1));
         assertThat(typeSpec.modifiers, hasItem(PUBLIC));
-        assertThat(typeSpec.fieldSpecs.size(), is(0));
+        assertThat(typeSpec.fieldSpecs.size(), is(1));
         assertThat(typeSpec.methodSpecs.size(), is(1));
         assertThat(typeSpec.methodSpecs, hasItem(constructorBuilder().addModifiers(PUBLIC).build()));
     }
@@ -67,7 +71,7 @@ public class ClassGeneratorTest {
         assertThat(typeSpec.name, is("Address"));
         assertThat(typeSpec.modifiers.size(), is(1));
         assertThat(typeSpec.modifiers, hasItem(PUBLIC));
-        assertThat(typeSpec.fieldSpecs.size(), is(0));
+        assertThat(typeSpec.fieldSpecs.size(), is(1));
         assertThat(typeSpec.methodSpecs.size(), is(1));
         assertThat(typeSpec.methodSpecs, hasItem(constructorBuilder().addModifiers(PUBLIC).build()));
     }
@@ -98,7 +102,7 @@ public class ClassGeneratorTest {
         assertThat(typeSpec.name, is("Address"));
         assertThat(typeSpec.modifiers.size(), is(1));
         assertThat(typeSpec.modifiers, hasItem(PUBLIC));
-        assertThat(typeSpec.fieldSpecs.size(), is(1));
+        assertThat(typeSpec.fieldSpecs.size(), is(2));
         assertThat(typeSpec.fieldSpecs, hasItem(fieldSpec));
         assertThat(typeSpec.methodSpecs.size(), is(2));
         assertThat(typeSpec.methodSpecs, hasItems(
@@ -109,6 +113,21 @@ public class ClassGeneratorTest {
                         .build(),
                 methodSpec)
         );
+    }
+
+    @Test
+    public void shouldGenerateSerializableTypeSpec() throws Exception {
+        final ClassName className = new ClassName("org.something", "Address");
+        final ClassDefinition classDefinition = new ClassDefinition("address", className);
+
+        final ClassGenerator classGenerator = new ClassGenerator(classDefinition, javaGeneratorFactory);
+        final TypeSpec typeSpec = classGenerator.generate();
+
+        assertThat(typeSpec.superinterfaces.size(), is(1));
+        assertThat(typeSpec.superinterfaces, hasItem(TypeName.get(Serializable.class)));
+        assertThat(typeSpec.fieldSpecs, hasItem(FieldSpec
+                .builder(TypeName.LONG, "serialVersionUID", PRIVATE, STATIC, FINAL)
+                .initializer("1L").build()));
     }
 
     @Test

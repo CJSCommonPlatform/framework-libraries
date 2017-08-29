@@ -162,12 +162,14 @@ Add the following plugin to your root maven pom:
     
 The following properties are relevant and should be adjusted to taste:
 
-####basePackageName:
+**basePackageName:**
+
 	<basePackageName>uk.gov.justice.events.pojo</basePackageName>
 	
 The package name of the generated pojo classes
 
-####sourceDirectory:
+**sourceDirectory:**
+
     <sourceDirectory>${basedir}/src/main/resources/events/json/schema</sourceDirectory>
     
 The directory where the json schema file should be found. This is then further refined using maven include/exclude tags:
@@ -178,8 +180,10 @@ The directory where the json schema file should be found. This is then further r
     <excludes>
     </excludes>
 
-####outputDirectory
+**outputDirectory:**
+
     <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+
 The directory that the java code will be generated to. This should usually be the 'generated-sources' directory in target as they will then be compiled into your application during the maven compile phase.    
 
  

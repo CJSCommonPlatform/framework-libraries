@@ -43,12 +43,12 @@ public class SchemaToJavaGeneratorPluginTest {
         with(personJson)
                 .assertThat("$.firstName", is(firstName))
                 .assertThat("$.lastName", is(lastName))
-                .assertThat("$.aliasList[0].aliasInitials", is("1"))
-                .assertThat("$.aliasList[0].aliasForenames", is("forename_1"))
-                .assertThat("$.aliasList[0].aliasSurname", is("surname_1"))
-                .assertThat("$.aliasList[1].aliasInitials", is("2"))
-                .assertThat("$.aliasList[1].aliasForenames", is("forename_2"))
-                .assertThat("$.aliasList[1].aliasSurname", is("surname_2"))
+                .assertThat("$.alias[0].aliasInitials", is("1"))
+                .assertThat("$.alias[0].aliasForenames", is("forename_1"))
+                .assertThat("$.alias[0].aliasSurname", is("surname_1"))
+                .assertThat("$.alias[1].aliasInitials", is("2"))
+                .assertThat("$.alias[1].aliasForenames", is("forename_2"))
+                .assertThat("$.alias[1].aliasSurname", is("surname_2"))
                 .assertThat("$.title", is(""))
                 .assertThat("$.required", is(required))
                 .assertThat("$.signedInCount", is(signedInCount))
@@ -84,14 +84,14 @@ public class SchemaToJavaGeneratorPluginTest {
         assertThat(resultObject.getRequired(), is(required));
         assertThat(resultObject.getSignedInCount(), is(signedInCount));
         assertThat(resultObject.getRatio(), is(ratio));
-        assertThat(resultObject.getAliasList().size(), is(2));
+        assertThat(resultObject.getAlias().size(), is(2));
 
-        assertThat(resultObject.getAliasList().get(0).getAliasInitials(), is("1"));
-        assertThat(resultObject.getAliasList().get(0).getAliasForenames(), is("forename_1"));
-        assertThat(resultObject.getAliasList().get(0).getAliasSurname(), is("surname_1"));
+        assertThat(resultObject.getAlias().get(0).getAliasInitials(), is("1"));
+        assertThat(resultObject.getAlias().get(0).getAliasForenames(), is("forename_1"));
+        assertThat(resultObject.getAlias().get(0).getAliasSurname(), is("surname_1"));
 
-        assertThat(resultObject.getAliasList().get(1).getAliasInitials(), is("2"));
-        assertThat(resultObject.getAliasList().get(1).getAliasForenames(), is("forename_2"));
-        assertThat(resultObject.getAliasList().get(1).getAliasSurname(), is("surname_2"));
+        assertThat(resultObject.getAlias().get(1).getAliasInitials(), is("2"));
+        assertThat(resultObject.getAlias().get(1).getAliasForenames(), is("forename_2"));
+        assertThat(resultObject.getAlias().get(1).getAliasSurname(), is("surname_2"));
     }
 }

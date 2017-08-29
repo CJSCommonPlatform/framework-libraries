@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -99,14 +100,17 @@ public class ArrayIT {
 
         final String json = objectMapper.writeValueAsString(regicidePie);
 
+
         with(json)
                 .assertThat("$.name", is("Regicide Pie"))
                 .assertThat("$.recipeId", is("13"))
                 .assertThat("$.glutenFree", is(false))
-                .assertThat("$.ingredientsList[0].name", is("Eye of Newt"))
-                .assertThat("$.ingredientsList[0].quantity", is(1))
-                .assertThat("$.ingredientsList[1].name", is("Toe of Frog"))
-                .assertThat("$.ingredientsList[1].quantity", is(3))
+                .assertThat("$.ingredients[0].name", is("Eye of Newt"))
+                .assertThat("$.ingredients[0].quantity", is(1))
+                .assertThat("$.ingredients[1].name", is("Toe of Frog"))
+                .assertThat("$.ingredients[1].quantity", is(3))
         ;
+
+        schema.validate(new JSONObject(json));
     }
 }

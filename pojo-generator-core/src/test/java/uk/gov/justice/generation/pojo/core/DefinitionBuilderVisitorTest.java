@@ -208,7 +208,7 @@ public class DefinitionBuilderVisitorTest {
         assertThat(arrayObjectDefinition.getClassName().getPackageName(), is(packageName));
         assertThat(arrayObjectDefinition.getClassName().getSimpleName(), is(arrayObject));
 
-        assertThat(outerClassDefinition.getFieldDefinitions().get(0).getFieldName(), is("arrayPropertyList"));
+        assertThat(outerClassDefinition.getFieldDefinitions().get(0).getFieldName(), is("arrayProperty"));
         assertThat(outerClassDefinition.getFieldDefinitions().get(0).getClassName().getFullyQualifiedName(), is("java.util.List"));
     }
 

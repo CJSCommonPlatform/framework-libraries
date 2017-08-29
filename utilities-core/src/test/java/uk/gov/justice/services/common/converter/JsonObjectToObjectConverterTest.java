@@ -1,31 +1,31 @@
 package uk.gov.justice.services.common.converter;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JsonObjectToObjectConverterTest {
@@ -36,6 +36,9 @@ public class JsonObjectToObjectConverterTest {
     private static final String ATTRIBUTE_1 = "Attribute 1";
     private static final String ATTRIBUTE_2 = "Attribute 2";
     private static final String INTERNAL_NAME = "internalName";
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Mock
     private ObjectMapper mapper;
@@ -72,8 +75,11 @@ public class JsonObjectToObjectConverterTest {
 
     }
 
-    @Test(expected = ConverterException.class)
+    @Test
     public void shouldThrowExceptionOnConversionError() throws IOException {
+        thrown.expect(ConverterException.class);
+        thrown.expectMessage("Failed to convert");
+        thrown.expectMessage("xxx");
         final JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter();
         jsonObjectToObjectConverter.mapper = mapper;
         final JsonObject jsonObject = jsonObject();
@@ -83,8 +89,11 @@ public class JsonObjectToObjectConverterTest {
         jsonObjectToObjectConverter.convert(jsonObject, Pojo.class);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionOnNullResult() throws IOException {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Error while converting");
+        thrown.expectMessage("xxx");
         final JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter();
         jsonObjectToObjectConverter.mapper = mapper;
         final JsonObject jsonObject = jsonObject();

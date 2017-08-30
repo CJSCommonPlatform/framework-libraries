@@ -5,12 +5,12 @@ import uk.gov.justice.generation.pojo.visitor.Visitor;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.Schema;
 
-public class ArraySchemaAcceptor implements JsonSchemaAcceptor {
+public class ArrayAcceptor implements Acceptable {
 
-    private final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private final AcceptorFactory acceptorFactory;
 
-    public ArraySchemaAcceptor(final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory) {
-        this.jsonSchemaAcceptorFactory = jsonSchemaAcceptorFactory;
+    public ArrayAcceptor(final AcceptorFactory acceptorFactory) {
+        this.acceptorFactory = acceptorFactory;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ArraySchemaAcceptor implements JsonSchemaAcceptor {
 
     private void acceptArraySchema(final String fieldName, final ArraySchema arraySchema, final Schema schema, final Visitor visitor) {
         visitor.enter(fieldName, arraySchema);
-        jsonSchemaAcceptorFactory.visitSchema(fieldName, visitor, schema);
+        acceptorFactory.visitSchema(fieldName, visitor, schema);
         visitor.leave(arraySchema);
     }
 }

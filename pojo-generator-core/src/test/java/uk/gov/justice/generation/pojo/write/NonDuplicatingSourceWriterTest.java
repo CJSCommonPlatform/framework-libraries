@@ -61,7 +61,7 @@ public class NonDuplicatingSourceWriterTest {
         final InOrder inOrder = inOrder(sourceWriter, logger);
 
         inOrder.verify(sourceWriter).write(classGenerator, sourceRootDirectory);
-        inOrder.verify(logger).info("Wrote new Java file '%s'", fileName);
+        inOrder.verify(logger).info("Wrote new Java file '{}'", "MyFunkyNewPojo.java");
     }
 
     @Test
@@ -79,12 +79,12 @@ public class NonDuplicatingSourceWriterTest {
         when(classGenerator.getClassName()).thenReturn(className);
         when(javaSourceFileProvider.getJavaFile(sourceRootDirectory, className)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(true);
-        when(sourceFile.getAbsolutePath()).thenReturn("org/test");
+        when(sourceFile.getAbsolutePath()).thenReturn("org/test/MyExistingPojo.java");
 
         assertThat(nonDuplicatingSourceWriter.write(classGenerator, generationContext), is(sourceFile));
 
         verifyZeroInteractions(sourceWriter);
-        verify(logger).info("Skipping generation, Java file already exists '%s'", "org/test");
+        verify(logger).info("Skipping generation, Java file already exists: '{}'", "org/test/MyExistingPojo.java");
     }
 
     @Test

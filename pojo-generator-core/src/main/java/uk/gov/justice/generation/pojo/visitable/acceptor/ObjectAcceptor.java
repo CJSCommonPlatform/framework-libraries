@@ -7,12 +7,12 @@ import java.util.Map;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.Schema;
 
-public class ObjectSchemaAcceptor implements JsonSchemaAcceptor {
+public class ObjectAcceptor implements Acceptable {
 
-    private final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private final AcceptorFactory acceptorFactory;
 
-    public ObjectSchemaAcceptor(final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory) {
-        this.jsonSchemaAcceptorFactory = jsonSchemaAcceptorFactory;
+    public ObjectAcceptor(final AcceptorFactory acceptorFactory) {
+        this.acceptorFactory = acceptorFactory;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class ObjectSchemaAcceptor implements JsonSchemaAcceptor {
         final Map<String, Schema> propertySchemas = objectSchema.getPropertySchemas();
 
         visitor.enter(fieldName, objectSchema);
-        propertySchemas.forEach((childName, childSchema) -> jsonSchemaAcceptorFactory.visitSchema(childName, visitor, childSchema));
+        propertySchemas.forEach((childName, childSchema) -> acceptorFactory.visitSchema(childName, visitor, childSchema));
         visitor.leave(objectSchema);
     }
 }

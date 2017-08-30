@@ -4,7 +4,7 @@ import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import org.everit.json.schema.Schema;
 
-public interface JsonSchemaAcceptor {
+public interface Acceptable {
 
     void accept(final String fieldName, final Visitor visitor, final Schema schema);
 }

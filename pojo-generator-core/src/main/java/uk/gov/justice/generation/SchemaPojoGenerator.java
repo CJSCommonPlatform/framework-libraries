@@ -1,13 +1,15 @@
 package uk.gov.justice.generation;
 
+import static java.lang.String.format;
+
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.validation.FileNameValidator;
-import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapperFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultJsonSchemaAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
@@ -19,28 +21,34 @@ import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 import java.io.File;
 
 import org.everit.json.schema.Schema;
+import org.slf4j.Logger;
 
-public class SchemaToJavaGenerator implements Generator<File> {
+public class SchemaPojoGenerator implements Generator<File> {
 
     private final SourceWriter sourceWriter = new SourceWriter();
     private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
     private final NameGenerator nameGenerator = new NameGenerator();
     private final FileNameValidator fileNameValidator = new FileNameValidator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
-    private JsonSchemaWrapperFactory jsonSchemaWrapperFactory = new JsonSchemaWrapperFactory();
+    private final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
 
     @Override
     public void run(final File source, final GeneratorConfig generatorConfig) {
+
         final NonDuplicatingSourceWriter writer = new NonDuplicatingSourceWriter(new JavaSourceFileProvider(), sourceWriter);
         final GenerationContext generationContext = new GenerationContext(generatorConfig.getOutputDirectory());
+
+        final Logger logger = generationContext.getLoggerFor(getClass());
+
+        logger.info("Generating java pojos from schema file '{}'", source.getName());
 
         final Schema schema = schemaLoader.loadFrom(source);
         final String fieldName = nameGenerator.rootFieldNameFrom(source);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor(source, generatorConfig.getBasePackageName());
-        final DefaultJsonSchemaAcceptorFactory jsonSchemaAcceptorFactory = new DefaultJsonSchemaAcceptorFactory(jsonSchemaWrapperFactory);
+        final DefaultAcceptorFactory jsonSchemaAcceptorFactory = new DefaultAcceptorFactory(visitableSchemaFactory);
 
-        jsonSchemaWrapperFactory.createWith(schema, jsonSchemaAcceptorFactory)
+        visitableSchemaFactory.createWith(schema, jsonSchemaAcceptorFactory)
                 .accept(fieldName, definitionBuilderVisitor);
 
         javaGeneratorFactory

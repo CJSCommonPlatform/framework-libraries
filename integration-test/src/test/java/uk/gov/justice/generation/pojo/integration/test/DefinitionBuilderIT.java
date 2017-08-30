@@ -13,9 +13,9 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
-import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapper;
-import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapperFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultJsonSchemaAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
+import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -65,10 +65,10 @@ public class DefinitionBuilderIT {
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.definition.builder", definitionFactory);
 
-        final JsonSchemaWrapperFactory jsonSchemaWrapperFactory = new JsonSchemaWrapperFactory();
-        final JsonSchemaWrapper jsonSchemaWrapper = jsonSchemaWrapperFactory.createWith(schema, new DefaultJsonSchemaAcceptorFactory(jsonSchemaWrapperFactory));
+        final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
+        final VisitableSchema visitableSchema = visitableSchemaFactory.createWith(schema, new DefaultAcceptorFactory(visitableSchemaFactory));
 
-        jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);
+        visitableSchema.accept(fieldName, definitionBuilderVisitor);
 
         final ClassDefinition personClassDefinition = (ClassDefinition) definitionBuilderVisitor.getDefinitions().get(0);
 

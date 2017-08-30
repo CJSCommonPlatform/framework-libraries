@@ -1,5 +1,7 @@
 package uk.gov.justice.generation.pojo.validation;
 
+import uk.gov.justice.generation.pojo.visitor.Visitor;
+
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
@@ -8,7 +10,7 @@ import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.StringSchema;
 
-public class SchemaValidatorVisitor implements uk.gov.justice.generation.pojo.visitor.Visitor {
+public class SchemaValidatorVisitor implements Visitor {
 
     private final Validator validator;
 

@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.everit.json.schema.Schema;
 
-public interface JsonSchemaAcceptorFactory {
+public interface AcceptorFactory {
 
-    Map<Class<? extends Schema>, JsonSchemaAcceptor> acceptorMap();
+    Map<Class<? extends Schema>, Acceptable> acceptorMap();
 
     void visitSchema(String fieldName, Visitor visitor, Schema childSchema);
 }

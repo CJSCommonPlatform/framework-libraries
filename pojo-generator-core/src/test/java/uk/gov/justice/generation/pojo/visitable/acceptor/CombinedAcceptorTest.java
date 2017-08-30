@@ -20,13 +20,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CombinedSchemaAcceptorTest {
+public class CombinedAcceptorTest {
 
     @Mock
-    private JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private AcceptorFactory acceptorFactory;
 
     @InjectMocks
-    private CombinedSchemaAcceptor combinedSchemaAcceptor;
+    private CombinedAcceptor combinedAcceptor;
 
     @Test
     public void shouldAcceptCombinedSchema() throws Exception {
@@ -41,13 +41,13 @@ public class CombinedSchemaAcceptorTest {
 
         when(combinedSchema.getSubschemas()).thenReturn(propertySchemas);
 
-        combinedSchemaAcceptor.accept(fieldName, visitor, combinedSchema);
+        combinedAcceptor.accept(fieldName, visitor, combinedSchema);
 
-        final InOrder inOrder = inOrder(visitor, jsonSchemaAcceptorFactory);
+        final InOrder inOrder = inOrder(visitor, acceptorFactory);
 
         inOrder.verify(visitor).enter(fieldName, combinedSchema);
-        inOrder.verify(jsonSchemaAcceptorFactory).visitSchema("fieldName", visitor, childSchema_1);
-        inOrder.verify(jsonSchemaAcceptorFactory).visitSchema("fieldName", visitor, childSchema_2);
+        inOrder.verify(acceptorFactory).visitSchema("fieldName", visitor, childSchema_1);
+        inOrder.verify(acceptorFactory).visitSchema("fieldName", visitor, childSchema_2);
         inOrder.verify(visitor).leave(combinedSchema);
     }
 }

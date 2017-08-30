@@ -15,13 +15,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ReferenceSchemaAcceptorTest {
+public class ReferenceAcceptorTest {
 
     @Mock
-    private JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private AcceptorFactory acceptorFactory;
 
     @InjectMocks
-    private ReferenceSchemaAcceptor referenceSchemaAcceptor;
+    private ReferenceAcceptor referenceAcceptor;
 
     @Test
     public void shouldAcceptAReferenceSchema() throws Exception {
@@ -32,8 +32,8 @@ public class ReferenceSchemaAcceptorTest {
 
         when(referenceSchema.getReferredSchema()).thenReturn(referredSchema);
 
-        referenceSchemaAcceptor.accept(fieldName, visitor, referenceSchema);
+        referenceAcceptor.accept(fieldName, visitor, referenceSchema);
 
-        verify(jsonSchemaAcceptorFactory).visitSchema(fieldName, visitor, referredSchema);
+        verify(acceptorFactory).visitSchema(fieldName, visitor, referredSchema);
     }
 }

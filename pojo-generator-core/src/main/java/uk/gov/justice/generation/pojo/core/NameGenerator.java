@@ -18,7 +18,7 @@ public class NameGenerator {
         final String name = getNameFrom(fileName);
 
         if (name.contains(".") || name.isEmpty()) {
-            throw new JsonSchemaParseException(format("Failed to load json schema file '%s'. File name is invalid", jsonSchemaFile.getAbsolutePath()));
+            throw new SchemaLoadingException(format("Failed to load json schema file '%s'. File name is invalid", jsonSchemaFile.getAbsolutePath()));
         }
 
         final String className = Stream.of(name.split("-")).map(StringUtils::capitalize).collect(joining());
@@ -34,7 +34,7 @@ public class NameGenerator {
         final String fileName = jsonSchemaFile.getName();
 
         if (!fileName.endsWith(".json")) {
-            throw new JsonSchemaParseException(format("Failed to load json schema file '%s'. File does not have a '.json' extension", jsonSchemaFile.getAbsolutePath()));
+            throw new SchemaLoadingException(format("Failed to load json schema file '%s'. File does not have a '.json' extension", jsonSchemaFile.getAbsolutePath()));
         }
 
         return removeFileExtensionFrom(fileName);

@@ -5,18 +5,18 @@ import uk.gov.justice.generation.pojo.visitor.Visitor;
 import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 
-public class ReferenceSchemaAcceptor implements JsonSchemaAcceptor {
+public class ReferenceAcceptor implements Acceptable {
 
-    private final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private final AcceptorFactory acceptorFactory;
 
-    public ReferenceSchemaAcceptor(final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory) {
-        this.jsonSchemaAcceptorFactory = jsonSchemaAcceptorFactory;
+    public ReferenceAcceptor(final AcceptorFactory acceptorFactory) {
+        this.acceptorFactory = acceptorFactory;
     }
 
     @Override
     public void accept(final String fieldName, final Visitor visitor, final Schema schema) {
         final ReferenceSchema referenceSchema = (ReferenceSchema) schema;
         final Schema referredSchema = referenceSchema.getReferredSchema();
-        jsonSchemaAcceptorFactory.visitSchema(fieldName, visitor, referredSchema);
+        acceptorFactory.visitSchema(fieldName, visitor, referredSchema);
     }
 }

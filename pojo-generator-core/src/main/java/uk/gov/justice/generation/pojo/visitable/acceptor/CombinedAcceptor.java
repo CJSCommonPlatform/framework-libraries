@@ -7,12 +7,12 @@ import java.util.Collection;
 import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.Schema;
 
-public class CombinedSchemaAcceptor implements JsonSchemaAcceptor {
+public class CombinedAcceptor implements Acceptable {
 
-    private final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private final AcceptorFactory acceptorFactory;
 
-    public CombinedSchemaAcceptor(final JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory) {
-        this.jsonSchemaAcceptorFactory = jsonSchemaAcceptorFactory;
+    public CombinedAcceptor(final AcceptorFactory acceptorFactory) {
+        this.acceptorFactory = acceptorFactory;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class CombinedSchemaAcceptor implements JsonSchemaAcceptor {
         final Collection<Schema> subschemas = combinedSchema.getSubschemas();
 
         visitor.enter(fieldName, combinedSchema);
-        subschemas.forEach(childSchema -> jsonSchemaAcceptorFactory.visitSchema(fieldName, visitor, childSchema));
+        subschemas.forEach(childSchema -> acceptorFactory.visitSchema(fieldName, visitor, childSchema));
         visitor.leave(combinedSchema);
     }
 }

@@ -5,7 +5,7 @@ import uk.gov.justice.generation.pojo.visitor.Visitor;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.Schema;
 
-public class BooleanSchemaAcceptor implements JsonSchemaAcceptor {
+public class BooleanAcceptor implements Acceptable {
 
     @Override
     public void accept(final String fieldName, final Visitor visitor, final Schema schema) {

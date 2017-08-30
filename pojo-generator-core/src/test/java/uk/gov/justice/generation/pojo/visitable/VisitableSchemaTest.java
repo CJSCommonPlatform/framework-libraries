@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
-import uk.gov.justice.generation.pojo.visitable.acceptor.JsonSchemaAcceptor;
-import uk.gov.justice.generation.pojo.visitable.acceptor.JsonSchemaAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.Acceptable;
+import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorFactory;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import java.util.Map;
@@ -30,7 +30,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class JsonSchemaWrapperTest {
+public class VisitableSchemaTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -39,7 +39,7 @@ public class JsonSchemaWrapperTest {
     private Visitor visitor;
 
     @Mock
-    private JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private AcceptorFactory acceptorFactory;
 
     @Test
     public void shouldVisitObjectSchema() {
@@ -47,16 +47,16 @@ public class JsonSchemaWrapperTest {
         final ObjectSchema objectSchema = ObjectSchema.builder().id(fieldName).build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(ObjectSchema.class)).thenReturn(true);
-        when(acceptorMap.get(ObjectSchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(ObjectSchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(objectSchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(objectSchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, objectSchema);
+        verify(acceptable).accept(fieldName, visitor, objectSchema);
     }
 
     @Test
@@ -66,16 +66,16 @@ public class JsonSchemaWrapperTest {
         final StringSchema stringSchema = StringSchema.builder().build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(StringSchema.class)).thenReturn(true);
-        when(acceptorMap.get(StringSchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(StringSchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(stringSchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(stringSchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, stringSchema);
+        verify(acceptable).accept(fieldName, visitor, stringSchema);
     }
 
     @Test
@@ -84,16 +84,16 @@ public class JsonSchemaWrapperTest {
         final BooleanSchema booleanSchema = BooleanSchema.builder().build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(BooleanSchema.class)).thenReturn(true);
-        when(acceptorMap.get(BooleanSchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(BooleanSchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(booleanSchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(booleanSchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, booleanSchema);
+        verify(acceptable).accept(fieldName, visitor, booleanSchema);
     }
 
     @Test
@@ -102,16 +102,16 @@ public class JsonSchemaWrapperTest {
         final NumberSchema numberSchema = NumberSchema.builder().build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(NumberSchema.class)).thenReturn(true);
-        when(acceptorMap.get(NumberSchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(NumberSchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(numberSchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(numberSchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, numberSchema);
+        verify(acceptable).accept(fieldName, visitor, numberSchema);
     }
 
     @Test
@@ -120,16 +120,16 @@ public class JsonSchemaWrapperTest {
         final EnumSchema enumSchema = EnumSchema.builder().build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(EnumSchema.class)).thenReturn(true);
-        when(acceptorMap.get(EnumSchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(EnumSchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(enumSchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(enumSchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, enumSchema);
+        verify(acceptable).accept(fieldName, visitor, enumSchema);
     }
 
     @Test
@@ -138,16 +138,16 @@ public class JsonSchemaWrapperTest {
         final ReferenceSchema referenceSchema = ReferenceSchema.builder().build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(ReferenceSchema.class)).thenReturn(true);
-        when(acceptorMap.get(ReferenceSchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(ReferenceSchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(referenceSchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(referenceSchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, referenceSchema);
+        verify(acceptable).accept(fieldName, visitor, referenceSchema);
     }
 
     @Test
@@ -156,16 +156,16 @@ public class JsonSchemaWrapperTest {
         final ArraySchema arraySchema = ArraySchema.builder().build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(ArraySchema.class)).thenReturn(true);
-        when(acceptorMap.get(ArraySchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(ArraySchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(arraySchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(arraySchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, arraySchema);
+        verify(acceptable).accept(fieldName, visitor, arraySchema);
     }
 
     @Test
@@ -174,16 +174,16 @@ public class JsonSchemaWrapperTest {
         final CombinedSchema combinedSchema = CombinedSchema.builder().criterion(ANY_CRITERION).build();
 
         final Map acceptorMap = mock(Map.class);
-        final JsonSchemaAcceptor jsonSchemaAcceptor = mock(JsonSchemaAcceptor.class);
+        final Acceptable acceptable = mock(Acceptable.class);
 
-        when(jsonSchemaAcceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(CombinedSchema.class)).thenReturn(true);
-        when(acceptorMap.get(CombinedSchema.class)).thenReturn(jsonSchemaAcceptor);
+        when(acceptorMap.get(CombinedSchema.class)).thenReturn(acceptable);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(combinedSchema, jsonSchemaAcceptorFactory);
-        jsonSchemaWrapper.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(combinedSchema, acceptorFactory);
+        visitableSchema.accept(fieldName, visitor);
 
-        verify(jsonSchemaAcceptor).accept(fieldName, visitor, combinedSchema);
+        verify(acceptable).accept(fieldName, visitor, combinedSchema);
     }
 
     @Test
@@ -195,7 +195,7 @@ public class JsonSchemaWrapperTest {
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
 
-        new JsonSchemaWrapper(dummySchema, jsonSchemaAcceptorFactory).accept(fieldName, mock(Visitor.class));
+        new VisitableSchema(dummySchema, acceptorFactory).accept(fieldName, mock(Visitor.class));
     }
 
     private class DummySchema extends Schema {

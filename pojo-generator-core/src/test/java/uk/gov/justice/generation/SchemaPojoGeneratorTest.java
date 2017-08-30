@@ -21,7 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 
-public class SchemaToJavaGeneratorTest {
+public class SchemaPojoGeneratorTest {
 
     @Test
     public void shouldConvertSchemaFileToJavaPojo() throws Exception {
@@ -31,9 +31,9 @@ public class SchemaToJavaGeneratorTest {
         when(generatorConfig.getOutputDirectory()).thenReturn(Paths.get("target/test-generation"));
         when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.pojo");
 
-        final SchemaToJavaGenerator schemaToJavaGenerator = new SchemaToJavaGenerator();
+        final SchemaPojoGenerator schemaPojoGenerator = new SchemaPojoGenerator();
 
-        schemaToJavaGenerator.run(schemaFile, generatorConfig);
+        schemaPojoGenerator.run(schemaFile, generatorConfig);
 
         final File directory = Paths.get("target/test-generation/uk/gov/justice/generation/pojo").toFile();
         assertThat(directory.exists(), is(true));
@@ -56,9 +56,9 @@ public class SchemaToJavaGeneratorTest {
         when(generatorConfig.getOutputDirectory()).thenReturn(Paths.get("target/test-generation"));
         when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.event");
 
-        final SchemaToJavaGenerator schemaToJavaGenerator = new SchemaToJavaGenerator();
+        final SchemaPojoGenerator schemaPojoGenerator = new SchemaPojoGenerator();
 
-        schemaToJavaGenerator.run(schemaFile, generatorConfig);
+        schemaPojoGenerator.run(schemaFile, generatorConfig);
 
         final File directory = Paths.get("target/test-generation/uk/gov/justice/generation/event").toFile();
         assertThat(directory.exists(), is(true));

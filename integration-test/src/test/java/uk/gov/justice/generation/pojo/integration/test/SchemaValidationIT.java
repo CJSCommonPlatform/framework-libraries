@@ -8,9 +8,9 @@ import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
 import uk.gov.justice.generation.pojo.validation.Validator;
-import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapper;
-import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapperFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultJsonSchemaAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
+import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
 
 import java.io.File;
 
@@ -27,10 +27,10 @@ public class SchemaValidationIT {
         final File jsonSchemaFile = new File("src/test/resources/invalid-schemas/invalid-enum.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapperFactory().createWith(schema, new DefaultJsonSchemaAcceptorFactory(new JsonSchemaWrapperFactory()));
+        final VisitableSchema visitableSchema = new VisitableSchemaFactory().createWith(schema, new DefaultAcceptorFactory(new VisitableSchemaFactory()));
 
         try {
-            jsonSchemaWrapper.accept("", schemaValidatorVisitor);
+            visitableSchema.accept("", schemaValidatorVisitor);
             fail();
         } catch (final UnsupportedSchemaException expected) {
             assertThat(expected.getMessage(), is("Enums must have members of the same type. Found java.lang.String, java.lang.Boolean out of possible values [Mr, false, Ms, 23, Mrs]"));
@@ -42,10 +42,10 @@ public class SchemaValidationIT {
         final File jsonSchemaFile = new File("src/test/resources/invalid-schemas/invalid-array.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapperFactory().createWith(schema, new DefaultJsonSchemaAcceptorFactory(new JsonSchemaWrapperFactory()));
+        final VisitableSchema visitableSchema = new VisitableSchemaFactory().createWith(schema, new DefaultAcceptorFactory(new VisitableSchemaFactory()));
 
         try {
-            jsonSchemaWrapper.accept("", schemaValidatorVisitor);
+            visitableSchema.accept("", schemaValidatorVisitor);
             fail();
         } catch (final UnsupportedSchemaException expected) {
             assertThat(expected.getMessage(), is("Arrays must have members of the same type. Found org.everit.json.schema.NumberSchema, org.everit.json.schema.StringSchema"));

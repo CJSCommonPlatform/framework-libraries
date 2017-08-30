@@ -5,7 +5,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapper;
+import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import org.everit.json.schema.ArraySchema;
@@ -18,13 +18,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ArraySchemaAcceptorTest {
+public class ArrayAcceptorTest {
 
     @Mock
-    private JsonSchemaAcceptorFactory jsonSchemaAcceptorFactory;
+    private AcceptorFactory acceptorFactory;
 
     @InjectMocks
-    private ArraySchemaAcceptor arraySchemaAcceptor;
+    private ArrayAcceptor arrayAcceptor;
 
     @Test
     public void shouldAcceptArraySchemaWithAnAllItemSchema() throws Exception {
@@ -36,12 +36,12 @@ public class ArraySchemaAcceptorTest {
 
         when(arraySchema.getAllItemSchema()).thenReturn(allItemSchema);
 
-        arraySchemaAcceptor.accept(fieldName, visitor, arraySchema);
+        arrayAcceptor.accept(fieldName, visitor, arraySchema);
 
-        final InOrder inOrder = inOrder(visitor, jsonSchemaAcceptorFactory);
+        final InOrder inOrder = inOrder(visitor, acceptorFactory);
 
         inOrder.verify(visitor).enter(fieldName, arraySchema);
-        inOrder.verify(jsonSchemaAcceptorFactory).visitSchema(fieldName, visitor, allItemSchema);
+        inOrder.verify(acceptorFactory).visitSchema(fieldName, visitor, allItemSchema);
         inOrder.verify(visitor).leave(arraySchema);
     }
 
@@ -53,19 +53,19 @@ public class ArraySchemaAcceptorTest {
         final ArraySchema arraySchema = mock(ArraySchema.class);
         final Schema itemSchema_1 = mock(Schema.class);
         final Schema itemSchema_2 = mock(Schema.class);
-        final JsonSchemaWrapper jsonSchemaWrapper_1 = mock(JsonSchemaWrapper.class);
-        final JsonSchemaWrapper jsonSchemaWrapper_2 = mock(JsonSchemaWrapper.class);
+        final VisitableSchema visitableSchema_1 = mock(VisitableSchema.class);
+        final VisitableSchema visitableSchema_2 = mock(VisitableSchema.class);
 
         when(arraySchema.getAllItemSchema()).thenReturn(null);
         when(arraySchema.getItemSchemas()).thenReturn(asList(itemSchema_1, itemSchema_2));
 
-        arraySchemaAcceptor.accept(fieldName, visitor, arraySchema);
+        arrayAcceptor.accept(fieldName, visitor, arraySchema);
 
-        final InOrder inOrder = inOrder(visitor, jsonSchemaAcceptorFactory);
+        final InOrder inOrder = inOrder(visitor, acceptorFactory);
 
         inOrder.verify(visitor).enter(fieldName, arraySchema);
-        inOrder.verify(jsonSchemaAcceptorFactory).visitSchema(fieldName, visitor, itemSchema_1);
-        inOrder.verify(jsonSchemaAcceptorFactory).visitSchema(fieldName, visitor, itemSchema_2);
+        inOrder.verify(acceptorFactory).visitSchema(fieldName, visitor, itemSchema_1);
+        inOrder.verify(acceptorFactory).visitSchema(fieldName, visitor, itemSchema_2);
         inOrder.verify(visitor).leave(arraySchema);
     }
 }

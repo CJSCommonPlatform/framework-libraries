@@ -53,7 +53,7 @@
                         <id>internal-jsons</id>
                         <configuration>
                             <generatorName>
-                                uk.gov.justice.generation.SchemaToJavaGenerator
+                                uk.gov.justice.generation.SchemaPojoGenerator
                             </generatorName>
                             <parserName>
                                 uk.gov.justice.generation.io.files.parser.FileTypeParser

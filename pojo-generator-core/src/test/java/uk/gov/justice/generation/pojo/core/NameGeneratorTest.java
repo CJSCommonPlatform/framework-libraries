@@ -46,7 +46,7 @@ public class NameGeneratorTest {
         try {
             nameGenerator.rootFieldNameFrom(schemaFile);
             fail();
-        } catch (final JsonSchemaParseException expected) {
+        } catch (final SchemaLoadingException expected) {
             assertThat(expected.getMessage(), is("Failed to load json schema file '" + schemaFile.getAbsolutePath() + "'. File does not have a '.json' extension"));
         }
     }
@@ -58,7 +58,7 @@ public class NameGeneratorTest {
         try {
             nameGenerator.rootFieldNameFrom(schemaFile);
             fail();
-        } catch (final JsonSchemaParseException expected) {
+        } catch (final SchemaLoadingException expected) {
             assertThat(expected.getMessage(), is("Failed to load json schema file '" + schemaFile.getAbsolutePath() + "'. File name is invalid"));
         }
     }
@@ -70,7 +70,7 @@ public class NameGeneratorTest {
         try {
             nameGenerator.rootFieldNameFrom(schemaFile);
             fail();
-        } catch (final JsonSchemaParseException expected) {
+        } catch (final SchemaLoadingException expected) {
             assertThat(expected.getMessage(), is("Failed to load json schema file '" + schemaFile.getAbsolutePath() + "'. File name is invalid"));
         }
     }

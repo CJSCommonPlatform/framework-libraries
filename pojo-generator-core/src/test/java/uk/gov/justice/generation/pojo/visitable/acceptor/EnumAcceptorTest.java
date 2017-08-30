@@ -8,16 +8,16 @@ import uk.gov.justice.generation.pojo.visitor.Visitor;
 import org.everit.json.schema.EnumSchema;
 import org.junit.Test;
 
-public class EnumSchemaAcceptorTest {
+public class EnumAcceptorTest {
 
     @Test
     public void shouldVisitEnumSchema() throws Exception {
         final String fieldName = "fieldName";
         final EnumSchema enumSchema = mock(EnumSchema.class);
         final Visitor visitor = mock(Visitor.class);
-        final EnumSchemaAcceptor enumSchemaAcceptor = new EnumSchemaAcceptor();
+        final EnumAcceptor enumAcceptor = new EnumAcceptor();
 
-        enumSchemaAcceptor.accept(fieldName, visitor, enumSchema);
+        enumAcceptor.accept(fieldName, visitor, enumSchema);
 
         verify(visitor).visit(fieldName, enumSchema);
     }

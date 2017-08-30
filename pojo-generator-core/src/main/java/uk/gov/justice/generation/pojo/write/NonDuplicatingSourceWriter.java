@@ -30,12 +30,12 @@ public class NonDuplicatingSourceWriter {
             sourceWriter.write(classGeneratable, generationContext.getOutputDirectoryPath());
 
             if (sourceFile.exists()) {
-                logger.info("Wrote new Java file '%s'", sourceFile.getName());
+                logger.info("Wrote new Java file '{}'", sourceFile.getName());
             } else {
                 throw new SourceCodeWriteException(format("Failed to write java file '%s'", sourceFile.getAbsolutePath()));
             }
         } else {
-            logger.info("Skipping generation, Java file already exists '%s'", sourceFile.getAbsolutePath());
+            logger.info("Skipping generation, Java file already exists: '{}'", sourceFile.getAbsolutePath());
         }
 
         return sourceFile;

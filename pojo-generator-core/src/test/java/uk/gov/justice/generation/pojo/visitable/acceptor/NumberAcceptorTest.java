@@ -8,16 +8,16 @@ import uk.gov.justice.generation.pojo.visitor.Visitor;
 import org.everit.json.schema.NumberSchema;
 import org.junit.Test;
 
-public class NumberSchemaAcceptorTest {
+public class NumberAcceptorTest {
 
     @Test
     public void shouldVisitNumberSchema() throws Exception {
         final String fieldName = "fieldName";
         final NumberSchema numberSchema = mock(NumberSchema.class);
         final Visitor visitor = mock(Visitor.class);
-        final NumberSchemaAcceptor numberSchemaAcceptor = new NumberSchemaAcceptor();
+        final NumberAcceptor numberAcceptor = new NumberAcceptor();
 
-        numberSchemaAcceptor.accept(fieldName, visitor, numberSchema);
+        numberAcceptor.accept(fieldName, visitor, numberSchema);
 
         verify(visitor).visit(fieldName, numberSchema);
     }

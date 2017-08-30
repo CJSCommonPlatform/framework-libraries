@@ -87,9 +87,9 @@ public class DefinitionBuilderIT {
         final Integer signedInCount = 25;
         final BigDecimal ratio = BigDecimal.valueOf(2.5);
 
-        final Constructor<?> personConstructor = personClass.getConstructor(String.class, String.class, Boolean.class, Integer.class, BigDecimal.class);
+        final Constructor<?> personConstructor = personClass.getConstructor(String.class, String.class, BigDecimal.class, Boolean.class, Integer.class);
 
-        final Object person = personConstructor.newInstance(firstName, lastName, required, signedInCount, ratio);
+        final Object person = personConstructor.newInstance(firstName, lastName, ratio, required, signedInCount);
 
         final String personJson = objectMapper.writeValueAsString(person);
 

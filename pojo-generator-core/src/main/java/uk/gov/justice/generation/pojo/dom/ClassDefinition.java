@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.dom;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.Comparator.comparing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,18 @@ public class ClassDefinition extends FieldDefinition {
     }
 
     public List<Definition> getFieldDefinitions() {
+
+        sortDefinitionsByFieldNameFirst();
+
         return unmodifiableList(fieldDefinitions);
+
     }
 
     public Optional<String> getEventName() {
         return eventName;
+    }
+
+    private void sortDefinitionsByFieldNameFirst() {
+        fieldDefinitions.sort(comparing(Definition::getFieldName));
     }
 }

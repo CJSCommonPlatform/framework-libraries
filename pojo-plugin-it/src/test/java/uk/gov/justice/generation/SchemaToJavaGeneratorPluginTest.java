@@ -33,10 +33,10 @@ public class SchemaToJavaGeneratorPluginTest {
         final int signedInCount = 10;
         final BigDecimal ratio = BigDecimal.valueOf(1.55);
         final List<Alias> aliases = Arrays.asList(
-                new Alias("1", "forename_1", "surname_1"),
-                new Alias("2", "forename_2", "surname_2"));
+                new Alias("forename_1", "1", "surname_1"),
+                new Alias("forename_2", "2", "surname_2"));
 
-        final PersonUpdated person = new PersonUpdated(firstName, lastName, aliases, title, required, signedInCount, ratio);
+        final PersonUpdated person = new PersonUpdated(aliases, firstName, lastName, ratio, required, signedInCount, title);
 
         final String personJson = objectMapper.writeValueAsString(person);
 
@@ -65,10 +65,10 @@ public class SchemaToJavaGeneratorPluginTest {
         final int signedInCount = 10;
         final BigDecimal ratio = BigDecimal.valueOf(1.55);
         final List<Alias> aliases = Arrays.asList(
-                new Alias("1", "forename_1", "surname_1"),
-                new Alias("2", "forename_2", "surname_2"));
+                new Alias("forename_1", "1", "surname_1"),
+                new Alias("forename_2", "2", "surname_2"));
 
-        final PersonUpdated person = new PersonUpdated(firstName, lastName, aliases, title, required, signedInCount, ratio);
+        final PersonUpdated person = new PersonUpdated(aliases, firstName, lastName, ratio, required, signedInCount, title);
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         final ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);

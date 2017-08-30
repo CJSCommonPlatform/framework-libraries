@@ -1,12 +1,13 @@
 package uk.gov.justice.generation.pojo.dom;
 
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 public class ClassDefinitionTest {
@@ -31,6 +32,10 @@ public class ClassDefinitionTest {
         final FieldDefinition fieldDefinition2 = mock(FieldDefinition.class);
         final FieldDefinition fieldDefinition3 = mock(FieldDefinition.class);
 
+        when(fieldDefinition1.getFieldName()).thenReturn("fieldDefinition1");
+        when(fieldDefinition2.getFieldName()).thenReturn("fieldDefinition2");
+        when(fieldDefinition3.getFieldName()).thenReturn("fieldDefinition3");
+        
         final ClassDefinition classDefinition = new ClassDefinition("", mock(ClassName.class));
         classDefinition.addFieldDefinition(fieldDefinition1);
         classDefinition.addFieldDefinition(fieldDefinition2);
@@ -38,6 +43,29 @@ public class ClassDefinitionTest {
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
         assertThat(fieldDefinitions.size(), is(3));
-        assertThat(fieldDefinitions, CoreMatchers.hasItems(fieldDefinition1, fieldDefinition2, fieldDefinition3));
+        assertThat(fieldDefinitions, hasItems(fieldDefinition1, fieldDefinition2, fieldDefinition3));
+    }
+
+    @Test
+    public void shouldGetFieldDefinitionsSortedByFieldName() throws Exception {
+
+        final FieldDefinition fieldDefinition_1 = mock(FieldDefinition.class);
+        final FieldDefinition fieldDefinition_2 = mock(FieldDefinition.class);
+        final FieldDefinition fieldDefinition_3 = mock(FieldDefinition.class);
+
+        when(fieldDefinition_1.getFieldName()).thenReturn("zzz");
+        when(fieldDefinition_2.getFieldName()).thenReturn("aaa");
+        when(fieldDefinition_3.getFieldName()).thenReturn("mmm");
+
+        final ClassDefinition classDefinition = new ClassDefinition("", mock(ClassName.class));
+        classDefinition.addFieldDefinition(fieldDefinition_1);
+        classDefinition.addFieldDefinition(fieldDefinition_2);
+        classDefinition.addFieldDefinition(fieldDefinition_3);
+
+        final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
+
+        assertThat(fieldDefinitions.get(0), is(fieldDefinition_2));
+        assertThat(fieldDefinitions.get(1), is(fieldDefinition_3));
+        assertThat(fieldDefinitions.get(2), is(fieldDefinition_1));
     }
 }

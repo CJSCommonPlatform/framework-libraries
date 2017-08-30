@@ -89,21 +89,21 @@ public class CombinedSchemaIT {
 
         final Object ukComms = newClasses.get(0).getConstructor(Boolean.class).newInstance(true);
         final Object usComms = newClasses.get(1).getConstructor(Boolean.class).newInstance(true);
-        final Object communtication = newClasses.get(2).getConstructor(Boolean.class).newInstance(true);
+        final Object communication = newClasses.get(2).getConstructor(Boolean.class).newInstance(true);
 
-        final Constructor<?> constructor = newClasses.get(3).getConstructor(
+        final Constructor<?> addressConstructor = newClasses.get(3).getConstructor(
                 String.class,
                 String.class,
                 String.class,
-                communtication.getClass(),
+                communication.getClass(),
                 String.class,
                 usComms.getClass(),
                 String.class,
-                ukComms.getClass(),
                 String.class,
-                String.class);
+                String.class,
+                ukComms.getClass());
 
-        assertThat(constructor, is(notNullValue()));
+        assertThat(addressConstructor, is(notNullValue()));
 
         final String city = "city";
         final String county = "county";
@@ -114,17 +114,17 @@ public class CombinedSchemaIT {
         final String nullZipCode = null;
         final String nullState = null;
 
-        final Object addressObject = constructor.newInstance(
-                city,
+        final Object addressObject = addressConstructor.newInstance(
                 addressLine1,
                 addressLine2,
-                communtication,
-                nullZipCode,
-                usComms,
+                city,
+                communication,
                 nullState,
-                ukComms,
+                usComms,
+                nullZipCode,
                 county,
-                postCode
+                postCode,
+                ukComms
         );
 
         final String json = objectMapper.writeValueAsString(addressObject);

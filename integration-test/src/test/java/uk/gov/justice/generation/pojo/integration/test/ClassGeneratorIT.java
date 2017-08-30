@@ -85,8 +85,8 @@ public class ClassGeneratorIT {
         final Constructor<?> addressConstructor = classes.get(0).getConstructor(String.class, String.class);
         final Object address = addressConstructor.newInstance(firstLine, postCode);
 
-        final Constructor<?> employeeConstructor = classes.get(1).getConstructor(String.class, String.class, BigDecimal.class, ZonedDateTime.class, List.class, address.getClass());
-        final Object employee = employeeConstructor.newInstance(firstName, lastName, poundsPerHour, startDate, favouriteColours, address);
+        final Constructor<?> employeeConstructor = classes.get(1).getConstructor(address.getClass(), List.class, String.class, String.class, BigDecimal.class, ZonedDateTime.class);
+        final Object employee = employeeConstructor.newInstance(address, favouriteColours, firstName, lastName, poundsPerHour, startDate);
 
         final String employeeJson = objectMapper.writeValueAsString(employee);
 

@@ -86,21 +86,20 @@ public class ArrayIT {
         assertThat(newClasses.get(1).getSimpleName(), is("RecipeAdded"));
 
         final Constructor<?> ingredientsConstructor = newClasses.get(0).getConstructor(
-                Integer.class,
-                String.class);
+                String.class, Integer.class);
         final Constructor<?> recipeAddedConstructor = newClasses.get(1).getConstructor(
-                String.class,
                 Boolean.class,
                 List.class,
+                String.class,
                 String.class);
 
-        final Object ingredient_1 = ingredientsConstructor.newInstance(1, "Eye of Newt");
-        final Object ingredient_2 = ingredientsConstructor.newInstance(3, "Toe of Frog");
+        final Object ingredient_1 = ingredientsConstructor.newInstance("Eye of Newt", 1);
+        final Object ingredient_2 = ingredientsConstructor.newInstance("Toe of Frog", 3);
 
         final Object regicidePie = recipeAddedConstructor.newInstance(
-                "Regicide Pie",
                 false,
                 asList(ingredient_1, ingredient_2),
+                "Regicide Pie",
                 "13"
         );
 

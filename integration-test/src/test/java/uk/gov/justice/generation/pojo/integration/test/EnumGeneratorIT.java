@@ -75,10 +75,10 @@ public class EnumGeneratorIT {
         final Class<? extends Enum> enumClass = (Class<? extends Enum>) classes.get(0);
         final Enum red = Enum.valueOf(enumClass, enumName.toUpperCase());
 
-        final Constructor<?> studentConstructor = classes.get(1).getConstructor(String.class, Integer.class, classes.get(0));
+        final Constructor<?> studentConstructor = classes.get(1).getConstructor(Integer.class, classes.get(0), String.class);
         final String name = "Fred";
         final Integer age = 21;
-        final Object student = studentConstructor.newInstance(name, age, red);
+        final Object student = studentConstructor.newInstance(age, red, name);
 
         final String studentJson = objectMapper.writeValueAsString(student);
 

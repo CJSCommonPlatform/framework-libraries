@@ -1,7 +1,5 @@
 package uk.gov.justice.generation;
 
-import static java.lang.String.format;
-
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.GenerationContext;

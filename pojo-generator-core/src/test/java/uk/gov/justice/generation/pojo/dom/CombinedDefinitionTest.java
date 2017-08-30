@@ -65,8 +65,8 @@ public class CombinedDefinitionTest {
         final List<Definition> fieldDefinitions = outerCombinedDefinition.getFieldDefinitions();
 
         assertThat(fieldDefinitions.size(), is(3));
-        assertThat(fieldDefinitions.get(0).getFieldName(), is(stringField_3));
+        assertThat(fieldDefinitions.get(0).getFieldName(), is(stringField_1));
         assertThat(fieldDefinitions.get(1).getFieldName(), is(stringField_2));
-        assertThat(fieldDefinitions.get(2).getFieldName(), is(stringField_1));
+        assertThat(fieldDefinitions.get(2).getFieldName(), is(stringField_3));
     }
 }

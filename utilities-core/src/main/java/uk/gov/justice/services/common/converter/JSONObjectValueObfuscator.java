@@ -1,14 +1,11 @@
 package uk.gov.justice.services.common.converter;
 
+import static java.util.UUID.fromString;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
-import java.util.UUID;
-
-import static java.util.UUID.fromString;
-
 
 /**
  * Obfuscates values of {@link JSONObject}. Keeps the json structure
@@ -83,12 +80,10 @@ public class JSONObjectValueObfuscator {
 
     private static boolean isUuid(final Object object) {
         try {
-            if (fromString(object.toString()) != null) {
-                return true;
-            }
+            fromString(object.toString());
+            return true;
         } catch (IllegalArgumentException exception) {
             return false;
         }
-        return object instanceof UUID;
     }
 }

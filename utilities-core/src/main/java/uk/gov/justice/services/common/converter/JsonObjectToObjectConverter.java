@@ -1,5 +1,7 @@
 package uk.gov.justice.services.common.converter;
 
+import static uk.gov.justice.services.common.converter.JSONObjectValueObfuscator.obfuscated;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -8,8 +10,6 @@ import uk.gov.justice.services.common.converter.exception.ConverterException;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import java.io.IOException;
-
-import static uk.gov.justice.services.common.converter.JSONObjectValueObfuscator.obfuscated;
 
 /**
  * Converts JsonObject to the given Pojo type.

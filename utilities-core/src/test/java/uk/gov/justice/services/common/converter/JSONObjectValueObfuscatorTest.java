@@ -1,17 +1,16 @@
 package uk.gov.justice.services.common.converter;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.junit.Test;
-
-import java.math.BigDecimal;
-
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static uk.gov.justice.services.common.converter.JSONObjectValueObfuscator.obfuscated;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.Test;
+
+import java.math.BigDecimal;
 
 public class JSONObjectValueObfuscatorTest {
 
@@ -61,6 +60,7 @@ public class JSONObjectValueObfuscatorTest {
                 .assertThat("property1", is("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"))
                 .assertThat("nested.property2", is("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"));
     }
+
 
     @Test
     public void shouldReplaceValuesInArray() throws Exception {

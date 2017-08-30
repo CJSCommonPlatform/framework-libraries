@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.core;
+package uk.gov.justice.generation.pojo.visitor;
 
 import static com.google.common.collect.Lists.reverse;
 
@@ -104,7 +104,6 @@ public class DefinitionBuilderVisitor implements Visitor {
         classDefinitions.add(definition);
     }
 
-    @Override
     public List<Definition> getDefinitions() {
         return reverse(classDefinitions);
     }

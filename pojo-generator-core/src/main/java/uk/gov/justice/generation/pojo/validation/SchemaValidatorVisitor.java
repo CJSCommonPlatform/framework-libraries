@@ -1,63 +1,68 @@
 package uk.gov.justice.generation.pojo.validation;
 
-import com.google.common.annotations.VisibleForTesting;
 import org.everit.json.schema.ArraySchema;
+import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
+import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
-import org.everit.json.schema.ReferenceSchema;
-import org.everit.json.schema.Schema;
+import org.everit.json.schema.StringSchema;
 
-public class SchemaValidatorVisitor implements ValidatingVisitor {
+public class SchemaValidatorVisitor implements uk.gov.justice.generation.pojo.visitor.Visitor {
 
     private final Validator validator;
-    private final SchemaValidatorVisitableFactory schemaValidatorVisitableFactory;
 
-    public SchemaValidatorVisitor() {
-        this(new Validator(), new SchemaValidatorVisitableFactory());
-    }
-
-    @VisibleForTesting
-    SchemaValidatorVisitor(final Validator validator, final SchemaValidatorVisitableFactory schemaValidatorVisitableFactory) {
+    public SchemaValidatorVisitor(final Validator validator) {
         this.validator = validator;
-        this.schemaValidatorVisitableFactory = schemaValidatorVisitableFactory;
     }
 
     @Override
-    public void visit(final ObjectSchema schema) {
-        schema.getPropertySchemas().values()
-                .forEach(childSchema -> visitChildSchema(this, childSchema));
-    }
-
-    @Override
-    public void visit(final EnumSchema schema) {
+    public void visit(final String fieldName, final EnumSchema schema) {
         validator.validate(schema);
     }
 
     @Override
-    public void visit(final ArraySchema schema) {
+    public void enter(final String fieldName, final ArraySchema schema) {
         validator.validate(schema);
-
-        final Schema allItemSchema = schema.getAllItemSchema();
-        if (allItemSchema != null) {
-            visitChildSchema(this, allItemSchema);
-        } else {
-            schema.getItemSchemas().forEach(childSchema -> visitChildSchema(this, childSchema));
-        }
     }
 
     @Override
-    public void visit(final ReferenceSchema schema) {
-        final Schema referredSchema = schema.getReferredSchema();
-        visitChildSchema(this, referredSchema);
+    public void enter(final String fieldName, final ObjectSchema schema) {
+        //Do nothing
     }
 
     @Override
-    public void visit(final CombinedSchema schema) {
-        schema.getSubschemas().forEach(childSchema -> visitChildSchema(this, childSchema));
+    public void leave(final ObjectSchema schema) {
+        //Do nothing
     }
 
-    private void visitChildSchema(final ValidatingVisitor visitor, final Schema childSchema) {
-        schemaValidatorVisitableFactory.create(childSchema).accept(visitor);
+    @Override
+    public void leave(final ArraySchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void enter(final String fieldName, final CombinedSchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void leave(final CombinedSchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void visit(final String fieldName, final NumberSchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void visit(final String fieldName, final StringSchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void visit(final String fieldName, final BooleanSchema schema) {
+        //Do nothing
     }
 }

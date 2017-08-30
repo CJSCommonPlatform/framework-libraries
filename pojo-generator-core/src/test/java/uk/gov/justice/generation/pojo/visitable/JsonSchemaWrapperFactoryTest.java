@@ -1,8 +1,10 @@
-package uk.gov.justice.generation.pojo.core;
+package uk.gov.justice.generation.pojo.visitable;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+
+import uk.gov.justice.generation.pojo.visitable.acceptor.JsonSchemaAcceptorFactory;
 
 import org.everit.json.schema.ObjectSchema;
 import org.junit.Test;
@@ -22,7 +24,7 @@ public class JsonSchemaWrapperFactoryTest {
 
         final ObjectSchema objectSchema = mock(ObjectSchema.class);
 
-        final JsonSchemaWrapper jsonSchemaWrapper = jsonSchemaWrapperFactory.create(objectSchema);
+        final JsonSchemaWrapper jsonSchemaWrapper = jsonSchemaWrapperFactory.createWith(objectSchema, mock(JsonSchemaAcceptorFactory.class));
 
         assertThat(jsonSchemaWrapper.getSchema(), is(objectSchema));
     }

@@ -1,8 +1,4 @@
-package uk.gov.justice.generation.pojo.core;
-
-import uk.gov.justice.generation.pojo.dom.Definition;
-
-import java.util.List;
+package uk.gov.justice.generation.pojo.visitor;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
@@ -22,17 +18,15 @@ public interface Visitor {
 
     void leave(final CombinedSchema schema);
 
+    void enter(String fieldName, ArraySchema schema);
+
+    void leave(ArraySchema schema);
+
     void visit(final String fieldName, final BooleanSchema schema);
 
     void visit(final String fieldName, final EnumSchema schema);
 
     void visit(final String fieldName, final NumberSchema schema);
 
-    void enter(String fieldName, ArraySchema schema);
-
-    void leave(ArraySchema schema);
-
     void visit(final String fieldName, final StringSchema schema);
-
-    List<Definition> getDefinitions();
 }

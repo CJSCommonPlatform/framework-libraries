@@ -8,12 +8,14 @@ import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameProvider;
-import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.core.DefinitionFactory;
-import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
+import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapper;
+import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapperFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultJsonSchemaAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
+import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -37,7 +39,7 @@ public class ArrayIT {
     private final NameGenerator rootFieldNameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-    private final DefinitionFactory definitionFactory = new DefinitionFactory(new ClassNameProvider());
+    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ClassNameProvider());
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -64,7 +66,8 @@ public class ArrayIT {
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.arrays", definitionFactory);
-        final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
+        final JsonSchemaWrapperFactory jsonSchemaWrapperFactory = new JsonSchemaWrapperFactory();
+        final JsonSchemaWrapper jsonSchemaWrapper = jsonSchemaWrapperFactory.createWith(schema, new DefaultJsonSchemaAcceptorFactory(jsonSchemaWrapperFactory));
 
         jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);
 

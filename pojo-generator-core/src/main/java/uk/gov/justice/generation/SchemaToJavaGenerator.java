@@ -2,13 +2,14 @@ package uk.gov.justice.generation;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameProvider;
-import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.core.DefinitionFactory;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.validation.FileNameValidator;
+import uk.gov.justice.generation.pojo.visitable.JsonSchemaWrapperFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultJsonSchemaAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
+import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
 import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -26,6 +27,7 @@ public class SchemaToJavaGenerator implements Generator<File> {
     private final NameGenerator nameGenerator = new NameGenerator();
     private final FileNameValidator fileNameValidator = new FileNameValidator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
+    private JsonSchemaWrapperFactory jsonSchemaWrapperFactory = new JsonSchemaWrapperFactory();
 
     @Override
     public void run(final File source, final GeneratorConfig generatorConfig) {
@@ -36,8 +38,10 @@ public class SchemaToJavaGenerator implements Generator<File> {
         final String fieldName = nameGenerator.rootFieldNameFrom(source);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor(source, generatorConfig.getBasePackageName());
+        final DefaultJsonSchemaAcceptorFactory jsonSchemaAcceptorFactory = new DefaultJsonSchemaAcceptorFactory(jsonSchemaWrapperFactory);
 
-        new JsonSchemaWrapper(schema).accept(fieldName, definitionBuilderVisitor);
+        jsonSchemaWrapperFactory.createWith(schema, jsonSchemaAcceptorFactory)
+                .accept(fieldName, definitionBuilderVisitor);
 
         javaGeneratorFactory
                 .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions())
@@ -48,9 +52,9 @@ public class SchemaToJavaGenerator implements Generator<File> {
         if (fileNameValidator.isEventSchema(source)) {
             return new DefinitionBuilderVisitor(
                     basePackageName,
-                    new DefinitionFactory(new ClassNameProvider(), nameGenerator.eventNameFrom(source)));
+                    new DefaultDefinitionFactory(new ClassNameProvider(), nameGenerator.eventNameFrom(source)));
         }
 
-        return new DefinitionBuilderVisitor(basePackageName, new DefinitionFactory(new ClassNameProvider()));
+        return new DefinitionBuilderVisitor(basePackageName, new DefaultDefinitionFactory(new ClassNameProvider()));
     }
 }

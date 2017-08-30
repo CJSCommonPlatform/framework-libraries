@@ -19,7 +19,6 @@ public class JSONObjectValueObfuscator {
     private static final Boolean OBFUSCATED_BOOLEAN = false;
     private static final String OBFUSCATED_UUID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
     private static final Integer OBFUSCATED_NUMERIC = 0;
-    private static final Object OBFUSCATED_DATE = "1970-01-01T00:00:00.0+00:00";
 
     /**
      * Obfuscates values in the passed json

@@ -7,7 +7,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.DefinitionBuilderVisitor;
+import uk.gov.justice.generation.pojo.core.DefinitionFactory;
 import uk.gov.justice.generation.pojo.core.JsonSchemaWrapper;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -35,6 +37,7 @@ public class ArrayIT {
     private final NameGenerator rootFieldNameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+    private final DefinitionFactory definitionFactory = new DefinitionFactory(new ClassNameProvider());
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -60,7 +63,7 @@ public class ArrayIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.arrays");
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.arrays", definitionFactory);
         final JsonSchemaWrapper jsonSchemaWrapper = new JsonSchemaWrapper(schema);
 
         jsonSchemaWrapper.accept(fieldName, definitionBuilderVisitor);

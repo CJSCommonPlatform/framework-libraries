@@ -12,6 +12,14 @@
     },
     "city": {
       "type": "string"
+    },
+    "communication": {
+      "type": "object",
+      "properties": {
+        "telephone": {
+          "type": "boolean"
+        }
+      }
     }
   },
   "required": [
@@ -28,6 +36,14 @@
         },
         "zipCode": {
           "type": "string"
+        },
+        "usComms": {
+          "type": "object",
+          "properties": {
+            "telephone": {
+              "type": "boolean"
+            }
+          }
         }
       },
       "required": [
@@ -43,6 +59,14 @@
         },
         "postCode": {
           "type": "string"
+        },
+        "ukComms": {
+          "type": "object",
+          "properties": {
+            "telephone": {
+              "type": "boolean"
+            }
+          }
         }
       },
       "required": [

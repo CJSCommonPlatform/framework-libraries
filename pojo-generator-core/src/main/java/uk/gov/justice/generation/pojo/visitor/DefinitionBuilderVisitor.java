@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.visitor;
 
 import static com.google.common.collect.Lists.reverse;
+import static java.util.Collections.emptyList;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -46,7 +47,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void leave(final ObjectSchema schema) {
-        addFieldDefinitionsFor(schema);
+        addFieldDefinitionsFor(schema, schema.getRequiredProperties());
     }
 
     @Override
@@ -62,7 +63,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void leave(final CombinedSchema schema) {
-        addFieldDefinitionsFor(schema);
+        addFieldDefinitionsFor(schema, emptyList());
 
         if (!combinedDefinitions.isEmpty() && combinedDefinitions.peek().getSchema() == schema) {
             combinedDefinitions.pop();
@@ -131,7 +132,7 @@ public class DefinitionBuilderVisitor implements Visitor {
         return combinedFieldName.isPresent() && combinedFieldName.get().equals(fieldName);
     }
 
-    private void addFieldDefinitionsFor(final Schema schema) {
+    private void addFieldDefinitionsFor(final Schema schema, final List<String> requiredFields) {
         final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
 
         while (definitions.peek().getSchema() != schema) {
@@ -139,7 +140,10 @@ public class DefinitionBuilderVisitor implements Visitor {
         }
 
         final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
-        fieldDefinitions.forEach(classDefinition::addFieldDefinition);
+        fieldDefinitions.forEach(fieldDefinition -> {
+            fieldDefinition.setRequired(requiredFields.contains(fieldDefinition.getFieldName()));
+            classDefinition.addFieldDefinition(fieldDefinition);
+        });
     }
 
     private class Entry {

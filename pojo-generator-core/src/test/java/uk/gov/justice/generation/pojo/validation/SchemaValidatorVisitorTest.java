@@ -26,6 +26,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SchemaValidatorVisitorTest {
 
+    private static final String AN_EMPTY_STRING = "";
+    
     @Mock
     private Validator validator;
 
@@ -37,7 +39,7 @@ public class SchemaValidatorVisitorTest {
 
         final EnumSchema enumSchema = EnumSchema.builder().build();
 
-        schemaValidatorVisitor.visit("", enumSchema);
+        schemaValidatorVisitor.visit(AN_EMPTY_STRING, enumSchema);
 
         verify(validator).validate(enumSchema);
     }
@@ -47,7 +49,7 @@ public class SchemaValidatorVisitorTest {
 
         final ArraySchema arraySchema = ArraySchema.builder().build();
 
-        schemaValidatorVisitor.enter("", arraySchema);
+        schemaValidatorVisitor.enter(AN_EMPTY_STRING, arraySchema);
 
         verify(validator).validate(arraySchema);
     }
@@ -68,14 +70,14 @@ public class SchemaValidatorVisitorTest {
 
     @Test
     public void shouldDoNothing() throws Exception {
-        schemaValidatorVisitor.enter("", mock(ObjectSchema.class));
+        schemaValidatorVisitor.enter(AN_EMPTY_STRING, mock(ObjectSchema.class));
         schemaValidatorVisitor.leave(mock(ObjectSchema.class));
         schemaValidatorVisitor.leave(mock(ArraySchema.class));
-        schemaValidatorVisitor.enter("", mock(CombinedSchema.class));
+        schemaValidatorVisitor.enter(AN_EMPTY_STRING, mock(CombinedSchema.class));
         schemaValidatorVisitor.leave(mock(CombinedSchema.class));
-        schemaValidatorVisitor.visit("", mock(NumberSchema.class));
-        schemaValidatorVisitor.visit("", mock(StringSchema.class));
-        schemaValidatorVisitor.visit("", mock(BooleanSchema.class));
+        schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(NumberSchema.class));
+        schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(StringSchema.class));
+        schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(BooleanSchema.class));
 
         verifyZeroInteractions(validator);
     }

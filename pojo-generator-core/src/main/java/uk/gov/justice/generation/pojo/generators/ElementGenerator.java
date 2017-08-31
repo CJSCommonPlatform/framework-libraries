@@ -17,7 +17,7 @@ import com.squareup.javapoet.MethodSpec;
 public class ElementGenerator implements ElementGeneratable {
 
     private final Definition classTypeDefinition;
-    private final DefinitionToTypeNameConverter definitionToTypeNameConverter = new DefinitionToTypeNameConverter();
+    private final ClassNameFactory classNameFactory = new ClassNameFactory();
 
     ElementGenerator(final Definition classTypeDefinition) {
         this.classTypeDefinition = classTypeDefinition;
@@ -25,14 +25,14 @@ public class ElementGenerator implements ElementGeneratable {
 
     @Override
     public FieldSpec generateField() {
-        return builder(definitionToTypeNameConverter.getTypeName(classTypeDefinition), classTypeDefinition.getFieldName(), PRIVATE, FINAL).build();
+        return builder(classNameFactory.createClassNameFrom(classTypeDefinition), classTypeDefinition.getFieldName(), PRIVATE, FINAL).build();
     }
 
     @Override
     public Stream<MethodSpec> generateMethods() {
         return Stream.of(methodBuilder(toGetterMethodName())
                 .addModifiers(PUBLIC)
-                .returns(definitionToTypeNameConverter.getTypeName(classTypeDefinition))
+                .returns(classNameFactory.createClassNameFrom(classTypeDefinition))
                 .addCode(CodeBlock.builder().addStatement("return $L", classTypeDefinition.getFieldName()).build())
                 .build());
     }

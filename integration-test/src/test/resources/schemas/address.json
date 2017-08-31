@@ -19,13 +19,17 @@
         "telephone": {
           "type": "boolean"
         }
-      }
+      },
+      "required": [
+        "telephone"
+      ]
     }
   },
   "required": [
     "addressLine1",
     "addressLine2",
-    "city"
+    "city",
+    "communication"
   ],
   "oneOf": [
     {
@@ -43,12 +47,16 @@
             "telephone": {
               "type": "boolean"
             }
-          }
+          },
+          "required": [
+            "telephone"
+          ]
         }
       },
       "required": [
         "state",
-        "zipCode"
+        "zipCode",
+        "usComms"
       ]
     },
     {
@@ -66,12 +74,16 @@
             "telephone": {
               "type": "boolean"
             }
-          }
+          },
+          "required": [
+            "telephone"
+          ]
         }
       },
       "required": [
         "county",
-        "postCode"
+        "postCode",
+        "ukComms"
       ]
     }
   ]

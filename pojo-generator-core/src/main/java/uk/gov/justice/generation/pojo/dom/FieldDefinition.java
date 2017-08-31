@@ -9,6 +9,7 @@ public class FieldDefinition implements Definition {
     private final String fieldName;
     private final ClassName className;
     private final Optional<ClassName> genericType;
+    private boolean required = true;
 
     public FieldDefinition(
             final String fieldName,
@@ -38,5 +39,15 @@ public class FieldDefinition implements Definition {
     @Override
     public Optional<ClassName> getGenericType() {
         return genericType;
+    }
+
+    @Override
+    public boolean isRequired() {
+        return required;
+    }
+
+    @Override
+    public void setRequired(final boolean required) {
+        this.required = required;
     }
 }

@@ -19,7 +19,7 @@ public class FieldGenerator implements ElementGeneratable {
 
     private final FieldDefinition fieldDefinition;
 
-    private final DefinitionToTypeNameConverter definitionToTypeNameConverter = new DefinitionToTypeNameConverter();
+    private final ClassNameFactory classNameFactory = new ClassNameFactory();
 
     FieldGenerator(final FieldDefinition fieldDefinition) {
         this.fieldDefinition = fieldDefinition;
@@ -27,7 +27,7 @@ public class FieldGenerator implements ElementGeneratable {
 
     @Override
     public FieldSpec generateField() {
-        return builder(definitionToTypeNameConverter.getTypeName(fieldDefinition), fieldDefinition.getFieldName(), PRIVATE, FINAL).build();
+        return builder(classNameFactory.createClassNameFrom(fieldDefinition), fieldDefinition.getFieldName(), PRIVATE, FINAL).build();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FieldGenerator implements ElementGeneratable {
     private MethodSpec getterMethod() {
         return methodBuilder("get" + capitalize(fieldDefinition.getFieldName()))
                 .addModifiers(PUBLIC)
-                .returns(definitionToTypeNameConverter.getTypeName(fieldDefinition))
+                .returns(classNameFactory.createClassNameFrom(fieldDefinition))
                 .addCode(CodeBlock.builder().addStatement("return $L", fieldDefinition.getFieldName()).build())
                 .build();
     }

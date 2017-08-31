@@ -35,7 +35,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class DefinitionBuilderVisitorTest {
 
     private static final String PACKAGE_NAME = "org.bloggs.fred";
-    private static final String EVENT_NAME = "example.events";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

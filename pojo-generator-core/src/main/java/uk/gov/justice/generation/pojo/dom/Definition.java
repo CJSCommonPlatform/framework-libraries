@@ -7,4 +7,6 @@ public interface Definition {
     String getFieldName();
     ClassName getClassName();
     Optional<ClassName> getGenericType();
+    boolean isRequired();
+    void setRequired(final boolean required);
 }

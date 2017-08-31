@@ -10,9 +10,9 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
-public class DefinitionToTypeNameConverter {
+public class ClassNameFactory {
 
-    public TypeName getTypeName(final Definition definition) {
+    public TypeName createClassNameFrom(final Definition definition) {
 
         final ClassName className = get(
                 definition.getClassName().getPackageName(),
@@ -27,6 +27,10 @@ public class DefinitionToTypeNameConverter {
 
             final ClassName type = ClassName.get(genericType.getPackageName(), genericType.getSimpleName());
             return ParameterizedTypeName.get(className, type);
+        }
+
+        if(! definition.isRequired()) {
+            return ParameterizedTypeName.get(get(Optional.class), className);
         }
 
         return className;

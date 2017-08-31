@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
@@ -12,6 +13,10 @@ import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.EventAnnotationGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.FieldAndMethodGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.plugin.SerializableGenerator;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
@@ -24,6 +29,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
@@ -71,9 +77,13 @@ public class DefinitionBuilderIT {
         visitableSchema.accept(fieldName, definitionBuilderVisitor);
 
         final ClassDefinition personClassDefinition = (ClassDefinition) definitionBuilderVisitor.getDefinitions().get(0);
+        final List<PluginClassGeneratable> plugins = asList(
+                new EventAnnotationGenerator(),
+                new SerializableGenerator(),
+                new FieldAndMethodGenerator());
 
         final ClassGeneratable personClassGenerator = new JavaGeneratorFactory()
-                .createClassGeneratorsFor(singletonList(personClassDefinition))
+                .createClassGeneratorsFor(singletonList(personClassDefinition), plugins)
                 .get(0);
 
         sourceWriter.write(personClassGenerator, sourceOutputDirectory.toPath());

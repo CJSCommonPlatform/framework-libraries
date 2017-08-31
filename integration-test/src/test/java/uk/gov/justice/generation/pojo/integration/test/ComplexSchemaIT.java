@@ -1,11 +1,16 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.EventAnnotationGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.FieldAndMethodGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.plugin.SerializableGenerator;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
@@ -15,6 +20,7 @@ import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
+import java.util.List;
 
 import org.everit.json.schema.Schema;
 import org.junit.Before;
@@ -57,11 +63,15 @@ public class ComplexSchemaIT {
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.complex.schema", definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
         final VisitableSchema visitableSchema = visitableSchemaFactory.createWith(schema, new DefaultAcceptorFactory(visitableSchemaFactory));
+        final List<PluginClassGeneratable> plugins = asList(
+                new EventAnnotationGenerator(),
+                new SerializableGenerator(),
+                new FieldAndMethodGenerator());
 
         visitableSchema.accept(fieldName, definitionBuilderVisitor);
 
         javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions())
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), plugins)
                 .forEach(classGeneratable -> {
                     sourceWriter.write(classGeneratable, sourceOutputDirectory.toPath());
                     classCompiler.compile(classGeneratable, sourceOutputDirectory, classesOutputDirectory);

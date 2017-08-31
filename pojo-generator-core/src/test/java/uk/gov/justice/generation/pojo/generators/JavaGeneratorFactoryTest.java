@@ -51,7 +51,7 @@ public class JavaGeneratorFactoryTest {
                 new ClassDefinition("test1", mock(ClassName.class)),
                 new EnumDefinition("test2", mock(ClassName.class), emptyList()));
 
-        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions);
+        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions, emptyList());
 
         assertThat(classGeneratables.size(), is(2));
         assertThat(classGeneratables, hasItems(instanceOf(ClassGenerator.class), instanceOf(EnumGenerator.class)));
@@ -59,7 +59,7 @@ public class JavaGeneratorFactoryTest {
 
     @Test
     public void shouldReturnEmptyListForEmptyListOfDefinitions() throws Exception {
-        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(emptyList());
+        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(emptyList(), emptyList());
 
         assertThat(classGeneratables.isEmpty(), is(true));
     }
@@ -74,7 +74,7 @@ public class JavaGeneratorFactoryTest {
                 new FieldDefinition("field2", mock(ClassName.class))
         );
 
-        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions);
+        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions, emptyList());
 
         assertThat(classGeneratables.size(), is(2));
         assertThat(classGeneratables, hasItems(instanceOf(ClassGenerator.class), instanceOf(EnumGenerator.class)));

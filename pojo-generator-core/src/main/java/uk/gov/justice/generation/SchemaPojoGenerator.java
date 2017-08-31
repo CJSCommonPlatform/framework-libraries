@@ -1,17 +1,12 @@
 package uk.gov.justice.generation;
 
-import static java.util.Arrays.asList;
-
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.EventAnnotationGenerator;
-import uk.gov.justice.generation.pojo.generators.plugin.FieldAndMethodGenerator;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
-import uk.gov.justice.generation.pojo.generators.plugin.SerializableGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.validation.FileNameValidator;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
@@ -53,15 +48,11 @@ public class SchemaPojoGenerator implements Generator<File> {
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor(source, generatorConfig.getBasePackageName());
         final DefaultAcceptorFactory jsonSchemaAcceptorFactory = new DefaultAcceptorFactory(visitableSchemaFactory);
-        final List<PluginClassGeneratable> plugins = asList(
-                new EventAnnotationGenerator(),
-                new SerializableGenerator(),
-                new FieldAndMethodGenerator());
 
         visitableSchemaFactory.createWith(schema, jsonSchemaAcceptorFactory)
                 .accept(fieldName, definitionBuilderVisitor);
 
-        final List<ClassGeneratable> classGenerators = javaGeneratorFactory.createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), plugins);
+        final List<ClassGeneratable> classGenerators = javaGeneratorFactory.createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), new DefaultPluginProvider());
 
         classGenerators.forEach(classGeneratable -> writer.write(classGeneratable, generationContext));
     }

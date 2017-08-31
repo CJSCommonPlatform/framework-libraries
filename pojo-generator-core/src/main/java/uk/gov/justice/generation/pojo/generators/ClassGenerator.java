@@ -5,9 +5,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
-
-import java.util.List;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 
 import com.squareup.javapoet.TypeSpec;
 
@@ -15,12 +13,12 @@ public class ClassGenerator implements ClassGeneratable {
 
     private final ClassDefinition classDefinition;
     private final JavaGeneratorFactory javaGeneratorFactory;
-    private final List<PluginClassGeneratable> plugins;
+    private final PluginProvider pluginProvider;
 
-    public ClassGenerator(final ClassDefinition classDefinition, final JavaGeneratorFactory javaGeneratorFactory, final List<PluginClassGeneratable> plugins) {
+    public ClassGenerator(final ClassDefinition classDefinition, final JavaGeneratorFactory javaGeneratorFactory, final PluginProvider pluginProvider) {
         this.classDefinition = classDefinition;
         this.javaGeneratorFactory = javaGeneratorFactory;
-        this.plugins = plugins;
+        this.pluginProvider = pluginProvider;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class ClassGenerator implements ClassGeneratable {
         final TypeSpec.Builder typeSpecBuilder = classBuilder(className)
                 .addModifiers(PUBLIC);
 
-        plugins.forEach(generator ->
+        pluginProvider.pluginClassGenerators().forEach(generator ->
                 generator.generateWith(typeSpecBuilder, classDefinition, javaGeneratorFactory));
 
         return typeSpecBuilder.build();

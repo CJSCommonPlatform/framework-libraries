@@ -6,7 +6,7 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class JavaGeneratorFactory {
         return new FieldGenerator((FieldDefinition) definition);
     }
 
-    public List<ClassGeneratable> createClassGeneratorsFor(final List<Definition> definitions, final List<PluginClassGeneratable> plugins) {
+    public List<ClassGeneratable> createClassGeneratorsFor(final List<Definition> definitions, final PluginProvider pluginProvider) {
         return definitions.stream()
                 .filter(definition -> EnumDefinition.class.isInstance(definition) || ClassDefinition.class.isInstance(definition))
                 .map(definition -> {
@@ -29,7 +29,7 @@ public class JavaGeneratorFactory {
                         return new EnumGenerator((EnumDefinition) definition);
                     }
 
-                    return new ClassGenerator((ClassDefinition) definition, this, plugins);
+                    return new ClassGenerator((ClassDefinition) definition, this, pluginProvider);
                 })
                 .collect(toList());
     }

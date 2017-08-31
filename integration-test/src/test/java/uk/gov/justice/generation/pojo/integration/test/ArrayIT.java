@@ -10,10 +10,7 @@ import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.EventAnnotationGenerator;
-import uk.gov.justice.generation.pojo.generators.plugin.FieldAndMethodGenerator;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
-import uk.gov.justice.generation.pojo.generators.plugin.SerializableGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
@@ -77,13 +74,8 @@ public class ArrayIT {
 
         final List<Class<?>> newClasses = new ArrayList<>();
 
-        final List<PluginClassGeneratable> plugins = asList(
-                new EventAnnotationGenerator(),
-                new SerializableGenerator(),
-                new FieldAndMethodGenerator());
-
         javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), plugins)
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), new DefaultPluginProvider())
                 .forEach(classGeneratable -> {
                     sourceWriter.write(classGeneratable, sourceOutputDirectory.toPath());
                     final Class<?> newClass = classCompiler.compile(classGeneratable, sourceOutputDirectory, classesOutputDirectory);

@@ -13,6 +13,7 @@ import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class JavaGeneratorFactoryTest {
                 new ClassDefinition("test1", mock(ClassName.class)),
                 new EnumDefinition("test2", mock(ClassName.class), emptyList()));
 
-        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions, emptyList());
+        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions, mock(PluginProvider.class));
 
         assertThat(classGeneratables.size(), is(2));
         assertThat(classGeneratables, hasItems(instanceOf(ClassGenerator.class), instanceOf(EnumGenerator.class)));
@@ -59,7 +60,7 @@ public class JavaGeneratorFactoryTest {
 
     @Test
     public void shouldReturnEmptyListForEmptyListOfDefinitions() throws Exception {
-        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(emptyList(), emptyList());
+        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(emptyList(), mock(PluginProvider.class));
 
         assertThat(classGeneratables.isEmpty(), is(true));
     }
@@ -74,7 +75,7 @@ public class JavaGeneratorFactoryTest {
                 new FieldDefinition("field2", mock(ClassName.class))
         );
 
-        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions, emptyList());
+        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory().createClassGeneratorsFor(classDefinitions, mock(PluginProvider.class));
 
         assertThat(classGeneratables.size(), is(2));
         assertThat(classGeneratables, hasItems(instanceOf(ClassGenerator.class), instanceOf(EnumGenerator.class)));

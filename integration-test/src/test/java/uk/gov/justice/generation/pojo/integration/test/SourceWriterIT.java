@@ -1,7 +1,6 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
@@ -12,17 +11,13 @@ import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.EventAnnotationGenerator;
-import uk.gov.justice.generation.pojo.generators.plugin.FieldAndMethodGenerator;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
-import uk.gov.justice.generation.pojo.generators.plugin.SerializableGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -57,13 +52,9 @@ public class SourceWriterIT {
 
         final String packageName = "org.bloggs.fred";
         final ClassDefinition addressDefinition = addressDefinition(packageName);
-        final List<PluginClassGeneratable> plugins = asList(
-                new EventAnnotationGenerator(),
-                new SerializableGenerator(),
-                new FieldAndMethodGenerator());
 
         final ClassGeneratable addressGenerator = new JavaGeneratorFactory()
-                .createClassGeneratorsFor(singletonList(addressDefinition), plugins)
+                .createClassGeneratorsFor(singletonList(addressDefinition), new DefaultPluginProvider())
                 .get(0);
 
         sourceWriter.write(addressGenerator, sourceOutputDirectory.toPath());

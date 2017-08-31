@@ -44,12 +44,18 @@
             "type": "string",
             "maxLength": 30
           }
-        }
+        },
+        "required": [
+           "aliasForenames",
+          "aliasInitials",
+          "aliasSurname"
+        ]
       }
     }
   },
   "additionalProperties": false,
   "required": [
+    "title",
     "firstName",
     "lastName",
     "required",

@@ -29,6 +29,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 
+@SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class VisitableSchemaTest {
 
@@ -46,7 +47,7 @@ public class VisitableSchemaTest {
         final String fieldName = "myFieldName";
         final ObjectSchema objectSchema = ObjectSchema.builder().id(fieldName).build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -65,7 +66,7 @@ public class VisitableSchemaTest {
         final String fieldName = "myFieldName";
         final StringSchema stringSchema = StringSchema.builder().build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -83,7 +84,7 @@ public class VisitableSchemaTest {
         final String fieldName = "myFieldName";
         final BooleanSchema booleanSchema = BooleanSchema.builder().build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -101,7 +102,7 @@ public class VisitableSchemaTest {
         final String fieldName = "myFieldName";
         final NumberSchema numberSchema = NumberSchema.builder().build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -119,7 +120,7 @@ public class VisitableSchemaTest {
         final String fieldName = "myFieldName";
         final EnumSchema enumSchema = EnumSchema.builder().build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -137,7 +138,7 @@ public class VisitableSchemaTest {
         final String fieldName = "fieldName";
         final ReferenceSchema referenceSchema = ReferenceSchema.builder().build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -155,7 +156,7 @@ public class VisitableSchemaTest {
         final String fieldName = "fieldName";
         final ArraySchema arraySchema = ArraySchema.builder().build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -173,7 +174,7 @@ public class VisitableSchemaTest {
         final String fieldName = "fieldName";
         final CombinedSchema combinedSchema = CombinedSchema.builder().criterion(ANY_CRITERION).build();
 
-        final Map acceptorMap = mock(Map.class);
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
         when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
@@ -191,7 +192,7 @@ public class VisitableSchemaTest {
         expectedException.expect(UnsupportedSchemaException.class);
         expectedException.expectMessage("Schema of type: DummySchema is not supported.");
 
-        final Schema.Builder builder = mock(Schema.Builder.class);
+        final Schema.Builder<? extends Schema> builder = mock(Schema.Builder.class);
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
 

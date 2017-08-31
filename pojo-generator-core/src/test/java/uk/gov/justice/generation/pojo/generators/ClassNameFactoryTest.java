@@ -13,16 +13,16 @@ import java.util.List;
 import com.squareup.javapoet.TypeName;
 import org.junit.Test;
 
-public class DefinitionToTypeNameConverterTest {
+public class ClassNameFactoryTest {
 
-    private final DefinitionToTypeNameConverter definitionToTypeNameConverter = new DefinitionToTypeNameConverter();
+    private final ClassNameFactory classNameFactory = new ClassNameFactory();
 
     @Test
     public void shouldGetAClassNameWithNoGenericTypeIfDefinitionHasNoGenericType() throws Exception {
 
         final Definition definition = new FieldDefinition("fieldName", new ClassName(String.class));
 
-        final TypeName typeName = definitionToTypeNameConverter.getTypeName(definition);
+        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
 
         assertThat(typeName, is(instanceOf(com.squareup.javapoet.ClassName.class)));
         assertThat(typeName.toString(), is("java.lang.String"));
@@ -33,9 +33,21 @@ public class DefinitionToTypeNameConverterTest {
 
         final Definition definition = new FieldDefinition("fieldName", new ClassName(List.class), new ClassName(String.class));
 
-        final TypeName typeName = definitionToTypeNameConverter.getTypeName(definition);
+        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
 
         assertThat(typeName, is(instanceOf(com.squareup.javapoet.TypeName.class)));
         assertThat(typeName.toString(), is("java.util.List<java.lang.String>"));
+    }
+
+    @Test
+    public void shouldGetAClassNameThatIsAJavaOptional() throws Exception {
+
+        final Definition definition = new FieldDefinition("fieldName", new ClassName(String.class));
+        definition.setRequired(false);
+
+        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+
+        assertThat(typeName, is(instanceOf(com.squareup.javapoet.TypeName.class)));
+        assertThat(typeName.toString(), is("java.util.Optional<java.lang.String>"));
     }
 }

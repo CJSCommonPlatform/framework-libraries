@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "person",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "hairStyle": {
+      "type": "string"
+    },
+    "favouriteFood": {
+      "type": "string"
+    }
+
+  },
+  "additionalProperties": false,
+  "required": [
+    "firstName",
+    "lastName"
+  ]
+}

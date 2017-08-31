@@ -7,7 +7,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.generators.DefinitionToTypeNameConverter;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.ElementGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
@@ -21,7 +21,7 @@ import com.squareup.javapoet.TypeSpec;
 
 public class FieldAndMethodGenerator implements PluginClassGeneratable {
 
-    private final DefinitionToTypeNameConverter definitionToTypeNameConverter = new DefinitionToTypeNameConverter();
+    private final ClassNameFactory classNameFactory = new ClassNameFactory();
 
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
@@ -72,7 +72,7 @@ public class FieldAndMethodGenerator implements PluginClassGeneratable {
 
     private List<ParameterSpec> constructorParameters(final List<Definition> definitions) {
         return definitions.stream()
-                .map(definition -> ParameterSpec.builder(definitionToTypeNameConverter.getTypeName(definition), definition.getFieldName(), FINAL).build())
+                .map(definition -> ParameterSpec.builder(classNameFactory.createClassNameFrom(definition), definition.getFieldName(), FINAL).build())
                 .collect(toList());
     }
 }

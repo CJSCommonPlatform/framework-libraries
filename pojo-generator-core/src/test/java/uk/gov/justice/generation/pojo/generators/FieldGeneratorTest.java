@@ -32,6 +32,7 @@ public class FieldGeneratorTest {
         when(fieldDefinition.getClassName()).thenReturn(className);
         when(fieldDefinition.getFieldName()).thenReturn("firstName");
         when(fieldDefinition.getGenericType()).thenReturn(empty());
+        when(fieldDefinition.isRequired()).thenReturn(true);
 
         final FieldGenerator fieldGenerator = new FieldGenerator(fieldDefinition);
         final FieldSpec fieldSpec = fieldGenerator.generateField();
@@ -47,6 +48,7 @@ public class FieldGeneratorTest {
         when(fieldDefinition.getClassName()).thenReturn(className);
         when(fieldDefinition.getFieldName()).thenReturn("firstName");
         when(fieldDefinition.getGenericType()).thenReturn(empty());
+        when(fieldDefinition.isRequired()).thenReturn(true);
 
         final FieldGenerator fieldGenerator = new FieldGenerator(fieldDefinition);
         final List<MethodSpec> methodSpecs = fieldGenerator.generateMethods().collect(toList());

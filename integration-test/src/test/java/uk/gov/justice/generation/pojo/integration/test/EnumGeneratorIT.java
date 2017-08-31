@@ -12,6 +12,10 @@ import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.EventAnnotationGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.FieldAndMethodGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.plugin.SerializableGenerator;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -57,9 +61,13 @@ public class EnumGeneratorIT {
 
         final ClassDefinition studentDefinition = studentDefinition(packageName);
         final EnumDefinition colourDefinition = colourDefinition(packageName);
+        final List<PluginClassGeneratable> plugins = asList(
+                new EventAnnotationGenerator(),
+                new SerializableGenerator(),
+                new FieldAndMethodGenerator());
 
         final List<? extends Class<?>> classes = javaGeneratorFactory
-                .createClassGeneratorsFor(asList(colourDefinition, studentDefinition))
+                .createClassGeneratorsFor(asList(colourDefinition, studentDefinition), plugins)
                 .stream()
                 .map(classGenerator -> {
                     sourceWriter.write(classGenerator, sourceOutputDirectory.toPath());

@@ -11,6 +11,10 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.EventAnnotationGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.FieldAndMethodGenerator;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.plugin.SerializableGenerator;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
@@ -61,9 +65,13 @@ public class ClassGeneratorIT {
 
         final ClassDefinition addressDefinition = addressDefinition(packageName);
         final ClassDefinition employeeDefinition = employeeDefinition(packageName, addressDefinition);
+        final List<PluginClassGeneratable> plugins = asList(
+                new EventAnnotationGenerator(),
+                new SerializableGenerator(),
+                new FieldAndMethodGenerator());
 
         final List<? extends Class<?>> classes = javaGeneratorFactory
-                .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition))
+                .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition), plugins)
                 .stream()
                 .map(classGenerator -> {
                     sourceWriter.write(classGenerator, sourceOutputDirectory.toPath());

@@ -86,4 +86,32 @@ public class FieldAndMethodGeneratorTest {
                 methodSpec)
         );
     }
+
+    @Test
+    public void shouldGenerateTypeSpecForClassDefinitionWithAdditionalProperties() throws Exception {
+        final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
+        final ClassDefinition classDefinition = new ClassDefinition("address", mock(ClassName.class));
+        classDefinition.setAllowAdditionalProperties(true);
+
+        final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
+
+        new FieldAndMethodGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory);
+
+        final TypeSpec typeSpec = typeSpecBuilder.build();
+
+        assertThat(typeSpec.annotations.isEmpty(), is(true));
+        assertThat(typeSpec.name, is("ClassName"));
+        assertThat(typeSpec.fieldSpecs.size(), is(1));
+
+        assertThat(typeSpec.fieldSpecs.get(0).name, is("additionalProperties"));
+
+        assertThat(typeSpec.methodSpecs.size(), is(3));
+        assertThat(typeSpec.methodSpecs.get(0), is(constructorBuilder().addModifiers(PUBLIC).build()));
+
+        final MethodSpec additionalPropertiesGetter = typeSpec.methodSpecs.get(1);
+        final MethodSpec additionalPropertiesSetter = typeSpec.methodSpecs.get(2);
+
+        assertThat(additionalPropertiesGetter.name, is("getAdditionalProperties"));
+        assertThat(additionalPropertiesSetter.name, is("setAdditionalProperty"));
+    }
 }

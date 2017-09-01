@@ -38,8 +38,10 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void enter(final String fieldName, final ObjectSchema schema) {
-        final Definition definition = definitionFor(fieldName, schema);
 
+        final ClassDefinition definition = (ClassDefinition) definitionFor(fieldName, schema);
+
+        definition.setAllowAdditionalProperties(schema.permitsAdditionalProperties());
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
 
         definitions.push(new Entry(schema, definition));

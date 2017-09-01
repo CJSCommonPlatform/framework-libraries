@@ -10,8 +10,9 @@ import java.util.Optional;
 public class ClassDefinition extends FieldDefinition {
 
     private final List<Definition> fieldDefinitions = new ArrayList<>();
-
     private final Optional<String> eventName;
+
+    private boolean allowAdditionalProperties = false;
 
     public ClassDefinition(final String fieldName, final ClassName className) {
         super(fieldName, className);
@@ -38,6 +39,14 @@ public class ClassDefinition extends FieldDefinition {
 
     public Optional<String> getEventName() {
         return eventName;
+    }
+
+    public boolean allowAdditionalProperties() {
+        return allowAdditionalProperties;
+    }
+
+    public void setAllowAdditionalProperties(final boolean allowAdditionalProperties) {
+        this.allowAdditionalProperties = allowAdditionalProperties;
     }
 
     private void sortDefinitionsByFieldNameFirst() {

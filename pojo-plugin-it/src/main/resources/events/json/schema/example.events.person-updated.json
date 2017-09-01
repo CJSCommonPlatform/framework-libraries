@@ -45,6 +45,7 @@
             "maxLength": 30
           }
         },
+        "additionalProperties": false,
         "required": [
            "aliasForenames",
           "aliasInitials",

@@ -7,6 +7,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.generators.AdditionalPropertiesGenerator;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.ElementGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -22,6 +23,7 @@ import com.squareup.javapoet.TypeSpec;
 public class FieldAndMethodGenerator implements PluginClassGeneratable {
 
     private final ClassNameFactory classNameFactory = new ClassNameFactory();
+    private final AdditionalPropertiesGenerator additionalPropertiesGenerator = new AdditionalPropertiesGenerator();
 
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
@@ -48,6 +50,17 @@ public class FieldAndMethodGenerator implements PluginClassGeneratable {
         typeSpecBuilder.addMethod(buildConstructor(fieldDefinitions))
                 .addFields(fields)
                 .addMethods(methods);
+
+        if (classDefinition.allowAdditionalProperties())  {
+
+            final FieldSpec additionalProperties = additionalPropertiesGenerator.generateField();
+            final List<MethodSpec> gettersAndSetters = additionalPropertiesGenerator
+                    .generateMethods()
+                    .collect(toList());
+
+            typeSpecBuilder.addField(additionalProperties);
+            typeSpecBuilder.addMethods(gettersAndSetters);
+        }
 
         return typeSpecBuilder;
     }

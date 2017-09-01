@@ -7,6 +7,19 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.services.common.converter.exception.ConverterException;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+
+import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Rule;
@@ -15,17 +28,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.justice.services.common.converter.exception.ConverterException;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import java.io.IOException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JsonObjectToObjectConverterTest {
@@ -64,13 +66,21 @@ public class JsonObjectToObjectConverterTest {
         final JsonObjectToObjectConverter converter = new JsonObjectToObjectConverter();
         converter.mapper = new ObjectMapperProducer().objectMapper();
 
-        assertThat(converter.convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0+00:00").build(), PojoWithDateTime.class).getDateTime(),
+        assertThat(converter
+                        .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0+00:00").build(),
+                                PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
-        assertThat(converter.convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0Z").build(), PojoWithDateTime.class).getDateTime(),
+        assertThat(converter
+                        .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0Z").build(),
+                                PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
-        assertThat(converter.convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01Z").build(), PojoWithDateTime.class).getDateTime(),
+        assertThat(converter
+                        .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01Z").build(),
+                                PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
-        assertThat(converter.convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T16:09:01.0+03:00").build(), PojoWithDateTime.class).getDateTime(),
+        assertThat(converter
+                        .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T16:09:01.0+03:00").build(),
+                                PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
 
     }
@@ -125,7 +135,8 @@ public class JsonObjectToObjectConverterTest {
         private final InternalPojo internalPojo;
 
 
-        public Pojo(final UUID id, final String name, final List<String> attributes, final InternalPojo internalPojo) {
+        public Pojo(final UUID id, final String name, final List<String> attributes,
+                    final InternalPojo internalPojo) {
             this.id = id;
             this.name = name;
             this.attributes = attributes;
@@ -169,6 +180,7 @@ public class JsonObjectToObjectConverterTest {
     }
 
     public static class PojoWithDateTime {
+
         private final ZonedDateTime dateTime;
 
         public PojoWithDateTime(@JsonProperty("dateTime") final ZonedDateTime dateTime) {

@@ -2,20 +2,23 @@ package uk.gov.justice.services.common.converter;
 
 import static java.util.UUID.fromString;
 
+import java.math.BigDecimal;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.math.BigDecimal;
 
 /**
  * Obfuscates values of {@link JSONObject}. Keeps the json structure
  */
-public class JSONObjectValueObfuscator {
+public final class JSONObjectValueObfuscator {
 
     private static final String OBFUSCATED_STRING = "xxx";
     private static final Boolean OBFUSCATED_BOOLEAN = false;
     private static final String OBFUSCATED_UUID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
     private static final Integer OBFUSCATED_NUMERIC = 0;
+
+    private JSONObjectValueObfuscator() {
+    }
 
     /**
      * Obfuscates values in the passed json
@@ -32,7 +35,8 @@ public class JSONObjectValueObfuscator {
             final JSONObject jsonObject = (JSONObject) object;
             final JSONObject obfuscatedJsonObject = new JSONObject();
             jsonObject.keys()
-                    .forEachRemaining(key -> obfuscatedJsonObject.put(key, obfuscatedObject(jsonObject.get(key))));
+                    .forEachRemaining(
+                            key -> obfuscatedJsonObject.put(key, obfuscatedObject(jsonObject.get(key))));
             return obfuscatedJsonObject;
         } else if (isArray(object)) {
             final JSONArray jsonArray = (JSONArray) object;

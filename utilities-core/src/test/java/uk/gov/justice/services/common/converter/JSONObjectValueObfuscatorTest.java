@@ -6,11 +6,11 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static uk.gov.justice.services.common.converter.JSONObjectValueObfuscator.obfuscated;
 
+import java.math.BigDecimal;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
-
-import java.math.BigDecimal;
 
 public class JSONObjectValueObfuscatorTest {
 
@@ -66,7 +66,8 @@ public class JSONObjectValueObfuscatorTest {
     public void shouldReplaceValuesInArray() throws Exception {
         with(obfuscated(new JSONObject()
                 .put("property1", new JSONArray().put("value1").put("value2").put("value2"))
-                .put("nested", new JSONObject().put("property2", new JSONArray().put(1).put(BigDecimal.valueOf(3333)).put(77777L))))
+                .put("nested", new JSONObject()
+                        .put("property2", new JSONArray().put(1).put(BigDecimal.valueOf(3333)).put(77777L))))
                 .toString())
                 .assertThat("property1", hasItems("xxx", "xxx", "xxx"))
                 .assertThat("nested.property2", hasItems(0, 0, 0));
@@ -75,7 +76,8 @@ public class JSONObjectValueObfuscatorTest {
     @Test
     public void shouldObfuscateJsonObjectInArray() throws Exception {
         final JSONObject json = new JSONObject()
-                .put("property1", new JSONArray().put(new JSONObject().put("property2", "someValueA")).put(new JSONObject().put("property3", "someValueB")));
+                .put("property1", new JSONArray().put(new JSONObject().put("property2", "someValueA"))
+                        .put(new JSONObject().put("property3", "someValueB")));
         final String obfuscatedJson = obfuscated(json)
                 .toString();
         System.out.println(json);

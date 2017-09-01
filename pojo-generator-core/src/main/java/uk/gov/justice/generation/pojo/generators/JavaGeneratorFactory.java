@@ -12,13 +12,19 @@ import java.util.List;
 
 public class JavaGeneratorFactory {
 
+    private final ClassNameFactory classNameFactory;
+
+    public JavaGeneratorFactory(final ClassNameFactory classNameFactory) {
+        this.classNameFactory = classNameFactory;
+    }
+
     public ElementGeneratable createGeneratorFor(final Definition definition) {
 
         if (definition.getClass() == ClassDefinition.class || definition.getClass() == EnumDefinition.class) {
-            return new ElementGenerator(definition);
+            return new ElementGenerator(definition, classNameFactory);
         }
 
-        return new FieldGenerator((FieldDefinition) definition);
+        return new FieldGenerator((FieldDefinition) definition, classNameFactory);
     }
 
     public List<ClassGeneratable> createClassGeneratorsFor(final List<Definition> definitions, final PluginProvider pluginProvider) {
@@ -29,7 +35,7 @@ public class JavaGeneratorFactory {
                         return new EnumGenerator((EnumDefinition) definition);
                     }
 
-                    return new ClassGenerator((ClassDefinition) definition, this, pluginProvider);
+                    return new ClassGenerator((ClassDefinition) definition, this, pluginProvider, classNameFactory);
                 })
                 .collect(toList());
     }

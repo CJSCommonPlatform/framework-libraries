@@ -1,12 +1,9 @@
 package uk.gov.justice.generation.pojo.dom;
 
-import java.util.Optional;
-
 public interface Definition {
 
     String getFieldName();
-    ClassName getClassName();
-    Optional<ClassName> getGenericType();
+    DefinitionType type();
     boolean isRequired();
     void setRequired(final boolean required);
 }

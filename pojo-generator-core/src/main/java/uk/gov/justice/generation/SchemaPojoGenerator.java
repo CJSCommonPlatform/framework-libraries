@@ -1,10 +1,10 @@
 package uk.gov.justice.generation;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.pojo.core.ClassNameProvider;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.validation.FileNameValidator;
@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 public class SchemaPojoGenerator implements Generator<File> {
 
     private final SourceWriter sourceWriter = new SourceWriter();
-    private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
     private final NameGenerator nameGenerator = new NameGenerator();
     private final FileNameValidator fileNameValidator = new FileNameValidator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
@@ -35,9 +34,10 @@ public class SchemaPojoGenerator implements Generator<File> {
 
     @Override
     public void run(final File source, final GeneratorConfig generatorConfig) {
+        final String packageName = generatorConfig.getBasePackageName();
 
         final NonDuplicatingSourceWriter writer = new NonDuplicatingSourceWriter(new JavaSourceFileProvider(), sourceWriter);
-        final GenerationContext generationContext = new GenerationContext(generatorConfig.getOutputDirectory());
+        final GenerationContext generationContext = new GenerationContext(generatorConfig.getOutputDirectory(), packageName);
 
         final Logger logger = generationContext.getLoggerFor(getClass());
 
@@ -46,7 +46,8 @@ public class SchemaPojoGenerator implements Generator<File> {
         final Schema schema = schemaLoader.loadFrom(source);
         final String fieldName = nameGenerator.rootFieldNameFrom(source);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor(source, generatorConfig.getBasePackageName());
+        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(new ClassNameFactory(packageName));
+        final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor(source);
         final DefaultAcceptorFactory jsonSchemaAcceptorFactory = new DefaultAcceptorFactory(visitableSchemaFactory);
 
         visitableSchemaFactory.createWith(schema, jsonSchemaAcceptorFactory)
@@ -57,13 +58,11 @@ public class SchemaPojoGenerator implements Generator<File> {
         classGenerators.forEach(classGeneratable -> writer.write(classGeneratable, generationContext));
     }
 
-    private DefinitionBuilderVisitor constructDefinitionBuilderVisitor(final File source, final String basePackageName) {
+    private DefinitionBuilderVisitor constructDefinitionBuilderVisitor(final File source) {
         if (fileNameValidator.isEventSchema(source)) {
-            return new DefinitionBuilderVisitor(
-                    basePackageName,
-                    new DefaultDefinitionFactory(new ClassNameProvider(), nameGenerator.eventNameFrom(source)));
+            return new DefinitionBuilderVisitor(new DefaultDefinitionFactory(nameGenerator.eventNameFrom(source)));
         }
 
-        return new DefinitionBuilderVisitor(basePackageName, new DefaultDefinitionFactory(new ClassNameProvider()));
+        return new DefinitionBuilderVisitor(new DefaultDefinitionFactory());
     }
 }

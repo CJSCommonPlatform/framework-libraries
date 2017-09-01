@@ -2,9 +2,9 @@ package uk.gov.justice.generation.pojo.generators;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 
 import com.squareup.javapoet.TypeSpec;
@@ -12,30 +12,36 @@ import com.squareup.javapoet.TypeSpec;
 public class ClassGenerator implements ClassGeneratable {
 
     private final ClassDefinition classDefinition;
+    private final ClassNameFactory classNameFactory;
     private final JavaGeneratorFactory javaGeneratorFactory;
     private final PluginProvider pluginProvider;
+    private final String className;
 
-    public ClassGenerator(final ClassDefinition classDefinition, final JavaGeneratorFactory javaGeneratorFactory, final PluginProvider pluginProvider) {
+    public ClassGenerator(final ClassDefinition classDefinition,
+                          final JavaGeneratorFactory javaGeneratorFactory,
+                          final PluginProvider pluginProvider,
+                          final ClassNameFactory classNameFactory) {
         this.classDefinition = classDefinition;
+        this.classNameFactory = classNameFactory;
+        this.className = capitalize(classDefinition.getFieldName());
         this.javaGeneratorFactory = javaGeneratorFactory;
         this.pluginProvider = pluginProvider;
     }
 
     @Override
     public TypeSpec generate() {
-        final String className = classDefinition.getClassName().getSimpleName();
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder(className)
                 .addModifiers(PUBLIC);
 
         pluginProvider.pluginClassGenerators().forEach(generator ->
-                generator.generateWith(typeSpecBuilder, classDefinition, javaGeneratorFactory));
+                generator.generateWith(typeSpecBuilder, classDefinition, javaGeneratorFactory, classNameFactory));
 
         return typeSpecBuilder.build();
     }
 
     @Override
-    public ClassName getClassName() {
-        return classDefinition.getClassName();
+    public String getClassName() {
+        return className;
     }
 }

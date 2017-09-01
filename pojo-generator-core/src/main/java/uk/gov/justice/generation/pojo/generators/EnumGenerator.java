@@ -7,8 +7,8 @@ import static com.squareup.javapoet.TypeSpec.enumBuilder;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 
 import com.squareup.javapoet.TypeSpec;
@@ -22,14 +22,15 @@ public class EnumGenerator implements ClassGeneratable {
     private static final String UNDERSCORE = "_";
 
     private final EnumDefinition enumDefinition;
+    private final String className;
 
     public EnumGenerator(final EnumDefinition enumDefinition) {
         this.enumDefinition = enumDefinition;
+        this.className = capitalize(enumDefinition.getFieldName());
     }
 
     @Override
     public TypeSpec generate() {
-        final String className = enumDefinition.getClassName().getSimpleName();
 
         final Builder enumBuilder = enumBuilder(className).addModifiers(PUBLIC);
 
@@ -56,8 +57,8 @@ public class EnumGenerator implements ClassGeneratable {
     }
 
     @Override
-    public ClassName getClassName() {
-        return enumDefinition.getClassName();
+    public String getClassName() {
+        return className;
     }
 
     private String constructEnumNameFrom(final String enumValue) {

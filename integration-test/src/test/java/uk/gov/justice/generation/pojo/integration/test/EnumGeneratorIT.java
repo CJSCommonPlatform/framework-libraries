@@ -5,12 +5,15 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
@@ -31,7 +34,6 @@ public class EnumGeneratorIT {
     private final ClassCompiler classCompiler = new ClassCompiler();
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-    private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -55,20 +57,20 @@ public class EnumGeneratorIT {
     public void shouldGenerateJavaClassSourceCode() throws Exception {
 
         final String packageName = "uk.gov.justice.pojo.enumgenerator";
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
 
-        final ClassDefinition studentDefinition = studentDefinition(packageName);
-        final EnumDefinition colourDefinition = colourDefinition(packageName);
+        final ClassDefinition studentDefinition = studentDefinition();
+        final EnumDefinition colourDefinition = colourDefinition();
+
+        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(new ClassNameFactory(packageName));
 
         final List<? extends Class<?>> classes = javaGeneratorFactory
                 .createClassGeneratorsFor(asList(colourDefinition, studentDefinition), new DefaultPluginProvider())
                 .stream()
                 .map(classGenerator -> {
-                    sourceWriter.write(classGenerator, sourceOutputDirectory.toPath());
-                    return classCompiler.compile(classGenerator, sourceOutputDirectory, classesOutputDirectory);
+                    sourceWriter.write(classGenerator, generationContext);
+                    return classCompiler.compile(classGenerator, generationContext, classesOutputDirectory);
                 }).collect(toList());
-
-        assertThat(classes.get(0).getName(), is(colourDefinition.getClassName().getFullyQualifiedName()));
-        assertThat(classes.get(1).getName(), is(studentDefinition.getClassName().getFullyQualifiedName()));
 
         final String enumName = colourDefinition.getEnumValues().get(0);
 
@@ -90,17 +92,16 @@ public class EnumGeneratorIT {
         ;
     }
 
-    private ClassDefinition studentDefinition(final String packageName) {
+    private ClassDefinition studentDefinition() {
 
-        return new ClassDefinition("student", new ClassName(packageName, "Student"))
-                .addFieldDefinition(new FieldDefinition("name", new ClassName(String.class)))
-                .addFieldDefinition(new FieldDefinition("age", new ClassName(Integer.class)))
-                .addFieldDefinition(new FieldDefinition("favouriteColour", new ClassName(packageName, "Colour")))
-                ;
+        return new ClassDefinition(CLASS, "student")
+                .addFieldDefinition(new StringDefinition("name", null))
+                .addFieldDefinition(new FieldDefinition(INTEGER, "age"))
+                .addFieldDefinition(colourDefinition());
     }
 
-    private EnumDefinition colourDefinition(final String packageName) {
+    private EnumDefinition colourDefinition() {
 
-        return new EnumDefinition("favouriteColour", new ClassName(packageName, "Colour"), asList("Red", "Green", "Blue"));
+        return new EnumDefinition("favouriteColour", asList("Red", "Green", "Blue"));
     }
 }

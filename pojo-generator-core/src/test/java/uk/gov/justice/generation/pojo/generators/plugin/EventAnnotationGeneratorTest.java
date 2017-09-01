@@ -7,10 +7,11 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import com.squareup.javapoet.TypeSpec;
@@ -24,11 +25,12 @@ public class EventAnnotationGeneratorTest {
     @Test
     public void shouldAddEventAnnotationToTypeSpec() throws Exception {
         final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassDefinition classDefinition = new ClassDefinition("address", mock(ClassName.class), "example.events.address");
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address", "example.events.address");
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new EventAnnotationGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory);
+        new EventAnnotationGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

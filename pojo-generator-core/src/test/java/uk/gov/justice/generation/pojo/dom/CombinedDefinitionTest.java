@@ -2,7 +2,8 @@ package uk.gov.justice.generation.pojo.dom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +15,9 @@ public class CombinedDefinitionTest {
     @Test
     public void shouldConstructCombinedDefinitionWithNoEventName() throws Exception {
         final String fieldName = "fieldName";
-        final ClassName className = mock(ClassName.class);
-        final CombinedDefinition combinedDefinition = new CombinedDefinition(fieldName, className);
+        final CombinedDefinition combinedDefinition = new CombinedDefinition(fieldName);
 
         assertThat(combinedDefinition.getFieldName(), is(fieldName));
-        assertThat(combinedDefinition.getClassName(), is(className));
         assertThat(combinedDefinition.getEventName(), is(Optional.empty()));
         assertThat(combinedDefinition.getFieldDefinitions().size(), is(0));
     }
@@ -26,12 +25,10 @@ public class CombinedDefinitionTest {
     @Test
     public void shouldConstructCombinedDefinitionWithEventName() throws Exception {
         final String fieldName = "fieldName";
-        final ClassName className = mock(ClassName.class);
         final String eventName = "eventName";
-        final CombinedDefinition combinedDefinition = new CombinedDefinition(fieldName, className, eventName);
+        final CombinedDefinition combinedDefinition = new CombinedDefinition(fieldName, eventName);
 
         assertThat(combinedDefinition.getFieldName(), is(fieldName));
-        assertThat(combinedDefinition.getClassName(), is(className));
         assertThat(combinedDefinition.getEventName(), is(Optional.of(eventName)));
         assertThat(combinedDefinition.getFieldDefinitions().size(), is(0));
     }
@@ -44,16 +41,15 @@ public class CombinedDefinitionTest {
         final String stringField_1 = "stringFieldName_1";
         final String stringField_2 = "stringFieldName_2";
         final String stringField_3 = "stringFieldName_2";
-        final ClassName className = mock(ClassName.class);
         final String eventName = "eventName";
 
-        final CombinedDefinition outerCombinedDefinition = new CombinedDefinition(combinedFieldName, className, eventName);
-        final CombinedDefinition innerCombinedDefinition = new CombinedDefinition(combinedFieldName, className);
-        final ClassDefinition outerClassDefinition = new ClassDefinition(outerClassFieldName, className);
-        final ClassDefinition innerClassDefinition = new ClassDefinition(innerClassFieldName, className);
-        final FieldDefinition fieldDefinition_1 = new FieldDefinition(stringField_1, className);
-        final FieldDefinition fieldDefinition_2 = new FieldDefinition(stringField_2, className);
-        final FieldDefinition fieldDefinition_3 = new FieldDefinition(stringField_3, className);
+        final CombinedDefinition outerCombinedDefinition = new CombinedDefinition(combinedFieldName, eventName);
+        final CombinedDefinition innerCombinedDefinition = new CombinedDefinition(combinedFieldName);
+        final ClassDefinition outerClassDefinition = new ClassDefinition(CLASS, outerClassFieldName);
+        final ClassDefinition innerClassDefinition = new ClassDefinition(CLASS, innerClassFieldName);
+        final FieldDefinition fieldDefinition_1 = new FieldDefinition(STRING, stringField_1);
+        final FieldDefinition fieldDefinition_2 = new FieldDefinition(STRING, stringField_2);
+        final FieldDefinition fieldDefinition_3 = new FieldDefinition(STRING, stringField_3);
 
         outerClassDefinition.addFieldDefinition(fieldDefinition_1);
         innerClassDefinition.addFieldDefinition(fieldDefinition_2);

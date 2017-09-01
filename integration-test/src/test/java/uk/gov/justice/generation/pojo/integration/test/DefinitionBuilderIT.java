@@ -4,13 +4,13 @@ import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.pojo.core.ClassNameProvider;
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
@@ -39,7 +39,7 @@ public class DefinitionBuilderIT {
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final NameGenerator nameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
-    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ClassNameProvider());
+    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -63,8 +63,10 @@ public class DefinitionBuilderIT {
         final File schemaFile = new File("src/test/resources/schemas/person-schema.json");
         final Schema schema = schemaLoader.loadFrom(schemaFile);
         final String fieldName = nameGenerator.rootFieldNameFrom(schemaFile);
+        final String packageName = "uk.gov.justice.pojo.definition.builder";
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.definition.builder", definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
         final VisitableSchema visitableSchema = visitableSchemaFactory.createWith(schema, new DefaultAcceptorFactory(visitableSchemaFactory));
@@ -73,14 +75,12 @@ public class DefinitionBuilderIT {
 
         final ClassDefinition personClassDefinition = (ClassDefinition) definitionBuilderVisitor.getDefinitions().get(0);
 
-        final ClassGeneratable personClassGenerator = new JavaGeneratorFactory()
+        final ClassGeneratable personClassGenerator = new JavaGeneratorFactory(new ClassNameFactory(packageName))
                 .createClassGeneratorsFor(singletonList(personClassDefinition), new DefaultPluginProvider())
                 .get(0);
 
-        sourceWriter.write(personClassGenerator, sourceOutputDirectory.toPath());
-        final Class<?> personClass = classCompiler.compile(personClassGenerator, sourceOutputDirectory, classesOutputDirectory);
-
-        assertThat(personClass.getName(), is(personClassDefinition.getClassName().getFullyQualifiedName()));
+        sourceWriter.write(personClassGenerator, generationContext);
+        final Class<?> personClass = classCompiler.compile(personClassGenerator, generationContext, classesOutputDirectory);
 
         final String lastName = "lastName";
         final String firstName = "firstName";

@@ -1,29 +1,14 @@
 package uk.gov.justice.generation.pojo.dom;
 
-import static java.util.Optional.ofNullable;
-
-import java.util.Optional;
-
 public class FieldDefinition implements Definition {
 
     private final String fieldName;
-    private final ClassName className;
-    private final Optional<ClassName> genericType;
+    private final DefinitionType type;
     private boolean required = true;
 
-    public FieldDefinition(
-            final String fieldName,
-            final ClassName className) {
-        this(fieldName, className, null);
-    }
-
-    public FieldDefinition(
-            final String fieldName,
-            final ClassName className,
-            final ClassName genericType) {
+    public FieldDefinition(final DefinitionType type, final String fieldName) {
+        this.type = type;
         this.fieldName = fieldName;
-        this.className = className;
-        this.genericType = ofNullable(genericType);
     }
 
     @Override
@@ -32,13 +17,8 @@ public class FieldDefinition implements Definition {
     }
 
     @Override
-    public ClassName getClassName() {
-        return className;
-    }
-
-    @Override
-    public Optional<ClassName> getGenericType() {
-        return genericType;
+    public DefinitionType type() {
+        return type;
     }
 
     @Override

@@ -7,8 +7,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.pojo.core.ClassNameProvider;
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
@@ -36,11 +37,10 @@ public class CombinedSchemaIT {
     private final SourceWriter sourceWriter = new SourceWriter();
     private final ClassCompiler classCompiler = new ClassCompiler();
 
-    private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
     private final NameGenerator rootFieldNameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ClassNameProvider());
+    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -65,8 +65,10 @@ public class CombinedSchemaIT {
         final File jsonSchemaFile = new File("src/test/resources/schemas/address.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
+        final String packageName = "uk.gov.justice.pojo.combined.schema";
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor("uk.gov.justice.pojo.combined.schema", definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
         final VisitableSchema visitableSchema = visitableSchemaFactory.createWith(schema, new DefaultAcceptorFactory(visitableSchemaFactory));
 
@@ -74,11 +76,13 @@ public class CombinedSchemaIT {
 
         final List<Class<?>> newClasses = new ArrayList<>();
 
+        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(new ClassNameFactory(packageName));
+
         javaGeneratorFactory
                 .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), new DefaultPluginProvider())
                 .forEach(classGeneratable -> {
-                    sourceWriter.write(classGeneratable, sourceOutputDirectory.toPath());
-                    final Class<?> newClass = classCompiler.compile(classGeneratable, sourceOutputDirectory, classesOutputDirectory);
+                    sourceWriter.write(classGeneratable, generationContext);
+                    final Class<?> newClass = classCompiler.compile(classGeneratable, generationContext, classesOutputDirectory);
                     newClasses.add(newClass);
                 });
 

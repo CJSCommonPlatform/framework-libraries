@@ -6,6 +6,7 @@ import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.io.Serializable;
@@ -21,7 +22,8 @@ public class SerializableGenerator implements PluginClassGeneratable {
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
                                          final ClassDefinition classDefinition,
-                                         final JavaGeneratorFactory javaGeneratorFactory) {
+                                         final JavaGeneratorFactory javaGeneratorFactory,
+                                         final ClassNameFactory classNameFactory) {
 
         typeSpecBuilder.addSuperinterface(Serializable.class)
                 .addField(FieldSpec

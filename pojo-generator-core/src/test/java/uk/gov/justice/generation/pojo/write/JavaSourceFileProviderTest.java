@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.write;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.pojo.dom.ClassName;
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.Definition;
 
 import java.io.File;
@@ -27,13 +27,13 @@ public class JavaSourceFileProviderTest {
         final Path sourceRootDirectory = Paths.get("src/main/java");
 
         final Class<Definition> definitionClass = Definition.class;
-        final ClassName className = new ClassName(definitionClass.getPackage().getName(), definitionClass.getSimpleName());
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, definitionClass.getPackage().getName());
 
-        final File javaFile = javaSourceFileProvider.getJavaFile(sourceRootDirectory, className);
+        final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, definitionClass.getSimpleName());
 
         assertThat(javaFile.exists(), is(true));
 
-        assertThat(javaFile.getName(), is(className.getSimpleName() + ".java"));
+        assertThat(javaFile.getName(), is(definitionClass.getSimpleName() + ".java"));
     }
 
     @Test
@@ -42,12 +42,12 @@ public class JavaSourceFileProviderTest {
         final Path sourceRootDirectory = Paths.get("src/main/java");
 
         final Class<Definition> definitionClass = Definition.class;
-        final ClassName className = new ClassName(definitionClass.getPackage().getName(), "NotAYetExistingClass");
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "NotAYetExistingClass");
 
-        final File javaFile = javaSourceFileProvider.getJavaFile(sourceRootDirectory, className);
+        final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, "NotAYetExistingClass");
 
         assertThat(javaFile.exists(), is(false));
 
-        assertThat(javaFile.getName(), is(className.getSimpleName() + ".java"));
+        assertThat(javaFile.getName(), is("NotAYetExistingClass.java"));
     }
 }

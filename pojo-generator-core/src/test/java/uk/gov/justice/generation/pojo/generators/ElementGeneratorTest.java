@@ -10,12 +10,15 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
 
 import java.util.List;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -25,10 +28,12 @@ public class ElementGeneratorTest {
 
     @Test
     public void shouldGenerateField() throws Exception {
-        final ClassName className = new ClassName("org.something", "Address");
-        final ClassDefinition classDefinition = new ClassDefinition("address", className);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        final ElementGenerator elementGenerator = new ElementGenerator(classDefinition);
+        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
+
+        final ElementGenerator elementGenerator = new ElementGenerator(classDefinition, classNameFactory);
         final FieldSpec fieldSpec = elementGenerator.generateField();
 
         assertThat(fieldSpec, is(builder(get("org.something", "Address"), "address", PRIVATE, FINAL).build()));
@@ -36,10 +41,12 @@ public class ElementGeneratorTest {
 
     @Test
     public void shouldGenerateMethodFromClassDefintion() throws Exception {
-        final ClassName className = new ClassName("org.something", "Address");
-        final ClassDefinition classDefinition = new ClassDefinition("address", className);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        final ElementGenerator elementGenerator = new ElementGenerator(classDefinition);
+        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
+
+        final ElementGenerator elementGenerator = new ElementGenerator(classDefinition, classNameFactory);
         final List<MethodSpec> methodSpecs = elementGenerator.generateMethods().collect(toList());
 
         assertThat(methodSpecs, hasItem(methodBuilder("getAddress")

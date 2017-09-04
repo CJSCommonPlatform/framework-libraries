@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.generators.plugin;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import com.squareup.javapoet.AnnotationSpec;
@@ -12,7 +13,8 @@ public class EventAnnotationGenerator implements PluginClassGeneratable {
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
                                          final ClassDefinition classDefinition,
-                                         final JavaGeneratorFactory javaGeneratorFactory) {
+                                         final JavaGeneratorFactory javaGeneratorFactory,
+                                         final ClassNameFactory classNameFactory) {
 
         classDefinition.getEventName().ifPresent(eventName ->
                 typeSpecBuilder.addAnnotation(AnnotationSpec.builder(Event.class)

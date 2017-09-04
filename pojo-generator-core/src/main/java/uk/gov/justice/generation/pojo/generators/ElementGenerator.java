@@ -5,6 +5,7 @@ import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 
@@ -17,10 +18,11 @@ import com.squareup.javapoet.MethodSpec;
 public class ElementGenerator implements ElementGeneratable {
 
     private final Definition classTypeDefinition;
-    private final ClassNameFactory classNameFactory = new ClassNameFactory();
+    private final ClassNameFactory classNameFactory;
 
-    ElementGenerator(final Definition classTypeDefinition) {
+    ElementGenerator(final Definition classTypeDefinition, final ClassNameFactory classNameFactory) {
         this.classTypeDefinition = classTypeDefinition;
+        this.classNameFactory = classNameFactory;
     }
 
     @Override
@@ -38,6 +40,6 @@ public class ElementGenerator implements ElementGeneratable {
     }
 
     private String toGetterMethodName() {
-        return "get" + classTypeDefinition.getClassName().getSimpleName();
+        return "get" + capitalize(classTypeDefinition.getFieldName());
     }
 }

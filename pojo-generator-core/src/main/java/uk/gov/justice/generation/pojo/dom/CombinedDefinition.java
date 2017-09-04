@@ -1,18 +1,19 @@
 package uk.gov.justice.generation.pojo.dom;
 
 import static java.util.stream.Collectors.toList;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.COMBINED;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 public class CombinedDefinition extends ClassDefinition {
 
-    public CombinedDefinition(final String fieldName, final ClassName className) {
-        super(fieldName, className);
+    public CombinedDefinition(final String fieldName) {
+        super(COMBINED, fieldName);
     }
 
-    public CombinedDefinition(final String fieldName, final ClassName className, final String eventName) {
-        super(fieldName, className, eventName);
+    public CombinedDefinition(final String fieldName, final String eventName) {
+        super(COMBINED, fieldName, eventName);
     }
 
     @Override

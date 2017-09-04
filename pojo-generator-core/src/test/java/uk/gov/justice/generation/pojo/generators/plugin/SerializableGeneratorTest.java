@@ -9,9 +9,10 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.io.Serializable;
@@ -29,11 +30,12 @@ public class SerializableGeneratorTest {
     @Test
     public void shouldAddSerializationToTypeSpec() throws Exception {
         final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassDefinition classDefinition = new ClassDefinition("address", mock(ClassName.class));
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS,"address");
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new SerializableGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory);
+        new SerializableGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

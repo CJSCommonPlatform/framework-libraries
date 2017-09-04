@@ -18,11 +18,11 @@ import com.squareup.javapoet.MethodSpec;
 public class FieldGenerator implements ElementGeneratable {
 
     private final FieldDefinition fieldDefinition;
+    private final ClassNameFactory classNameFactory;
 
-    private final ClassNameFactory classNameFactory = new ClassNameFactory();
-
-    FieldGenerator(final FieldDefinition fieldDefinition) {
+    FieldGenerator(final FieldDefinition fieldDefinition, final ClassNameFactory classNameFactory) {
         this.fieldDefinition = fieldDefinition;
+        this.classNameFactory = classNameFactory;
     }
 
     @Override

@@ -6,9 +6,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 
 import com.squareup.javapoet.TypeSpec;
@@ -16,11 +14,9 @@ import org.junit.Test;
 
 public class EnumGeneratorTest {
 
-    private final ClassName className = new ClassName("org.something", "Title");
-
     @Test
     public void shouldGenerateTypeSpecForSingleWordEnumValue() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", className, singletonList("Mr"));
+        final EnumDefinition enumDefinition = new EnumDefinition("title", singletonList("Mr"));
         final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition);
 
         final TypeSpec typeSpec = enumGenerator.generate();
@@ -35,7 +31,7 @@ public class EnumGeneratorTest {
 
     @Test
     public void shouldGenerateTypeSpecForMultiWordEnumValue() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", className, singletonList("Multi word value"));
+        final EnumDefinition enumDefinition = new EnumDefinition("title", singletonList("Multi word value"));
         final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition);
 
         final TypeSpec typeSpec = enumGenerator.generate();
@@ -50,7 +46,7 @@ public class EnumGeneratorTest {
 
     @Test
     public void shouldGenerateTypeSpecForBlankString() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", className, singletonList(""));
+        final EnumDefinition enumDefinition = new EnumDefinition("title", singletonList(""));
         final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition);
 
         final TypeSpec typeSpec = enumGenerator.generate();
@@ -61,12 +57,11 @@ public class EnumGeneratorTest {
 
     @Test
     public void shouldReturnClassName() {
-        final ClassName className = mock(ClassName.class);
-        final EnumDefinition enumDefinition = new EnumDefinition("title", className, emptyList());
+        final EnumDefinition enumDefinition = new EnumDefinition("title", emptyList());
 
         final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition);
 
-        assertThat(enumGenerator.getClassName(), is(className));
+        assertThat(enumGenerator.getClassName(), is("Title"));
 
     }
 

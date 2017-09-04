@@ -1,17 +1,16 @@
 package uk.gov.justice.generation.pojo.write;
 
-import uk.gov.justice.generation.pojo.dom.ClassName;
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 
 import java.io.File;
-import java.nio.file.Path;
 
 public class JavaSourceFileProvider {
 
-    public File getJavaFile(final Path rootOutputDirectory, final ClassName className) {
+    public File getJavaFile(final GenerationContext generationContext, final String className) {
 
-        final String fileName = className.getSimpleName() + ".java";
-        final String path = className.getPackageName().replace('.', '/') + "/" + fileName;
+        final String fileName = className + ".java";
+        final String path = generationContext.getPackageName().replace('.', '/') + "/" + fileName;
 
-        return rootOutputDirectory.resolve(path).toFile();
+        return generationContext.getOutputDirectoryPath().resolve(path).toFile();
     }
 }

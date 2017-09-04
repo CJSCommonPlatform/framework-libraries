@@ -14,13 +14,13 @@ public class ClassDefinition extends FieldDefinition {
 
     private boolean allowAdditionalProperties = false;
 
-    public ClassDefinition(final String fieldName, final ClassName className) {
-        super(fieldName, className);
+    public ClassDefinition(final DefinitionType type, final String fieldName) {
+        super(type, fieldName);
         this.eventName = Optional.empty();
     }
 
-    public ClassDefinition(final String fieldName, final ClassName className, final String eventName) {
-        super(fieldName, className);
+    public ClassDefinition(final DefinitionType type, final String fieldName, final String eventName) {
+        super(type, fieldName);
         this.eventName = Optional.ofNullable(eventName);
     }
 

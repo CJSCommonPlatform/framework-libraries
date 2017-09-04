@@ -29,10 +29,7 @@ public class DefinitionBuilderVisitor implements Visitor {
     private final List<Definition> classDefinitions = new ArrayList<>();
     private final DefinitionFactory definitionFactory;
 
-    private final String packageName;
-
-    public DefinitionBuilderVisitor(final String packageName, final DefinitionFactory definitionFactory) {
-        this.packageName = packageName;
+    public DefinitionBuilderVisitor(final DefinitionFactory definitionFactory) {
         this.definitionFactory = definitionFactory;
     }
 
@@ -74,15 +71,23 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void enter(final String fieldName, final ArraySchema schema) {
-        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, packageName, schema);
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
         definitions.push(new Entry(schema, definition));
     }
 
     @Override
     public void leave(final ArraySchema schema) {
+        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
+
         while (definitions.peek().getSchema() != schema) {
-            definitions.pop();
+            fieldDefinitions.push(definitions.pop().getDefinition());
         }
+
+        final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
+        fieldDefinitions.forEach(fieldDefinition -> {
+            fieldDefinition.setRequired(true);
+            classDefinition.addFieldDefinition(fieldDefinition);
+        });
     }
 
     @Override
@@ -102,7 +107,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final EnumSchema schema) {
-        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, packageName, schema);
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
         definitions.push(new Entry(schema, definition));
         classDefinitions.add(definition);
     }
@@ -115,9 +120,9 @@ public class DefinitionBuilderVisitor implements Visitor {
 
         final Definition definition;
         if (definitions.isEmpty()) {
-            definition = definitionFactory.constructDefinitionWithEventFor(fieldName, packageName, schema);
+            definition = definitionFactory.constructDefinitionWithEventFor(fieldName, schema);
         } else {
-            definition = definitionFactory.constructDefinitionFor(fieldName, packageName, schema);
+            definition = definitionFactory.constructDefinitionFor(fieldName, schema);
         }
         return definition;
     }

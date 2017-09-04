@@ -5,6 +5,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import java.util.List;
 
@@ -13,16 +14,9 @@ import org.junit.Test;
 public class ClassDefinitionTest {
 
     @Test
-    public void shouldReturnClassNameUsedInConstruction() throws Exception {
-        final ClassName className = mock(ClassName.class);
-        final ClassDefinition classDefinition = new ClassDefinition("", className);
-        assertThat(classDefinition.getClassName(), is(className));
-    }
-
-    @Test
     public void shouldReturnFiledNameUsedInConstruction() throws Exception {
         final String fieldName = "test";
-        final ClassDefinition classDefinition = new ClassDefinition(fieldName, null);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName);
         assertThat(classDefinition.getFieldName(), is(fieldName));
     }
 
@@ -35,8 +29,8 @@ public class ClassDefinitionTest {
         when(fieldDefinition1.getFieldName()).thenReturn("fieldDefinition1");
         when(fieldDefinition2.getFieldName()).thenReturn("fieldDefinition2");
         when(fieldDefinition3.getFieldName()).thenReturn("fieldDefinition3");
-        
-        final ClassDefinition classDefinition = new ClassDefinition("", mock(ClassName.class));
+
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName");
         classDefinition.addFieldDefinition(fieldDefinition1);
         classDefinition.addFieldDefinition(fieldDefinition2);
         classDefinition.addFieldDefinition(fieldDefinition3);
@@ -57,7 +51,7 @@ public class ClassDefinitionTest {
         when(fieldDefinition_2.getFieldName()).thenReturn("aaa");
         when(fieldDefinition_3.getFieldName()).thenReturn("mmm");
 
-        final ClassDefinition classDefinition = new ClassDefinition("", mock(ClassName.class));
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName");
         classDefinition.addFieldDefinition(fieldDefinition_1);
         classDefinition.addFieldDefinition(fieldDefinition_2);
         classDefinition.addFieldDefinition(fieldDefinition_3);

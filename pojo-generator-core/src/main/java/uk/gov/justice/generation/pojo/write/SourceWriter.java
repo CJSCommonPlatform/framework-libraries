@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.write;
 
 import static java.lang.String.format;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 
 import java.io.IOException;
@@ -12,11 +13,9 @@ import com.squareup.javapoet.TypeSpec;
 
 public class SourceWriter {
 
-    public void write(final ClassGeneratable classGenerator, final Path outputDirectory) {
+    public void write(final ClassGeneratable classGenerator, final GenerationContext generationContext) {
         final TypeSpec typeSpec = classGenerator.generate();
-        final String packageName = classGenerator.getClassName().getPackageName();
-
-        writeClass(outputDirectory, packageName, typeSpec);
+        writeClass(generationContext.getOutputDirectoryPath(), generationContext.getPackageName(), typeSpec);
     }
 
     private void writeClass(final Path outputDirectory, final String packageName, final TypeSpec typeSpec) {

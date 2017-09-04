@@ -34,8 +34,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DefinitionBuilderVisitorTest {
 
-    private static final String PACKAGE_NAME = "org.bloggs.fred";
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -67,12 +65,12 @@ public class DefinitionBuilderVisitorTest {
         final FieldDefinition innerStringDefinition = mock(FieldDefinition.class);
         final FieldDefinition outerStringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, PACKAGE_NAME, outerObjectSchema)).thenReturn(outerDefinition);
-        when(definitionFactory.constructDefinitionFor(innerFieldName, PACKAGE_NAME, innerObjectSchema)).thenReturn(innerDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, outerObjectSchema)).thenReturn(outerDefinition);
+        when(definitionFactory.constructDefinitionFor(innerFieldName, innerObjectSchema)).thenReturn(innerDefinition);
         when(definitionFactory.constructFieldDefinition(outerStringFieldName, outerStringSchema)).thenReturn(outerStringDefinition);
         when(definitionFactory.constructFieldDefinition(innerStringField, innerStringSchema)).thenReturn(innerStringDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter(outerFieldName, outerObjectSchema);
         definitionBuilderVisitor.enter(innerFieldName, innerObjectSchema);
@@ -105,10 +103,10 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition outerDefinition = mock(ClassDefinition.class);
         final FieldDefinition booleanDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, PACKAGE_NAME, objectSchema)).thenReturn(outerDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructFieldDefinition(booleanFieldName, booleanSchema)).thenReturn(booleanDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter(outerFieldName, objectSchema);
         definitionBuilderVisitor.visit(booleanFieldName, booleanSchema);
@@ -135,10 +133,10 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition outerDefinition = mock(ClassDefinition.class);
         final EnumDefinition enumDefinition = mock(EnumDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, PACKAGE_NAME, objectSchema)).thenReturn(outerDefinition);
-        when(definitionFactory.constructDefinitionFor(enumFieldName, PACKAGE_NAME, enumSchema)).thenReturn(enumDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
+        when(definitionFactory.constructDefinitionFor(enumFieldName, enumSchema)).thenReturn(enumDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter(outerFieldName, objectSchema);
         definitionBuilderVisitor.visit(enumFieldName, enumSchema);
@@ -168,11 +166,11 @@ public class DefinitionBuilderVisitorTest {
         final FieldDefinition numberDefinition = mock(FieldDefinition.class);
         final FieldDefinition integerDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, PACKAGE_NAME, objectSchema)).thenReturn(outerDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructFieldDefinition(numberFieldName, numberProperty)).thenReturn(numberDefinition);
         when(definitionFactory.constructFieldDefinition(integerFieldName, integerProperty)).thenReturn(integerDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter(outerFieldName, objectSchema);
         definitionBuilderVisitor.visit(numberFieldName, numberProperty);
@@ -204,14 +202,14 @@ public class DefinitionBuilderVisitorTest {
                 .build();
 
         final ClassDefinition outerDefinition = mock(ClassDefinition.class);
-        final FieldDefinition arrayDefinition = mock(FieldDefinition.class);
+        final ClassDefinition arrayDefinition = mock(ClassDefinition.class);
         final ClassDefinition arrayObjectDefinition = mock(ClassDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, PACKAGE_NAME, objectSchema)).thenReturn(outerDefinition);
-        when(definitionFactory.constructDefinitionFor(arrayFieldName, PACKAGE_NAME, arraySchema)).thenReturn(arrayDefinition);
-        when(definitionFactory.constructDefinitionFor(arrayObjectFieldName, PACKAGE_NAME, arrayObjectSchema)).thenReturn(arrayObjectDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
+        when(definitionFactory.constructDefinitionFor(arrayFieldName, arraySchema)).thenReturn(arrayDefinition);
+        when(definitionFactory.constructDefinitionFor(arrayObjectFieldName, arrayObjectSchema)).thenReturn(arrayObjectDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter(outerFieldName, objectSchema);
         definitionBuilderVisitor.enter(arrayFieldName, arraySchema);
@@ -243,10 +241,10 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition outerDefinition = mock(ClassDefinition.class);
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, PACKAGE_NAME, objectSchema)).thenReturn(outerDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructFieldDefinition(stringFieldName, stringSchema)).thenReturn(stringDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter(outerFieldName, objectSchema);
         definitionBuilderVisitor.visit(stringFieldName, stringSchema);
@@ -263,7 +261,7 @@ public class DefinitionBuilderVisitorTest {
     @Test
     public void shouldGenerateSingleCombinedDefinitionFromCombinedSchemaWithObjectSchema() throws Exception {
         final String combinedFieldName = "combinedClass";
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         final ObjectSchema objectSchema = ObjectSchema.builder()
                 .build();
@@ -276,8 +274,8 @@ public class DefinitionBuilderVisitorTest {
         final CombinedDefinition combinedDefinition = mock(CombinedDefinition.class);
         final ClassDefinition objectDefinition = mock(ClassDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(combinedFieldName, PACKAGE_NAME, combinedSchema)).thenReturn(combinedDefinition);
-        when(definitionFactory.constructDefinitionFor(combinedFieldName, PACKAGE_NAME, objectSchema)).thenReturn(objectDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(combinedFieldName, combinedSchema)).thenReturn(combinedDefinition);
+        when(definitionFactory.constructDefinitionFor(combinedFieldName, objectSchema)).thenReturn(objectDefinition);
 
         definitionBuilderVisitor.enter(combinedFieldName, combinedSchema);
         definitionBuilderVisitor.enter(combinedFieldName, objectSchema);
@@ -313,11 +311,11 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition objectDefinition = mock(ClassDefinition.class);
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(combinedFieldName, PACKAGE_NAME, combinedSchema)).thenReturn(combinedDefinition);
-        when(definitionFactory.constructDefinitionFor(combinedFieldName, PACKAGE_NAME, objectSchema)).thenReturn(objectDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(combinedFieldName, combinedSchema)).thenReturn(combinedDefinition);
+        when(definitionFactory.constructDefinitionFor(combinedFieldName, objectSchema)).thenReturn(objectDefinition);
         when(definitionFactory.constructFieldDefinition(innerFieldName, stringSchema)).thenReturn(stringDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter("combinedClass", combinedSchema);
         definitionBuilderVisitor.enter("combinedClass", objectSchema);
@@ -362,12 +360,12 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition objectDefinition = mock(ClassDefinition.class);
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionWithEventFor(combinedFieldName, PACKAGE_NAME, combinedSchema)).thenReturn(outerCombinedDefinition);
-        when(definitionFactory.constructDefinitionFor(combinedFieldName, PACKAGE_NAME, innerCombinedSchema)).thenReturn(innerCombinedDefinition);
-        when(definitionFactory.constructDefinitionFor(innerObjectFieldName, PACKAGE_NAME, objectSchema)).thenReturn(objectDefinition);
+        when(definitionFactory.constructDefinitionWithEventFor(combinedFieldName, combinedSchema)).thenReturn(outerCombinedDefinition);
+        when(definitionFactory.constructDefinitionFor(combinedFieldName, innerCombinedSchema)).thenReturn(innerCombinedDefinition);
+        when(definitionFactory.constructDefinitionFor(innerObjectFieldName, objectSchema)).thenReturn(objectDefinition);
         when(definitionFactory.constructFieldDefinition(innerFieldName, stringSchema)).thenReturn(stringDefinition);
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(PACKAGE_NAME, definitionFactory);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
         definitionBuilderVisitor.enter(combinedFieldName, combinedSchema);
         definitionBuilderVisitor.enter(combinedFieldName, innerCombinedSchema);

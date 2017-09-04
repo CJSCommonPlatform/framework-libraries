@@ -5,11 +5,15 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
@@ -36,7 +40,6 @@ public class ClassGeneratorIT {
     private final ClassCompiler classCompiler = new ClassCompiler();
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-    private final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -60,19 +63,19 @@ public class ClassGeneratorIT {
 
         final String packageName = "uk.gov.justice.pojo.classgenerator";
 
-        final ClassDefinition addressDefinition = addressDefinition(packageName);
-        final ClassDefinition employeeDefinition = employeeDefinition(packageName, addressDefinition);
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
+        final ClassDefinition addressDefinition = addressDefinition();
+        final ClassDefinition employeeDefinition = employeeDefinition(addressDefinition);
+
+        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(new ClassNameFactory(packageName));
 
         final List<? extends Class<?>> classes = javaGeneratorFactory
                 .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition), new DefaultPluginProvider())
                 .stream()
                 .map(classGenerator -> {
-                    sourceWriter.write(classGenerator, sourceOutputDirectory.toPath());
-                    return classCompiler.compile(classGenerator, sourceOutputDirectory, classesOutputDirectory);
+                    sourceWriter.write(classGenerator, generationContext);
+                    return classCompiler.compile(classGenerator, generationContext, classesOutputDirectory);
                 }).collect(toList());
-
-        assertThat(classes.get(0).getName(), is(addressDefinition.getClassName().getFullyQualifiedName()));
-        assertThat(classes.get(1).getName(), is(employeeDefinition.getClassName().getFullyQualifiedName()));
 
         final String firstName = "firstName";
         final String lastName = "lastName";
@@ -103,23 +106,30 @@ public class ClassGeneratorIT {
         ;
     }
 
-    private ClassDefinition addressDefinition(final String packageName) {
-        final ClassDefinition addressDefinition = new ClassDefinition("address", new ClassName(packageName, "Address"));
-        addressDefinition.addFieldDefinition(new FieldDefinition("firstLine", new ClassName(String.class)));
-        addressDefinition.addFieldDefinition(new FieldDefinition("postCode", new ClassName(String.class)));
+    private ClassDefinition addressDefinition() {
+        final ClassDefinition addressDefinition = new ClassDefinition(CLASS, "address");
+        addressDefinition.addFieldDefinition(new StringDefinition("firstLine", null));
+        addressDefinition.addFieldDefinition(new StringDefinition("postCode", null));
 
         return addressDefinition;
     }
 
-    private ClassDefinition employeeDefinition(final String packageName, final ClassDefinition addressDefinition) {
-        final ClassDefinition employeeDefinition = new ClassDefinition("employee", new ClassName(packageName, "Employee"));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("firstName", new ClassName(String.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("lastName", new ClassName(String.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("poundsPerHour", new ClassName(BigDecimal.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("startDate", new ClassName(ZonedDateTime.class)));
-        employeeDefinition.addFieldDefinition(new FieldDefinition("favouriteColours", new ClassName(List.class), new ClassName(String.class)));
+    private ClassDefinition employeeDefinition(final ClassDefinition addressDefinition) {
+        final ClassDefinition employeeDefinition = new ClassDefinition(CLASS, "employee");
+        employeeDefinition.addFieldDefinition(new StringDefinition("firstName", null));
+        employeeDefinition.addFieldDefinition(new StringDefinition("lastName", null));
+        employeeDefinition.addFieldDefinition(new FieldDefinition(NUMBER, "poundsPerHour"));
+        employeeDefinition.addFieldDefinition(new StringDefinition("startDate", "ZonedDateTime"));
+        employeeDefinition.addFieldDefinition(favouriteColoursDefinition());
         employeeDefinition.addFieldDefinition(addressDefinition);
 
         return employeeDefinition;
+    }
+
+    private ClassDefinition favouriteColoursDefinition() {
+        final ClassDefinition favouriteColours = new ClassDefinition(ARRAY, "favouriteColours");
+        favouriteColours.addFieldDefinition(new StringDefinition("favouriteColours", "none"));
+
+        return favouriteColours;
     }
 }

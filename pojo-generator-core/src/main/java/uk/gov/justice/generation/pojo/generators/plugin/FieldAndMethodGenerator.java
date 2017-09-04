@@ -22,13 +22,13 @@ import com.squareup.javapoet.TypeSpec;
 
 public class FieldAndMethodGenerator implements PluginClassGeneratable {
 
-    private final ClassNameFactory classNameFactory = new ClassNameFactory();
     private final AdditionalPropertiesGenerator additionalPropertiesGenerator = new AdditionalPropertiesGenerator();
 
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
                                          final ClassDefinition classDefinition,
-                                         final JavaGeneratorFactory javaGeneratorFactory) {
+                                         final JavaGeneratorFactory javaGeneratorFactory,
+                                         final ClassNameFactory classNameFactory) {
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
 
@@ -47,11 +47,11 @@ public class FieldAndMethodGenerator implements PluginClassGeneratable {
                 .flatMap(ElementGeneratable::generateMethods)
                 .collect(toList());
 
-        typeSpecBuilder.addMethod(buildConstructor(fieldDefinitions))
+        typeSpecBuilder.addMethod(buildConstructor(fieldDefinitions, classNameFactory))
                 .addFields(fields)
                 .addMethods(methods);
 
-        if (classDefinition.allowAdditionalProperties())  {
+        if (classDefinition.allowAdditionalProperties()) {
 
             final FieldSpec additionalProperties = additionalPropertiesGenerator.generateField();
             final List<MethodSpec> gettersAndSetters = additionalPropertiesGenerator
@@ -65,12 +65,12 @@ public class FieldAndMethodGenerator implements PluginClassGeneratable {
         return typeSpecBuilder;
     }
 
-    private MethodSpec buildConstructor(final List<Definition> definitions) {
+    private MethodSpec buildConstructor(final List<Definition> definitions, final ClassNameFactory classNameFactory) {
         final List<String> fieldNames = definitions.stream().map(Definition::getFieldName).collect(toList());
 
         return constructorBuilder()
                 .addModifiers(PUBLIC)
-                .addParameters(constructorParameters(definitions))
+                .addParameters(constructorParameters(definitions, classNameFactory))
                 .addCode(constructorStatements(fieldNames))
                 .build();
     }
@@ -83,7 +83,7 @@ public class FieldAndMethodGenerator implements PluginClassGeneratable {
         return builder.build();
     }
 
-    private List<ParameterSpec> constructorParameters(final List<Definition> definitions) {
+    private List<ParameterSpec> constructorParameters(final List<Definition> definitions, final ClassNameFactory classNameFactory) {
         return definitions.stream()
                 .map(definition -> ParameterSpec.builder(classNameFactory.createClassNameFrom(definition), definition.getFieldName(), FINAL).build())
                 .collect(toList());

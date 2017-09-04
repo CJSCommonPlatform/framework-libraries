@@ -12,15 +12,18 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.FieldGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.util.stream.Stream;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -32,11 +35,12 @@ public class FieldAndMethodGeneratorTest {
     @Test
     public void shouldGenerateTypeSpecForClassDefinitionWithNoFields() throws Exception {
         final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassDefinition classDefinition = new ClassDefinition("address", mock(ClassName.class));
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory);
+        new FieldAndMethodGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 
@@ -50,8 +54,9 @@ public class FieldAndMethodGeneratorTest {
     @Test
     public void shouldGenerateTypeSpecForClassDefinitionWithOneField() throws Exception {
         final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassDefinition classDefinition = new ClassDefinition("address", mock(ClassName.class));
-        final FieldDefinition fieldDefinition = new FieldDefinition("field", new ClassName(String.class));
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
+        final FieldDefinition fieldDefinition = new StringDefinition("field", null);
         classDefinition.addFieldDefinition(fieldDefinition);
 
         final FieldSpec fieldSpec = builder(String.class, "field").build();
@@ -66,10 +71,11 @@ public class FieldAndMethodGeneratorTest {
         when(generatorFactory.createGeneratorFor(fieldDefinition)).thenReturn(fieldGenerator);
         when(fieldGenerator.generateField()).thenReturn(fieldSpec);
         when(fieldGenerator.generateMethods()).thenReturn(Stream.of(methodSpec));
+        when(classNameFactory.createClassNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory);
+        new FieldAndMethodGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 
@@ -90,12 +96,13 @@ public class FieldAndMethodGeneratorTest {
     @Test
     public void shouldGenerateTypeSpecForClassDefinitionWithAdditionalProperties() throws Exception {
         final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassDefinition classDefinition = new ClassDefinition("address", mock(ClassName.class));
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         classDefinition.setAllowAdditionalProperties(true);
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory);
+        new FieldAndMethodGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

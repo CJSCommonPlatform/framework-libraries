@@ -6,10 +6,14 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.ClassName;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.io.File;
@@ -40,11 +44,13 @@ public class SourceWriterTest {
     @Test
     public void shouldWriteASingleSourceFile() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
         final ClassDefinition addressDefinition = addressDefinition(packageName);
 
-        new JavaGeneratorFactory()
-                .createClassGeneratorsFor(singletonList(addressDefinition), Collections::emptyList)
-                .forEach(classGeneratable -> sourceWriter.write(classGeneratable, sourceOutputDirectory.toPath()));
+        for (ClassGeneratable classGeneratable : new JavaGeneratorFactory(new ClassNameFactory(packageName))
+                .createClassGeneratorsFor(singletonList(addressDefinition), Collections::emptyList)) {
+            sourceWriter.write(classGeneratable, generationContext);
+        }
 
         assertThat(sourceOutputDirectory.toPath().resolve("org/bloggs/fred/Address.java").toFile().exists(), is(true));
     }
@@ -53,14 +59,15 @@ public class SourceWriterTest {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void shouldThrowExceptionIfUnableToWriteJavaFile() throws Exception {
         final String packageName = "org.bloggs.fred";
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
         final ClassDefinition addressDefinition = addressDefinition(packageName);
 
         sourceOutputDirectory.setWritable(false);
 
         try {
-            new JavaGeneratorFactory()
+            new JavaGeneratorFactory(new ClassNameFactory(packageName))
                     .createClassGeneratorsFor(singletonList(addressDefinition), Collections::emptyList)
-                    .forEach(classGeneratable -> sourceWriter.write(classGeneratable, sourceOutputDirectory.toPath()));
+                    .forEach(classGeneratable -> sourceWriter.write(classGeneratable, generationContext));
 
             fail();
         } catch (SourceCodeWriteException ex) {
@@ -71,9 +78,9 @@ public class SourceWriterTest {
     }
 
     private ClassDefinition addressDefinition(final String packageName) {
-        final ClassDefinition addressDefinition = new ClassDefinition("address", new ClassName(packageName, "Address"));
-        addressDefinition.addFieldDefinition(new FieldDefinition("firstLine", new ClassName(String.class)));
-        addressDefinition.addFieldDefinition(new FieldDefinition("postCode", new ClassName(String.class)));
+        final ClassDefinition addressDefinition = new ClassDefinition(CLASS, "address");
+        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "firstLine"));
+        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "postCode"));
 
         return addressDefinition;
     }

@@ -56,8 +56,8 @@ public class ClassNameFactory {
             throw new GenerationException(format("No definition present for array types. For field: %s", definition.getFieldName()));
         }
 
-        final Definition childDefintion = definition.getFieldDefinitions().get(FIRST_CHILD);
-        final TypeName typeName = createClassNameFrom(childDefintion);
+        final Definition childDefinition = definition.getFieldDefinitions().get(FIRST_CHILD);
+        final TypeName typeName = createClassNameFrom(childDefinition);
 
         return ParameterizedTypeName.get(get(List.class), typeName);
     }
@@ -81,5 +81,5 @@ public class ClassNameFactory {
         }
 
         return get(defaultClass);
-   }
+    }
 }

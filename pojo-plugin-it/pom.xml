@@ -73,6 +73,9 @@
                             </includes>
                             <excludes>
                             </excludes>
+                            <generatorProperties>
+                                <pojo-plugin-provider>uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider</pojo-plugin-provider>
+                            </generatorProperties>
                         </configuration>
                         <goals>
                             <goal>generate</goal>

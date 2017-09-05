@@ -9,10 +9,12 @@ public class GenerationContext {
 
     private final Path outputDirectoryPath;
     private final String packageName;
+    private final String sourceFilename;
 
-    public GenerationContext(final Path outputDirectoryPath, final String packageName) {
+    public GenerationContext(final Path outputDirectoryPath, final String packageName, final String sourceFilename) {
         this.outputDirectoryPath = outputDirectoryPath;
         this.packageName = packageName;
+        this.sourceFilename = sourceFilename;
     }
 
     public Path getOutputDirectoryPath() {
@@ -21,6 +23,10 @@ public class GenerationContext {
 
     public String getPackageName() {
         return packageName;
+    }
+
+    public String getSourceFilename() {
+        return sourceFilename;
     }
 
     public Logger getLoggerFor(final Class<?> clazz) {

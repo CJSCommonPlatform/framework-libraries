@@ -36,7 +36,13 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void enter(final String fieldName, final ObjectSchema schema) {
 
-        final ClassDefinition definition = (ClassDefinition) definitionFor(fieldName, schema);
+        final ClassDefinition definition;
+
+        if (definitions.isEmpty()) {
+            definition = (ClassDefinition) definitionFactory.constructRootClassDefinition(fieldName);
+        } else {
+            definition = (ClassDefinition) definitionFactory.constructDefinitionFor(fieldName, schema);
+        }
 
         definition.setAllowAdditionalProperties(schema.permitsAdditionalProperties());
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
@@ -51,7 +57,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void enter(final String fieldName, final CombinedSchema schema) {
-        final Definition definition = definitionFor(fieldName, schema);
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
 
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
 
@@ -77,11 +83,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void leave(final ArraySchema schema) {
-        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
-
-        while (definitions.peek().getSchema() != schema) {
-            fieldDefinitions.push(definitions.pop().getDefinition());
-        }
+        final Deque<Definition> fieldDefinitions = getChildDefinitionsFor(schema);
 
         final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
         fieldDefinitions.forEach(fieldDefinition -> {
@@ -92,17 +94,17 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final StringSchema schema) {
-        definitions.push(new Entry(schema, definitionFactory.constructFieldDefinition(fieldName, schema)));
+        definitions.push(new Entry(schema, definitionFactory.constructDefinitionFor(fieldName, schema)));
     }
 
     @Override
     public void visit(final String fieldName, final BooleanSchema schema) {
-        definitions.push(new Entry(schema, definitionFactory.constructFieldDefinition(fieldName, schema)));
+        definitions.push(new Entry(schema, definitionFactory.constructDefinitionFor(fieldName, schema)));
     }
 
     @Override
     public void visit(final String fieldName, final NumberSchema schema) {
-        definitions.push(new Entry(schema, definitionFactory.constructFieldDefinition(fieldName, schema)));
+        definitions.push(new Entry(schema, definitionFactory.constructDefinitionFor(fieldName, schema)));
     }
 
     @Override
@@ -114,17 +116,6 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     public List<Definition> getDefinitions() {
         return reverse(classDefinitions);
-    }
-
-    private Definition definitionFor(final String fieldName, final Schema schema) {
-
-        final Definition definition;
-        if (definitions.isEmpty()) {
-            definition = definitionFactory.constructDefinitionWithEventFor(fieldName, schema);
-        } else {
-            definition = definitionFactory.constructDefinitionFor(fieldName, schema);
-        }
-        return definition;
     }
 
     private void addToClassDefinitionsIfNotPartOfCombinedDefinition(final String fieldName, final Definition definition) {
@@ -140,17 +131,23 @@ public class DefinitionBuilderVisitor implements Visitor {
     }
 
     private void addFieldDefinitionsFor(final Schema schema, final List<String> requiredFields) {
-        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
-
-        while (definitions.peek().getSchema() != schema) {
-            fieldDefinitions.push(definitions.pop().getDefinition());
-        }
+        final Deque<Definition> fieldDefinitions = getChildDefinitionsFor(schema);
 
         final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
         fieldDefinitions.forEach(fieldDefinition -> {
             fieldDefinition.setRequired(requiredFields.contains(fieldDefinition.getFieldName()));
             classDefinition.addFieldDefinition(fieldDefinition);
         });
+    }
+
+    private Deque<Definition> getChildDefinitionsFor(final Schema schema) {
+        final Deque<Definition> fieldDefinitions = new ArrayDeque<>();
+
+        while (definitions.peek().getSchema() != schema) {
+            fieldDefinitions.push(definitions.pop().getDefinition());
+        }
+
+        return fieldDefinitions;
     }
 
     private class Entry {

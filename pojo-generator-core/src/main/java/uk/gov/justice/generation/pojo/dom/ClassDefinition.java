@@ -5,23 +5,15 @@ import static java.util.Comparator.comparing;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ClassDefinition extends FieldDefinition {
 
     private final List<Definition> fieldDefinitions = new ArrayList<>();
-    private final Optional<String> eventName;
 
     private boolean allowAdditionalProperties = false;
 
     public ClassDefinition(final DefinitionType type, final String fieldName) {
         super(type, fieldName);
-        this.eventName = Optional.empty();
-    }
-
-    public ClassDefinition(final DefinitionType type, final String fieldName, final String eventName) {
-        super(type, fieldName);
-        this.eventName = Optional.ofNullable(eventName);
     }
 
     public ClassDefinition addFieldDefinition(final Definition fieldDefinition) {
@@ -35,10 +27,6 @@ public class ClassDefinition extends FieldDefinition {
 
         return unmodifiableList(fieldDefinitions);
 
-    }
-
-    public Optional<String> getEventName() {
-        return eventName;
     }
 
     public boolean allowAdditionalProperties() {

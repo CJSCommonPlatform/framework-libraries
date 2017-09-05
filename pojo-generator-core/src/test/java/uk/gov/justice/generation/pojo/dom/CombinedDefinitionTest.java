@@ -6,30 +6,17 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Test;
 
 public class CombinedDefinitionTest {
 
     @Test
-    public void shouldConstructCombinedDefinitionWithNoEventName() throws Exception {
+    public void shouldConstructCombinedDefinition() throws Exception {
         final String fieldName = "fieldName";
         final CombinedDefinition combinedDefinition = new CombinedDefinition(fieldName);
 
         assertThat(combinedDefinition.getFieldName(), is(fieldName));
-        assertThat(combinedDefinition.getEventName(), is(Optional.empty()));
-        assertThat(combinedDefinition.getFieldDefinitions().size(), is(0));
-    }
-
-    @Test
-    public void shouldConstructCombinedDefinitionWithEventName() throws Exception {
-        final String fieldName = "fieldName";
-        final String eventName = "eventName";
-        final CombinedDefinition combinedDefinition = new CombinedDefinition(fieldName, eventName);
-
-        assertThat(combinedDefinition.getFieldName(), is(fieldName));
-        assertThat(combinedDefinition.getEventName(), is(Optional.of(eventName)));
         assertThat(combinedDefinition.getFieldDefinitions().size(), is(0));
     }
 
@@ -43,7 +30,7 @@ public class CombinedDefinitionTest {
         final String stringField_3 = "stringFieldName_2";
         final String eventName = "eventName";
 
-        final CombinedDefinition outerCombinedDefinition = new CombinedDefinition(combinedFieldName, eventName);
+        final CombinedDefinition outerCombinedDefinition = new CombinedDefinition(combinedFieldName);
         final CombinedDefinition innerCombinedDefinition = new CombinedDefinition(combinedFieldName);
         final ClassDefinition outerClassDefinition = new ClassDefinition(CLASS, outerClassFieldName);
         final ClassDefinition innerClassDefinition = new ClassDefinition(CLASS, innerClassFieldName);

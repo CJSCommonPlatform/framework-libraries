@@ -13,7 +13,6 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.StringDefinition;
-import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
@@ -65,8 +64,9 @@ public class ClassGeneratorIT {
     public void shouldGenerateJavaClassSourceCode() throws Exception {
 
         final String packageName = "uk.gov.justice.pojo.classgenerator";
+        final String sourceFilename = "source.json";
 
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, sourceFilename);
         final ClassDefinition addressDefinition = addressDefinition();
         final ClassDefinition employeeDefinition = employeeDefinition(addressDefinition);
 
@@ -78,7 +78,7 @@ public class ClassGeneratorIT {
                 .build();
 
         final List<? extends Class<?>> classes = javaGeneratorFactory
-                .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition), pluginProvider)
+                .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition), pluginProvider, generationContext)
                 .stream()
                 .map(classGenerator -> {
                     sourceWriter.write(classGenerator, generationContext);

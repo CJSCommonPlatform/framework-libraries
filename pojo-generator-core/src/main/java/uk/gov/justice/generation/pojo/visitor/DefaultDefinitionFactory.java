@@ -7,6 +7,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.BOOLEAN;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
@@ -18,7 +19,6 @@ import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.StringDefinition;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.everit.json.schema.ArraySchema;
@@ -33,76 +33,44 @@ import org.everit.json.schema.StringSchema;
 public class DefaultDefinitionFactory implements DefinitionFactory {
 
     private static final String EXCEPTION_FORMAT_MESSAGE = "Schema of type: %s is not supported.";
-    private final Optional<String> eventName;
-
-    public DefaultDefinitionFactory() {
-        this.eventName = Optional.empty();
-    }
-
-    public DefaultDefinitionFactory(final String eventName) {
-        this.eventName = Optional.ofNullable(eventName);
-    }
 
     @Override
-    public Definition constructDefinitionWithEventFor(final String fieldName, final Schema schema) {
-        if (schema instanceof CombinedSchema) {
-
-            return eventName
-                    .map(eventNameValue -> new CombinedDefinition(fieldName, eventNameValue))
-                    .orElse(new CombinedDefinition(fieldName));
-
-        } else if (schema instanceof ObjectSchema) {
-
-            return eventName
-                    .map(eventNameValue -> new ClassDefinition(CLASS, fieldName, eventNameValue))
-                    .orElse(new ClassDefinition(CLASS, fieldName));
-
-        }
-
-        throw new UnsupportedSchemaException(format(EXCEPTION_FORMAT_MESSAGE, schema.getClass().getSimpleName()));
+    public Definition constructRootClassDefinition(final String fieldName) {
+        return new ClassDefinition(ROOT, fieldName);
     }
 
     @Override
     public Definition constructDefinitionFor(final String fieldName, final Schema schema) {
         if (schema instanceof CombinedSchema) {
-
             return new CombinedDefinition(fieldName);
+        }
 
-        } else if (schema instanceof ArraySchema) {
-
+        if (schema instanceof ArraySchema) {
             return new ClassDefinition(ARRAY, fieldName);
+        }
 
-        } else if (schema instanceof EnumSchema) {
-
+        if (schema instanceof EnumSchema) {
             final Set<Object> possibleValues = ((EnumSchema) schema).getPossibleValues();
             final List<String> enumValues = possibleValues.stream().map(Object::toString).collect(toList());
 
             return new EnumDefinition(fieldName, enumValues);
-
-        } else if (schema instanceof ObjectSchema) {
-
-            return new ClassDefinition(CLASS, fieldName);
-
         }
 
-        throw new UnsupportedSchemaException(format(EXCEPTION_FORMAT_MESSAGE, schema.getClass().getSimpleName()));
-    }
+        if (schema instanceof ObjectSchema) {
+            return new ClassDefinition(CLASS, fieldName);
+        }
 
-    @Override
-    public Definition constructFieldDefinition(final String fieldName, final Schema schema) {
         if (schema instanceof StringSchema) {
-
             return new StringDefinition(fieldName, schema.getDescription());
+        }
 
-        } else if (schema instanceof BooleanSchema) {
-
+        if (schema instanceof BooleanSchema) {
             return new FieldDefinition(BOOLEAN, fieldName);
+        }
 
-        } else if (schema instanceof NumberSchema) {
-
+        if (schema instanceof NumberSchema) {
             final DefinitionType type = ((NumberSchema) schema).requiresInteger() ? INTEGER : NUMBER;
             return new FieldDefinition(type, fieldName);
-
         }
 
         throw new UnsupportedSchemaException(format(EXCEPTION_FORMAT_MESSAGE, schema.getClass().getSimpleName()));

@@ -68,7 +68,7 @@ public class OptionalFieldsIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
         final String packageName = "uk.gov.justice.pojo.optional.schema";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, jsonSchemaFile.getName());
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
@@ -85,7 +85,7 @@ public class OptionalFieldsIT {
                 .build();
 
         javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider)
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, generationContext)
                 .forEach(classGeneratable -> {
                     sourceWriter.write(classGeneratable, generationContext);
                     final Class<?> newClass = classCompiler.compile(classGeneratable, generationContext, classesOutputDirectory);

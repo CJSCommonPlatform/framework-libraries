@@ -5,11 +5,12 @@ import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 
 import uk.gov.justice.domain.annotation.Event;
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -17,20 +18,36 @@ import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventAnnotationGeneratorTest {
 
+    @Mock
+    private JavaGeneratorFactory generatorFactory;
+
+    @Mock
+    private ClassNameFactory classNameFactory;
+
+    @Mock
+    private GenerationContext generationContext;
+
     @Test
     public void shouldAddEventAnnotationToTypeSpec() throws Exception {
-        final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address", "example.events.address");
+        final ClassDefinition classDefinition = new ClassDefinition(ROOT, "address");
+
+        when(generationContext.getSourceFilename()).thenReturn("example.events.address.json");
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new EventAnnotationGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory);
+        new EventAnnotationGenerator()
+                .generateWith(
+                        typeSpecBuilder,
+                        classDefinition,
+                        generatorFactory,
+                        classNameFactory,
+                        generationContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

@@ -25,9 +25,10 @@ public class JavaSourceFileProviderTest {
     public void shouldReturnAnExistingJavaFile() throws Exception {
 
         final Path sourceRootDirectory = Paths.get("src/main/java");
+        final String sourceFilename = "filename";
 
         final Class<Definition> definitionClass = Definition.class;
-        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, definitionClass.getPackage().getName());
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, definitionClass.getPackage().getName(), sourceFilename);
 
         final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, definitionClass.getSimpleName());
 
@@ -40,9 +41,10 @@ public class JavaSourceFileProviderTest {
     public void shouldReturnANonExistentJavaFile() throws Exception {
 
         final Path sourceRootDirectory = Paths.get("src/main/java");
+        final String sourceFilename = "filename";
 
         final Class<Definition> definitionClass = Definition.class;
-        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "NotAYetExistingClass");
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "NotAYetExistingClass", sourceFilename);
 
         final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, "NotAYetExistingClass");
 

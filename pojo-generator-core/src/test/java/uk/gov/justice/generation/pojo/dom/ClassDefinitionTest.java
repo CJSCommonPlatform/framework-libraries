@@ -14,7 +14,7 @@ import org.junit.Test;
 public class ClassDefinitionTest {
 
     @Test
-    public void shouldReturnFiledNameUsedInConstruction() throws Exception {
+    public void shouldReturnFieldNameUsedInConstruction() throws Exception {
         final String fieldName = "test";
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName);
         assertThat(classDefinition.getFieldName(), is(fieldName));
@@ -67,5 +67,16 @@ public class ClassDefinitionTest {
     public void additionalPropertiesShouldBeFalseByDefault() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "myField");
         assertThat(classDefinition.allowAdditionalProperties(), is(false));
+    }
+
+    @Test
+    public void shouldAllowAdditionalProperties() throws Exception {
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName");
+
+        assertThat(classDefinition.allowAdditionalProperties(), is(false));
+
+        classDefinition.setAllowAdditionalProperties(true);
+
+        assertThat(classDefinition.allowAdditionalProperties(), is(true));
     }
 }

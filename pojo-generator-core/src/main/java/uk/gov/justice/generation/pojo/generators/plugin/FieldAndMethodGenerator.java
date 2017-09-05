@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.AdditionalPropertiesGenerator;
@@ -28,7 +29,8 @@ public class FieldAndMethodGenerator implements PluginClassGeneratable {
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
                                          final ClassDefinition classDefinition,
                                          final JavaGeneratorFactory javaGeneratorFactory,
-                                         final ClassNameFactory classNameFactory) {
+                                         final ClassNameFactory classNameFactory,
+                                         final GenerationContext generationContext) {
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
 

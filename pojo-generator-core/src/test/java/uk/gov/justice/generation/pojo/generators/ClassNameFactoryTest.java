@@ -1,141 +1,148 @@
 package uk.gov.justice.generation.pojo.generators;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.BOOLEAN;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.COMBINED;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
-import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 
 import com.squareup.javapoet.TypeName;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ClassNameFactoryTest {
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    @Mock
+    private TypeNameProvider typeNameProvider;
 
-    private final ClassNameFactory classNameFactory = new ClassNameFactory("package.name");
+    @Mock
+    private TypeNamePluginProcessor typeNamePluginProcessor;
+
+    @InjectMocks
+    private ClassNameFactory classNameFactory;
 
     @Test
-    public void shouldReturnClassNameForStringDefinitionWithUnknownDescription() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForArrays() throws Exception {
 
-        final Definition definition = new StringDefinition("fieldName", "description");
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(ARRAY);
+        when(typeNameProvider.typeNameForArray(definition, classNameFactory)).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.ClassName.class)));
-        assertThat(typeName.toString(), is("java.lang.String"));
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 
     @Test
-    public void shouldReturnClassNameForStringDefinitionWithUuidDescription() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForBooleans() throws Exception {
 
-        final Definition definition = new StringDefinition("fieldName", "UUID");
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(BOOLEAN);
+        when(typeNameProvider.typeNameForBoolean()).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.ClassName.class)));
-        assertThat(typeName.toString(), is("java.util.UUID"));
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 
     @Test
-    public void shouldReturnClassNameForStringDefinitionWithZoneDateTimeDescription() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForIntegers() throws Exception {
 
-        final Definition definition = new StringDefinition("fieldName", "ZonedDateTime");
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(INTEGER);
+        when(typeNameProvider.typeNameForInteger()).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.ClassName.class)));
-        assertThat(typeName.toString(), is("java.time.ZonedDateTime"));
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 
     @Test
-    public void shouldReturnClassNameForFieldDefinitionOfTypeInteger() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForNumbers() throws Exception {
 
-        final Definition definition = new FieldDefinition(INTEGER, "fieldName");
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(NUMBER);
+        when(typeNameProvider.typeNameForNumber()).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.ClassName.class)));
-        assertThat(typeName.toString(), is("java.lang.Integer"));
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 
     @Test
-    public void shouldReturnClassNameForFieldDefinitionOfTypeNumber() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForStrings() throws Exception {
 
-        final Definition definition = new FieldDefinition(NUMBER, "fieldName");
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(STRING);
+        when(typeNameProvider.typeNameForString(definition)).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.ClassName.class)));
-        assertThat(typeName.toString(), is("java.math.BigDecimal"));
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 
     @Test
-    public void shouldReturnClassNameForFieldDefinitionOfTypeBoolean() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForClasses() throws Exception {
 
-        final Definition definition = new FieldDefinition(BOOLEAN, "fieldName");
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(CLASS);
+        when(typeNameProvider.typeNameForClass(definition)).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.ClassName.class)));
-        assertThat(typeName.toString(), is("java.lang.Boolean"));
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 
     @Test
-    public void shouldReturnClassNameForArrayDefinitionWithStringDefinition() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForEnums() throws Exception {
 
-        final ClassDefinition definition = new ClassDefinition(ARRAY, "fieldName");
-        definition.addFieldDefinition(new StringDefinition("fieldName", "description"));
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(CLASS);
+        when(typeNameProvider.typeNameForClass(definition)).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.TypeName.class)));
-        assertThat(typeName.toString(), is("java.util.List<java.lang.String>"));
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 
     @Test
-    public void shouldReturnClassNameForArrayDefinitionWithClassDefinition() throws Exception {
+    public void shouldCreateTheCorrectTypeNameForCombinedSchemas() throws Exception {
 
-        final ClassDefinition definition = new ClassDefinition(ARRAY, "fieldName");
-        definition.addFieldDefinition(new ClassDefinition(CLASS, "innerField"));
+        final Definition definition = mock(Definition.class);
+        final TypeName originalTypeName = mock(TypeName.class);
+        final TypeName modifiedTypeName = mock(TypeName.class);
 
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
+        when(definition.type()).thenReturn(COMBINED);
+        when(typeNameProvider.typeNameForClass(definition)).thenReturn(originalTypeName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition)).thenReturn(modifiedTypeName);
 
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.TypeName.class)));
-        assertThat(typeName.toString(), is("java.util.List<package.name.InnerField>"));
-    }
-
-    @Test
-    public void shouldGetAClassNameThatIsAJavaOptional() throws Exception {
-
-        final Definition definition = new StringDefinition("fieldName", "description");
-        definition.setRequired(false);
-
-        final TypeName typeName = classNameFactory.createClassNameFrom(definition);
-
-        assertThat(typeName, is(instanceOf(com.squareup.javapoet.TypeName.class)));
-        assertThat(typeName.toString(), is("java.util.Optional<java.lang.String>"));
-    }
-
-    @Test
-    public void shouldThrowExceptionIfArrayDefinitionHasNoChildDefintions() throws Exception {
-
-        final ClassDefinition definition = new ClassDefinition(ARRAY, "fieldName");
-
-        expectedException.expect(GenerationException.class);
-        expectedException.expectMessage("No definition present for array types. For field: fieldName");
-
-        classNameFactory.createClassNameFrom(definition);
+        assertThat(classNameFactory.createTypeNameFrom(definition), is(modifiedTypeName));
     }
 }

@@ -62,4 +62,10 @@ public class ClassDefinitionTest {
         assertThat(fieldDefinitions.get(1), is(fieldDefinition_3));
         assertThat(fieldDefinitions.get(2), is(fieldDefinition_1));
     }
+
+    @Test
+    public void additionalPropertiesShouldBeFalseByDefault() throws Exception {
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "myField");
+        assertThat(classDefinition.allowAdditionalProperties(), is(false));
+    }
 }

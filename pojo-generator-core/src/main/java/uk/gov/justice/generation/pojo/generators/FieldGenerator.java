@@ -27,7 +27,7 @@ public class FieldGenerator implements ElementGeneratable {
 
     @Override
     public FieldSpec generateField() {
-        return builder(classNameFactory.createClassNameFrom(fieldDefinition), fieldDefinition.getFieldName(), PRIVATE, FINAL).build();
+        return builder(classNameFactory.createTypeNameFrom(fieldDefinition), fieldDefinition.getFieldName(), PRIVATE, FINAL).build();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FieldGenerator implements ElementGeneratable {
     private MethodSpec getterMethod() {
         return methodBuilder("get" + capitalize(fieldDefinition.getFieldName()))
                 .addModifiers(PUBLIC)
-                .returns(classNameFactory.createClassNameFrom(fieldDefinition))
+                .returns(classNameFactory.createTypeNameFrom(fieldDefinition))
                 .addCode(CodeBlock.builder().addStatement("return $L", fieldDefinition.getFieldName()).build())
                 .build();
     }

@@ -10,10 +10,11 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
-import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -28,6 +29,7 @@ public class SourceWriterIT {
 
     private final SourceWriter sourceWriter = new SourceWriter();
     private final ClassCompiler classCompiler = new ClassCompiler();
+    private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
 
@@ -54,9 +56,15 @@ public class SourceWriterIT {
         final String packageName = "org.bloggs.fred";
         final ClassDefinition addressDefinition = addressDefinition(packageName);
         final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
+        final PluginProvider pluginProvider = new DefaultPluginProvider();
 
-        final ClassGeneratable addressGenerator = new JavaGeneratorFactory(new ClassNameFactory(packageName))
-                .createClassGeneratorsFor(singletonList(addressDefinition), new DefaultPluginProvider())
+        final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
+                .withGenerationContext(generationContext)
+                .withPluginProvider(pluginProvider)
+                .build();
+
+        final ClassGeneratable addressGenerator = javaGeneratorFactory
+                .createClassGeneratorsFor(singletonList(addressDefinition), pluginProvider)
                 .get(0);
 
         sourceWriter.write(addressGenerator, generationContext);

@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.generators.plugin;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,5 +22,14 @@ public class DefaultPluginProviderTest {
                 instanceOf(EventAnnotationGenerator.class),
                 instanceOf(SerializableGenerator.class),
                 instanceOf(FieldAndMethodGenerator.class)));
+    }
+
+    @Test
+    public void shouldProvideDefaultListOfTypeNamePlugins() throws Exception {
+
+        final List<TypeNamePlugin> typeNamePlugins = new DefaultPluginProvider().typeNamePlugins();
+
+        assertThat(typeNamePlugins.size(), is(1));
+        assertThat(typeNamePlugins, hasItem(instanceOf(OptionalTypeNamePlugin.class)));
     }
 }

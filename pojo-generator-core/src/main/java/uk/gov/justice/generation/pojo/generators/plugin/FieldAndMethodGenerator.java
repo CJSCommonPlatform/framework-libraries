@@ -85,7 +85,7 @@ public class FieldAndMethodGenerator implements PluginClassGeneratable {
 
     private List<ParameterSpec> constructorParameters(final List<Definition> definitions, final ClassNameFactory classNameFactory) {
         return definitions.stream()
-                .map(definition -> ParameterSpec.builder(classNameFactory.createClassNameFrom(definition), definition.getFieldName(), FINAL).build())
+                .map(definition -> ParameterSpec.builder(classNameFactory.createTypeNameFrom(definition), definition.getFieldName(), FINAL).build())
                 .collect(toList());
     }
 }

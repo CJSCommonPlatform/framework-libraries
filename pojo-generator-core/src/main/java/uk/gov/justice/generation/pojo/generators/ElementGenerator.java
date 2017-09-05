@@ -27,14 +27,14 @@ public class ElementGenerator implements ElementGeneratable {
 
     @Override
     public FieldSpec generateField() {
-        return builder(classNameFactory.createClassNameFrom(classTypeDefinition), classTypeDefinition.getFieldName(), PRIVATE, FINAL).build();
+        return builder(classNameFactory.createTypeNameFrom(classTypeDefinition), classTypeDefinition.getFieldName(), PRIVATE, FINAL).build();
     }
 
     @Override
     public Stream<MethodSpec> generateMethods() {
         return Stream.of(methodBuilder(toGetterMethodName())
                 .addModifiers(PUBLIC)
-                .returns(classNameFactory.createClassNameFrom(classTypeDefinition))
+                .returns(classNameFactory.createTypeNameFrom(classTypeDefinition))
                 .addCode(CodeBlock.builder().addStatement("return $L", classTypeDefinition.getFieldName()).build())
                 .build());
     }

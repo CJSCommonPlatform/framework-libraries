@@ -31,7 +31,7 @@ public class ElementGeneratorTest {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
+        when(classNameFactory.createTypeNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
 
         final ElementGenerator elementGenerator = new ElementGenerator(classDefinition, classNameFactory);
         final FieldSpec fieldSpec = elementGenerator.generateField();
@@ -44,7 +44,7 @@ public class ElementGeneratorTest {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
+        when(classNameFactory.createTypeNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
 
         final ElementGenerator elementGenerator = new ElementGenerator(classDefinition, classNameFactory);
         final List<MethodSpec> methodSpecs = elementGenerator.generateMethods().collect(toList());

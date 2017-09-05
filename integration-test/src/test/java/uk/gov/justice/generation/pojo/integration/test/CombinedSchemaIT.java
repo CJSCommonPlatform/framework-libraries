@@ -12,7 +12,9 @@ import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
@@ -41,6 +43,7 @@ public class CombinedSchemaIT {
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory();
+    private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -76,10 +79,15 @@ public class CombinedSchemaIT {
 
         final List<Class<?>> newClasses = new ArrayList<>();
 
-        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(new ClassNameFactory(packageName));
+        final PluginProvider pluginProvider = new DefaultPluginProvider();
+
+        final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
+                .withGenerationContext(generationContext)
+                .withPluginProvider(pluginProvider)
+                .build();
 
         javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), new DefaultPluginProvider())
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider)
                 .forEach(classGeneratable -> {
                     sourceWriter.write(classGeneratable, generationContext);
                     final Class<?> newClass = classCompiler.compile(classGeneratable, generationContext, classesOutputDirectory);

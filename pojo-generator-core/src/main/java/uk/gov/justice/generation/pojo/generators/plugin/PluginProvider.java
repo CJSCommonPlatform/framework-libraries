@@ -5,4 +5,5 @@ import java.util.List;
 public interface PluginProvider {
 
     List<PluginClassGeneratable> pluginClassGenerators();
+    List<TypeNamePlugin> typeNamePlugins();
 }

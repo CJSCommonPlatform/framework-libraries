@@ -71,7 +71,7 @@ public class FieldAndMethodGeneratorTest {
         when(generatorFactory.createGeneratorFor(fieldDefinition)).thenReturn(fieldGenerator);
         when(fieldGenerator.generateField()).thenReturn(fieldSpec);
         when(fieldGenerator.generateMethods()).thenReturn(Stream.of(methodSpec));
-        when(classNameFactory.createClassNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
+        when(classNameFactory.createTypeNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 

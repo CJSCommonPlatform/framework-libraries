@@ -16,7 +16,9 @@ import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -40,6 +42,7 @@ public class ClassGeneratorIT {
     private final ClassCompiler classCompiler = new ClassCompiler();
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+    private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -67,10 +70,15 @@ public class ClassGeneratorIT {
         final ClassDefinition addressDefinition = addressDefinition();
         final ClassDefinition employeeDefinition = employeeDefinition(addressDefinition);
 
-        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(new ClassNameFactory(packageName));
+        final PluginProvider pluginProvider = new DefaultPluginProvider();
+
+        final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
+                .withGenerationContext(generationContext)
+                .withPluginProvider(pluginProvider)
+                .build();
 
         final List<? extends Class<?>> classes = javaGeneratorFactory
-                .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition), new DefaultPluginProvider())
+                .createClassGeneratorsFor(asList(addressDefinition, employeeDefinition), pluginProvider)
                 .stream()
                 .map(classGenerator -> {
                     sourceWriter.write(classGenerator, generationContext);

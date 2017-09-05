@@ -74,7 +74,7 @@ public class ClassGeneratorTest {
         when(javaGeneratorFactory.createGeneratorFor(fieldDefinition)).thenReturn(fieldGenerator);
         when(fieldGenerator.generateField()).thenReturn(fieldSpec);
         when(fieldGenerator.generateMethods()).thenReturn(Stream.of(methodSpec));
-        when(classNameFactory.createClassNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
+        when(classNameFactory.createTypeNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
 
         final ClassGenerator classGenerator = new ClassGenerator(classDefinition, javaGeneratorFactory, new DefaultPluginProvider(), classNameFactory);
         final TypeSpec typeSpec = classGenerator.generate();

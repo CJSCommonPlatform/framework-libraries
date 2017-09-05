@@ -1,85 +1,53 @@
 package uk.gov.justice.generation.pojo.generators;
 
-import static com.squareup.javapoet.ClassName.get;
-import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.capitalize;
-
-import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 public class ClassNameFactory {
 
-    private static final int FIRST_CHILD = 0;
-    private final String packageName;
+    private final TypeNameProvider typeNameProvider;
+    private final TypeNamePluginProcessor typeNamePluginProcessor;
 
-    public ClassNameFactory(final String packageName) {
-        this.packageName = packageName;
+    public ClassNameFactory(
+            final TypeNameProvider typeNameProvider,
+            final TypeNamePluginProcessor typeNamePluginProcessor) {
+        this.typeNameProvider = typeNameProvider;
+        this.typeNamePluginProcessor = typeNamePluginProcessor;
     }
 
-    public TypeName createClassNameFrom(final Definition definition) {
+    public TypeName createTypeNameFrom(final Definition definition) {
 
+        final TypeName typeName;
         switch (definition.type()) {
             case ARRAY:
-                return optionalTypeIfNotRequired(definition, arrayTypeName((ClassDefinition) definition));
+                typeName = typeNameProvider.typeNameForArray(definition, this);
+                break;
 
             case BOOLEAN:
-                return optionalTypeIfNotRequired(definition, get(Boolean.class));
+                typeName = typeNameProvider.typeNameForBoolean();
+                break;
 
             case INTEGER:
-                return optionalTypeIfNotRequired(definition, get(Integer.class));
+                typeName = typeNameProvider.typeNameForInteger();
+                break;
 
             case NUMBER:
-                return optionalTypeIfNotRequired(definition, get(BigDecimal.class));
+                typeName = typeNameProvider.typeNameForNumber();
+                break;
 
             case STRING:
-                return optionalTypeIfNotRequired(definition, classNameForStringType(((StringDefinition) definition).getDescription(), String.class));
+                typeName = typeNameProvider.typeNameForString(definition);
+                break;
 
+            case CLASS:
+            case ENUM:
+            case COMBINED:
             default:
-                return optionalTypeIfNotRequired(definition, get(packageName, capitalize(definition.getFieldName())));
-        }
-    }
-
-    private TypeName arrayTypeName(final ClassDefinition definition) {
-
-        if (definition.getFieldDefinitions().isEmpty()) {
-            throw new GenerationException(format("No definition present for array types. For field: %s", definition.getFieldName()));
+                typeName = typeNameProvider.typeNameForClass(definition);
         }
 
-        final Definition childDefinition = definition.getFieldDefinitions().get(FIRST_CHILD);
-        final TypeName typeName = createClassNameFrom(childDefinition);
-
-        return ParameterizedTypeName.get(get(List.class), typeName);
-    }
-
-    private TypeName optionalTypeIfNotRequired(final Definition definition, final TypeName typeName) {
-
-        if (!definition.isRequired()) {
-            return ParameterizedTypeName.get(get(Optional.class), typeName);
-        }
-        return typeName;
-    }
-
-    private ClassName classNameForStringType(final String description, final Class<?> defaultClass) {
-
-        if (UUID.class.getSimpleName().equals(description)) {
-            return get(UUID.class);
-        }
-
-        if (ZonedDateTime.class.getSimpleName().equals(description)) {
-            return get(ZonedDateTime.class);
-        }
-
-        return get(defaultClass);
+        return typeNamePluginProcessor.processTypeNamePlugins(typeName, definition);
     }
 }

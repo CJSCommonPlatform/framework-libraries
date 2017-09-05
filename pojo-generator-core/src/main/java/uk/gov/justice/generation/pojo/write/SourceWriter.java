@@ -23,7 +23,7 @@ public class SourceWriter {
             JavaFile.builder(packageName, typeSpec)
                     .build()
                     .writeTo(outputDirectory);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new SourceCodeWriteException(format("Failed to write java file to '%s' for '%s.%s.java'", outputDirectory, packageName, typeSpec.name), e);
         }
     }

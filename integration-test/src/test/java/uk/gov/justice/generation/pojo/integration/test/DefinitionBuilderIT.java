@@ -12,7 +12,9 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
@@ -75,7 +77,11 @@ public class DefinitionBuilderIT {
 
         final ClassDefinition personClassDefinition = (ClassDefinition) definitionBuilderVisitor.getDefinitions().get(0);
 
-        final ClassGeneratable personClassGenerator = new JavaGeneratorFactory(new ClassNameFactory(packageName))
+        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
+        final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(new DefaultPluginProvider());
+
+        final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
+        final ClassGeneratable personClassGenerator = new JavaGeneratorFactory(classNameFactory)
                 .createClassGeneratorsFor(singletonList(personClassDefinition), new DefaultPluginProvider())
                 .get(0);
 

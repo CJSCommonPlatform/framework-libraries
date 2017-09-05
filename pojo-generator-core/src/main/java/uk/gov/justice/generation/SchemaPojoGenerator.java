@@ -7,8 +7,10 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProviderFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.validation.FileNameValidator;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
@@ -44,7 +46,7 @@ public class SchemaPojoGenerator implements Generator<File> {
 
         final List<Definition> definitions = createDefinitions(source);
 
-        final List<ClassGeneratable> classGenerators = getClassGeneratorsFrom(generatorConfig, packageName, definitions);
+        final List<ClassGeneratable> classGenerators = getClassGeneratorsFrom(generatorConfig, generationContext, definitions);
 
         writeJavaClassesToFile(generationContext, classGenerators);
     }
@@ -61,9 +63,18 @@ public class SchemaPojoGenerator implements Generator<File> {
         return definitionBuilderVisitor.getDefinitions();
     }
 
-    private List<ClassGeneratable> getClassGeneratorsFrom(final GeneratorConfig generatorConfig, final String packageName, final List<Definition> definitions) {
-        final PluginProvider pluginProvider = new PluginProviderFactory().createFor(generatorConfig);
-        final ClassNameFactory classNameFactory = new ClassNameFactory(packageName);
+    private List<ClassGeneratable> getClassGeneratorsFrom(
+            final GeneratorConfig generatorConfig,
+            final GenerationContext generationContext,
+            final List<Definition> definitions) {
+
+        final PluginProviderFactory pluginProviderFactory = new PluginProviderFactory();
+        final PluginProvider pluginProvider = pluginProviderFactory.createFor(generatorConfig);
+
+        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
+        final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
+
+        final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
 
         final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(classNameFactory);
 

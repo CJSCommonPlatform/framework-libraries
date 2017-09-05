@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
 import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
 import uk.gov.justice.generation.pojo.validation.Validator;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
@@ -21,6 +22,7 @@ public class SchemaValidationIT {
 
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final SchemaValidatorVisitor schemaValidatorVisitor = new SchemaValidatorVisitor(new Validator());
+    private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
 
     @Test
     public void shouldFailValidationIfAnEnumContainsDiversTypesOfValues() throws Exception {

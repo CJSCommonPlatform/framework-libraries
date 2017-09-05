@@ -1,25 +1,25 @@
 package uk.gov.justice.generation.pojo.write;
 
+
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
-import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
+import javax.lang.model.element.Modifier;
+
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeSpec;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,11 +44,17 @@ public class SourceWriterTest {
     @Test
     public void shouldWriteASingleSourceFile() throws Exception {
         final String packageName = "org.bloggs.fred";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
-        final ClassDefinition addressDefinition = addressDefinition(packageName);
 
-        for (ClassGeneratable classGeneratable : new JavaGeneratorFactory(new ClassNameFactory(packageName))
-                .createClassGeneratorsFor(singletonList(addressDefinition), Collections::emptyList)) {
+        final TypeSpec helloWorld = simpleClassTypeSpec();
+
+        final ClassGeneratable classGenerator = mock(ClassGeneratable.class);
+        final GenerationContext generationContext = mock(GenerationContext.class);
+
+        when(classGenerator.generate()).thenReturn(helloWorld);
+        when(generationContext.getOutputDirectoryPath()).thenReturn(sourceOutputDirectory.toPath());
+        when(generationContext.getPackageName()).thenReturn(packageName);
+
+        for (final ClassGeneratable classGeneratable : singletonList(classGenerator)) {
             sourceWriter.write(classGeneratable, generationContext);
         }
 
@@ -59,29 +65,40 @@ public class SourceWriterTest {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void shouldThrowExceptionIfUnableToWriteJavaFile() throws Exception {
         final String packageName = "org.bloggs.fred";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
-        final ClassDefinition addressDefinition = addressDefinition(packageName);
+
+        final TypeSpec helloWorld = simpleClassTypeSpec();
+
+        final ClassGeneratable classGenerator = mock(ClassGeneratable.class);
+        final GenerationContext generationContext = mock(GenerationContext.class);
+
+        when(classGenerator.generate()).thenReturn(helloWorld);
+        when(generationContext.getOutputDirectoryPath()).thenReturn(sourceOutputDirectory.toPath());
+        when(generationContext.getPackageName()).thenReturn(packageName);
 
         sourceOutputDirectory.setWritable(false);
 
         try {
-            new JavaGeneratorFactory(new ClassNameFactory(packageName))
-                    .createClassGeneratorsFor(singletonList(addressDefinition), Collections::emptyList)
-                    .forEach(classGeneratable -> sourceWriter.write(classGeneratable, generationContext));
+            sourceWriter.write(classGenerator, generationContext);
 
             fail();
-        } catch (SourceCodeWriteException ex) {
+        } catch (final SourceCodeWriteException ex) {
             sourceOutputDirectory.setWritable(true);
             assertThat(ex.getMessage(), is("Failed to write java file to './target/test-generation' for 'org.bloggs.fred.Address.java'"));
             assertThat(ex.getCause(), is(instanceOf(IOException.class)));
         }
     }
 
-    private ClassDefinition addressDefinition(final String packageName) {
-        final ClassDefinition addressDefinition = new ClassDefinition(CLASS, "address");
-        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "firstLine"));
-        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "postCode"));
+    private TypeSpec simpleClassTypeSpec() {
+        final MethodSpec main = MethodSpec.methodBuilder("main")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .returns(void.class)
+                .addParameter(String[].class, "args")
+                .addStatement("$T.out.println($S)", System.class, "Hello, JavaPoet!")
+                .build();
 
-        return addressDefinition;
+        return TypeSpec.classBuilder("Address")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addMethod(main)
+                .build();
     }
 }

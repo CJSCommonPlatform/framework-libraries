@@ -34,7 +34,7 @@ public class FieldGeneratorTest {
         when(fieldDefinition.type()).thenReturn(BOOLEAN);
         when(fieldDefinition.getFieldName()).thenReturn("fieldName");
         when(fieldDefinition.isRequired()).thenReturn(true);
-        when(classNameFactory.createClassNameFrom(fieldDefinition)).thenReturn(ClassName.get(Boolean.class));
+        when(classNameFactory.createTypeNameFrom(fieldDefinition)).thenReturn(ClassName.get(Boolean.class));
 
         final FieldGenerator fieldGenerator = new FieldGenerator(fieldDefinition, classNameFactory);
         final FieldSpec fieldSpec = fieldGenerator.generateField();
@@ -51,7 +51,7 @@ public class FieldGeneratorTest {
         when(stringDefinition.getFieldName()).thenReturn("firstName");
         when(stringDefinition.getDescription()).thenReturn(null);
         when(stringDefinition.isRequired()).thenReturn(true);
-        when(classNameFactory.createClassNameFrom(stringDefinition)).thenReturn(ClassName.get(String.class));
+        when(classNameFactory.createTypeNameFrom(stringDefinition)).thenReturn(ClassName.get(String.class));
 
         final FieldGenerator fieldGenerator = new FieldGenerator(stringDefinition, classNameFactory);
         final List<MethodSpec> methodSpecs = fieldGenerator.generateMethods().collect(toList());

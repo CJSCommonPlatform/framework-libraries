@@ -9,7 +9,6 @@ import static org.junit.Assert.assertThat;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
-import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
@@ -69,7 +68,7 @@ public class ArrayIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
         final String packageName = "uk.gov.justice.pojo.arrays";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, jsonSchemaFile.getName());
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
@@ -87,7 +86,7 @@ public class ArrayIT {
                 .build();
 
         javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider)
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, generationContext)
                 .forEach(classGeneratable -> {
                     sourceWriter.write(classGeneratable, generationContext);
                     final Class<?> newClass = classCompiler.compile(classGeneratable, generationContext, classesOutputDirectory);

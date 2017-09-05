@@ -13,11 +13,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 
 import java.util.stream.Stream;
 
@@ -40,11 +40,20 @@ public class ClassGeneratorTest {
     @Mock
     private ClassNameFactory classNameFactory;
 
+    @Mock
+    private GenerationContext generationContext;
+
     @Test
     public void shouldGenerateTypeSpecForClassDefinitionWithNoFields() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
 
-        final ClassGenerator classGenerator = new ClassGenerator(classDefinition, javaGeneratorFactory, new DefaultPluginProvider(), classNameFactory);
+        final ClassGenerator classGenerator = new ClassGenerator(
+                classDefinition,
+                javaGeneratorFactory,
+                new DefaultPluginProvider(),
+                classNameFactory,
+                generationContext);
+
         final TypeSpec typeSpec = classGenerator.generate();
 
         assertThat(typeSpec.annotations.isEmpty(), is(true));
@@ -76,7 +85,13 @@ public class ClassGeneratorTest {
         when(fieldGenerator.generateMethods()).thenReturn(Stream.of(methodSpec));
         when(classNameFactory.createTypeNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
 
-        final ClassGenerator classGenerator = new ClassGenerator(classDefinition, javaGeneratorFactory, new DefaultPluginProvider(), classNameFactory);
+        final ClassGenerator classGenerator = new ClassGenerator(
+                classDefinition,
+                javaGeneratorFactory,
+                new DefaultPluginProvider(),
+                classNameFactory,
+                generationContext);
+
         final TypeSpec typeSpec = classGenerator.generate();
 
         assertThat(typeSpec.name, is("Address"));
@@ -99,7 +114,12 @@ public class ClassGeneratorTest {
     public void shouldReturnClassName() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
 
-        final ClassGenerator classGenerator = new ClassGenerator(classDefinition, javaGeneratorFactory, mock(PluginProvider.class), classNameFactory);
+        final ClassGenerator classGenerator = new ClassGenerator(
+                classDefinition,
+                javaGeneratorFactory,
+                new DefaultPluginProvider(),
+                classNameFactory,
+                generationContext);
 
         assertThat(classGenerator.getClassName(), is("Address"));
     }

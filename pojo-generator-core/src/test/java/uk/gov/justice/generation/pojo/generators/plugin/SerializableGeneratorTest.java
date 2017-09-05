@@ -7,10 +7,10 @@ import static javax.lang.model.element.Modifier.STATIC;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -22,20 +22,28 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SerializableGeneratorTest {
 
+    @Mock
+    private JavaGeneratorFactory generatorFactory;
+
+    @Mock
+    private ClassNameFactory classNameFactory;
+
+    @Mock
+    private GenerationContext generationContext;
+
     @Test
     public void shouldAddSerializationToTypeSpec() throws Exception {
-        final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS,"address");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new SerializableGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory);
+        new SerializableGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory, generationContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

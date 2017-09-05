@@ -54,8 +54,9 @@ public class SourceWriterIT {
     public void shouldWriteASingleSourceFile() throws Exception {
 
         final String packageName = "org.bloggs.fred";
+        final String sourceFilename = "filename.json";
         final ClassDefinition addressDefinition = addressDefinition(packageName);
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, sourceFilename);
         final PluginProvider pluginProvider = new DefaultPluginProvider();
 
         final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
@@ -64,7 +65,7 @@ public class SourceWriterIT {
                 .build();
 
         final ClassGeneratable addressGenerator = javaGeneratorFactory
-                .createClassGeneratorsFor(singletonList(addressDefinition), pluginProvider)
+                .createClassGeneratorsFor(singletonList(addressDefinition), pluginProvider, generationContext)
                 .get(0);
 
         sourceWriter.write(addressGenerator, generationContext);

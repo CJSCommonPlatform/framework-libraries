@@ -66,7 +66,7 @@ public class DefinitionBuilderIT {
         final Schema schema = schemaLoader.loadFrom(schemaFile);
         final String fieldName = nameGenerator.rootFieldNameFrom(schemaFile);
         final String packageName = "uk.gov.justice.pojo.definition.builder";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName);
+        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, schemaFile.getName());
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
@@ -82,7 +82,7 @@ public class DefinitionBuilderIT {
 
         final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
         final ClassGeneratable personClassGenerator = new JavaGeneratorFactory(classNameFactory)
-                .createClassGeneratorsFor(singletonList(personClassDefinition), new DefaultPluginProvider())
+                .createClassGeneratorsFor(singletonList(personClassDefinition), new DefaultPluginProvider(), generationContext)
                 .get(0);
 
         sourceWriter.write(personClassGenerator, generationContext);

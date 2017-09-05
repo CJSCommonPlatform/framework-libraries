@@ -6,9 +6,7 @@ import org.everit.json.schema.Schema;
 
 public interface DefinitionFactory {
 
-    Definition constructDefinitionWithEventFor(String fieldName, Schema schema);
+    Definition constructRootClassDefinition(final String fieldName);
 
-    Definition constructDefinitionFor(String fieldName, Schema schema);
-
-    Definition constructFieldDefinition(String fieldName, Schema schema);
+    Definition constructDefinitionFor(final String fieldName, final Schema schema);
 }

@@ -12,10 +12,6 @@ public class CombinedDefinition extends ClassDefinition {
         super(COMBINED, fieldName);
     }
 
-    public CombinedDefinition(final String fieldName, final String eventName) {
-        super(COMBINED, fieldName, eventName);
-    }
-
     @Override
     public List<Definition> getFieldDefinitions() {
         return super.getFieldDefinitions().stream()

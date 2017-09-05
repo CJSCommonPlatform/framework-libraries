@@ -61,7 +61,7 @@ public class EnumGeneratorTest {
 
         final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition);
 
-        assertThat(enumGenerator.getClassName(), is("Title"));
+        assertThat(enumGenerator.getSimpleClassName(), is("Title"));
 
     }
 

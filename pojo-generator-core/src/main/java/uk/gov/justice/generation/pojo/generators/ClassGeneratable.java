@@ -6,5 +6,5 @@ public interface ClassGeneratable {
 
     TypeSpec generate();
 
-    String getClassName();
+    String getSimpleClassName();
 }

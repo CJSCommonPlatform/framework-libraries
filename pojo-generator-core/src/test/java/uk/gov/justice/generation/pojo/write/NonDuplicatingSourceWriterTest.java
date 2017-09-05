@@ -49,7 +49,7 @@ public class NonDuplicatingSourceWriterTest {
         final Logger logger = mock(Logger.class);
 
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
-        when(classGenerator.getClassName()).thenReturn(className);
+        when(classGenerator.getSimpleClassName()).thenReturn(className);
         when(javaSourceFileProvider.getJavaFile(generationContext, className)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(false).thenReturn(true);
         when(generationContext.getLoggerFor(NonDuplicatingSourceWriter.class)).thenReturn(logger);
@@ -75,7 +75,7 @@ public class NonDuplicatingSourceWriterTest {
 
         when(generationContext.getLoggerFor(NonDuplicatingSourceWriter.class)).thenReturn(logger);
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
-        when(classGenerator.getClassName()).thenReturn(className);
+        when(classGenerator.getSimpleClassName()).thenReturn(className);
         when(javaSourceFileProvider.getJavaFile(generationContext, className)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(true);
         when(sourceFile.getAbsolutePath()).thenReturn("org/test/MyExistingPojo.java");
@@ -99,7 +99,7 @@ public class NonDuplicatingSourceWriterTest {
         final Logger logger = mock(Logger.class);
 
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
-        when(classGenerator.getClassName()).thenReturn(className);
+        when(classGenerator.getSimpleClassName()).thenReturn(className);
         when(javaSourceFileProvider.getJavaFile(generationContext, className)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(false).thenReturn(false);
         when(generationContext.getLoggerFor(NonDuplicatingSourceWriter.class)).thenReturn(logger);

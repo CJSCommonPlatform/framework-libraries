@@ -14,6 +14,6 @@ public class ClassCompiler {
             final File classesOutputDirectory) {
 
         final JavaCompilerUtil compiler = new JavaCompilerUtil(generationContext.getOutputDirectoryPath().toFile(), classesOutputDirectory);
-        return compiler.compiledClassOf(generationContext.getPackageName(), classGenerator.getClassName());
+        return compiler.compiledClassOf(generationContext.getPackageName(), classGenerator.getSimpleClassName());
     }
 }

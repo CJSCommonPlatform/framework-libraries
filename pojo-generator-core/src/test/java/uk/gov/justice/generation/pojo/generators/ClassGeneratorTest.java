@@ -1,33 +1,24 @@
 package uk.gov.justice.generation.pojo.generators;
 
-import static com.squareup.javapoet.FieldSpec.builder;
-import static com.squareup.javapoet.MethodSpec.constructorBuilder;
-import static com.squareup.javapoet.MethodSpec.methodBuilder;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.PUBLIC;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.hasItems;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
-import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 
-import java.util.stream.Stream;
-
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -35,7 +26,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ClassGeneratorTest {
 
     @Mock
+    private ClassDefinition classDefinition;
+
+    @Mock
     private JavaGeneratorFactory javaGeneratorFactory;
+
+    @Mock
+    private PluginProvider pluginProvider;
 
     @Mock
     private ClassNameFactory classNameFactory;
@@ -43,84 +40,51 @@ public class ClassGeneratorTest {
     @Mock
     private GenerationContext generationContext;
 
+    @InjectMocks
+    private ClassGenerator classGenerator;
+
     @Test
-    public void shouldGenerateTypeSpecForClassDefinitionWithNoFields() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
+    public void shouldCaplitalizeTheFieldNameToUseAsTheClassName() throws Exception {
 
-        final ClassGenerator classGenerator = new ClassGenerator(
-                classDefinition,
-                javaGeneratorFactory,
-                new DefaultPluginProvider(),
-                classNameFactory,
-                generationContext);
+        when(pluginProvider.pluginClassGenerators()).thenReturn(emptyList());
+        when(classDefinition.getFieldName()).thenReturn("alcubierreDrive");
 
-        final TypeSpec typeSpec = classGenerator.generate();
+        classGenerator.generate();
 
-        assertThat(typeSpec.annotations.isEmpty(), is(true));
-        assertThat(typeSpec.name, is("Address"));
-        assertThat(typeSpec.modifiers.size(), is(1));
-        assertThat(typeSpec.modifiers, hasItem(PUBLIC));
-        assertThat(typeSpec.fieldSpecs.size(), is(1));
-        assertThat(typeSpec.methodSpecs.size(), is(1));
-        assertThat(typeSpec.methodSpecs, hasItem(constructorBuilder().addModifiers(PUBLIC).build()));
+        assertThat(classGenerator.getSimpleClassName(), is("AlcubierreDrive"));
     }
 
     @Test
-    public void shouldGenerateTypeSpecForClassDefinitionWithOneField() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
-        final FieldDefinition fieldDefinition = new StringDefinition("field", null);
-        classDefinition.addFieldDefinition(fieldDefinition);
+    public void shouldGenerateAnEmptyClassAndUseThePluginsToGenerateTheClassInternals() throws Exception {
 
-        final FieldSpec fieldSpec = builder(String.class, "field").build();
-        final MethodSpec methodSpec = methodBuilder("getField")
-                .addModifiers(PUBLIC)
-                .returns(String.class)
-                .addCode(CodeBlock.builder().addStatement("return $L", "field").build())
-                .build();
+        final PluginClassGeneratable plugin_1 = mock(PluginClassGeneratable.class, "plugin_1");
+        final PluginClassGeneratable plugin_2 = mock(PluginClassGeneratable.class, "plugin_2");
+        final PluginClassGeneratable plugin_3 = mock(PluginClassGeneratable.class, "plugin_3");
 
-        final FieldGenerator fieldGenerator = mock(FieldGenerator.class);
+        when(pluginProvider.pluginClassGenerators()).thenReturn(asList(plugin_1, plugin_2, plugin_3));
+        when(classDefinition.getFieldName()).thenReturn("alcubierreDrive");
 
-        when(javaGeneratorFactory.createGeneratorFor(fieldDefinition)).thenReturn(fieldGenerator);
-        when(fieldGenerator.generateField()).thenReturn(fieldSpec);
-        when(fieldGenerator.generateMethods()).thenReturn(Stream.of(methodSpec));
-        when(classNameFactory.createTypeNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
+        final TypeSpec classSpec = classGenerator.generate();
 
-        final ClassGenerator classGenerator = new ClassGenerator(
-                classDefinition,
-                javaGeneratorFactory,
-                new DefaultPluginProvider(),
-                classNameFactory,
-                generationContext);
+        assertThat(classSpec.toString(), is("public class AlcubierreDrive {\n}\n"));
 
-        final TypeSpec typeSpec = classGenerator.generate();
-
-        assertThat(typeSpec.name, is("Address"));
-        assertThat(typeSpec.modifiers.size(), is(1));
-        assertThat(typeSpec.modifiers, hasItem(PUBLIC));
-        assertThat(typeSpec.fieldSpecs.size(), is(2));
-        assertThat(typeSpec.fieldSpecs, hasItem(fieldSpec));
-        assertThat(typeSpec.methodSpecs.size(), is(2));
-        assertThat(typeSpec.methodSpecs, hasItems(
-                constructorBuilder()
-                        .addModifiers(PUBLIC)
-                        .addParameter(String.class, "field", FINAL)
-                        .addStatement("this.field = field")
-                        .build(),
-                methodSpec)
-        );
-    }
-
-    @Test
-    public void shouldReturnClassName() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
-
-        final ClassGenerator classGenerator = new ClassGenerator(
-                classDefinition,
-                javaGeneratorFactory,
-                new DefaultPluginProvider(),
-                classNameFactory,
-                generationContext);
-
-        assertThat(classGenerator.getClassName(), is("Address"));
+        verify(plugin_1).generateWith(
+                any(TypeSpec.Builder.class),
+                eq(classDefinition),
+                eq(javaGeneratorFactory),
+                eq(classNameFactory),
+                eq(generationContext));
+        verify(plugin_2).generateWith(
+                any(TypeSpec.Builder.class),
+                eq(classDefinition),
+                eq(javaGeneratorFactory),
+                eq(classNameFactory),
+                eq(generationContext));
+        verify(plugin_3).generateWith(
+                any(TypeSpec.Builder.class),
+                eq(classDefinition),
+                eq(javaGeneratorFactory),
+                eq(classNameFactory),
+                eq(generationContext));
     }
 }

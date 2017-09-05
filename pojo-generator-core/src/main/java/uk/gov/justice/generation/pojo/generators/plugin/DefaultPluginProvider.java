@@ -3,6 +3,9 @@ package uk.gov.justice.generation.pojo.generators.plugin;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
+import uk.gov.justice.generation.pojo.generators.plugin.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.builder.BuilderPlugin;
+
 import java.util.List;
 
 public class DefaultPluginProvider implements PluginProvider {
@@ -12,7 +15,8 @@ public class DefaultPluginProvider implements PluginProvider {
         return asList(
                 new EventAnnotationGenerator(),
                 new SerializableGenerator(),
-                new FieldAndMethodGenerator());
+                new FieldAndMethodGenerator(),
+                new BuilderPlugin(new BuilderGeneratorFactory()));
     }
 
     @Override

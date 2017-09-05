@@ -49,8 +49,6 @@ public class DefaultDefinitionFactoryTest {
     @Test
     public void shouldConstructRootClassDefinition() throws Exception {
         final String fieldName = "fieldName";
-        final ObjectSchema objectSchema = ObjectSchema.builder().build();
-
         final Definition definition = new DefaultDefinitionFactory().constructRootClassDefinition(fieldName);
 
         assertThat(definition, is(instanceOf(ClassDefinition.class)));

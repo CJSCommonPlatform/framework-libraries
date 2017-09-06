@@ -17,17 +17,13 @@ public class NameGenerator {
 
         final String name = getNameFrom(fileName);
 
-        if (name.contains(".") || name.isEmpty()) {
+        if (name.isEmpty()) {
             throw new SchemaLoadingException(format("Failed to load json schema file '%s'. File name is invalid", jsonSchemaFile.getAbsolutePath()));
         }
 
         final String className = Stream.of(name.split("-")).map(StringUtils::capitalize).collect(joining());
 
         return uncapitalize(className);
-    }
-
-    public String eventNameFrom(final File jsonSchemaFile) {
-        return getValidFileNameWithNoExtension(jsonSchemaFile);
     }
 
     private String getValidFileNameWithNoExtension(final File jsonSchemaFile) {

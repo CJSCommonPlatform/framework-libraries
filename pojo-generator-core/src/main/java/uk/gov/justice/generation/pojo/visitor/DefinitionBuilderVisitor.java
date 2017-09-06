@@ -10,7 +10,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Optional;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
@@ -48,7 +47,7 @@ public class DefinitionBuilderVisitor implements Visitor {
         definition.setAllowAdditionalProperties(schema.permitsAdditionalProperties());
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
 
-        definitions.push(new Entry(schema, definition));
+        definitions.push(new Entry(fieldName, schema, definition));
     }
 
     @Override
@@ -62,7 +61,7 @@ public class DefinitionBuilderVisitor implements Visitor {
 
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
 
-        final Entry entry = new Entry(schema, definition, fieldName);
+        final Entry entry = new Entry(fieldName, schema, definition);
         definitions.push(entry);
         combinedDefinitions.push(entry);
     }
@@ -71,7 +70,7 @@ public class DefinitionBuilderVisitor implements Visitor {
     public void leave(final CombinedSchema schema) {
         addFieldDefinitionsFor(schema, emptyList());
 
-        if (!combinedDefinitions.isEmpty() && combinedDefinitions.peek().getSchema() == schema) {
+        if (combinedDefinitions.peek().getSchema() == schema) {
             combinedDefinitions.pop();
         }
     }
@@ -79,7 +78,7 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void enter(final String fieldName, final ArraySchema schema) {
         final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
-        definitions.push(new Entry(schema, definition));
+        definitions.push(new Entry(fieldName, schema, definition));
     }
 
     @Override
@@ -96,7 +95,7 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void enter(final String fieldName, final ReferenceSchema schema) {
         final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
-        definitions.push(new Entry(schema, definition));
+        definitions.push(new Entry(fieldName, schema, definition));
     }
 
     @Override
@@ -112,23 +111,26 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final StringSchema schema) {
-        definitions.push(new Entry(schema, definitionFactory.constructDefinitionFor(fieldName, schema)));
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
+        definitions.push(new Entry(fieldName, schema, definition));
     }
 
     @Override
     public void visit(final String fieldName, final BooleanSchema schema) {
-        definitions.push(new Entry(schema, definitionFactory.constructDefinitionFor(fieldName, schema)));
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
+        definitions.push(new Entry(fieldName, schema, definition));
     }
 
     @Override
     public void visit(final String fieldName, final NumberSchema schema) {
-        definitions.push(new Entry(schema, definitionFactory.constructDefinitionFor(fieldName, schema)));
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
+        definitions.push(new Entry(fieldName, schema, definition));
     }
 
     @Override
     public void visit(final String fieldName, final EnumSchema schema) {
         final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
-        definitions.push(new Entry(schema, definition));
+        definitions.push(new Entry(fieldName, schema, definition));
         classDefinitions.add(definition);
     }
 
@@ -143,9 +145,9 @@ public class DefinitionBuilderVisitor implements Visitor {
     }
 
     private boolean combinedFieldNameEqualTo(final String fieldName) {
-        final Optional<String> combinedFieldName = combinedDefinitions.peek().fieldName;
+        final String combinedFieldName = combinedDefinitions.peek().fieldName;
 
-        return combinedFieldName.isPresent() && combinedFieldName.get().equals(fieldName);
+        return combinedFieldName.equals(fieldName);
     }
 
     private void addFieldDefinitionsFor(final Schema schema, final List<String> requiredFields) {
@@ -172,18 +174,12 @@ public class DefinitionBuilderVisitor implements Visitor {
 
         private final Schema schema;
         private final Definition definition;
-        private final Optional<String> fieldName;
+        private final String fieldName;
 
-        Entry(final Schema schema, final Definition definition) {
+        Entry(final String fieldName, final Schema schema, final Definition definition) {
             this.schema = schema;
             this.definition = definition;
-            this.fieldName = Optional.empty();
-        }
-
-        Entry(final Schema schema, final Definition definition, final String fieldName) {
-            this.schema = schema;
-            this.definition = definition;
-            this.fieldName = Optional.ofNullable(fieldName);
+            this.fieldName = fieldName;
         }
 
         Schema getSchema() {

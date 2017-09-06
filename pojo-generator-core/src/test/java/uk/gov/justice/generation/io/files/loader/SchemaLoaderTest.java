@@ -31,7 +31,7 @@ public class SchemaLoaderTest {
     }
 
     @Test
-    public void shouldLoadThrowExceptionIfFileDoesNotExist() throws Exception {
+    public void shouldThrowExceptionIfFileDoesNotExist() throws Exception {
         expectedException.expect(SchemaLoaderException.class);
         expectedException.expectMessage("File failed to load: src/test/resources/schemas/unknown-file.json");
         expectedException.expectCause(isA(FileNotFoundException.class));

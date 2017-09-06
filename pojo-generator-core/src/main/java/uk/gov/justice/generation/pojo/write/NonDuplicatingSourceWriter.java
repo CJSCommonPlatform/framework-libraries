@@ -24,7 +24,7 @@ public class NonDuplicatingSourceWriter {
         final Logger logger = generationContext.getLoggerFor(getClass());
         final File sourceFile = javaSourceFileProvider.getJavaFile(
                 generationContext,
-                classGeneratable.getClassName());
+                classGeneratable.getSimpleClassName());
 
         if (!sourceFile.exists()) {
             sourceWriter.write(classGeneratable, generationContext);

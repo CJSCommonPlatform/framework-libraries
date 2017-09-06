@@ -60,6 +60,7 @@ public class DefinitionBuilderIT {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void shouldBuildTypeSpecFromSchema() throws Exception {
         final File schemaFile = new File("src/test/resources/schemas/person-schema.json");
@@ -109,5 +110,6 @@ public class DefinitionBuilderIT {
         ;
 
         schema.validate(new JSONObject(personJson));
+
     }
 }

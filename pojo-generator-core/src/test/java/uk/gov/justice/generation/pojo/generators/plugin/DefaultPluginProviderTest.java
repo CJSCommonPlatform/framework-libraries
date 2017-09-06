@@ -6,6 +6,8 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.generation.pojo.generators.plugin.builder.BuilderPlugin;
+
 import java.util.List;
 
 import org.junit.Test;
@@ -17,11 +19,14 @@ public class DefaultPluginProviderTest {
     public void shouldProvideDefaultListOfPluginClassGenerators() throws Exception {
         final List<PluginClassGeneratable> pluginClassGenerators = new DefaultPluginProvider().pluginClassGenerators();
 
-        assertThat(pluginClassGenerators.size(), is(3));
+        assertThat(pluginClassGenerators.size(), is(4));
         assertThat(pluginClassGenerators, hasItems(
                 instanceOf(EventAnnotationGenerator.class),
                 instanceOf(SerializableGenerator.class),
-                instanceOf(FieldAndMethodGenerator.class)));
+                instanceOf(FieldAndMethodGenerator.class),
+                instanceOf(BuilderPlugin.class)
+                )
+        );
     }
 
     @Test

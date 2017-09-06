@@ -57,7 +57,7 @@ public class EnumGenerator implements ClassGeneratable {
     }
 
     @Override
-    public String getClassName() {
+    public String getSimpleClassName() {
         return className;
     }
 

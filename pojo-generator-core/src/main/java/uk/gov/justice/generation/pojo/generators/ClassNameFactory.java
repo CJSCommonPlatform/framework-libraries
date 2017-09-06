@@ -37,13 +37,18 @@ public class ClassNameFactory {
                 typeName = typeNameProvider.typeNameForNumber();
                 break;
 
+            case REFERENCE:
+                typeName = typeNameProvider.typeNameForReference(definition, this);
+                break;
+
             case STRING:
-                typeName = typeNameProvider.typeNameForString(definition);
+                typeName = typeNameProvider.typeNameForString();
                 break;
 
             case CLASS:
             case ENUM:
             case COMBINED:
+            case ROOT:
             default:
                 typeName = typeNameProvider.typeNameForClass(definition);
         }

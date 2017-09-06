@@ -7,7 +7,7 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -41,20 +41,28 @@ public class TypeNameProvider {
         return ParameterizedTypeName.get(get(List.class), typeName);
     }
 
-    public TypeName typeNameForString(final Definition definition) {
+    public TypeName typeNameForReference(final Definition definition, final ClassNameFactory classNameFactory) {
+        final ReferenceDefinition referenceDefinition = (ReferenceDefinition) definition;
 
-        final StringDefinition stringDefinition = (StringDefinition) definition;
+        if (referenceDefinition.getFieldDefinitions().isEmpty()) {
+            throw new GenerationException(format("No definition present for reference type. For field: %s", referenceDefinition.getFieldName()));
+        }
 
-        final String description = stringDefinition.getDescription();
+        final String referenceValue = referenceDefinition.getReferenceValue();
 
-        if (UUID.class.getSimpleName().equals(description)) {
+        if (referenceValue.endsWith(UUID.class.getSimpleName())) {
             return get(UUID.class);
         }
 
-        if (ZonedDateTime.class.getSimpleName().equals(description)) {
+        if (referenceValue.endsWith(ZonedDateTime.class.getSimpleName())) {
             return get(ZonedDateTime.class);
         }
 
+        final Definition childDefinition = referenceDefinition.getFieldDefinitions().get(FIRST_CHILD);
+        return classNameFactory.createTypeNameFrom(childDefinition);
+    }
+
+    public TypeName typeNameForString() {
         return get(String.class);
     }
 

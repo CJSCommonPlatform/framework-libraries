@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.dom;
 
 import static java.util.Collections.emptyList;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -17,6 +18,7 @@ public class EnumDefinitionTest {
 
         final EnumDefinition enumDefinition = new EnumDefinition(fieldName, enumValues);
 
+        assertThat(enumDefinition, is(instanceOf(FieldDefinition.class)));
         assertThat(enumDefinition.getFieldName(), is(fieldName));
         assertThat(enumDefinition.getEnumValues(), is(enumValues));
     }

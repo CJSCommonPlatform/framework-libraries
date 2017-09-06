@@ -18,6 +18,7 @@ import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
 
@@ -83,6 +84,23 @@ public class DefinitionBuilderVisitor implements Visitor {
 
     @Override
     public void leave(final ArraySchema schema) {
+        final Deque<Definition> fieldDefinitions = getChildDefinitionsFor(schema);
+
+        final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();
+        fieldDefinitions.forEach(fieldDefinition -> {
+            fieldDefinition.setRequired(true);
+            classDefinition.addFieldDefinition(fieldDefinition);
+        });
+    }
+
+    @Override
+    public void enter(final String fieldName, final ReferenceSchema schema) {
+        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
+        definitions.push(new Entry(schema, definition));
+    }
+
+    @Override
+    public void leave(final ReferenceSchema schema) {
         final Deque<Definition> fieldDefinitions = getChildDefinitionsFor(schema);
 
         final ClassDefinition classDefinition = (ClassDefinition) definitions.peek().getDefinition();

@@ -15,10 +15,10 @@ public class CombinedDefinition extends ClassDefinition {
     @Override
     public List<Definition> getFieldDefinitions() {
         return super.getFieldDefinitions().stream()
-                .flatMap(this::getStream).collect(toList());
+                .flatMap(this::asStreamOfDefinitions).collect(toList());
     }
 
-    private Stream<Definition> getStream(final Definition definition) {
+    private Stream<Definition> asStreamOfDefinitions(final Definition definition) {
         if (definition instanceof ClassDefinition) {
             return ((ClassDefinition) definition).getFieldDefinitions().stream();
         } else {

@@ -16,7 +16,9 @@ public class ReferenceAcceptor implements Acceptable {
     @Override
     public void accept(final String fieldName, final Visitor visitor, final Schema schema) {
         final ReferenceSchema referenceSchema = (ReferenceSchema) schema;
-        final Schema referredSchema = referenceSchema.getReferredSchema();
-        acceptorFactory.visitSchema(fieldName, visitor, referredSchema);
+
+        visitor.enter(fieldName, referenceSchema);
+        acceptorFactory.visitSchema(fieldName, visitor, referenceSchema.getReferredSchema());
+        visitor.leave(referenceSchema);
     }
 }

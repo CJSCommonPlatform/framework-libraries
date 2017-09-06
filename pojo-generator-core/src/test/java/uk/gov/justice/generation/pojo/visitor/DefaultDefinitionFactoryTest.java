@@ -13,6 +13,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.COMBINED;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ENUM;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.REFERENCE;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
@@ -22,6 +23,7 @@ import uk.gov.justice.generation.pojo.dom.CombinedDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
@@ -29,6 +31,7 @@ import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
 import org.junit.Rule;
@@ -151,6 +154,20 @@ public class DefaultDefinitionFactoryTest {
         assertThat(definition, is(instanceOf(FieldDefinition.class)));
         assertThat(definition.type(), is(INTEGER));
         assertThat(definition.getFieldName(), is(fieldName));
+    }
+
+    @Test
+    public void shouldConstructReferenceDefinition() throws Exception {
+        final String fieldName = "fieldName";
+        final String referenceValue = "reference value";
+        final ReferenceSchema referenceSchema = ReferenceSchema.builder().refValue(referenceValue).build();
+
+        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, referenceSchema);
+
+        assertThat(definition, is(instanceOf(ReferenceDefinition.class)));
+        assertThat(definition.type(), is(REFERENCE));
+        assertThat(definition.getFieldName(), is(fieldName));
+        assertThat(((ReferenceDefinition) definition).getReferenceValue(), is(referenceValue));
     }
 
     @Test

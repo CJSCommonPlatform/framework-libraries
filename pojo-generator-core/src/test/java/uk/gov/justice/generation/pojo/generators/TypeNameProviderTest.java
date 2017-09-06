@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -34,14 +34,12 @@ public class TypeNameProviderTest {
     @Test
     public void shouldGetTheCorrectTypeNameForAnArray() throws Exception {
 
-        final String packageName = "org.bloggs.fred";
         final ClassName stringTypeName = get(String.class);
 
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
         final Definition childDefinition = mock(Definition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        when(generationContext.getPackageName()).thenReturn(packageName);
         when(classDefinition.getFieldDefinitions()).thenReturn(singletonList(childDefinition));
         when(classNameFactory.createTypeNameFrom(childDefinition)).thenReturn(stringTypeName);
 
@@ -51,14 +49,11 @@ public class TypeNameProviderTest {
     }
 
     @Test
-    public void shouldFailIfNoChildDefinintionsWhenGettingTheCorrectTypeNameForAnArray() throws Exception {
-
-        final String packageName = "org.bloggs.fred";
+    public void shouldFailIfNoChildDefinitionsWhenGettingTheCorrectTypeNameForAnArray() throws Exception {
 
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        when(generationContext.getPackageName()).thenReturn(packageName);
         when(classDefinition.getFieldDefinitions()).thenReturn(emptyList());
         when(classDefinition.getFieldName()).thenReturn("myListOfStringsField");
 
@@ -71,35 +66,76 @@ public class TypeNameProviderTest {
     }
 
     @Test
-    public void shouldGetTheCorrectTypeNameForAString() throws Exception {
+    public void shouldGReturnCorrectTypeNameForReference() throws Exception {
 
-        final StringDefinition stringDefinition = mock(StringDefinition.class);
+        final ClassName stringTypeName = get(String.class);
 
-        final TypeName typeName = typeNameProvider.typeNameForString(stringDefinition);
+        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
+        final Definition referredDefinition = mock(Definition.class);
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+
+        when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
+        when(classNameFactory.createTypeNameFrom(referredDefinition)).thenReturn(stringTypeName);
+        when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/date");
+
+        final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
 
         assertThat(typeName.toString(), is("java.lang.String"));
     }
 
     @Test
-    public void shouldConvertAStringDefinitionToAUuidIfTheDescriptionIsUuid() throws Exception {
+    public void shouldFailIfNoReferredDefinitionInReference() throws Exception {
 
-        final StringDefinition stringDefinition = mock(StringDefinition.class);
-        when(stringDefinition.getDescription()).thenReturn("UUID");
+        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        final TypeName typeName = typeNameProvider.typeNameForString(stringDefinition);
+        when(referenceDefinition.getFieldDefinitions()).thenReturn(emptyList());
+        when(referenceDefinition.getFieldName()).thenReturn("startDate");
+
+        try {
+            typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
+            fail();
+        } catch (final GenerationException expected) {
+            assertThat(expected.getMessage(), is("No definition present for reference type. For field: startDate"));
+        }
+    }
+
+    @Test
+    public void shouldReturnUuidIfEndOfReferenceValueMapsToUuidClassName() throws Exception {
+
+        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
+        final Definition referredDefinition = mock(Definition.class);
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+
+        when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
+        when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/UUID");
+
+        final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
 
         assertThat(typeName.toString(), is("java.util.UUID"));
     }
 
     @Test
-    public void shouldConvertAStringDefinitionToAZonedDateTimeIfTheDescriptionIsZonedDateTime() throws Exception {
+    public void shouldReturnUuidIfEndOfReferenceValueMapsToZonedDateTimeClassName() throws Exception {
 
-        final StringDefinition stringDefinition = mock(StringDefinition.class);
-        when(stringDefinition.getDescription()).thenReturn("ZonedDateTime");
+        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
+        final Definition referredDefinition = mock(Definition.class);
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        final TypeName typeName = typeNameProvider.typeNameForString(stringDefinition);
+        when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
+        when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/ZonedDateTime");
+
+        final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
 
         assertThat(typeName.toString(), is("java.time.ZonedDateTime"));
+    }
+
+    @Test
+    public void shouldGetTheCorrectTypeNameForAString() throws Exception {
+
+        final TypeName typeName = typeNameProvider.typeNameForString();
+
+        assertThat(typeName.toString(), is("java.lang.String"));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.dom;
 
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -17,11 +18,13 @@ public class ClassDefinitionTest {
     public void shouldReturnFieldNameUsedInConstruction() throws Exception {
         final String fieldName = "test";
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName);
+
+        assertThat(classDefinition, is(instanceOf(FieldDefinition.class)));
         assertThat(classDefinition.getFieldName(), is(fieldName));
     }
 
     @Test
-    public void shouldAddAndRetrieveFieldDefintions() throws Exception {
+    public void shouldAddAndRetrieveFieldDefinitions() throws Exception {
         final FieldDefinition fieldDefinition1 = mock(FieldDefinition.class);
         final FieldDefinition fieldDefinition2 = mock(FieldDefinition.class);
         final FieldDefinition fieldDefinition3 = mock(FieldDefinition.class);

@@ -21,6 +21,7 @@ import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
+import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
@@ -427,5 +428,12 @@ public class DefinitionBuilderVisitorTest {
         verify(outerCombinedDefinition).addFieldDefinition(innerCombinedDefinition);
         verify(innerCombinedDefinition).addFieldDefinition(objectDefinition);
         verify(objectDefinition).addFieldDefinition(stringDefinition);
+    }
+
+    @Test
+    public void shouldDoNothingWhenVisitingANullSchema() throws Exception {
+
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
+        definitionBuilderVisitor.visit("fieldName", NullSchema.builder().build());
     }
 }

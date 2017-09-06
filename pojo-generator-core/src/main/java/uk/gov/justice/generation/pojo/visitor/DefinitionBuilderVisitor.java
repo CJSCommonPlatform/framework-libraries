@@ -15,6 +15,7 @@ import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
+import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
@@ -132,6 +133,11 @@ public class DefinitionBuilderVisitor implements Visitor {
         final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
         definitions.push(new Entry(fieldName, schema, definition));
         classDefinitions.add(definition);
+    }
+
+    @Override
+    public void visit(final String fieldName, final NullSchema schema) {
+        // do nothing
     }
 
     public List<Definition> getDefinitions() {

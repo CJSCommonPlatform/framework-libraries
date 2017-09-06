@@ -6,6 +6,7 @@ import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
+import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
@@ -76,6 +77,11 @@ public class SchemaValidatorVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final BooleanSchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void visit(final String fieldName, final NullSchema schema) {
         //Do nothing
     }
 }

@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.FINAL;
@@ -26,7 +26,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SerializableGeneratorTest {
+public class SerializablePluginTest {
 
     @Mock
     private JavaGeneratorFactory generatorFactory;
@@ -43,7 +43,7 @@ public class SerializableGeneratorTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new SerializableGenerator().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory, generationContext);
+        new SerializablePlugin().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory, generationContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

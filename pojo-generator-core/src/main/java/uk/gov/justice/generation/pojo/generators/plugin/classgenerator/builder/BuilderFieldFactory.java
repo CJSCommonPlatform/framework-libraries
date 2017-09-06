@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin.builder;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder;
 
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.PRIVATE;

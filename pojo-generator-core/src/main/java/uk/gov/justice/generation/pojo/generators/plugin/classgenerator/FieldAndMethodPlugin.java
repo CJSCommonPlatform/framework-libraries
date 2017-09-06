@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator;
 
 import static com.squareup.javapoet.MethodSpec.constructorBuilder;
 import static java.util.stream.Collectors.toList;
@@ -21,7 +21,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class FieldAndMethodGenerator implements PluginClassGeneratable {
+public class FieldAndMethodPlugin implements ClassGeneratorPlugin {
 
     private final AdditionalPropertiesGenerator additionalPropertiesGenerator = new AdditionalPropertiesGenerator();
 

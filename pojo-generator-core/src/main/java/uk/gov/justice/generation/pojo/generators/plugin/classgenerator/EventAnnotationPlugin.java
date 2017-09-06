@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator;
 
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 
@@ -11,7 +11,7 @@ import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class EventAnnotationGenerator implements PluginClassGeneratable {
+public class EventAnnotationPlugin implements ClassGeneratorPlugin {
 
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,

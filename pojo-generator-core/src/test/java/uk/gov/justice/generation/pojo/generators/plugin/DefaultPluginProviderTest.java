@@ -6,7 +6,13 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.pojo.generators.plugin.builder.BuilderPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.EventAnnotationPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.FieldAndMethodPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.SerializablePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.BuilderPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.OptionalTypeNamePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeNamePlugin;
 
 import java.util.List;
 
@@ -17,13 +23,13 @@ public class DefaultPluginProviderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldProvideDefaultListOfPluginClassGenerators() throws Exception {
-        final List<PluginClassGeneratable> pluginClassGenerators = new DefaultPluginProvider().pluginClassGenerators();
+        final List<ClassGeneratorPlugin> pluginClassGenerators = new DefaultPluginProvider().pluginClassGenerators();
 
         assertThat(pluginClassGenerators.size(), is(4));
         assertThat(pluginClassGenerators, hasItems(
-                instanceOf(EventAnnotationGenerator.class),
-                instanceOf(SerializableGenerator.class),
-                instanceOf(FieldAndMethodGenerator.class),
+                instanceOf(EventAnnotationPlugin.class),
+                instanceOf(SerializablePlugin.class),
+                instanceOf(FieldAndMethodPlugin.class),
                 instanceOf(BuilderPlugin.class)
                 )
         );

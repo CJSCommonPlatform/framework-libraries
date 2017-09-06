@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin;
+package uk.gov.justice.generation.pojo.generators.plugin.typename;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 

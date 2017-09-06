@@ -74,7 +74,7 @@
                             <excludes>
                             </excludes>
                             <generatorProperties>
-                                <pojo-plugin-provider>uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider</pojo-plugin-provider>
+                                <pojo-plugin-provider>uk.gov.justice.generation.pojo.generators.plugin.PluginTestProvider</pojo-plugin-provider>
                             </generatorProperties>
                         </configuration>
                         <goals>
@@ -86,7 +86,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>uk.gov.justice.generators</groupId>
-                        <artifactId>pojo-generation-core</artifactId>
+                        <artifactId>pojo-plugin-test-provider</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>

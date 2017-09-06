@@ -1,7 +1,6 @@
 package uk.gov.justice.generation.pojo.generators.plugin;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.EventAnnotationPlugin;
@@ -11,6 +10,7 @@ import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.B
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.BuilderPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.OptionalTypeNamePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeNamePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.UuidTypeNamePlugin;
 
 import java.util.List;
 
@@ -27,6 +27,8 @@ public class DefaultPluginProvider implements PluginProvider {
 
     @Override
     public List<TypeNamePlugin> typeNamePlugins() {
-        return singletonList(new OptionalTypeNamePlugin());
+        return asList(
+                new OptionalTypeNamePlugin(),
+                new UuidTypeNamePlugin());
     }
 }

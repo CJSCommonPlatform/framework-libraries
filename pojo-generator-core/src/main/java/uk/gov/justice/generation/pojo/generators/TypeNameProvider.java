@@ -12,7 +12,6 @@ import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -49,10 +48,6 @@ public class TypeNameProvider {
         }
 
         final String referenceValue = referenceDefinition.getReferenceValue();
-
-        if (referenceValue.endsWith(UUID.class.getSimpleName())) {
-            return get(UUID.class);
-        }
 
         if (referenceValue.endsWith(ZonedDateTime.class.getSimpleName())) {
             return get(ZonedDateTime.class);

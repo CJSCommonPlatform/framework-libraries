@@ -1,6 +1,5 @@
 package uk.gov.justice.generation.pojo.generators.plugin;
 
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -13,6 +12,7 @@ import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.Serializa
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.BuilderPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.OptionalTypeNamePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeNamePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.UuidTypeNamePlugin;
 
 import java.util.List;
 
@@ -36,11 +36,14 @@ public class DefaultPluginProviderTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldProvideDefaultListOfTypeNamePlugins() throws Exception {
 
         final List<TypeNamePlugin> typeNamePlugins = new DefaultPluginProvider().typeNamePlugins();
 
-        assertThat(typeNamePlugins.size(), is(1));
-        assertThat(typeNamePlugins, hasItem(instanceOf(OptionalTypeNamePlugin.class)));
+        assertThat(typeNamePlugins.size(), is(2));
+        assertThat(typeNamePlugins, hasItems(
+                instanceOf(OptionalTypeNamePlugin.class),
+                instanceOf(UuidTypeNamePlugin.class)));
     }
 }

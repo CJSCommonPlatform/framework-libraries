@@ -101,21 +101,6 @@ public class TypeNameProviderTest {
     }
 
     @Test
-    public void shouldReturnUuidIfEndOfReferenceValueMapsToUuidClassName() throws Exception {
-
-        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
-        final Definition referredDefinition = mock(Definition.class);
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-
-        when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
-        when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/UUID");
-
-        final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
-
-        assertThat(typeName.toString(), is("java.util.UUID"));
-    }
-
-    @Test
     public void shouldReturnUuidIfEndOfReferenceValueMapsToZonedDateTimeClassName() throws Exception {
 
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);

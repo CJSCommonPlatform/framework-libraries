@@ -10,7 +10,6 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -45,12 +44,6 @@ public class TypeNameProvider {
 
         if (referenceDefinition.getFieldDefinitions().isEmpty()) {
             throw new GenerationException(format("No definition present for reference type. For field: %s", referenceDefinition.getFieldName()));
-        }
-
-        final String referenceValue = referenceDefinition.getReferenceValue();
-
-        if (referenceValue.endsWith(ZonedDateTime.class.getSimpleName())) {
-            return get(ZonedDateTime.class);
         }
 
         final Definition childDefinition = referenceDefinition.getFieldDefinitions().get(FIRST_CHILD);

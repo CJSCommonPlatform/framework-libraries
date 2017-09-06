@@ -13,6 +13,7 @@ import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.B
 import uk.gov.justice.generation.pojo.generators.plugin.typename.OptionalTypeNamePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeNamePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.UuidTypeNamePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.ZonedDateTimeTypeNamePlugin;
 
 import java.util.List;
 
@@ -41,9 +42,10 @@ public class DefaultPluginProviderTest {
 
         final List<TypeNamePlugin> typeNamePlugins = new DefaultPluginProvider().typeNamePlugins();
 
-        assertThat(typeNamePlugins.size(), is(2));
+        assertThat(typeNamePlugins.size(), is(3));
         assertThat(typeNamePlugins, hasItems(
                 instanceOf(OptionalTypeNamePlugin.class),
-                instanceOf(UuidTypeNamePlugin.class)));
+                instanceOf(UuidTypeNamePlugin.class),
+                instanceOf(ZonedDateTimeTypeNamePlugin.class)));
     }
 }

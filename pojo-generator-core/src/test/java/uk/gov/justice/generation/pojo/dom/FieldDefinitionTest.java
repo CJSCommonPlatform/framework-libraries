@@ -23,10 +23,9 @@ public class FieldDefinitionTest {
 
     @Test
     public void shouldAllowSettingOfRequired() throws Exception {
-        final DefinitionType definitionType = INTEGER;
         final String fieldName = "fieldName";
 
-        final FieldDefinition fieldDefinition = new FieldDefinition(definitionType, fieldName);
+        final FieldDefinition fieldDefinition = new FieldDefinition(INTEGER, fieldName);
 
         assertThat(fieldDefinition.isRequired(), is(true));
 

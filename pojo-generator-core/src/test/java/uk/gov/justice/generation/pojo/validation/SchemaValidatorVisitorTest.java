@@ -15,6 +15,7 @@ import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.StringSchema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class SchemaValidatorVisitorTest {
 
     private static final String AN_EMPTY_STRING = "";
-    
+
     @Mock
     private Validator validator;
 
@@ -75,6 +76,8 @@ public class SchemaValidatorVisitorTest {
         schemaValidatorVisitor.leave(mock(ArraySchema.class));
         schemaValidatorVisitor.enter(AN_EMPTY_STRING, mock(CombinedSchema.class));
         schemaValidatorVisitor.leave(mock(CombinedSchema.class));
+        schemaValidatorVisitor.enter(AN_EMPTY_STRING, mock(ReferenceSchema.class));
+        schemaValidatorVisitor.leave(mock(ReferenceSchema.class));
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(NumberSchema.class));
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(StringSchema.class));
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(BooleanSchema.class));

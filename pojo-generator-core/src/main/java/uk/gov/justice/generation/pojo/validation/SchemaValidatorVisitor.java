@@ -8,6 +8,7 @@ import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.StringSchema;
 
 public class SchemaValidatorVisitor implements Visitor {
@@ -40,6 +41,16 @@ public class SchemaValidatorVisitor implements Visitor {
 
     @Override
     public void leave(final ArraySchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void enter(final String fieldName, final ReferenceSchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void leave(final ReferenceSchema schema) {
         //Do nothing
     }
 

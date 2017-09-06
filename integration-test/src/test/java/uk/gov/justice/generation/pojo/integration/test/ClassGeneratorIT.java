@@ -12,6 +12,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
@@ -127,11 +128,18 @@ public class ClassGeneratorIT {
         employeeDefinition.addFieldDefinition(new StringDefinition("firstName", null));
         employeeDefinition.addFieldDefinition(new StringDefinition("lastName", null));
         employeeDefinition.addFieldDefinition(new FieldDefinition(NUMBER, "poundsPerHour"));
-        employeeDefinition.addFieldDefinition(new StringDefinition("startDate", "ZonedDateTime"));
+        employeeDefinition.addFieldDefinition(startDate());
         employeeDefinition.addFieldDefinition(favouriteColoursDefinition());
         employeeDefinition.addFieldDefinition(addressDefinition);
 
         return employeeDefinition;
+    }
+
+    private ReferenceDefinition startDate() {
+        final ReferenceDefinition startDate = new ReferenceDefinition("startDate", "ZonedDateTime");
+        startDate.addFieldDefinition(new StringDefinition("zoneDateTime", "none"));
+
+        return startDate;
     }
 
     private ClassDefinition favouriteColoursDefinition() {

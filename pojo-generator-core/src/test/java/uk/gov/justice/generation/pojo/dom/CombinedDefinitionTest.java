@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.dom;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
@@ -16,19 +17,19 @@ public class CombinedDefinitionTest {
         final String fieldName = "fieldName";
         final CombinedDefinition combinedDefinition = new CombinedDefinition(fieldName);
 
+        assertThat(combinedDefinition, is(instanceOf(ClassDefinition.class)));
         assertThat(combinedDefinition.getFieldName(), is(fieldName));
         assertThat(combinedDefinition.getFieldDefinitions().size(), is(0));
     }
 
     @Test
-    public void shouldReturnListOfFieldDefintionsFromChildDefinitions() throws Exception {
+    public void shouldReturnListOfFieldDefinitionsFromChildDefinitions() throws Exception {
         final String combinedFieldName = "outerCombinedFieldName";
         final String outerClassFieldName = "outerClassFieldName";
         final String innerClassFieldName = "innerClassFieldName";
         final String stringField_1 = "stringFieldName_1";
         final String stringField_2 = "stringFieldName_2";
         final String stringField_3 = "stringFieldName_2";
-        final String eventName = "eventName";
 
         final CombinedDefinition outerCombinedDefinition = new CombinedDefinition(combinedFieldName);
         final CombinedDefinition innerCombinedDefinition = new CombinedDefinition(combinedFieldName);

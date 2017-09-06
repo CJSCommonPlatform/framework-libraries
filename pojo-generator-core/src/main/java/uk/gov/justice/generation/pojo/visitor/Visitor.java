@@ -6,6 +6,7 @@ import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.StringSchema;
 
 public interface Visitor {
@@ -18,9 +19,13 @@ public interface Visitor {
 
     void leave(final CombinedSchema schema);
 
-    void enter(String fieldName, ArraySchema schema);
+    void enter(final String fieldName, final ArraySchema schema);
 
-    void leave(ArraySchema schema);
+    void leave(final ArraySchema schema);
+
+    void enter(final String fieldName, final ReferenceSchema schema);
+
+    void leave(final ReferenceSchema schema);
 
     void visit(final String fieldName, final BooleanSchema schema);
 

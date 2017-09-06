@@ -13,6 +13,7 @@ import uk.gov.justice.generation.pojo.dom.CombinedDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.everit.json.schema.CombinedSchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
+import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.StringSchema;
 import org.junit.Rule;
 import org.junit.Test;
@@ -225,6 +227,47 @@ public class DefinitionBuilderVisitorTest {
         assertThat(definitions.get(1), is(outerDefinition));
 
         verify(outerDefinition).addFieldDefinition(arrayDefinition);
+    }
+
+    @Test
+    public void shouldGenerateClassDefinitionWithReferenceSchemaProperty() throws Exception {
+        final String outerFieldName = "outerClass";
+        final String referenceFieldName = "referenceProperty";
+        final String referredFieldName = "referredObject";
+
+        final ReferenceSchema referenceSchema = ReferenceSchema.builder().refValue("#/definitions/uuid").build();
+
+        final ObjectSchema referredSchema = ObjectSchema.builder()
+                .build();
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .addPropertySchema(referenceFieldName, referenceSchema)
+                .build();
+
+        final ClassDefinition outerDefinition = mock(ClassDefinition.class);
+        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
+        final ClassDefinition referredDefinition = mock(ClassDefinition.class);
+
+        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructDefinitionFor(referenceFieldName, referenceSchema)).thenReturn(referenceDefinition);
+        when(definitionFactory.constructDefinitionFor(referredFieldName, referredSchema)).thenReturn(referredDefinition);
+
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
+
+        definitionBuilderVisitor.enter(outerFieldName, objectSchema);
+        definitionBuilderVisitor.enter(referenceFieldName, referenceSchema);
+        definitionBuilderVisitor.enter(referredFieldName, referredSchema);
+        definitionBuilderVisitor.leave(referredSchema);
+        definitionBuilderVisitor.leave(referenceSchema);
+        definitionBuilderVisitor.leave(objectSchema);
+
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(2));
+        assertThat(definitions.get(0), is(referredDefinition));
+        assertThat(definitions.get(1), is(outerDefinition));
+
+        verify(outerDefinition).addFieldDefinition(referenceDefinition);
     }
 
     @Test

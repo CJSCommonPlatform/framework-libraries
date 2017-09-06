@@ -21,6 +21,7 @@
         <module>pojo-generator-core</module>
         <module>integration-test</module>
         <module>pojo-plugin-it</module>
+        <module>pojo-plugin-test-provider</module>
     </modules>
 
     <properties>

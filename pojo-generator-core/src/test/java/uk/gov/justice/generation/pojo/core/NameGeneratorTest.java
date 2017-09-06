@@ -52,7 +52,7 @@ public class NameGeneratorTest {
     }
 
     @Test
-    public void shouldFailIfTheFileNameIsOnlyTheExtendion() throws Exception {
+    public void shouldFailIfTheFileNameIsOnlyTheExtension() throws Exception {
 
         final File schemaFile = new File("src/test/resources/schemas/.json");
         try {
@@ -73,13 +73,5 @@ public class NameGeneratorTest {
         } catch (final SchemaLoadingException expected) {
             assertThat(expected.getMessage(), is("Failed to load json schema file '" + schemaFile.getAbsolutePath() + "'. File name is invalid"));
         }
-    }
-
-    @Test
-    public void shouldParseFileNameIntoEventName() throws Exception {
-
-        final File schemaFile = new File("src/test/resources/schemas/example.events.do-something-or-other.json");
-
-        assertThat(nameGenerator.eventNameFrom(schemaFile), is("example.events.do-something-or-other"));
     }
 }

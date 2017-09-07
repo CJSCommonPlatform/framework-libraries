@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.generators;
 
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
@@ -32,18 +33,34 @@ public class JavaGeneratorFactory {
                                                            final PluginProvider pluginProvider,
                                                            final GenerationContext generationContext) {
         return definitions.stream()
-                .filter(definition -> EnumDefinition.class.isInstance(definition) || ClassDefinition.class.isInstance(definition))
-                .map(definition -> {
-                    if (definition.getClass() == EnumDefinition.class) {
-                        return new EnumGenerator((EnumDefinition) definition);
-                    }
-
-                    return new ClassGenerator((ClassDefinition) definition,
-                            this,
-                            pluginProvider,
-                            classNameFactory,
-                            generationContext);
-                })
+                .filter(this::isClassOrEnum)
+                .filter(definition -> isNotHardCoded(definition, generationContext.getIgnoredClassNames()))
+                .map(definition -> getClassGeneratable(pluginProvider, generationContext, definition))
                 .collect(toList());
+    }
+
+    private boolean isClassOrEnum(final Definition definition) {
+        return EnumDefinition.class.isInstance(definition) || ClassDefinition.class.isInstance(definition);
+    }
+
+    private boolean isNotHardCoded(final Definition definition, final List<String> hardCodedClassNames) {
+        final String className = capitalize(definition.getFieldName());
+        return ! hardCodedClassNames.contains(className);
+    }
+
+    private ClassGeneratable getClassGeneratable(
+            final PluginProvider pluginProvider,
+            final GenerationContext generationContext,
+            final Definition definition) {
+
+        if (definition.getClass() == EnumDefinition.class) {
+            return new EnumGenerator((EnumDefinition) definition);
+        }
+
+        return new ClassGenerator((ClassDefinition) definition,
+                this,
+                pluginProvider,
+                classNameFactory,
+                generationContext);
     }
 }

@@ -1,5 +1,6 @@
 package uk.gov.justice.generation;
 
+import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
@@ -33,11 +34,23 @@ public class SchemaPojoGenerator implements Generator<File> {
     private final NameGenerator nameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
+    private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
 
     @Override
     public void run(final File source, final GeneratorConfig generatorConfig) {
         final String packageName = generatorConfig.getBasePackageName();
-        final GenerationContext generationContext = new GenerationContext(generatorConfig.getOutputDirectory(), packageName, source.getName());
+
+        final List<String> hardCodedClassNames = javaFileSimpleNameLister.findSimpleNames(
+                generatorConfig.getSourcePaths(),
+                generatorConfig.getOutputDirectory(),
+                generatorConfig.getBasePackageName());
+
+        final GenerationContext generationContext = new GenerationContext(
+                generatorConfig.getOutputDirectory(),
+                packageName,
+                source.getName(),
+                hardCodedClassNames);
+
         final Logger logger = generationContext.getLoggerFor(getClass());
 
         logger.info("Generating java pojos from schema file '{}'", source.getName());

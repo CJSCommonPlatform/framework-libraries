@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.write;
 
+import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -28,7 +29,7 @@ public class JavaSourceFileProviderTest {
         final String sourceFilename = "filename";
 
         final Class<Definition> definitionClass = Definition.class;
-        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, definitionClass.getPackage().getName(), sourceFilename);
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, definitionClass.getPackage().getName(), sourceFilename, emptyList());
 
         final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, definitionClass.getSimpleName());
 
@@ -44,7 +45,7 @@ public class JavaSourceFileProviderTest {
         final String sourceFilename = "filename";
 
         final Class<Definition> definitionClass = Definition.class;
-        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "NotAYetExistingClass", sourceFilename);
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "NotAYetExistingClass", sourceFilename, emptyList());
 
         final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, "NotAYetExistingClass");
 

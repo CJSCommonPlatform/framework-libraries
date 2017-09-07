@@ -1,7 +1,6 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
-import static com.jayway.jsonassert.JsonAssert.with;
-import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -20,26 +19,22 @@ import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BuilderIT {
+public class IgnoreHardCodedClassesIT {
 
     private final SourceWriter sourceWriter = new SourceWriter();
     private final ClassCompiler classCompiler = new ClassCompiler();
 
     private final NameGenerator rootFieldNameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
-    private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory();
     private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
 
@@ -49,7 +44,7 @@ public class BuilderIT {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation/builder");
+        sourceOutputDirectory = new File("./target/test-generation/hard-coded");
         classesOutputDirectory = new File("./target/test-classes");
 
         sourceOutputDirectory.mkdirs();
@@ -61,16 +56,19 @@ public class BuilderIT {
     }
 
     @Test
-    public void shouldGenerateAClassWithAMapForAdditionalPropertiesIfAdditionalPropertiesIsTrue() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/student.json");
+    public void shouldNotAutoGenerateClassesWhichHaveBeenCraftedByHand() throws Exception {
+        final File jsonSchemaFile = new File("src/test/resources/schemas/first-hard-coded-class-example.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
-        final String packageName = "uk.gov.justice.pojo.builder.student";
+        final String packageName = "uk.gov.justice.pojo.example.hard.coded.javaclass.first.testcase";
+
+        final List<String> ignoredClassNames = singletonList("IgnoreMeAsIAlreadyExist");
+
         final GenerationContext generationContext = new GenerationContext(
                 sourceOutputDirectory.toPath(),
                 packageName,
                 jsonSchemaFile.getName(),
-                emptyList());
+                ignoredClassNames);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
@@ -95,35 +93,54 @@ public class BuilderIT {
                     newClasses.add(newClass);
                 });
 
-        assertThat(newClasses.size(), is(1));
 
-        final Class<?> studentClass = newClasses.get(0);
+        final File generatedSourceDir = new File("target/test-generation/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/first/testcase");
 
-        final Object studentBuilder = studentClass.getMethod("student").invoke(null);
+        assertThat(new File(generatedSourceDir, "FirstHardCodedClassExample.java").exists(), is(true));
+        assertThat(new File(generatedSourceDir, "IgnoreMeAsImAlreadyHardCoded.java").exists(), is(false));
+    }
 
-        assertThat(studentBuilder.getClass().getName(), is("uk.gov.justice.pojo.builder.student.Student$Builder"));
+    @Test
+    public void shouldHandleTheRootObjectBeingCraftedByHand() throws Exception {
+        final File jsonSchemaFile = new File("src/test/resources/schemas/second-hard-coded-class-example.json");
+        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
+        final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
+        final String packageName = "uk.gov.justice.pojo.example.hard.coded.javaclass.second.testcase";
 
-        final String firstName = "Molly";
-        final String lastName = "O'Golly";
-        final Integer age = 23;
-        final String haircut = "dreads";
+        final List<String> ignoredClassNames = singletonList("SecondHardCodedClassExample");
 
-        studentBuilder.getClass().getMethod("withFirstName", String.class).invoke(studentBuilder, firstName);
-        studentBuilder.getClass().getMethod("withLastName", String.class).invoke(studentBuilder, lastName);
-        studentBuilder.getClass().getMethod("withAge", Integer.class).invoke(studentBuilder, age);
-        studentBuilder.getClass().getMethod("withHaircut", String.class).invoke(studentBuilder, haircut);
+        final GenerationContext generationContext = new GenerationContext(
+                sourceOutputDirectory.toPath(),
+                packageName,
+                jsonSchemaFile.getName(),
+                ignoredClassNames);
 
-        final Object student = studentBuilder.getClass().getMethod("build").invoke(studentBuilder);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
+        final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
+        final VisitableSchema visitableSchema = visitableSchemaFactory.createWith(schema, new DefaultAcceptorFactory(visitableSchemaFactory));
 
-        final String json = objectMapper.writeValueAsString(student);
+        visitableSchema.accept(fieldName, definitionBuilderVisitor);
 
-        with(json)
-                .assertThat("$.firstName", is(firstName))
-                .assertThat("$.lastName", is(lastName))
-                .assertThat("$.age", is(age))
-                .assertThat("$.haircut", is(haircut))
-        ;
+        final List<Class<?>> newClasses = new ArrayList<>();
 
-        schema.validate(new JSONObject(json));
+        final PluginProvider pluginProvider = new DefaultPluginProvider();
+
+        final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
+                .withGenerationContext(generationContext)
+                .withPluginProvider(pluginProvider)
+                .build();
+
+        javaGeneratorFactory
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, generationContext)
+                .forEach(classGeneratable -> {
+                    sourceWriter.write(classGeneratable, generationContext);
+                    final Class<?> newClass = classCompiler.compile(classGeneratable, generationContext, classesOutputDirectory);
+                    newClasses.add(newClass);
+                });
+
+
+        final File generatedSourceDir = new File("target/test-generation/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/second/testcase");
+
+        assertThat(new File(generatedSourceDir, "SecondHardCodedClassExample.java").exists(), is(false));
     }
 }

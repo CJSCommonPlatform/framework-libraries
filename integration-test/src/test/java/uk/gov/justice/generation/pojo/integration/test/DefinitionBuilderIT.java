@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
@@ -67,7 +68,11 @@ public class DefinitionBuilderIT {
         final Schema schema = schemaLoader.loadFrom(schemaFile);
         final String fieldName = nameGenerator.rootFieldNameFrom(schemaFile);
         final String packageName = "uk.gov.justice.pojo.definition.builder";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, schemaFile.getName());
+        final GenerationContext generationContext = new GenerationContext(
+                sourceOutputDirectory.toPath(),
+                packageName,
+                schemaFile.getName(),
+                emptyList());
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 

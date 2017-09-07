@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
@@ -67,7 +68,11 @@ public class ClassGeneratorIT {
         final String packageName = "uk.gov.justice.pojo.classgenerator";
         final String sourceFilename = "source.json";
 
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, sourceFilename);
+        final GenerationContext generationContext = new GenerationContext(
+                sourceOutputDirectory.toPath(),
+                packageName,
+                sourceFilename,
+                emptyList());
         final ClassDefinition addressDefinition = addressDefinition();
         final ClassDefinition employeeDefinition = employeeDefinition(addressDefinition);
 

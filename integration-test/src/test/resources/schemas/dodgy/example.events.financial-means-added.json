@@ -1,0 +1,441 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "regularPayment": {
+      "type": "object",
+      "properties": {
+        "frequency": {
+          "enum": [
+            "Weekly",
+            "Monthly",
+            "Fortnightly"
+          ]
+        },
+        "amount": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "frequency",
+        "amount"
+      ]
+    },
+    "payment": {
+      "type": "object",
+      "properties": {
+        "sourceOfIncome": {
+          "type": "string"
+        },
+        "frequency": {
+          "enum": [
+            "Weekly",
+            "Monthly",
+            "Fortnightly",
+            "Other"
+          ]
+        },
+        "amount": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "frequency",
+        "amount"
+      ]
+    },
+    "financialProblems": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "yes": {
+              "enum": [
+                true
+              ]
+            },
+            "justification": {
+              "type": "string"
+            },
+            "expenses": {
+              "$ref": "#/definitions/expenses"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "yes",
+            "justification",
+            "expenses"
+          ]
+        },
+        {
+          "properties": {
+            "yes": {
+              "enum": [
+                false
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    "interpreter": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "yes": {
+              "enum": [
+                true
+              ]
+            },
+            "language": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "yes",
+            "language"
+          ]
+        },
+        {
+          "properties": {
+            "yes": {
+              "enum": [
+                false
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    "benefit": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Contributory Employment and Support Allowance",
+            "Income-related Employment and Support Allowance",
+            "Income Support",
+            "Universal Credit",
+            "Other"
+          ]
+        },
+        "payment": {
+          "$ref": "#/definitions/regularPayment"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "payment"
+      ]
+    },
+    "expenses": {
+      "type": "object",
+      "properties": {
+        "household": {
+          "type": "object",
+          "properties": {
+            "accommodation": {
+              "type": "string"
+            },
+            "utilityBills": {
+              "type": "string"
+            },
+            "insurance": {
+              "type": "string"
+            },
+            "councilTax": {
+              "type": "string"
+            },
+            "otherContributors": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "accommodation",
+            "utilityBills",
+            "insurance",
+            "councilTax",
+            "otherContributors"
+          ]
+        },
+        "other": {
+          "type": "object",
+          "properties": {
+            "televisionSubscriptions": {
+              "type": "string"
+            },
+            "travelExpenses": {
+              "type": "string"
+            },
+            "telephone": {
+              "type": "string"
+            },
+            "loanRepayments": {
+              "type": "string"
+            },
+            "countyCourtOrders": {
+              "type": "string"
+            },
+            "fines": {
+              "type": "string"
+            },
+            "childMaintenance": {
+              "type": "string"
+            },
+            "otherSignificantExpenses": {
+              "type": "object",
+              "properties": {
+                "details": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "details",
+                "amount"
+              ]
+            },
+            "additionalProperties": false,
+            "required": [
+              "televisionSubscriptions",
+              "travelExpenses",
+              "telephone",
+              "loanRepayments",
+              "countyCourtOrders",
+              "fines",
+              "childMaintenance"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "household",
+          "other"
+        ]
+      },
+      "pension-credit": {
+        "type": "object",
+        "properties": {
+          "payment": {
+            "$ref": "#/definitions/regularPayment"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "payment"
+        ]
+      },
+      "financialMeans": {
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "Employed"
+                ]
+              },
+              "payment": {
+                "$ref": "#/definitions/regularPayment"
+              },
+              "financialProblems": {
+                "$ref": "#/definitions/financialProblems"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "status",
+              "payment"
+            ]
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "Employed and also receiving benefits"
+                ]
+              },
+              "payment": {
+                "$ref": "#/definitions/regularPayment"
+              },
+              "benefits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/benefit"
+                },
+                "minItems": 1
+              },
+              "financialProblems": {
+                "$ref": "#/definitions/financialProblems"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "payment",
+              "benefits"
+            ]
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "Self employed"
+                ]
+              },
+              "payment": {
+                "$ref": "#/definitions/payment"
+              },
+              "financialProblems": {
+                "$ref": "#/definitions/financialProblems"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "payment"
+            ]
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "Self employed and also receiving benefit"
+                ]
+              },
+              "payment": {
+                "$ref": "#/definitions/payment"
+              },
+              "benefits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/benefit"
+                },
+                "minItems": 1
+              },
+              "financialProblems": {
+                "$ref": "#/definitions/financialProblems"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "payment",
+              "benefits"
+            ]
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "Receiving out of work benefits"
+                ]
+              },
+              "benefits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/benefit"
+                },
+                "minItems": 1
+              },
+              "financialProblems": {
+                "$ref": "#/definitions/financialProblems"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "benefits"
+            ]
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "Other"
+                ]
+              },
+              "provideDetails": {
+                "type": "string"
+              },
+              "payment": {
+                "$ref": "#/definitions/payment"
+              },
+              "pensionCredit": {
+                "$ref": "#/definitions/pension-credit"
+              },
+              "financialProblems": {
+                "$ref": "#/definitions/financialProblems"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "provideDetails",
+              "payment",
+              "pensionCredit"
+            ]
+          }
+        ]
+      }
+    },
+    "type": "object",
+    "properties": {
+      "caseId": {
+        "type": "string"
+      },
+      "defendantId": {
+        "type": "string"
+      },
+      "financialMeans": {
+        "$ref": "#/definitions/financialMeans"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "caseId",
+      "defendantId",
+      "financialMeans"
+    ]
+  }
+}

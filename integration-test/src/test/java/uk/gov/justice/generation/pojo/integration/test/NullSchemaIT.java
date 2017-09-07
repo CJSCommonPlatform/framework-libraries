@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
+import static java.util.Collections.emptyList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
@@ -16,13 +17,9 @@ import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +58,11 @@ public class NullSchemaIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
         final String packageName = "uk.gov.justice.pojo.nullable.schema";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, jsonSchemaFile.getName());
+        final GenerationContext generationContext = new GenerationContext(
+                sourceOutputDirectory.toPath(),
+                packageName,
+                jsonSchemaFile.getName(),
+                emptyList());
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();

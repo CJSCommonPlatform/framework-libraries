@@ -24,11 +24,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class SchemaPojoGeneratorTest {
 
     private File sourceOutputDirectory;
-    private File classesOutputDirectory;
 
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")

@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
+import static java.util.Collections.emptyList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
@@ -57,7 +58,11 @@ public class ComplexSchemaIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
         final String packageName = "uk.gov.justice.pojo.complex.schema";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, jsonSchemaFile.getName());
+        final GenerationContext generationContext = new GenerationContext(
+                sourceOutputDirectory.toPath(),
+                packageName,
+                jsonSchemaFile.getName(),
+                emptyList());
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();

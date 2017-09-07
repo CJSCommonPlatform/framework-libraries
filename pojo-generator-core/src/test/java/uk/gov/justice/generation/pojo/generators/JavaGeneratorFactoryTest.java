@@ -35,8 +35,6 @@ public class JavaGeneratorFactoryTest {
     @Mock
     private PluginProvider pluginProvider;
 
-    private final static String PACKAGE_NAME = "package.name";
-
     @Test
     public void shouldReturnInstanceOfFieldGeneratorForFieldDefinition() throws Exception {
         final FieldDefinition fieldDefinition = new FieldDefinition(STRING, "test");

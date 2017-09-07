@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.Collections.emptyList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -66,7 +67,11 @@ public class AdditionalPropertiesIT {
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
         final String packageName = "uk.gov.justice.pojo.additional.properties";
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, jsonSchemaFile.getName());
+        final GenerationContext generationContext = new GenerationContext(
+                sourceOutputDirectory.toPath(),
+                packageName,
+                jsonSchemaFile.getName(),
+                emptyList());
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();

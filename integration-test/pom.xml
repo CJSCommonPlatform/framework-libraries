@@ -75,6 +75,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration combine.children="append">
+                    <excludes>
+                        <exclude>uk/gov/justice/pojo/example/hard/coded/javaclass/first/testcase/*.class</exclude>
+                        <exclude>uk/gov/justice/pojo/example/hard/coded/javaclass/second/testcase/*.class</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

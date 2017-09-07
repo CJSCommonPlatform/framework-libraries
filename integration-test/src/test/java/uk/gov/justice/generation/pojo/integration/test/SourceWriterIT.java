@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
@@ -55,8 +56,12 @@ public class SourceWriterIT {
 
         final String packageName = "org.bloggs.fred";
         final String sourceFilename = "filename.json";
-        final ClassDefinition addressDefinition = addressDefinition(packageName);
-        final GenerationContext generationContext = new GenerationContext(sourceOutputDirectory.toPath(), packageName, sourceFilename);
+        final ClassDefinition addressDefinition = addressDefinition();
+        final GenerationContext generationContext = new GenerationContext(
+                sourceOutputDirectory.toPath(),
+                packageName,
+                sourceFilename,
+                emptyList());
         final PluginProvider pluginProvider = new DefaultPluginProvider();
 
         final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
@@ -85,7 +90,7 @@ public class SourceWriterIT {
         ;
     }
 
-    private ClassDefinition addressDefinition(final String packageName) {
+    private ClassDefinition addressDefinition() {
         final ClassDefinition addressDefinition = new ClassDefinition(CLASS, "address");
         addressDefinition.addFieldDefinition(new StringDefinition("firstLine", null));
         addressDefinition.addFieldDefinition(new StringDefinition("postCode", null));

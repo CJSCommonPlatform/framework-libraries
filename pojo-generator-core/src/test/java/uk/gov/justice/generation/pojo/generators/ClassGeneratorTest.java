@@ -12,8 +12,8 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
 
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
@@ -57,9 +57,9 @@ public class ClassGeneratorTest {
     @Test
     public void shouldGenerateAnEmptyClassAndUseThePluginsToGenerateTheClassInternals() throws Exception {
 
-        final PluginClassGeneratable plugin_1 = mock(PluginClassGeneratable.class, "plugin_1");
-        final PluginClassGeneratable plugin_2 = mock(PluginClassGeneratable.class, "plugin_2");
-        final PluginClassGeneratable plugin_3 = mock(PluginClassGeneratable.class, "plugin_3");
+        final ClassGeneratorPlugin plugin_1 = mock(ClassGeneratorPlugin.class, "plugin_1");
+        final ClassGeneratorPlugin plugin_2 = mock(ClassGeneratorPlugin.class, "plugin_2");
+        final ClassGeneratorPlugin plugin_3 = mock(ClassGeneratorPlugin.class, "plugin_3");
 
         when(pluginProvider.pluginClassGenerators()).thenReturn(asList(plugin_1, plugin_2, plugin_3));
         when(classDefinition.getFieldName()).thenReturn("alcubierreDrive");

@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator;
 
 import static com.squareup.javapoet.FieldSpec.builder;
 import static com.squareup.javapoet.MethodSpec.constructorBuilder;
@@ -35,7 +35,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FieldAndMethodGeneratorTest {
+public class FieldAndMethodPluginTest {
 
     @Mock
     private JavaGeneratorFactory generatorFactory;
@@ -52,7 +52,7 @@ public class FieldAndMethodGeneratorTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodGenerator()
+        new FieldAndMethodPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
@@ -93,7 +93,7 @@ public class FieldAndMethodGeneratorTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodGenerator()
+        new FieldAndMethodPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
@@ -126,7 +126,7 @@ public class FieldAndMethodGeneratorTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodGenerator()
+        new FieldAndMethodPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,

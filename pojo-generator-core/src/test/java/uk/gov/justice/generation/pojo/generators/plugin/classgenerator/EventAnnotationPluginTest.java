@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator;
 
 import static com.squareup.javapoet.AnnotationSpec.builder;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EventAnnotationGeneratorTest {
+public class EventAnnotationPluginTest {
 
     @Mock
     private JavaGeneratorFactory generatorFactory;
@@ -41,7 +41,7 @@ public class EventAnnotationGeneratorTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new EventAnnotationGenerator()
+        new EventAnnotationPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,

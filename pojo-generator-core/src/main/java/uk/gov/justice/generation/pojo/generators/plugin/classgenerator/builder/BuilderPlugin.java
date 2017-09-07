@@ -1,15 +1,15 @@
-package uk.gov.justice.generation.pojo.generators.plugin.builder;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class BuilderPlugin implements PluginClassGeneratable {
+public class BuilderPlugin implements ClassGeneratorPlugin {
 
     private final BuilderGeneratorFactory builderGeneratorFactory;
 

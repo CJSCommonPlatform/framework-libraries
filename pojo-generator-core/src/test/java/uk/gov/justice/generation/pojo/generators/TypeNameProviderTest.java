@@ -76,7 +76,6 @@ public class TypeNameProviderTest {
 
         when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
         when(classNameFactory.createTypeNameFrom(referredDefinition)).thenReturn(stringTypeName);
-        when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/date");
 
         final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
 
@@ -98,36 +97,6 @@ public class TypeNameProviderTest {
         } catch (final GenerationException expected) {
             assertThat(expected.getMessage(), is("No definition present for reference type. For field: startDate"));
         }
-    }
-
-    @Test
-    public void shouldReturnUuidIfEndOfReferenceValueMapsToUuidClassName() throws Exception {
-
-        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
-        final Definition referredDefinition = mock(Definition.class);
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-
-        when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
-        when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/UUID");
-
-        final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
-
-        assertThat(typeName.toString(), is("java.util.UUID"));
-    }
-
-    @Test
-    public void shouldReturnUuidIfEndOfReferenceValueMapsToZonedDateTimeClassName() throws Exception {
-
-        final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
-        final Definition referredDefinition = mock(Definition.class);
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-
-        when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
-        when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/ZonedDateTime");
-
-        final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
-
-        assertThat(typeName.toString(), is("java.time.ZonedDateTime"));
     }
 
     @Test

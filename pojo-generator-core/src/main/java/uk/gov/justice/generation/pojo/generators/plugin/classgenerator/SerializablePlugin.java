@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator;
 
 import static com.squareup.javapoet.TypeName.LONG;
 import static javax.lang.model.element.Modifier.FINAL;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class SerializableGenerator implements PluginClassGeneratable {
+public class SerializablePlugin implements ClassGeneratorPlugin {
 
     private static final String SERIAL_VERSION_FIELD_NAME = "serialVersionUID";
     private static final String SERIAL_VERSION_VALUE = "1L";

@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.generators.plugin.builder;
+package uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;

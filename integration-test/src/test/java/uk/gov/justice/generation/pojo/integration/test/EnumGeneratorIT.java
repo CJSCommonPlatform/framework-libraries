@@ -8,12 +8,12 @@ import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
@@ -109,7 +109,7 @@ public class EnumGeneratorIT {
     private ClassDefinition studentDefinition() {
 
         return new ClassDefinition(CLASS, "student")
-                .addFieldDefinition(new StringDefinition("name", null))
+                .addFieldDefinition(new FieldDefinition(STRING, "name"))
                 .addFieldDefinition(new FieldDefinition(INTEGER, "age"))
                 .addFieldDefinition(colourDefinition());
     }

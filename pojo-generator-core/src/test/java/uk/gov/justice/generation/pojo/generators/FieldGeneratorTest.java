@@ -14,7 +14,6 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.BOOLEAN;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
 
 import java.util.List;
 
@@ -44,12 +43,11 @@ public class FieldGeneratorTest {
 
     @Test
     public void shouldGenerateMethod() throws Exception {
-        final StringDefinition stringDefinition = mock(StringDefinition.class);
+        final FieldDefinition stringDefinition = mock(FieldDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
         when(stringDefinition.type()).thenReturn(STRING);
         when(stringDefinition.getFieldName()).thenReturn("firstName");
-        when(stringDefinition.getDescription()).thenReturn(null);
         when(stringDefinition.isRequired()).thenReturn(true);
         when(classNameFactory.createTypeNameFrom(stringDefinition)).thenReturn(ClassName.get(String.class));
 

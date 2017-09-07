@@ -6,10 +6,11 @@ import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
+import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
@@ -92,8 +93,8 @@ public class SourceWriterIT {
 
     private ClassDefinition addressDefinition() {
         final ClassDefinition addressDefinition = new ClassDefinition(CLASS, "address");
-        addressDefinition.addFieldDefinition(new StringDefinition("firstLine", null));
-        addressDefinition.addFieldDefinition(new StringDefinition("postCode", null));
+        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "firstLine"));
+        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "postCode"));
 
         return addressDefinition;
     }

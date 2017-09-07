@@ -20,7 +20,6 @@ import uk.gov.justice.generation.pojo.dom.CombinedDefinition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 
 import com.squareup.javapoet.TypeName;
@@ -113,7 +112,7 @@ public class ClassNameFactoryTest {
     @Test
     public void shouldCreateTheCorrectTypeNameForStrings() throws Exception {
 
-        final StringDefinition stringDefinition = mock(StringDefinition.class);
+        final FieldDefinition stringDefinition = mock(FieldDefinition.class);
         final TypeName originalTypeName = mock(TypeName.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 

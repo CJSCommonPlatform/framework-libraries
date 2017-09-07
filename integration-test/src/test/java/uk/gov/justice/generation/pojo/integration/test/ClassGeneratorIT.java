@@ -9,12 +9,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
@@ -122,16 +122,16 @@ public class ClassGeneratorIT {
 
     private ClassDefinition addressDefinition() {
         final ClassDefinition addressDefinition = new ClassDefinition(CLASS, "address");
-        addressDefinition.addFieldDefinition(new StringDefinition("firstLine", null));
-        addressDefinition.addFieldDefinition(new StringDefinition("postCode", null));
+        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "firstLine"));
+        addressDefinition.addFieldDefinition(new FieldDefinition(STRING, "postCode"));
 
         return addressDefinition;
     }
 
     private ClassDefinition employeeDefinition(final ClassDefinition addressDefinition) {
         final ClassDefinition employeeDefinition = new ClassDefinition(CLASS, "employee");
-        employeeDefinition.addFieldDefinition(new StringDefinition("firstName", null));
-        employeeDefinition.addFieldDefinition(new StringDefinition("lastName", null));
+        employeeDefinition.addFieldDefinition(new FieldDefinition(STRING, "firstName"));
+        employeeDefinition.addFieldDefinition(new FieldDefinition(STRING, "lastName"));
         employeeDefinition.addFieldDefinition(new FieldDefinition(NUMBER, "poundsPerHour"));
         employeeDefinition.addFieldDefinition(startDate());
         employeeDefinition.addFieldDefinition(favouriteColoursDefinition());
@@ -142,14 +142,14 @@ public class ClassGeneratorIT {
 
     private ReferenceDefinition startDate() {
         final ReferenceDefinition startDate = new ReferenceDefinition("startDate", "ZonedDateTime");
-        startDate.addFieldDefinition(new StringDefinition("zoneDateTime", "none"));
+        startDate.addFieldDefinition(new FieldDefinition(STRING, "zoneDateTime"));
 
         return startDate;
     }
 
     private ClassDefinition favouriteColoursDefinition() {
         final ClassDefinition favouriteColours = new ClassDefinition(ARRAY, "favouriteColours");
-        favouriteColours.addFieldDefinition(new StringDefinition("favouriteColours", "none"));
+        favouriteColours.addFieldDefinition(new FieldDefinition(STRING, "favouriteColours"));
 
         return favouriteColours;
     }

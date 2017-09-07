@@ -17,7 +17,7 @@ public class StringAcceptorTest {
         final Visitor visitor = mock(Visitor.class);
         final StringAcceptor stringAcceptor = new StringAcceptor();
 
-        stringAcceptor.accept(fieldName, visitor, stringSchema);
+        stringAcceptor.accept(fieldName, stringSchema, visitor);
 
         verify(visitor).visit(fieldName, stringSchema);
     }

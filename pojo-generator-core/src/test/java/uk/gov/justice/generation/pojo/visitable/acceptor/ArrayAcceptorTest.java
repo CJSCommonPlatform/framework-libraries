@@ -1,11 +1,12 @@
 package uk.gov.justice.generation.pojo.visitable.acceptor;
 
 import static java.util.Arrays.asList;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import org.everit.json.schema.ArraySchema;
@@ -21,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ArrayAcceptorTest {
 
     @Mock
-    private AcceptorFactory acceptorFactory;
+    private AcceptorService acceptorService;
 
     @InjectMocks
     private ArrayAcceptor arrayAcceptor;
@@ -36,12 +37,12 @@ public class ArrayAcceptorTest {
 
         when(arraySchema.getAllItemSchema()).thenReturn(allItemSchema);
 
-        arrayAcceptor.accept(fieldName, visitor, arraySchema);
+        arrayAcceptor.accept(fieldName, arraySchema, visitor);
 
-        final InOrder inOrder = inOrder(visitor, acceptorFactory);
+        final InOrder inOrder = inOrder(visitor, acceptorService);
 
         inOrder.verify(visitor).enter(fieldName, arraySchema);
-        inOrder.verify(acceptorFactory).visitSchema(fieldName, visitor, allItemSchema);
+        inOrder.verify(acceptorService).visitSchema(fieldName, allItemSchema, visitor);
         inOrder.verify(visitor).leave(arraySchema);
     }
 
@@ -53,19 +54,15 @@ public class ArrayAcceptorTest {
         final ArraySchema arraySchema = mock(ArraySchema.class);
         final Schema itemSchema_1 = mock(Schema.class);
         final Schema itemSchema_2 = mock(Schema.class);
-        final VisitableSchema visitableSchema_1 = mock(VisitableSchema.class);
-        final VisitableSchema visitableSchema_2 = mock(VisitableSchema.class);
 
         when(arraySchema.getAllItemSchema()).thenReturn(null);
         when(arraySchema.getItemSchemas()).thenReturn(asList(itemSchema_1, itemSchema_2));
 
-        arrayAcceptor.accept(fieldName, visitor, arraySchema);
+        arrayAcceptor.accept(fieldName, arraySchema, visitor);
 
-        final InOrder inOrder = inOrder(visitor, acceptorFactory);
-
-        inOrder.verify(visitor).enter(fieldName, arraySchema);
-        inOrder.verify(acceptorFactory).visitSchema(fieldName, visitor, itemSchema_1);
-        inOrder.verify(acceptorFactory).visitSchema(fieldName, visitor, itemSchema_2);
-        inOrder.verify(visitor).leave(arraySchema);
+        verify(visitor, atMost(1)).enter(fieldName, arraySchema);
+        verify(acceptorService).visitSchema(fieldName, itemSchema_1, visitor);
+        verify(acceptorService).visitSchema(fieldName, itemSchema_2, visitor);
+        verify(visitor, atMost(1)).leave(arraySchema);
     }
 }

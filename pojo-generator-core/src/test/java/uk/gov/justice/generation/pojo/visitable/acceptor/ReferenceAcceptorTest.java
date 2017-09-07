@@ -19,7 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ReferenceAcceptorTest {
 
     @Mock
-    private AcceptorFactory acceptorFactory;
+    private AcceptorService acceptorService;
 
     @InjectMocks
     private ReferenceAcceptor referenceAcceptor;
@@ -33,12 +33,12 @@ public class ReferenceAcceptorTest {
 
         when(referenceSchema.getReferredSchema()).thenReturn(referredSchema);
 
-        referenceAcceptor.accept(fieldName, visitor, referenceSchema);
+        referenceAcceptor.accept(fieldName, referenceSchema, visitor);
 
-        final InOrder inOrder = inOrder(visitor, acceptorFactory);
+        final InOrder inOrder = inOrder(visitor, acceptorService);
 
         inOrder.verify(visitor).enter(fieldName, referenceSchema);
-        inOrder.verify(acceptorFactory).visitSchema(fieldName, visitor, referredSchema);
+        inOrder.verify(acceptorService).visitSchema(fieldName, referredSchema, visitor);
         inOrder.verify(visitor).leave(referenceSchema);
     }
 }

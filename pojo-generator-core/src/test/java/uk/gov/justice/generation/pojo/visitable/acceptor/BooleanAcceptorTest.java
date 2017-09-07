@@ -17,7 +17,7 @@ public class BooleanAcceptorTest {
         final Visitor visitor = mock(Visitor.class);
         final BooleanAcceptor booleanSchemaAcceptor = new BooleanAcceptor();
 
-        booleanSchemaAcceptor.accept(fieldName, visitor, booleanSchema);
+        booleanSchemaAcceptor.accept(fieldName, booleanSchema, visitor);
 
         verify(visitor).visit(fieldName, booleanSchema);
     }

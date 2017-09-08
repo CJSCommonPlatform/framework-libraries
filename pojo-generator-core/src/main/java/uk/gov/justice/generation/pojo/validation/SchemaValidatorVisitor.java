@@ -5,6 +5,7 @@ import uk.gov.justice.generation.pojo.visitor.Visitor;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
@@ -82,6 +83,11 @@ public class SchemaValidatorVisitor implements Visitor {
 
     @Override
     public void visit(final String fieldName, final NullSchema schema) {
+        //Do nothing
+    }
+
+    @Override
+    public void visit(final String fieldName, final EmptySchema schema) {
         //Do nothing
     }
 }

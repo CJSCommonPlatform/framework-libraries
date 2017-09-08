@@ -26,6 +26,7 @@ import java.util.Set;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
@@ -81,6 +82,10 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
         if (schema instanceof NumberSchema) {
             final DefinitionType type = ((NumberSchema) schema).requiresInteger() ? INTEGER : NUMBER;
             return new FieldDefinition(type, fieldName);
+        }
+
+        if (schema instanceof EmptySchema) {
+            return new ClassDefinition(CLASS, fieldName);
         }
 
         throw new UnsupportedSchemaException(format(EXCEPTION_FORMAT_MESSAGE, schema.getClass().getSimpleName()));

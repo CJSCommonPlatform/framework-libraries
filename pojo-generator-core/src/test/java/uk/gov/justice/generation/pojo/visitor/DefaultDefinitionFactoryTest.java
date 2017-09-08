@@ -28,6 +28,7 @@ import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
 import org.everit.json.schema.ObjectSchema;
@@ -38,6 +39,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,10 +48,13 @@ public class DefaultDefinitionFactoryTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    @InjectMocks
+    private DefaultDefinitionFactory defaultDefinitionFactory;
+
     @Test
     public void shouldConstructRootClassDefinition() throws Exception {
         final String fieldName = "fieldName";
-        final Definition definition = new DefaultDefinitionFactory().constructRootClassDefinition(fieldName);
+        final Definition definition = defaultDefinitionFactory.constructRootClassDefinition(fieldName);
 
         assertThat(definition, is(instanceOf(ClassDefinition.class)));
         assertThat(definition.type(), is(ROOT));
@@ -61,7 +66,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final ObjectSchema objectSchema = ObjectSchema.builder().build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, objectSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, objectSchema);
 
         assertThat(definition, is(instanceOf(ClassDefinition.class)));
         assertThat(definition.type(), is(CLASS));
@@ -73,7 +78,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final CombinedSchema combinedSchema = CombinedSchema.builder().criterion(ANY_CRITERION).build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, combinedSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, combinedSchema);
 
         assertThat(definition, is(instanceOf(CombinedDefinition.class)));
         assertThat(definition.type(), is(COMBINED));
@@ -85,7 +90,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final ArraySchema arraySchema = ArraySchema.builder().build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, arraySchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, arraySchema);
 
         assertThat(definition, is(instanceOf(FieldDefinition.class)));
         assertThat(definition.type(), is(ARRAY));
@@ -98,7 +103,7 @@ public class DefaultDefinitionFactoryTest {
         final String enumValue = "test value";
         final EnumSchema enumSchema = EnumSchema.builder().possibleValue(enumValue).build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, enumSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, enumSchema);
 
         assertThat(definition, is(instanceOf(EnumDefinition.class)));
         assertThat(definition.type(), is(ENUM));
@@ -111,7 +116,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final StringSchema stringSchema = StringSchema.builder().description("UUID").build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, stringSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, stringSchema);
 
         assertThat(definition, is(instanceOf(FieldDefinition.class)));
         assertThat(definition.type(), is(STRING));
@@ -123,7 +128,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final BooleanSchema booleanSchema = BooleanSchema.builder().build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, booleanSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, booleanSchema);
 
         assertThat(definition, is(instanceOf(FieldDefinition.class)));
         assertThat(definition.type(), is(BOOLEAN));
@@ -135,7 +140,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final NumberSchema numberSchema = NumberSchema.builder().build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, numberSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, numberSchema);
 
         assertThat(definition, is(instanceOf(FieldDefinition.class)));
         assertThat(definition.type(), is(NUMBER));
@@ -147,7 +152,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final NumberSchema numberSchema = NumberSchema.builder().requiresInteger(true).build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, numberSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, numberSchema);
 
         assertThat(definition, is(instanceOf(FieldDefinition.class)));
         assertThat(definition.type(), is(INTEGER));
@@ -160,12 +165,24 @@ public class DefaultDefinitionFactoryTest {
         final String referenceValue = "reference value";
         final ReferenceSchema referenceSchema = ReferenceSchema.builder().refValue(referenceValue).build();
 
-        final Definition definition = new DefaultDefinitionFactory().constructDefinitionFor(fieldName, referenceSchema);
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, referenceSchema);
 
         assertThat(definition, is(instanceOf(ReferenceDefinition.class)));
         assertThat(definition.type(), is(REFERENCE));
         assertThat(definition.getFieldName(), is(fieldName));
         assertThat(((ReferenceDefinition) definition).getReferenceValue(), is(referenceValue));
+    }
+
+    @Test
+    public void shouldConstructClassDefinitionForEmptySchema() throws Exception {
+        final String fieldName = "fieldName";
+        final EmptySchema emptySchema = EmptySchema.builder().build();
+
+        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, emptySchema);
+
+        assertThat(definition, is(instanceOf(ClassDefinition.class)));
+        assertThat(definition.type(), is(CLASS));
+        assertThat(definition.getFieldName(), is(fieldName));
     }
 
     @Test
@@ -177,7 +194,7 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "myDummy";
         final String packageName = "package.name";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
-        new DefaultDefinitionFactory().constructDefinitionFor(fieldName, dummySchema);
+        defaultDefinitionFactory.constructDefinitionFor(fieldName, dummySchema);
     }
 
     @Test
@@ -188,7 +205,7 @@ public class DefaultDefinitionFactoryTest {
         final Schema.Builder builder = mock(Schema.Builder.class);
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
-        new DefaultDefinitionFactory().constructDefinitionFor("fieldName", dummySchema);
+        defaultDefinitionFactory.constructDefinitionFor("fieldName", dummySchema);
     }
 
     private class DummySchema extends Schema {

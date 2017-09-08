@@ -3,6 +3,7 @@ package uk.gov.justice.generation.pojo.visitor;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
@@ -37,4 +38,6 @@ public interface Visitor {
     void visit(final String fieldName, final StringSchema schema);
 
     void visit(final String fieldName, final NullSchema schema);
+
+    void visit(final String fieldName, final EmptySchema schema);
 }

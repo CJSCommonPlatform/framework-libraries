@@ -1,33 +1,17 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.core.NameGenerator;
-import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
-import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
-import uk.gov.justice.generation.pojo.visitable.Visitable;
-import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
-import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
-import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.write.SourceWriter;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
@@ -37,12 +21,9 @@ import org.junit.Test;
 
 public class DefinitionBuilderIT {
 
-    private final SourceWriter sourceWriter = new SourceWriter();
-    private final ClassCompiler classCompiler = new ClassCompiler();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-    private final NameGenerator nameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
-    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory();
+    private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -65,34 +46,17 @@ public class DefinitionBuilderIT {
     @Test
     public void shouldBuildTypeSpecFromSchema() throws Exception {
         final File schemaFile = new File("src/test/resources/schemas/person-schema.json");
-        final Schema schema = schemaLoader.loadFrom(schemaFile);
-        final String fieldName = nameGenerator.rootFieldNameFrom(schemaFile);
         final String packageName = "uk.gov.justice.pojo.definition.builder";
-        final GenerationContext generationContext = new GenerationContext(
-                sourceOutputDirectory.toPath(),
+        final Schema schema = schemaLoader.loadFrom(schemaFile);
+
+        final List<Class<?>> classes = generatorUtil.generateAndCompileJavaSource(
+                schemaFile,
                 packageName,
-                schemaFile.getName(),
-                emptyList());
+                schema,
+                sourceOutputDirectory.toPath(),
+                classesOutputDirectory.toPath());
 
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
-
-        final VisitableFactory visitableFactory = new VisitableFactory();
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, new DefaultAcceptorService(visitableFactory));
-
-        visitableSchema.accept(definitionBuilderVisitor);
-
-        final ClassDefinition personClassDefinition = (ClassDefinition) definitionBuilderVisitor.getDefinitions().get(0);
-
-        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
-        final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(new DefaultPluginProvider());
-
-        final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
-        final ClassGeneratable personClassGenerator = new JavaGeneratorFactory(classNameFactory)
-                .createClassGeneratorsFor(singletonList(personClassDefinition), new DefaultPluginProvider(), generationContext)
-                .get(0);
-
-        sourceWriter.write(personClassGenerator, generationContext);
-        final Class<?> personClass = classCompiler.compile(personClassGenerator, generationContext, classesOutputDirectory);
+        final Class<?> personClass = classes.get(0);
 
         final String lastName = "lastName";
         final String firstName = "firstName";

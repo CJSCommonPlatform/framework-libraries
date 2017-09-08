@@ -2,24 +2,17 @@ package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
-import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
-import uk.gov.justice.generation.pojo.write.SourceWriter;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
@@ -32,11 +25,8 @@ import org.junit.Test;
 
 public class EnumGeneratorIT {
 
-    private final SourceWriter sourceWriter = new SourceWriter();
-    private final ClassCompiler classCompiler = new ClassCompiler();
-
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-    private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
+    private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -62,32 +52,18 @@ public class EnumGeneratorIT {
         final String packageName = "uk.gov.justice.pojo.enumgenerator";
         final String sourceFilename = "filenam.json";
 
-        final GenerationContext generationContext = new GenerationContext(
-                sourceOutputDirectory.toPath(),
-                packageName,
-                sourceFilename,
-                emptyList());
-
         final ClassDefinition studentDefinition = studentDefinition();
         final EnumDefinition colourDefinition = colourDefinition();
+        final List<Definition> definitions = asList(colourDefinition, studentDefinition);
 
-        final PluginProvider pluginProvider = new DefaultPluginProvider();
-
-        final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
-                .withGenerationContext(generationContext)
-                .withPluginProvider(pluginProvider)
-                .build();
-
-        final List<? extends Class<?>> classes = javaGeneratorFactory
-                .createClassGeneratorsFor(asList(colourDefinition, studentDefinition), pluginProvider, generationContext)
-                .stream()
-                .map(classGenerator -> {
-                    sourceWriter.write(classGenerator, generationContext);
-                    return classCompiler.compile(classGenerator, generationContext, classesOutputDirectory);
-                }).collect(toList());
+        final List<Class<?>> classes = generatorUtil.generateAndCompileFromDefinitions(
+                sourceFilename,
+                packageName,
+                sourceOutputDirectory.toPath(),
+                classesOutputDirectory.toPath(),
+                definitions);
 
         final String enumName = colourDefinition.getEnumValues().get(0);
-
 
         final Class<? extends Enum> enumClass = (Class<? extends Enum>) classes.get(0);
         final Enum red = Enum.valueOf(enumClass, enumName.toUpperCase());

@@ -1,39 +1,17 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
-import static java.util.Collections.emptyList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.core.NameGenerator;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
-import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
-import uk.gov.justice.generation.pojo.visitable.Visitable;
-import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
-import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
-import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.write.SourceWriter;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 
 import java.io.File;
 
-import org.everit.json.schema.Schema;
 import org.junit.Before;
 import org.junit.Test;
 
 public class NullSchemaIT {
 
-
-    private final SourceWriter sourceWriter = new SourceWriter();
-    private final ClassCompiler classCompiler = new ClassCompiler();
-
-    private final NameGenerator rootFieldNameGenerator = new NameGenerator();
-    private final SchemaLoader schemaLoader = new SchemaLoader();
-    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory();
-    private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
+    private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -55,34 +33,12 @@ public class NullSchemaIT {
     @Test
     public void shouldGeneratePojosFromANullSchema() throws Exception {
         final File jsonSchemaFile = new File("src/test/resources/schemas/null-schema.json");
-        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-        final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
         final String packageName = "uk.gov.justice.pojo.nullable.schema";
-        final GenerationContext generationContext = new GenerationContext(
-                sourceOutputDirectory.toPath(),
+
+        generatorUtil.generateAndCompileJavaSource(
+                jsonSchemaFile,
                 packageName,
-                jsonSchemaFile.getName(),
-                emptyList());
-
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
-        final VisitableFactory visitableFactory = new VisitableFactory();
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, new DefaultAcceptorService(visitableFactory));
-
-        visitableSchema.accept(definitionBuilderVisitor);
-
-        final PluginProvider pluginProvider = new DefaultPluginProvider();
-
-        final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
-                .withGenerationContext(generationContext)
-                .withPluginProvider(pluginProvider)
-                .build();
-
-        javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, generationContext)
-                .forEach(classGeneratable -> {
-                    sourceWriter.write(classGeneratable, generationContext);
-                    classCompiler.compile(classGeneratable, generationContext, classesOutputDirectory);
-                });
-
+                sourceOutputDirectory.toPath(),
+                classesOutputDirectory.toPath());
     }
 }

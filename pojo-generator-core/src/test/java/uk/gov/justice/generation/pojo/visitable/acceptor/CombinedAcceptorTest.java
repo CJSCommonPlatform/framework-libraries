@@ -23,7 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CombinedAcceptorTest {
 
     @Mock
-    private AcceptorFactory acceptorFactory;
+    private AcceptorService acceptorService;
 
     @InjectMocks
     private CombinedAcceptor combinedAcceptor;
@@ -41,13 +41,13 @@ public class CombinedAcceptorTest {
 
         when(combinedSchema.getSubschemas()).thenReturn(propertySchemas);
 
-        combinedAcceptor.accept(fieldName, visitor, combinedSchema);
+        combinedAcceptor.accept(fieldName, combinedSchema, visitor);
 
-        final InOrder inOrder = inOrder(visitor, acceptorFactory);
+        final InOrder inOrder = inOrder(visitor, acceptorService);
 
         inOrder.verify(visitor).enter(fieldName, combinedSchema);
-        inOrder.verify(acceptorFactory).visitSchema("fieldName", visitor, childSchema_1);
-        inOrder.verify(acceptorFactory).visitSchema("fieldName", visitor, childSchema_2);
+        inOrder.verify(acceptorService).visitSchema("fieldName", childSchema_1, visitor);
+        inOrder.verify(acceptorService).visitSchema("fieldName", childSchema_2, visitor);
         inOrder.verify(visitor).leave(combinedSchema);
     }
 }

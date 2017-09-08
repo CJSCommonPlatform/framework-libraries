@@ -17,7 +17,7 @@ public class NumberAcceptorTest {
         final Visitor visitor = mock(Visitor.class);
         final NumberAcceptor numberAcceptor = new NumberAcceptor();
 
-        numberAcceptor.accept(fieldName, visitor, numberSchema);
+        numberAcceptor.accept(fieldName, numberSchema, visitor);
 
         verify(visitor).visit(fieldName, numberSchema);
     }

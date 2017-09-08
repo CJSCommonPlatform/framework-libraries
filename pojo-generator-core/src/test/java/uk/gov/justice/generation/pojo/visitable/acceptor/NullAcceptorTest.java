@@ -26,7 +26,7 @@ public class NullAcceptorTest {
 
         final Visitor visitor = mock(Visitor.class);
 
-        nullAcceptor.accept(fieldName, visitor, nullSchema);
+        nullAcceptor.accept(fieldName, nullSchema, visitor);
 
         verify(visitor).visit(fieldName, nullSchema);
     }

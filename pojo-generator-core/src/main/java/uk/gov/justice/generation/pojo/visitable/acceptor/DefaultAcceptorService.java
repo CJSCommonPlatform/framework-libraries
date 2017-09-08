@@ -1,6 +1,6 @@
 package uk.gov.justice.generation.pojo.visitable.acceptor;
 
-import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
+import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import java.util.HashMap;
@@ -18,13 +18,17 @@ import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
 
-public class DefaultAcceptorFactory implements AcceptorFactory {
+/**
+ * The default implementation of the {@link AcceptorService}, provides the default acceptor map and
+ * provides a method to visit a child {@link Schema}.
+ */
+public class DefaultAcceptorService implements AcceptorService {
 
     private final Map<Class<? extends Schema>, Acceptable> acceptorMap = new HashMap<>();
-    private final VisitableSchemaFactory visitableSchemaFactory;
+    private final VisitableFactory visitableFactory;
 
-    public DefaultAcceptorFactory(final VisitableSchemaFactory visitableSchemaFactory) {
-        this.visitableSchemaFactory = visitableSchemaFactory;
+    public DefaultAcceptorService(final VisitableFactory visitableFactory) {
+        this.visitableFactory = visitableFactory;
 
         acceptorMap.put(ArraySchema.class, new ArrayAcceptor(this));
         acceptorMap.put(CombinedSchema.class, new CombinedAcceptor(this));
@@ -44,7 +48,7 @@ public class DefaultAcceptorFactory implements AcceptorFactory {
     }
 
     @Override
-    public void visitSchema(final String fieldName, final Visitor visitor, final Schema schema) {
-        visitableSchemaFactory.createWith(schema, this).accept(fieldName, visitor);
+    public void visitSchema(final String fieldName, final Schema schema, final Visitor visitor) {
+        visitableFactory.createWith(fieldName, schema, this).accept(visitor);
     }
 }

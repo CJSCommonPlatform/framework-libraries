@@ -23,7 +23,7 @@ public class EmptyAcceptorTest {
         final Visitor visitor = mock(Visitor.class);
         final EmptySchema schema = mock(EmptySchema.class);
 
-        emptyAcceptor.accept(fieldName, visitor, schema);
+        emptyAcceptor.accept(fieldName, schema, visitor);
 
         verify(visitor).visit(fieldName, schema);
     }

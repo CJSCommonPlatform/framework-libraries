@@ -17,7 +17,7 @@ public class EnumAcceptorTest {
         final Visitor visitor = mock(Visitor.class);
         final EnumAcceptor enumAcceptor = new EnumAcceptor();
 
-        enumAcceptor.accept(fieldName, visitor, enumSchema);
+        enumAcceptor.accept(fieldName, enumSchema, visitor);
 
         verify(visitor).visit(fieldName, enumSchema);
     }

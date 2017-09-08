@@ -13,9 +13,9 @@ import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
-import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
-import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.Visitable;
+import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -71,10 +71,10 @@ public class IgnoreHardCodedClassesIT {
                 ignoredClassNames);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
-        final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
-        final VisitableSchema visitableSchema = visitableSchemaFactory.createWith(schema, new DefaultAcceptorFactory(visitableSchemaFactory));
+        final VisitableFactory visitableFactory = new VisitableFactory();
+        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, new DefaultAcceptorService(visitableFactory));
 
-        visitableSchema.accept(fieldName, definitionBuilderVisitor);
+        visitableSchema.accept(definitionBuilderVisitor);
 
         final List<Class<?>> newClasses = new ArrayList<>();
 
@@ -116,10 +116,10 @@ public class IgnoreHardCodedClassesIT {
                 ignoredClassNames);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
-        final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
-        final VisitableSchema visitableSchema = visitableSchemaFactory.createWith(schema, new DefaultAcceptorFactory(visitableSchemaFactory));
+        final VisitableFactory visitableFactory = new VisitableFactory();
+        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, new DefaultAcceptorService(visitableFactory));
 
-        visitableSchema.accept(fieldName, definitionBuilderVisitor);
+        visitableSchema.accept(definitionBuilderVisitor);
 
         final List<Class<?>> newClasses = new ArrayList<>();
 

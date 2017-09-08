@@ -4,35 +4,45 @@ import static java.lang.String.format;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.visitable.acceptor.Acceptable;
-import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import java.util.Map;
 
 import org.everit.json.schema.Schema;
 
+/**
+ * A visitable schema that uses {@link Acceptable} implementations for each {@link Schema}
+ * implementation type visited.
+ */
 public class VisitableSchema implements Visitable {
 
+    private final String fieldName;
     private final Schema schema;
-    private final AcceptorFactory jsonAcceptorFactory;
+    private final AcceptorService jsonAcceptorService;
 
-    public VisitableSchema(final Schema schema, final AcceptorFactory jsonAcceptorFactory) {
+    /**
+     * Construct a VisitableSchema instance with {@link Schema} and {@link AcceptorService}
+     *
+     * @param fieldName       - the field name of the schema
+     * @param schema          - {@link Schema} to be visited
+     * @param acceptorService - {@link AcceptorService} creates acceptor map for looking up correct
+     *                        {@link Acceptable} implementation
+     */
+    VisitableSchema(final String fieldName, final Schema schema, final AcceptorService acceptorService) {
+        this.fieldName = fieldName;
         this.schema = schema;
-        this.jsonAcceptorFactory = jsonAcceptorFactory;
+        this.jsonAcceptorService = acceptorService;
     }
 
     @Override
-    public void accept(final String fieldName, final Visitor visitor) {
-        final Map<Class<? extends Schema>, Acceptable> acceptorMap = jsonAcceptorFactory.acceptorMap();
+    public void accept(final Visitor visitor) {
+        final Map<Class<? extends Schema>, Acceptable> acceptorMap = jsonAcceptorService.acceptorMap();
 
         if (acceptorMap.containsKey(schema.getClass())) {
-            acceptorMap.get(schema.getClass()).accept(fieldName, visitor, schema);
+            acceptorMap.get(schema.getClass()).accept(fieldName, schema, visitor);
         } else {
             throw new UnsupportedSchemaException(format("Schema of type: %s is not supported.", this.schema.getClass().getSimpleName()));
         }
-    }
-
-    public Schema getSchema() {
-        return schema;
     }
 }

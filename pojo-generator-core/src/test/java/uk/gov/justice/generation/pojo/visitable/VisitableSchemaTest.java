@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.visitable.acceptor.Acceptable;
-import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import java.util.Map;
@@ -40,7 +40,7 @@ public class VisitableSchemaTest {
     private Visitor visitor;
 
     @Mock
-    private AcceptorFactory acceptorFactory;
+    private AcceptorService acceptorService;
 
     @Test
     public void shouldVisitObjectSchema() {
@@ -50,14 +50,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(ObjectSchema.class)).thenReturn(true);
         when(acceptorMap.get(ObjectSchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(objectSchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, objectSchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, objectSchema);
+        verify(acceptable).accept(fieldName, objectSchema, visitor);
     }
 
     @Test
@@ -69,14 +69,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(StringSchema.class)).thenReturn(true);
         when(acceptorMap.get(StringSchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(stringSchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, stringSchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, stringSchema);
+        verify(acceptable).accept(fieldName, stringSchema, visitor);
     }
 
     @Test
@@ -87,14 +87,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(BooleanSchema.class)).thenReturn(true);
         when(acceptorMap.get(BooleanSchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(booleanSchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, booleanSchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, booleanSchema);
+        verify(acceptable).accept(fieldName, booleanSchema, visitor);
     }
 
     @Test
@@ -105,14 +105,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(NumberSchema.class)).thenReturn(true);
         when(acceptorMap.get(NumberSchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(numberSchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, numberSchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, numberSchema);
+        verify(acceptable).accept(fieldName, numberSchema, visitor);
     }
 
     @Test
@@ -123,14 +123,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(EnumSchema.class)).thenReturn(true);
         when(acceptorMap.get(EnumSchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(enumSchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, enumSchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, enumSchema);
+        verify(acceptable).accept(fieldName, enumSchema, visitor);
     }
 
     @Test
@@ -141,14 +141,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(ReferenceSchema.class)).thenReturn(true);
         when(acceptorMap.get(ReferenceSchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(referenceSchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, referenceSchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, referenceSchema);
+        verify(acceptable).accept(fieldName, referenceSchema, visitor);
     }
 
     @Test
@@ -159,14 +159,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(ArraySchema.class)).thenReturn(true);
         when(acceptorMap.get(ArraySchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(arraySchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, arraySchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, arraySchema);
+        verify(acceptable).accept(fieldName, arraySchema, visitor);
     }
 
     @Test
@@ -177,14 +177,14 @@ public class VisitableSchemaTest {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = mock(Map.class);
         final Acceptable acceptable = mock(Acceptable.class);
 
-        when(acceptorFactory.acceptorMap()).thenReturn(acceptorMap);
+        when(acceptorService.acceptorMap()).thenReturn(acceptorMap);
         when(acceptorMap.containsKey(CombinedSchema.class)).thenReturn(true);
         when(acceptorMap.get(CombinedSchema.class)).thenReturn(acceptable);
 
-        final VisitableSchema visitableSchema = new VisitableSchema(combinedSchema, acceptorFactory);
-        visitableSchema.accept(fieldName, visitor);
+        final VisitableSchema visitableSchema = new VisitableSchema(fieldName, combinedSchema, acceptorService);
+        visitableSchema.accept(visitor);
 
-        verify(acceptable).accept(fieldName, visitor, combinedSchema);
+        verify(acceptable).accept(fieldName, combinedSchema, visitor);
     }
 
     @Test
@@ -196,7 +196,7 @@ public class VisitableSchemaTest {
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
 
-        new VisitableSchema(dummySchema, acceptorFactory).accept(fieldName, mock(Visitor.class));
+        new VisitableSchema(fieldName, dummySchema, acceptorService).accept(mock(Visitor.class));
     }
 
     private class DummySchema extends Schema {

@@ -7,8 +7,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.VisitableSchema;
-import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import java.util.Map;
@@ -31,13 +31,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultAcceptorFactoryTest {
+public class DefaultAcceptorServiceTest {
 
     @Mock
-    private VisitableSchemaFactory visitableSchemaFactory;
+    private VisitableFactory visitableFactory;
 
     @InjectMocks
-    private DefaultAcceptorFactory jsonSchemaAcceptorFactory;
+    private DefaultAcceptorService jsonSchemaAcceptorFactory;
 
     @Test
     public void shouldReturnAcceptorMap() throws Exception {
@@ -63,11 +63,11 @@ public class DefaultAcceptorFactoryTest {
         final Schema schema = mock(Schema.class);
         final VisitableSchema visitableSchema = mock(VisitableSchema.class);
 
-        when(visitableSchemaFactory.createWith(schema, jsonSchemaAcceptorFactory)).thenReturn(visitableSchema);
+        when(visitableFactory.createWith(fieldName, schema, jsonSchemaAcceptorFactory)).thenReturn(visitableSchema);
 
-        jsonSchemaAcceptorFactory.visitSchema(fieldName, visitor, schema);
+        jsonSchemaAcceptorFactory.visitSchema(fieldName, schema, visitor);
 
-        verify(visitableSchemaFactory).createWith(schema, jsonSchemaAcceptorFactory);
-        verify(visitableSchema).accept(fieldName, visitor);
+        verify(visitableFactory).createWith(fieldName, schema, jsonSchemaAcceptorFactory);
+        verify(visitableSchema).accept(visitor);
     }
 }

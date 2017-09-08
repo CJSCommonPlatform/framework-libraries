@@ -12,8 +12,8 @@ import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProviderFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.visitable.VisitableSchemaFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorFactory;
+import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
@@ -33,7 +33,7 @@ public class SchemaPojoGenerator implements Generator<File> {
     private final SourceWriter sourceWriter = new SourceWriter();
     private final NameGenerator nameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
-    private final VisitableSchemaFactory visitableSchemaFactory = new VisitableSchemaFactory();
+    private final VisitableFactory visitableFactory = new VisitableFactory();
     private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
 
     @Override
@@ -66,10 +66,10 @@ public class SchemaPojoGenerator implements Generator<File> {
         final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor();
         final Schema schema = schemaLoader.loadFrom(source);
         final String fieldName = nameGenerator.rootFieldNameFrom(source);
-        final DefaultAcceptorFactory jsonSchemaAcceptorFactory = new DefaultAcceptorFactory(visitableSchemaFactory);
+        final DefaultAcceptorService jsonSchemaAcceptorFactory = new DefaultAcceptorService(visitableFactory);
 
-        visitableSchemaFactory.createWith(schema, jsonSchemaAcceptorFactory)
-                .accept(fieldName, definitionBuilderVisitor);
+        visitableFactory.createWith(fieldName, schema, jsonSchemaAcceptorFactory)
+                .accept(definitionBuilderVisitor);
 
         return definitionBuilderVisitor.getDefinitions();
     }

@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ObjectAcceptorTest {
 
     @Mock
-    private AcceptorFactory acceptorFactory;
+    private AcceptorService acceptorService;
 
     @InjectMocks
     private ObjectAcceptor objectAcceptor;
@@ -42,13 +42,13 @@ public class ObjectAcceptorTest {
 
         when(objectSchema.getPropertySchemas()).thenReturn(propertySchemas);
 
-        objectAcceptor.accept(fieldName, visitor, objectSchema);
+        objectAcceptor.accept(fieldName, objectSchema, visitor);
 
-        final InOrder inOrder = inOrder(visitor, acceptorFactory);
+        final InOrder inOrder = inOrder(visitor, acceptorService);
 
         inOrder.verify(visitor).enter(fieldName, objectSchema);
-        inOrder.verify(acceptorFactory).visitSchema("childSchema_1", visitor, childSchema_1);
-        inOrder.verify(acceptorFactory).visitSchema("childSchema_2", visitor, childSchema_2);
+        inOrder.verify(acceptorService).visitSchema("childSchema_1", childSchema_1, visitor);
+        inOrder.verify(acceptorService).visitSchema("childSchema_2", childSchema_2, visitor);
         inOrder.verify(visitor).leave(objectSchema);
     }
 }

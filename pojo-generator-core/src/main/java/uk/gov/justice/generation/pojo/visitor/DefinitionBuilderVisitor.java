@@ -70,10 +70,7 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void leave(final CombinedSchema schema) {
         addFieldDefinitionsFor(schema, emptyList());
-
-        if (combinedDefinitions.peek().getSchema() == schema) {
-            combinedDefinitions.pop();
-        }
+        combinedDefinitions.pop();
     }
 
     @Override

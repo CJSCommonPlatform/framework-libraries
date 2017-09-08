@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
@@ -61,7 +62,7 @@ public class JavaGeneratorFactoryTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void shouldReturnListOfClassGeneratorAndEnumGeneratorForClassDefintionAndEnumDefintion() throws Exception {
+    public void shouldReturnListOfClassGeneratorAndEnumGeneratorForClassDefinitionAndEnumDefinition() throws Exception {
         final List<Definition> classDefinitions = asList(
                 new ClassDefinition(CLASS, "test1"),
                 new EnumDefinition("test2", emptyList()));
@@ -71,6 +72,20 @@ public class JavaGeneratorFactoryTest {
 
         assertThat(classGeneratables.size(), is(2));
         assertThat(classGeneratables, hasItems(instanceOf(ClassGenerator.class), instanceOf(EnumGenerator.class)));
+    }
+
+    @Test
+    public void shouldReturnEmptyListIfClassesAreAlreadyCreated() throws Exception {
+        final List<Definition> classDefinitions = asList(
+                new ClassDefinition(CLASS, "test1"),
+                new EnumDefinition("test2", emptyList()));
+
+        when(generationContext.getIgnoredClassNames()).thenReturn(asList("Test1", "Test2"));
+
+        final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory(classNameFactory)
+                .createClassGeneratorsFor(classDefinitions, pluginProvider, generationContext);
+
+        assertThat(classGeneratables.size(), is(0));
     }
 
     @Test

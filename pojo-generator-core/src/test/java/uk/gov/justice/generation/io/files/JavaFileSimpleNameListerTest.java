@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -89,7 +90,7 @@ public class JavaFileSimpleNameListerTest {
     }
 
     @Test
-    public void shouldAIgnoreFilesWithoutTheJavaExtension() throws Exception {
+    public void shouldIgnoreFilesWithoutTheJavaExtension() throws Exception {
 
         final String packageName = "org.bloggs.fred";
         final String packageNameAsPath = "org/bloggs/fred";
@@ -121,5 +122,34 @@ public class JavaFileSimpleNameListerTest {
                 packageName);
 
         assertThat(simpleNames, hasItems("FirstClass", "ThirdClass"));
+    }
+
+    @Test
+    public void shouldIgnoreFilesInOutputDirectory() throws Exception {
+
+        final String packageName = "org.bloggs.fred";
+        final String packageNameAsPath = "org/bloggs/fred";
+
+        final Path sourcePath_1 = mock(Path.class);
+        final Path outputDirectory = mock(Path.class);
+        final Path resolvedSourcePath_1 = mock(Path.class, RETURNS_DEEP_STUBS);
+        final File javaFile_1 = mock(File.class);
+        final File javaFile_2 = mock(File.class);
+
+        when(sourcePath_1.resolve(packageNameAsPath)).thenReturn(resolvedSourcePath_1);
+
+        when(resolvedSourcePath_1.toFile().listFiles()).thenReturn(new File[]{javaFile_1, javaFile_2});
+
+        when(javaFile_1.getName()).thenReturn("FirstClass.java");
+        when(javaFile_2.getName()).thenReturn("SecondClass.java");
+
+        final List<String> simpleNames = javaFileSimpleNameLister.findSimpleNames(
+                asList(sourcePath_1, outputDirectory),
+                outputDirectory,
+                packageName);
+
+        assertThat(simpleNames, hasItems("FirstClass", "SecondClass"));
+
+        verifyZeroInteractions(outputDirectory);
     }
 }

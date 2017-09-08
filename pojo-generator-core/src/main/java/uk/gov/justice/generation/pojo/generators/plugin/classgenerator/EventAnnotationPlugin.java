@@ -13,6 +13,9 @@ import com.squareup.javapoet.TypeSpec;
 
 public class EventAnnotationPlugin implements ClassGeneratorPlugin {
 
+    private static final char DOT_CHARACTER = '.';
+    private static final int BEGIN_INDEX = 0;
+
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
                                          final ClassDefinition classDefinition,
@@ -33,6 +36,6 @@ public class EventAnnotationPlugin implements ClassGeneratorPlugin {
     }
 
     private String removeFileExtensionFrom(final String fileName) {
-        return fileName.substring(0, fileName.lastIndexOf('.'));
+        return fileName.substring(BEGIN_INDEX, fileName.lastIndexOf(DOT_CHARACTER));
     }
 }

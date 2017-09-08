@@ -2,6 +2,10 @@ package uk.gov.justice.generation.pojo.integration.test;
 
 import static java.util.Collections.emptyList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
@@ -26,7 +30,7 @@ import org.everit.json.schema.Schema;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DodgySchemaIT {
+public class EmptySchemaIT {
 
     private final SourceWriter sourceWriter = new SourceWriter();
     private final ClassCompiler classCompiler = new ClassCompiler();
@@ -42,7 +46,7 @@ public class DodgySchemaIT {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation/dodgy-schemas");
+        sourceOutputDirectory = new File("./target/test-generation/empty-schemas");
         classesOutputDirectory = new File("./target/test-classes");
 
         sourceOutputDirectory.mkdirs();
@@ -54,11 +58,71 @@ public class DodgySchemaIT {
     }
 
     @Test
-    public void shouldName() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/null-schema.json");
+    public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfNoAdditionalPropertiesSpecified() throws Exception {
+
+        final List<Class<?>> classes = setupAndGenerate("empty-schema.json");
+
+        assertThat(classes.size(), is(1));
+
+        final Class<?> emptySchemaClass = classes.get(0);
+
+        assertThat(emptySchemaClass.getDeclaredField("additionalProperties"), is(notNullValue()));
+        assertThat(emptySchemaClass.getDeclaredField("additionalProperties").getType().getName(), is("java.util.Map"));
+
+        assertThat(emptySchemaClass.getDeclaredMethod("getAdditionalProperties"), is(notNullValue()));
+        assertThat(emptySchemaClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class), is(notNullValue()));
+    }
+
+    @Test
+    public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfoAdditionalPropertiesIsSetToTrue() throws Exception {
+
+        final List<Class<?>> classes = setupAndGenerate("empty-schema-with-additional-properties-true.json");
+
+        assertThat(classes.size(), is(1));
+
+        final Class<?> emptySchemaClass = classes.get(0);
+
+        emptySchemaClass.getDeclaredField("additionalProperties");
+        emptySchemaClass.getDeclaredField("additionalProperties").getType().getName();
+        emptySchemaClass.getDeclaredMethod("getAdditionalProperties");
+        emptySchemaClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class);
+    }
+
+    @Test
+    public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfoAdditionalPropertiesIsSetToFalse() throws Exception {
+
+        final List<Class<?>> classes = setupAndGenerate("empty-schema-with-additional-properties-false.json");
+
+        assertThat(classes.size(), is(1));
+
+        final Class<?> emptySchemaClass = classes.get(0);
+
+        try {
+            emptySchemaClass.getDeclaredField("additionalProperties");
+            fail();
+        } catch (final NoSuchFieldException ignored) {
+        }
+        try {
+            emptySchemaClass.getDeclaredField("additionalProperties").getType().getName();
+            fail();
+        } catch (final NoSuchFieldException ignored) {
+        }
+        try {
+            emptySchemaClass.getDeclaredMethod("getAdditionalProperties");
+            fail();
+        } catch (final NoSuchMethodException ignored) {
+        }
+        try {
+            emptySchemaClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class);
+            fail();
+        } catch (final NoSuchMethodException ignored) {
+        }    }
+
+    private List<Class<?>> setupAndGenerate(final String fileName) {
+        final File jsonSchemaFile = new File("src/test/resources/schemas/" + fileName);
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
         final String fieldName = rootFieldNameGenerator.rootFieldNameFrom(jsonSchemaFile);
-        final String packageName = "uk.gov.justice.pojo.dodgy.schemas";
+        final String packageName = "uk.gov.justice.pojo.empty.schemas";
         final GenerationContext generationContext = new GenerationContext(
                 sourceOutputDirectory.toPath(),
                 packageName,
@@ -88,5 +152,6 @@ public class DodgySchemaIT {
                     newClasses.add(newClass);
                 });
 
+        return newClasses;
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
@@ -135,6 +136,21 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void visit(final String fieldName, final NullSchema schema) {
         // do nothing
+    }
+
+    @Override
+    public void visit(final String fieldName, final EmptySchema schema) {
+        final ClassDefinition definition;
+        if (definitions.isEmpty()) {
+            definition = (ClassDefinition) definitionFactory.constructRootClassDefinition(fieldName);
+        } else {
+            definition = (ClassDefinition) definitionFactory.constructDefinitionFor(fieldName, schema);
+        }
+
+        definition.setAllowAdditionalProperties(true);
+        addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
+
+        definitions.push(new Entry(fieldName, schema, definition));
     }
 
     public List<Definition> getDefinitions() {

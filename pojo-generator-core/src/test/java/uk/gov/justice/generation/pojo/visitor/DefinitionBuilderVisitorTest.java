@@ -20,6 +20,7 @@ import java.util.List;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
@@ -435,5 +436,60 @@ public class DefinitionBuilderVisitorTest {
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
         definitionBuilderVisitor.visit("fieldName", NullSchema.builder().build());
+    }
+
+    @Test
+    public void shouldGenerateRootClassDefinitionWithRootEmptySchemaProperty() throws Exception {
+        final String emptyFieldName = "emptyProperty";
+
+        final EmptySchema rootEmptySchema = EmptySchema.builder().build();
+
+        final ClassDefinition emptyClassDefinition = mock(ClassDefinition.class);
+
+        when(definitionFactory.constructRootClassDefinition(emptyFieldName)).thenReturn(emptyClassDefinition);
+
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
+
+        definitionBuilderVisitor.visit(emptyFieldName, rootEmptySchema);
+
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(1));
+        assertThat(definitions.get(0), is(emptyClassDefinition));
+
+        verify(emptyClassDefinition).setAllowAdditionalProperties(true);
+    }
+
+    @Test
+    public void shouldGenerateClassDefinitionWithNonRootEmptySchemaProperty() throws Exception {
+
+        final EmptySchema emptySchema = EmptySchema.builder().build();
+        final String emptyFieldName = "emptyProperty";
+        final String rootObjectFieldName = "rootObject";
+
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .addPropertySchema(emptyFieldName, emptySchema)
+                .build();
+
+        final ClassDefinition rootClassDefinition = mock(ClassDefinition.class);
+        final ClassDefinition emptyClassDefinition = mock(ClassDefinition.class);
+
+        when(definitionFactory.constructRootClassDefinition(rootObjectFieldName)).thenReturn(rootClassDefinition);
+        when(definitionFactory.constructDefinitionFor(emptyFieldName, emptySchema)).thenReturn(emptyClassDefinition);
+
+        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
+
+        definitionBuilderVisitor.enter(rootObjectFieldName, objectSchema);
+        definitionBuilderVisitor.visit(emptyFieldName, emptySchema);
+        definitionBuilderVisitor.leave(objectSchema);
+
+        final List<Definition> definitions = definitionBuilderVisitor.getDefinitions();
+
+        assertThat(definitions.size(), is(2));
+        assertThat(definitions.get(0), is(emptyClassDefinition));
+        assertThat(definitions.get(1), is(rootClassDefinition));
+
+        verify(emptyClassDefinition).setAllowAdditionalProperties(true);
     }
 }

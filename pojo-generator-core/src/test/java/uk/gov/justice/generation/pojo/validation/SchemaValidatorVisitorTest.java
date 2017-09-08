@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
@@ -83,6 +84,7 @@ public class SchemaValidatorVisitorTest {
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(StringSchema.class));
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(BooleanSchema.class));
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(NullSchema.class));
+        schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(EmptySchema.class));
 
         verifyZeroInteractions(validator);
     }

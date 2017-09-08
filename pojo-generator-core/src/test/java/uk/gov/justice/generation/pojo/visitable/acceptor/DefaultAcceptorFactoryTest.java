@@ -16,6 +16,7 @@ import java.util.Map;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
+import org.everit.json.schema.EmptySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NullSchema;
 import org.everit.json.schema.NumberSchema;
@@ -42,7 +43,7 @@ public class DefaultAcceptorFactoryTest {
     public void shouldReturnAcceptorMap() throws Exception {
         final Map<Class<? extends Schema>, Acceptable> acceptorMap = jsonSchemaAcceptorFactory.acceptorMap();
 
-        assertThat(acceptorMap.size(), is(9));
+        assertThat(acceptorMap.size(), is(10));
         assertThat(acceptorMap.get(ArraySchema.class), is(instanceOf(ArrayAcceptor.class)));
         assertThat(acceptorMap.get(CombinedSchema.class), is(instanceOf(CombinedAcceptor.class)));
         assertThat(acceptorMap.get(ObjectSchema.class), is(instanceOf(ObjectAcceptor.class)));
@@ -52,6 +53,7 @@ public class DefaultAcceptorFactoryTest {
         assertThat(acceptorMap.get(NumberSchema.class), is(instanceOf(NumberAcceptor.class)));
         assertThat(acceptorMap.get(EnumSchema.class), is(instanceOf(EnumAcceptor.class)));
         assertThat(acceptorMap.get(NullSchema.class), is(instanceOf(NullAcceptor.class)));
+        assertThat(acceptorMap.get(EmptySchema.class), is(instanceOf(EmptyAcceptor.class)));
     }
 
     @Test

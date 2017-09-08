@@ -13,11 +13,11 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.FieldGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -74,7 +74,7 @@ public class FieldAndMethodPluginTest {
         final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
-        final FieldDefinition fieldDefinition = new StringDefinition("field", null);
+        final FieldDefinition fieldDefinition = new FieldDefinition(STRING, "field");
         classDefinition.addFieldDefinition(fieldDefinition);
 
         final FieldSpec fieldSpec = builder(String.class, "field").build();

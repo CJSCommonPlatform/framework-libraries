@@ -8,6 +8,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
@@ -17,7 +18,6 @@ import uk.gov.justice.generation.pojo.dom.DefinitionType;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
-import uk.gov.justice.generation.pojo.dom.StringDefinition;
 
 import java.io.StringReader;
 import java.util.List;
@@ -71,7 +71,7 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
         }
 
         if (schema instanceof StringSchema) {
-            return new StringDefinition(fieldName, schema.getDescription());
+            return new FieldDefinition(STRING, fieldName);
         }
 
         if (schema instanceof BooleanSchema) {

@@ -9,6 +9,7 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 
 import java.util.List;
 
@@ -31,11 +32,12 @@ public class JavaGeneratorFactory {
 
     public List<ClassGeneratable> createClassGeneratorsFor(final List<Definition> definitions,
                                                            final PluginProvider pluginProvider,
+                                                           final PluginContext pluginContext,
                                                            final GenerationContext generationContext) {
         return definitions.stream()
                 .filter(this::isClassOrEnum)
                 .filter(definition -> isNotHardCoded(definition, generationContext.getIgnoredClassNames()))
-                .map(definition -> getClassGeneratable(pluginProvider, generationContext, definition))
+                .map(definition -> getClassGeneratable(pluginProvider, pluginContext, definition))
                 .collect(toList());
     }
 
@@ -45,12 +47,12 @@ public class JavaGeneratorFactory {
 
     private boolean isNotHardCoded(final Definition definition, final List<String> hardCodedClassNames) {
         final String className = capitalize(definition.getFieldName());
-        return ! hardCodedClassNames.contains(className);
+        return !hardCodedClassNames.contains(className);
     }
 
     private ClassGeneratable getClassGeneratable(
             final PluginProvider pluginProvider,
-            final GenerationContext generationContext,
+            final PluginContext pluginContext,
             final Definition definition) {
 
         if (definition.getClass() == EnumDefinition.class) {
@@ -58,9 +60,8 @@ public class JavaGeneratorFactory {
         }
 
         return new ClassGenerator((ClassDefinition) definition,
-                this,
-                pluginProvider,
                 classNameFactory,
-                generationContext);
+                pluginProvider,
+                pluginContext);
     }
 }

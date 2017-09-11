@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
@@ -44,7 +43,7 @@ public class FieldAndMethodPluginTest {
     private ClassNameFactory classNameFactory;
 
     @Mock
-    private GenerationContext generationContext;
+    private PluginContext pluginContext;
 
     @Test
     public void shouldGenerateTypeSpecForClassDefinitionWithNoFields() throws Exception {
@@ -52,13 +51,13 @@ public class FieldAndMethodPluginTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
+        when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
+
         new FieldAndMethodPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
-                        generatorFactory,
-                        classNameFactory,
-                        generationContext);
+                        pluginContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 
@@ -71,8 +70,6 @@ public class FieldAndMethodPluginTest {
 
     @Test
     public void shouldGenerateTypeSpecForClassDefinitionWithOneField() throws Exception {
-        final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         final FieldDefinition fieldDefinition = new FieldDefinition(STRING, "field");
         classDefinition.addFieldDefinition(fieldDefinition);
@@ -86,6 +83,8 @@ public class FieldAndMethodPluginTest {
 
         final FieldGenerator fieldGenerator = mock(FieldGenerator.class);
 
+        when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
+        when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
         when(generatorFactory.createGeneratorFor(fieldDefinition)).thenReturn(fieldGenerator);
         when(fieldGenerator.generateField()).thenReturn(fieldSpec);
         when(fieldGenerator.generateMethods()).thenReturn(Stream.of(methodSpec));
@@ -97,9 +96,7 @@ public class FieldAndMethodPluginTest {
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
-                        generatorFactory,
-                        classNameFactory,
-                        generationContext);
+                        pluginContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 
@@ -119,10 +116,10 @@ public class FieldAndMethodPluginTest {
 
     @Test
     public void shouldGenerateTypeSpecForClassDefinitionWithAdditionalProperties() throws Exception {
-        final JavaGeneratorFactory generatorFactory = mock(JavaGeneratorFactory.class);
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         classDefinition.setAllowAdditionalProperties(true);
+
+        when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
@@ -130,9 +127,7 @@ public class FieldAndMethodPluginTest {
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
-                        generatorFactory,
-                        classNameFactory,
-                        generationContext);
+                        pluginContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

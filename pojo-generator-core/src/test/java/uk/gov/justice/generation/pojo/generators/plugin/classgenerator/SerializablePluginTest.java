@@ -10,10 +10,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.io.Serializable;
 
@@ -29,13 +26,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class SerializablePluginTest {
 
     @Mock
-    private JavaGeneratorFactory generatorFactory;
-
-    @Mock
-    private ClassNameFactory classNameFactory;
-
-    @Mock
-    private GenerationContext generationContext;
+    private PluginContext pluginContext;
 
     @Test
     public void shouldAddSerializationToTypeSpec() throws Exception {
@@ -43,7 +34,7 @@ public class SerializablePluginTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new SerializablePlugin().generateWith(typeSpecBuilder, classDefinition, generatorFactory, classNameFactory, generationContext);
+        new SerializablePlugin().generateWith(typeSpecBuilder, classDefinition, pluginContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 
@@ -53,6 +44,6 @@ public class SerializablePluginTest {
                 .builder(TypeName.LONG, "serialVersionUID", PRIVATE, STATIC, FINAL)
                 .initializer("1L").build()));
 
-        verifyZeroInteractions(generatorFactory);
+        verifyZeroInteractions(pluginContext);
     }
 }

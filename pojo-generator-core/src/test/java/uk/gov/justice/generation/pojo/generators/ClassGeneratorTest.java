@@ -11,10 +11,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
@@ -31,28 +31,23 @@ public class ClassGeneratorTest {
     private ClassDefinition classDefinition;
 
     @Mock
-    private JavaGeneratorFactory javaGeneratorFactory;
-
-    @Mock
     private PluginProvider pluginProvider;
 
     @Mock
     private ClassNameFactory classNameFactory;
 
     @Mock
-    private GenerationContext generationContext;
+    private PluginContext pluginContext;
 
     @InjectMocks
     private ClassGenerator classGenerator;
 
     @Test
-    public void shouldCaplitalizeTheFieldNameToUseAsTheClassName() throws Exception {
+    public void shouldReturnCorrectSimpleClassNameForGenerator() throws Exception {
         final ClassName className = get(AlcubierreDrive.class);
 
         when(pluginProvider.pluginClassGenerators()).thenReturn(emptyList());
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
-
-        classGenerator.generate();
 
         assertThat(classGenerator.getSimpleClassName(), is("AlcubierreDrive"));
     }
@@ -75,21 +70,15 @@ public class ClassGeneratorTest {
         verify(plugin_1).generateWith(
                 any(TypeSpec.Builder.class),
                 eq(classDefinition),
-                eq(javaGeneratorFactory),
-                eq(classNameFactory),
-                eq(generationContext));
+                eq(pluginContext));
         verify(plugin_2).generateWith(
                 any(TypeSpec.Builder.class),
                 eq(classDefinition),
-                eq(javaGeneratorFactory),
-                eq(classNameFactory),
-                eq(generationContext));
+                eq(pluginContext));
         verify(plugin_3).generateWith(
                 any(TypeSpec.Builder.class),
                 eq(classDefinition),
-                eq(javaGeneratorFactory),
-                eq(classNameFactory),
-                eq(generationContext));
+                eq(pluginContext));
     }
 
     private class AlcubierreDrive {

@@ -3,9 +3,9 @@ package uk.gov.justice.generation.pojo.generators;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
@@ -15,20 +15,17 @@ public class ClassGenerator implements ClassGeneratable {
 
     private final ClassDefinition classDefinition;
     private final ClassNameFactory classNameFactory;
-    private final JavaGeneratorFactory javaGeneratorFactory;
     private final PluginProvider pluginProvider;
-    private final GenerationContext generationContext;
+    private final PluginContext pluginContext;
 
     public ClassGenerator(final ClassDefinition classDefinition,
-                          final JavaGeneratorFactory javaGeneratorFactory,
-                          final PluginProvider pluginProvider,
                           final ClassNameFactory classNameFactory,
-                          final GenerationContext generationContext) {
+                          final PluginProvider pluginProvider,
+                          final PluginContext pluginContext) {
         this.classDefinition = classDefinition;
         this.classNameFactory = classNameFactory;
-        this.javaGeneratorFactory = javaGeneratorFactory;
         this.pluginProvider = pluginProvider;
-        this.generationContext = generationContext;
+        this.pluginContext = pluginContext;
     }
 
     @Override
@@ -38,7 +35,7 @@ public class ClassGenerator implements ClassGeneratable {
                 .addModifiers(PUBLIC);
 
         pluginProvider.pluginClassGenerators().forEach(plugin ->
-                plugin.generateWith(typeSpecBuilder, classDefinition, javaGeneratorFactory, classNameFactory, generationContext));
+                plugin.generateWith(typeSpecBuilder, classDefinition, pluginContext));
 
         return typeSpecBuilder.build();
     }

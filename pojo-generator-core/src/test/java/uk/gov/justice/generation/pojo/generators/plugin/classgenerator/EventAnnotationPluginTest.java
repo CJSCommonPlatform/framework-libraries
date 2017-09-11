@@ -11,10 +11,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 
 import uk.gov.justice.domain.annotation.Event;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
@@ -26,19 +23,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class EventAnnotationPluginTest {
 
     @Mock
-    private JavaGeneratorFactory generatorFactory;
-
-    @Mock
-    private ClassNameFactory classNameFactory;
-
-    @Mock
-    private GenerationContext generationContext;
+    private PluginContext pluginContext;
 
     @Test
     public void shouldAddEventAnnotationToTypeSpecIfRoot() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition(ROOT, "address");
 
-        when(generationContext.getSourceFilename()).thenReturn("example.events.address.json");
+        when(pluginContext.getSourceFilename()).thenReturn("example.events.address.json");
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
@@ -46,9 +37,7 @@ public class EventAnnotationPluginTest {
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
-                        generatorFactory,
-                        classNameFactory,
-                        generationContext);
+                        pluginContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 
@@ -59,9 +48,6 @@ public class EventAnnotationPluginTest {
                 .build()));
         assertThat(typeSpec.fieldSpecs.size(), is(0));
         assertThat(typeSpec.methodSpecs.size(), is(0));
-
-        verifyZeroInteractions(generatorFactory);
-        verifyZeroInteractions(classNameFactory);
     }
 
     @Test
@@ -73,9 +59,7 @@ public class EventAnnotationPluginTest {
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
-                        generatorFactory,
-                        classNameFactory,
-                        generationContext);
+                        pluginContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 
@@ -84,8 +68,6 @@ public class EventAnnotationPluginTest {
         assertThat(typeSpec.fieldSpecs.size(), is(0));
         assertThat(typeSpec.methodSpecs.size(), is(0));
 
-        verifyZeroInteractions(generatorFactory);
-        verifyZeroInteractions(classNameFactory);
-        verifyZeroInteractions(generationContext);
+        verifyZeroInteractions(pluginContext);
     }
 }

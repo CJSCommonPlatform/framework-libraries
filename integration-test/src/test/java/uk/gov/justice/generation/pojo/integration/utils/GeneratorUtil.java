@@ -6,9 +6,13 @@ import static java.util.stream.Collectors.toList;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
@@ -47,7 +51,7 @@ public class GeneratorUtil {
                                                        final String packageName,
                                                        final OutputDirectories outputDirectories,
                                                        final List<String> ignoredClassNames) {
-        
+
         final GenerationContext generationContext = new GenerationContext(
                 outputDirectories.getSourceOutputDirectory(),
                 packageName,
@@ -68,13 +72,20 @@ public class GeneratorUtil {
         final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
         final PluginProvider pluginProvider = new DefaultPluginProvider();
 
+        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
+        final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
+        final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
+
         final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
                 .withGenerationContext(generationContext)
                 .withPluginProvider(pluginProvider)
+                .withClassNameFactory(classNameFactory)
                 .build();
 
+        final PluginContext pluginContext = new PluginContext(javaGeneratorFactory, classNameFactory, generationContext.getSourceFilename());
+
         return javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, generationContext)
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, pluginContext, generationContext)
                 .stream()
                 .map(classGeneratable -> {
                     sourceWriter.write(classGeneratable, generationContext);

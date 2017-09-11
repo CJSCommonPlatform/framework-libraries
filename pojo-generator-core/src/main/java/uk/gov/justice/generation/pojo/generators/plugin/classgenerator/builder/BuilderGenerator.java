@@ -1,13 +1,10 @@
 package uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder;
 
-import static com.squareup.javapoet.ClassName.get;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
-import static org.apache.commons.lang3.StringUtils.capitalize;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
@@ -27,19 +24,16 @@ public class BuilderGenerator implements ClassGeneratable {
 
     private final ClassDefinition classDefinition;
     private final ClassNameFactory classNameFactory;
-    private final GenerationContext generationContext;
     private final BuilderFieldFactory builderFieldFactory;
     private final BuilderMethodFactory builderMethodFactory;
 
     public BuilderGenerator(
             final ClassDefinition classDefinition,
             final ClassNameFactory classNameFactory,
-            final GenerationContext generationContext,
             final BuilderFieldFactory builderFieldFactory,
             final BuilderMethodFactory builderMethodFactory) {
         this.classDefinition = classDefinition;
         this.classNameFactory = classNameFactory;
-        this.generationContext = generationContext;
         this.builderFieldFactory = builderFieldFactory;
         this.builderMethodFactory = builderMethodFactory;
     }
@@ -47,10 +41,7 @@ public class BuilderGenerator implements ClassGeneratable {
     @Override
     public TypeSpec generate() {
 
-        final String pojoSimpleName = capitalize(classDefinition.getFieldName());
-        final String packageName = generationContext.getPackageName();
-
-        final ClassName pojoClassName = get(packageName, pojoSimpleName);
+        final ClassName pojoClassName = classNameFactory.createClassNameFrom(classDefinition);
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
         final List<FieldSpec> fieldSpecs = builderFieldFactory.createFields(fieldDefinitions, classNameFactory);
@@ -58,7 +49,7 @@ public class BuilderGenerator implements ClassGeneratable {
                 fieldDefinitions,
                 classNameFactory,
                 getBuilderClassName());
-        
+
         final MethodSpec buildMethod = builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName);
 
         return classBuilder(BUILDER_SIMPLE_NAME)
@@ -83,7 +74,7 @@ public class BuilderGenerator implements ClassGeneratable {
     }
 
     private ClassName getBuilderClassName() {
-        return get(generationContext.getPackageName(), capitalize(classDefinition.getFieldName()))
+        return classNameFactory.createClassNameFrom(classDefinition)
                 .nestedClass(BUILDER_SIMPLE_NAME);
     }
 }

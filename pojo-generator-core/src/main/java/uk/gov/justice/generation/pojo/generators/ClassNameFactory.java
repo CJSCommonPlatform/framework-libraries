@@ -1,8 +1,10 @@
 package uk.gov.justice.generation.pojo.generators;
 
+import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
 public class ClassNameFactory {
@@ -54,5 +56,9 @@ public class ClassNameFactory {
         }
 
         return typeNamePluginProcessor.processTypeNamePlugins(typeName, definition);
+    }
+
+    public ClassName createClassNameFrom(final ClassDefinition classDefinition) {
+        return typeNameProvider.typeNameForClass(classDefinition);
     }
 }

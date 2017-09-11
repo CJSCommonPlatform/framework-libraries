@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.generators;
 
+import static com.squareup.javapoet.ClassName.get;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.core.Is.is;
@@ -15,6 +16,7 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,9 +47,10 @@ public class ClassGeneratorTest {
 
     @Test
     public void shouldCaplitalizeTheFieldNameToUseAsTheClassName() throws Exception {
+        final ClassName className = get(AlcubierreDrive.class);
 
         when(pluginProvider.pluginClassGenerators()).thenReturn(emptyList());
-        when(classDefinition.getFieldName()).thenReturn("alcubierreDrive");
+        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
 
         classGenerator.generate();
 
@@ -56,13 +59,14 @@ public class ClassGeneratorTest {
 
     @Test
     public void shouldGenerateAnEmptyClassAndUseThePluginsToGenerateTheClassInternals() throws Exception {
+        final ClassName className = get(AlcubierreDrive.class);
 
         final ClassGeneratorPlugin plugin_1 = mock(ClassGeneratorPlugin.class, "plugin_1");
         final ClassGeneratorPlugin plugin_2 = mock(ClassGeneratorPlugin.class, "plugin_2");
         final ClassGeneratorPlugin plugin_3 = mock(ClassGeneratorPlugin.class, "plugin_3");
 
         when(pluginProvider.pluginClassGenerators()).thenReturn(asList(plugin_1, plugin_2, plugin_3));
-        when(classDefinition.getFieldName()).thenReturn("alcubierreDrive");
+        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
 
         final TypeSpec classSpec = classGenerator.generate();
 
@@ -86,5 +90,8 @@ public class ClassGeneratorTest {
                 eq(javaGeneratorFactory),
                 eq(classNameFactory),
                 eq(generationContext));
+    }
+
+    private class AlcubierreDrive {
     }
 }

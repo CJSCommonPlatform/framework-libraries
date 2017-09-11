@@ -11,7 +11,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
@@ -38,9 +37,6 @@ public class BuilderGeneratorTest {
     private ClassNameFactory classNameFactory;
 
     @Mock
-    private GenerationContext generationContext;
-
-    @Mock
     private BuilderMethodFactory builderMethodFactory;
 
     @Mock
@@ -64,7 +60,7 @@ public class BuilderGeneratorTest {
         final MethodSpec withMethod = MethodSpec.methodBuilder("withCaptainsLog").build();
         final MethodSpec buildMethod = MethodSpec.methodBuilder("build").build();
 
-        when(generationContext.getPackageName()).thenReturn(packageName);
+        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(pojoClassName);
         when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(classDefinition.getFieldDefinitions()).thenReturn(fieldDefinitions);
 

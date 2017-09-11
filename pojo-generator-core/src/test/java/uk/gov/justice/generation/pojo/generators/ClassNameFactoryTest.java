@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.generators;
 
+import static com.squareup.javapoet.ClassName.get;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -22,6 +23,9 @@ import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 
+import java.math.BigDecimal;
+
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,139 +63,139 @@ public class ClassNameFactoryTest {
     }
 
     @Test
-    public void shouldCreateTheCorrectTypeNameForBooleans() throws Exception {
+    public void shouldCreateTheCorrectClassNameForBooleans() throws Exception {
 
         final FieldDefinition fieldDefinition = mock(FieldDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(Boolean.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(fieldDefinition.type()).thenReturn(BOOLEAN);
-        when(typeNameProvider.typeNameForBoolean()).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, fieldDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForBoolean()).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, fieldDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(fieldDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForBoolean();
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, fieldDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, fieldDefinition);
     }
 
     @Test
     public void shouldCreateTheCorrectTypeNameForIntegers() throws Exception {
 
         final FieldDefinition fieldDefinition = mock(FieldDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(Integer.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(fieldDefinition.type()).thenReturn(INTEGER);
-        when(typeNameProvider.typeNameForInteger()).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, fieldDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForInteger()).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, fieldDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(fieldDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForInteger();
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, fieldDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, fieldDefinition);
     }
 
     @Test
     public void shouldCreateTheCorrectTypeNameForNumbers() throws Exception {
 
         final FieldDefinition fieldDefinition = mock(FieldDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(BigDecimal.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(fieldDefinition.type()).thenReturn(NUMBER);
-        when(typeNameProvider.typeNameForNumber()).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, fieldDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForNumber()).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, fieldDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(fieldDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForNumber();
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, fieldDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, fieldDefinition);
     }
 
     @Test
     public void shouldCreateTheCorrectTypeNameForStrings() throws Exception {
 
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(String.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(stringDefinition.type()).thenReturn(STRING);
-        when(typeNameProvider.typeNameForString()).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, stringDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForString()).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, stringDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(stringDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForString();
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, stringDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, stringDefinition);
     }
 
     @Test
     public void shouldCreateTheCorrectTypeNameForClasses() throws Exception {
 
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(TestClass.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(classDefinition.type()).thenReturn(CLASS);
-        when(typeNameProvider.typeNameForClass(classDefinition)).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, classDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForClass(classDefinition)).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, classDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(classDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForClass(classDefinition);
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, classDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, classDefinition);
     }
 
     @Test
     public void shouldCreateTheCorrectTypeNameForEnums() throws Exception {
 
         final EnumDefinition enumDefinition = mock(EnumDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(Enum.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(enumDefinition.type()).thenReturn(CLASS);
-        when(typeNameProvider.typeNameForClass(enumDefinition)).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, enumDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForClass(enumDefinition)).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, enumDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(enumDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForClass(enumDefinition);
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, enumDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, enumDefinition);
     }
 
     @Test
     public void shouldCreateTheCorrectTypeNameForCombinedSchemas() throws Exception {
 
         final CombinedDefinition combinedDefinition = mock(CombinedDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(TestClass.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(combinedDefinition.type()).thenReturn(COMBINED);
-        when(typeNameProvider.typeNameForClass(combinedDefinition)).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, combinedDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForClass(combinedDefinition)).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, combinedDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(combinedDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForClass(combinedDefinition);
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, combinedDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, combinedDefinition);
     }
 
     @Test
     public void shouldCreateTheCorrectTypeNameForRootSchemas() throws Exception {
 
         final ClassDefinition rootDefinition = mock(ClassDefinition.class);
-        final TypeName originalTypeName = mock(TypeName.class);
+        final ClassName originalClassName = get(TestClass.class);
         final TypeName modifiedTypeName = mock(TypeName.class);
 
         when(rootDefinition.type()).thenReturn(ROOT);
-        when(typeNameProvider.typeNameForClass(rootDefinition)).thenReturn(originalTypeName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, rootDefinition)).thenReturn(modifiedTypeName);
+        when(typeNameProvider.typeNameForClass(rootDefinition)).thenReturn(originalClassName);
+        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, rootDefinition)).thenReturn(modifiedTypeName);
 
         assertThat(classNameFactory.createTypeNameFrom(rootDefinition), is(modifiedTypeName));
 
         verify(typeNameProvider).typeNameForClass(rootDefinition);
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, rootDefinition);
+        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, rootDefinition);
     }
 
     @Test
@@ -209,5 +213,21 @@ public class ClassNameFactoryTest {
 
         verify(typeNameProvider).typeNameForReference(referenceDefinition, classNameFactory);
         verify(typeNamePluginProcessor).processTypeNamePlugins(originalTypeName, referenceDefinition);
+    }
+
+    @Test
+    public void shouldCreateTheCorrectClassNameForClasses() throws Exception {
+
+        final ClassDefinition classDefinition = mock(ClassDefinition.class);
+        final ClassName className = get(TestClass.class);
+
+        when(typeNameProvider.typeNameForClass(classDefinition)).thenReturn(className);
+
+        assertThat(classNameFactory.createClassNameFrom(classDefinition), is(className));
+
+        verify(typeNameProvider).typeNameForClass(classDefinition);
+    }
+
+    private class TestClass {
     }
 }

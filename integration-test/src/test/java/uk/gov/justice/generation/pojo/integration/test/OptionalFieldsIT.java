@@ -1,49 +1,28 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.core.NameGenerator;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.integration.utils.ClassCompiler;
-import uk.gov.justice.generation.pojo.integration.utils.GeneratorFactoryBuilder;
-import uk.gov.justice.generation.pojo.visitable.Visitable;
-import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
-import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
-import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.write.SourceWriter;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.everit.json.schema.Schema;
 import org.junit.Before;
 import org.junit.Test;
 
 public class OptionalFieldsIT {
 
-    private final SourceWriter sourceWriter = new SourceWriter();
-    private final ClassCompiler classCompiler = new ClassCompiler();
-
-    private final NameGenerator nameGenerator = new NameGenerator();
-    private final SchemaLoader schemaLoader = new SchemaLoader();
-    private final DefaultDefinitionFactory definitionFactory = new DefaultDefinitionFactory();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-    private final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
+    private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
     private File sourceOutputDirectory;
     private File classesOutputDirectory;
@@ -66,36 +45,13 @@ public class OptionalFieldsIT {
     public void shouldParseAVeryComplexSchemaDocument() throws Exception {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/person-schema-optional.json");
-        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-        final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
         final String packageName = "uk.gov.justice.pojo.optional.schema";
-        final GenerationContext generationContext = new GenerationContext(
-                sourceOutputDirectory.toPath(),
+
+        final List<Class<?>> classes = generatorUtil.generateAndCompileJavaSource(
+                jsonSchemaFile,
                 packageName,
-                jsonSchemaFile.getName(),
-                emptyList());
-
-        final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
-        final VisitableFactory visitableFactory = new VisitableFactory();
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, new DefaultAcceptorService(visitableFactory));
-
-        visitableSchema.accept(definitionBuilderVisitor);
-
-        final ArrayList<Class<?>> classes = new ArrayList<>();
-        final PluginProvider pluginProvider = new DefaultPluginProvider();
-
-        final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
-                .withGenerationContext(generationContext)
-                .withPluginProvider(pluginProvider)
-                .build();
-
-        javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, generationContext)
-                .forEach(classGeneratable -> {
-                    sourceWriter.write(classGeneratable, generationContext);
-                    final Class<?> newClass = classCompiler.compile(classGeneratable, generationContext, classesOutputDirectory);
-                    classes.add(newClass);
-                });
+                sourceOutputDirectory.toPath(),
+                classesOutputDirectory.toPath());
 
         assertThat(classes.size(), is(1));
 

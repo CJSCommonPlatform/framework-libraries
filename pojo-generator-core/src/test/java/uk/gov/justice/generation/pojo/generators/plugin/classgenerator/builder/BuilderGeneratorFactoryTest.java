@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 
@@ -27,17 +26,14 @@ public class BuilderGeneratorFactoryTest {
 
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-        final GenerationContext generationContext = mock(GenerationContext.class);
 
         final BuilderGenerator builderGenerator = builderGeneratorFactory.create(
                 classDefinition,
-                classNameFactory,
-                generationContext
+                classNameFactory
         );
 
         assertThat(getPrivateFieldFrom(builderGenerator, "classDefinition"), is(classDefinition));
         assertThat(getPrivateFieldFrom(builderGenerator, "classNameFactory"), is(classNameFactory));
-        assertThat(getPrivateFieldFrom(builderGenerator, "generationContext"), is(generationContext));
 
         assertThat(getPrivateFieldFrom(builderGenerator, "builderFieldFactory"), is(instanceOf(BuilderFieldFactory.class)));
         assertThat(getPrivateFieldFrom(builderGenerator, "builderMethodFactory"), is(instanceOf(BuilderMethodFactory.class)));

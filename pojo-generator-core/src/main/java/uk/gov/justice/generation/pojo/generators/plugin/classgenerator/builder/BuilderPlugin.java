@@ -27,8 +27,7 @@ public class BuilderPlugin implements ClassGeneratorPlugin {
 
         final BuilderGenerator builderGenerator = builderGeneratorFactory.create(
                 classDefinition,
-                classNameFactory,
-                generationContext);
+                classNameFactory);
 
         final TypeSpec innerClassBuilder = builderGenerator.generate();
         final MethodSpec staticGetBuilderMethod = builderGenerator.generateStaticGetBuilderMethod();

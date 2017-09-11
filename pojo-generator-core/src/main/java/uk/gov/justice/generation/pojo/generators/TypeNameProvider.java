@@ -12,6 +12,7 @@ import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
@@ -50,23 +51,23 @@ public class TypeNameProvider {
         return classNameFactory.createTypeNameFrom(childDefinition);
     }
 
-    public TypeName typeNameForString() {
+    public ClassName typeNameForString() {
         return get(String.class);
     }
 
-    public TypeName typeNameForClass(final Definition definition) {
+    public ClassName typeNameForClass(final Definition definition) {
         return get(generationContext.getPackageName(), capitalize(definition.getFieldName()));
     }
 
-    public TypeName typeNameForNumber() {
+    public ClassName typeNameForNumber() {
         return get(BigDecimal.class);
     }
 
-    public TypeName typeNameForInteger() {
+    public ClassName typeNameForInteger() {
         return get(Integer.class);
     }
 
-    public TypeName typeNameForBoolean() {
+    public ClassName typeNameForBoolean() {
         return get(Boolean.class);
     }
 }

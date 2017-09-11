@@ -2,12 +2,12 @@ package uk.gov.justice.generation.pojo.generators;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.PUBLIC;
-import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 
@@ -34,7 +34,7 @@ public class ClassGenerator implements ClassGeneratable {
     @Override
     public TypeSpec generate() {
 
-        final Builder typeSpecBuilder = classBuilder(getSimpleClassName())
+        final Builder typeSpecBuilder = classBuilder(getClassName())
                 .addModifiers(PUBLIC);
 
         pluginProvider.pluginClassGenerators().forEach(plugin ->
@@ -45,6 +45,10 @@ public class ClassGenerator implements ClassGeneratable {
 
     @Override
     public String getSimpleClassName() {
-        return capitalize(classDefinition.getFieldName());
+        return getClassName().simpleName();
+    }
+
+    private ClassName getClassName() {
+        return classNameFactory.createClassNameFrom(classDefinition);
     }
 }

@@ -45,11 +45,9 @@ public class BuilderPluginTest {
         final BuilderGenerator builderGenerator = mock(BuilderGenerator.class);
 
         when(classDefinition.getFieldName()).thenReturn(fieldName);
-        when(generationContext.getPackageName()).thenReturn(packageName);
         when(builderGeneratorFactory.create(
                 classDefinition,
-                classNameFactory,
-                generationContext)).thenReturn(builderGenerator);
+                classNameFactory)).thenReturn(builderGenerator);
 
         when(builderGenerator.generate()).thenReturn(innerClassBuilder);
         when(builderGenerator.generateStaticGetBuilderMethod()).thenReturn(staticGetBuilderMethod);

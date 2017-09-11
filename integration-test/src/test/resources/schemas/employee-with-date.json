@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "poundsPerHour": {
+      "type": "number"
+    },
+    "startDate": {
+      "$ref": "#/definitions/ZonedDateTime"
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "firstLine": {
+          "type": "string"
+        },
+        "postCode": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "firstLine",
+        "postCode"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "firstName",
+    "lastName",
+    "poundsPerHour",
+    "startDate",
+    "address"
+  ],
+  "definitions": {
+    "ZonedDateTime": {
+      "type": "string",
+      "pattern": "^[1|2][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\.[0-9]{3}Z$"
+    }
+  }
+}

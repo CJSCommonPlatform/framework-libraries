@@ -6,7 +6,6 @@ import static java.util.stream.Collectors.toList;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
-import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.DefaultPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
@@ -20,10 +19,10 @@ import uk.gov.justice.generation.pojo.visitor.DefinitionFactory;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.everit.json.schema.Schema;
+import org.json.JSONObject;
 
 public class GeneratorUtil {
 
@@ -36,60 +35,34 @@ public class GeneratorUtil {
 
     public List<Class<?>> generateAndCompileJavaSource(final File jsonSchemaFile,
                                                        final String packageName,
-                                                       final Path sourceOutputPath,
-                                                       final Path classesOutputPath) {
-
-        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-        return generateAndCompileJavaSource(jsonSchemaFile, packageName, schema, sourceOutputPath, classesOutputPath);
+                                                       final OutputDirectories outputDirectories) {
+        return generateAndCompileJavaSource(
+                jsonSchemaFile,
+                packageName,
+                outputDirectories,
+                emptyList());
     }
 
     public List<Class<?>> generateAndCompileJavaSource(final File jsonSchemaFile,
                                                        final String packageName,
-                                                       final Schema schema,
-                                                       final Path sourceOutputPath,
-                                                       final Path classesOutputPath) {
-
-        final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
-
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
-
-        visitableSchema.accept(definitionBuilderVisitor);
-
-        return generateAndCompileFromDefinitions(jsonSchemaFile.getName(), packageName, sourceOutputPath, classesOutputPath, definitionBuilderVisitor.getDefinitions());
-    }
-
-    public List<Class<?>> generateAndCompileJavaSource(final GenerationContext generationContext,
-                                                       final File jsonSchemaFile,
-                                                       final Schema schema,
-                                                       final Path classesOutputPath) {
-
-
-        final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
-
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
-
-        visitableSchema.accept(definitionBuilderVisitor);
-
-        return generateAndCompileFromDefinitions(generationContext, classesOutputPath, definitionBuilderVisitor.getDefinitions());
-    }
-
-    public List<Class<?>> generateAndCompileFromDefinitions(final String jsonSchemaFilename,
-                                                            final String packageName,
-                                                            final Path sourceOutputPath,
-                                                            final Path classesOutputPath,
-                                                            final List<Definition> definitionBuilderVisitor) {
+                                                       final OutputDirectories outputDirectories,
+                                                       final List<String> ignoredClassNames) {
+        
         final GenerationContext generationContext = new GenerationContext(
-                sourceOutputPath,
+                outputDirectories.getSourceOutputDirectory(),
                 packageName,
-                jsonSchemaFilename,
-                emptyList());
+                jsonSchemaFile.getName(),
+                ignoredClassNames);
 
-        return generateAndCompileFromDefinitions(generationContext, classesOutputPath, definitionBuilderVisitor);
-    }
+        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 
-    public List<Class<?>> generateAndCompileFromDefinitions(final GenerationContext generationContext,
-                                                            final Path classesOutputPath,
-                                                            final List<Definition> definitionBuilderVisitor) {
+
+        final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
+
+        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
+
+        visitableSchema.accept(definitionBuilderVisitor);
+
         final SourceWriter sourceWriter = new SourceWriter();
         final ClassCompiler classCompiler = new ClassCompiler();
         final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
@@ -101,13 +74,17 @@ public class GeneratorUtil {
                 .build();
 
         return javaGeneratorFactory
-                .createClassGeneratorsFor(definitionBuilderVisitor, pluginProvider, generationContext)
+                .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, generationContext)
                 .stream()
                 .map(classGeneratable -> {
                     sourceWriter.write(classGeneratable, generationContext);
-                    return classCompiler.compile(classGeneratable, generationContext, classesOutputPath.toFile());
+                    return classCompiler.compile(classGeneratable, generationContext, outputDirectories.getClassesOutputDirectory().toFile());
                 })
                 .collect(toList());
     }
 
+    public void validate(final File schemaFile, final String json) {
+        final Schema schema = schemaLoader.loadFrom(schemaFile);
+        schema.validate(new JSONObject(json));
+    }
 }

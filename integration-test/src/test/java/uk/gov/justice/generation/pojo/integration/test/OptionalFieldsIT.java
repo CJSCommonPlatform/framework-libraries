@@ -3,11 +3,12 @@ package uk.gov.justice.generation.pojo.integration.test;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
+import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
@@ -24,21 +25,12 @@ public class OptionalFieldsIT {
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
-    private File sourceOutputDirectory;
-    private File classesOutputDirectory;
+    private final ClassInstantiator classInstantiator = new ClassInstantiator();
+    private final OutputDirectories outputDirectories = new OutputDirectories();
 
     @Before
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation/optional-schema");
-        classesOutputDirectory = new File("./target/test-classes");
-
-        sourceOutputDirectory.mkdirs();
-        classesOutputDirectory.mkdirs();
-
-        if (sourceOutputDirectory.exists()) {
-            cleanDirectory(sourceOutputDirectory);
-        }
+        outputDirectories.makeDirectories("./target/test-generation/optional-schema");
     }
 
     @Test
@@ -50,8 +42,7 @@ public class OptionalFieldsIT {
         final List<Class<?>> classes = generatorUtil.generateAndCompileJavaSource(
                 jsonSchemaFile,
                 packageName,
-                sourceOutputDirectory.toPath(),
-                classesOutputDirectory.toPath());
+                outputDirectories);
 
         assertThat(classes.size(), is(1));
 
@@ -75,5 +66,6 @@ public class OptionalFieldsIT {
                 .assertNotDefined("$.hairStyle")
         ;
 
+        generatorUtil.validate(jsonSchemaFile, json);
     }
 }

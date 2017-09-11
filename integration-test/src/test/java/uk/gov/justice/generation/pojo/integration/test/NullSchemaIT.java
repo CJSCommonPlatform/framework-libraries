@@ -1,8 +1,7 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
-import static org.apache.commons.io.FileUtils.cleanDirectory;
-
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
+import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 
 import java.io.File;
 
@@ -13,21 +12,11 @@ public class NullSchemaIT {
 
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
-    private File sourceOutputDirectory;
-    private File classesOutputDirectory;
+    private final OutputDirectories outputDirectories = new OutputDirectories();
 
     @Before
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation/null-schema");
-        classesOutputDirectory = new File("./target/test-classes");
-
-        sourceOutputDirectory.mkdirs();
-        classesOutputDirectory.mkdirs();
-
-        if (sourceOutputDirectory.exists()) {
-            cleanDirectory(sourceOutputDirectory);
-        }
+        outputDirectories.makeDirectories("./target/test-generation/null-schema");
     }
 
     @Test
@@ -38,7 +27,6 @@ public class NullSchemaIT {
         generatorUtil.generateAndCompileJavaSource(
                 jsonSchemaFile,
                 packageName,
-                sourceOutputDirectory.toPath(),
-                classesOutputDirectory.toPath());
+                outputDirectories);
     }
 }

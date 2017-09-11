@@ -1,6 +1,5 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
-import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -8,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
+import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 
 import java.io.File;
 import java.util.List;
@@ -18,22 +18,11 @@ import org.junit.Test;
 public class EmptySchemaIT {
 
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
-
-    private File sourceOutputDirectory;
-    private File classesOutputDirectory;
+    private final OutputDirectories outputDirectories = new OutputDirectories();
 
     @Before
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation/empty-schemas");
-        classesOutputDirectory = new File("./target/test-classes");
-
-        sourceOutputDirectory.mkdirs();
-        classesOutputDirectory.mkdirs();
-
-        if (sourceOutputDirectory.exists()) {
-            cleanDirectory(sourceOutputDirectory);
-        }
+        outputDirectories.makeDirectories("./target/test-generation/empty-schemas");
     }
 
     @Test
@@ -111,7 +100,6 @@ public class EmptySchemaIT {
         return generatorUtil.generateAndCompileJavaSource(
                 jsonSchemaFile,
                 packageName,
-                sourceOutputDirectory.toPath(),
-                classesOutputDirectory.toPath());
+                outputDirectories);
     }
 }

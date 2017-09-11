@@ -1,15 +1,15 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
+import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -21,22 +21,13 @@ public class AdditionalPropertiesIT {
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
+    private final ClassInstantiator classInstantiator = new ClassInstantiator();
+    private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    private File sourceOutputDirectory;
-    private File classesOutputDirectory;
 
     @Before
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation/additional-properties");
-        classesOutputDirectory = new File("./target/test-classes");
-
-        sourceOutputDirectory.mkdirs();
-        classesOutputDirectory.mkdirs();
-
-        if (sourceOutputDirectory.exists()) {
-            cleanDirectory(sourceOutputDirectory);
-        }
+        outputDirectories.makeDirectories("./target/test-generation/additional-properties");
     }
 
     @Test
@@ -47,8 +38,7 @@ public class AdditionalPropertiesIT {
         final List<Class<?>> newClasses = generatorUtil.generateAndCompileJavaSource(
                 jsonSchemaFile,
                 packageName,
-                sourceOutputDirectory.toPath(),
-                classesOutputDirectory.toPath());
+                outputDirectories);
 
         assertThat(newClasses.size(), is(1));
 
@@ -57,10 +47,7 @@ public class AdditionalPropertiesIT {
         final String firstName = "firstName";
         final String lastName = "lastName";
 
-        final Constructor<?> additionalPropertiesConstructor = additionalPropertiesClass
-                .getConstructor(String.class, String.class);
-
-        final Object additionalProperties = additionalPropertiesConstructor.newInstance(firstName, lastName);
+        final Object additionalProperties = classInstantiator.newInstance(additionalPropertiesClass, firstName, lastName);
         final Method additionalPropertySetter = additionalPropertiesClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class);
         additionalPropertySetter.invoke(additionalProperties, "additionalPropertyName", "additionalPropertyValue");
 
@@ -71,5 +58,7 @@ public class AdditionalPropertiesIT {
                 .assertThat("$.lastName", is(lastName))
                 .assertThat("$.additionalPropertyName", is("additionalPropertyValue"))
         ;
+
+        generatorUtil.validate(jsonSchemaFile, json);
     }
 }

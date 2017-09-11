@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.NameGenerator;
+import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
@@ -87,15 +88,22 @@ public class GeneratorUtil {
         return javaGeneratorFactory
                 .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, pluginContext, generationContext)
                 .stream()
-                .map(classGeneratable -> {
-                    sourceWriter.write(classGeneratable, generationContext);
-                    return classCompiler.compile(classGeneratable, generationContext, outputDirectories.getClassesOutputDirectory().toFile());
-                })
+                .map(classGeneratable -> writeAndCompile(
+                        outputDirectories,
+                        generationContext,
+                        sourceWriter,
+                        classCompiler,
+                        classGeneratable))
                 .collect(toList());
     }
 
     public void validate(final File schemaFile, final String json) {
         final Schema schema = schemaLoader.loadFrom(schemaFile);
         schema.validate(new JSONObject(json));
+    }
+
+    private Class<?> writeAndCompile(final OutputDirectories outputDirectories, final GenerationContext generationContext, final SourceWriter sourceWriter, final ClassCompiler classCompiler, final ClassGeneratable classGeneratable) {
+        sourceWriter.write(classGeneratable, generationContext);
+        return classCompiler.compile(classGeneratable, generationContext, outputDirectories.getClassesOutputDirectory().toFile());
     }
 }

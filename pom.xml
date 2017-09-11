@@ -22,6 +22,7 @@
         <module>integration-test</module>
         <module>pojo-plugin-it</module>
         <module>pojo-plugin-test-provider</module>
+        <module>pojo-event-annotation-plugin</module>
     </modules>
 
     <properties>

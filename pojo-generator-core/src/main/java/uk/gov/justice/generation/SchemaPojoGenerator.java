@@ -12,6 +12,7 @@ import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProviderFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
@@ -86,10 +87,10 @@ public class SchemaPojoGenerator implements Generator<File> {
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
 
         final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
-
         final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(classNameFactory);
+        final PluginContext pluginContext = new PluginContext(javaGeneratorFactory, classNameFactory, generationContext.getSourceFilename());
 
-        return javaGeneratorFactory.createClassGeneratorsFor(definitions, pluginProvider, generationContext);
+        return javaGeneratorFactory.createClassGeneratorsFor(definitions, pluginProvider, pluginContext, generationContext);
     }
 
     private void writeJavaClassesToFile(final GenerationContext generationContext, final List<ClassGeneratable> classGenerators) {

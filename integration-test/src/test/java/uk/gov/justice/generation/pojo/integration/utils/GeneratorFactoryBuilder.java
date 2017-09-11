@@ -3,14 +3,13 @@ package uk.gov.justice.generation.pojo.integration.utils;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 
 public class GeneratorFactoryBuilder {
 
     private GenerationContext generationContext;
     private PluginProvider pluginProvider;
+    private ClassNameFactory classNameFactory;
 
     public GeneratorFactoryBuilder withGenerationContext(final GenerationContext generationContext) {
         this.generationContext = generationContext;
@@ -19,6 +18,11 @@ public class GeneratorFactoryBuilder {
 
     public GeneratorFactoryBuilder withPluginProvider(final PluginProvider pluginProvider) {
         this.pluginProvider = pluginProvider;
+        return this;
+    }
+
+    public GeneratorFactoryBuilder withClassNameFactory(final ClassNameFactory classNameFactory) {
+        this.classNameFactory = classNameFactory;
         return this;
     }
 
@@ -32,10 +36,9 @@ public class GeneratorFactoryBuilder {
             throw new RuntimeException("Please set the PluginProvider before calling build()");
         }
 
-
-        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
-        final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
-        final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
+        if (classNameFactory == null) {
+            throw new RuntimeException("Please set the ClassNameFactory before calling build()");
+        }
 
         return new JavaGeneratorFactory(classNameFactory);
     }

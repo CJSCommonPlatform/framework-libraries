@@ -5,13 +5,11 @@ import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.AdditionalPropertiesGenerator;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.ElementGeneratable;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.util.List;
 
@@ -28,15 +26,13 @@ public class FieldAndMethodPlugin implements ClassGeneratorPlugin {
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
                                          final ClassDefinition classDefinition,
-                                         final JavaGeneratorFactory javaGeneratorFactory,
-                                         final ClassNameFactory classNameFactory,
-                                         final GenerationContext generationContext) {
+                                         final PluginContext pluginContext) {
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
 
         final List<ElementGeneratable> fieldGenerators = fieldDefinitions
                 .stream()
-                .map(javaGeneratorFactory::createGeneratorFor)
+                .map(pluginContext.getJavaGeneratorFactory()::createGeneratorFor)
                 .collect(toList());
 
         final List<FieldSpec> fields = fieldGenerators
@@ -49,7 +45,7 @@ public class FieldAndMethodPlugin implements ClassGeneratorPlugin {
                 .flatMap(ElementGeneratable::generateMethods)
                 .collect(toList());
 
-        typeSpecBuilder.addMethod(buildConstructor(fieldDefinitions, classNameFactory))
+        typeSpecBuilder.addMethod(buildConstructor(fieldDefinitions, pluginContext.getClassNameFactory()))
                 .addFields(fields)
                 .addMethods(methods);
 

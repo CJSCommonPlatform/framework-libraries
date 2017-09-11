@@ -6,10 +6,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
-import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -32,18 +31,17 @@ public class BuilderPluginTest {
     public void shouldGenerateTheBuilderAsAnInnerClassAndAddToTheMainClassTypeSpec() throws Exception {
 
         final String fieldName = "alcubierreDrive";
-        final String packageName = "org.bloggs.fred";
 
         final TypeSpec innerClassBuilder = TypeSpec.classBuilder("Builder").build();
         final MethodSpec staticGetBuilderMethod = MethodSpec.methodBuilder("alcubierreDrive").build();
 
         final TypeSpec.Builder outerClassBuilder = TypeSpec.classBuilder("MyClass");
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
-        final JavaGeneratorFactory javaGeneratorFactory = mock(JavaGeneratorFactory.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-        final GenerationContext generationContext = mock(GenerationContext.class);
         final BuilderGenerator builderGenerator = mock(BuilderGenerator.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
+        when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
         when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(builderGeneratorFactory.create(
                 classDefinition,
@@ -55,10 +53,7 @@ public class BuilderPluginTest {
         final TypeSpec.Builder builder = builderPlugin.generateWith(
                 outerClassBuilder,
                 classDefinition,
-                javaGeneratorFactory,
-                classNameFactory,
-                generationContext
-        );
+                pluginContext);
 
         assertThat(builder, is(outerClassBuilder));
 

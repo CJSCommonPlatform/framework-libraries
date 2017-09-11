@@ -16,6 +16,7 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class JavaGeneratorFactoryTest {
 
     @Mock
     private GenerationContext generationContext;
+
+    @Mock
+    private PluginContext pluginContext;
 
     @Mock
     private PluginProvider pluginProvider;
@@ -68,7 +72,7 @@ public class JavaGeneratorFactoryTest {
                 new EnumDefinition("test2", emptyList()));
 
         final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory(classNameFactory)
-                .createClassGeneratorsFor(classDefinitions, pluginProvider, generationContext);
+                .createClassGeneratorsFor(classDefinitions, pluginProvider, pluginContext, generationContext);
 
         assertThat(classGeneratables.size(), is(2));
         assertThat(classGeneratables, hasItems(instanceOf(ClassGenerator.class), instanceOf(EnumGenerator.class)));
@@ -83,7 +87,7 @@ public class JavaGeneratorFactoryTest {
         when(generationContext.getIgnoredClassNames()).thenReturn(asList("Test1", "Test2"));
 
         final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory(classNameFactory)
-                .createClassGeneratorsFor(classDefinitions, pluginProvider, generationContext);
+                .createClassGeneratorsFor(classDefinitions, pluginProvider, pluginContext, generationContext);
 
         assertThat(classGeneratables.size(), is(0));
     }
@@ -91,7 +95,7 @@ public class JavaGeneratorFactoryTest {
     @Test
     public void shouldReturnEmptyListForEmptyListOfDefinitions() throws Exception {
         final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory(classNameFactory)
-                .createClassGeneratorsFor(emptyList(), pluginProvider, generationContext);
+                .createClassGeneratorsFor(emptyList(), pluginProvider, pluginContext, generationContext);
 
         assertThat(classGeneratables.isEmpty(), is(true));
     }
@@ -107,7 +111,7 @@ public class JavaGeneratorFactoryTest {
         );
 
         final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory(classNameFactory)
-                .createClassGeneratorsFor(classDefinitions, pluginProvider, generationContext);
+                .createClassGeneratorsFor(classDefinitions, pluginProvider, pluginContext, generationContext);
 
         assertThat(classGeneratables.size(), is(2));
         assertThat(classGeneratables, hasItems(instanceOf(ClassGenerator.class), instanceOf(EnumGenerator.class)));

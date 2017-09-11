@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "favouriteColour": {
+      "type": "string",
+      "enum": [
+        "Red",
+        "Green",
+        "Blue"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "age",
+    "favouriteColour"
+  ]
+}

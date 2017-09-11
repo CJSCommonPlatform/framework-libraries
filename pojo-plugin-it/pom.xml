@@ -74,7 +74,15 @@
                             <excludes>
                             </excludes>
                             <generatorProperties>
-                                <pojo-plugin-provider>uk.gov.justice.generation.pojo.generators.plugin.PluginTestProvider</pojo-plugin-provider>
+                                <excludeDefaultPlugins>true</excludeDefaultPlugins>
+                                <plugins>
+                                    uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddFieldsAndMethodsToClassPlugin,
+                                    uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddEventAnnotationToClassPlugin,
+                                    uk.gov.justice.generation.pojo.generators.plugin.classgenerator.MakeClassSerializablePlugin,
+                                    uk.gov.justice.generation.pojo.generators.plugin.typename.SupportJavaOptionalsPlugin,
+                                    uk.gov.justice.generation.pojo.generators.plugin.typename.SupportUuidsPlugin,
+                                    uk.gov.justice.generation.pojo.generators.plugin.typename.SupportZonedDateTimePlugin
+                                </plugins>
                             </generatorProperties>
                         </configuration>
                         <goals>
@@ -86,7 +94,12 @@
                 <dependencies>
                     <dependency>
                         <groupId>uk.gov.justice.generators</groupId>
-                        <artifactId>pojo-plugin-test-provider</artifactId>
+                        <artifactId>pojo-generation-core</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>uk.gov.justice.generators</groupId>
+                        <artifactId>pojo-event-annotation-plugin</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>

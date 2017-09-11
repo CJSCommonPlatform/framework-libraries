@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 
@@ -39,8 +38,6 @@ public class EmptySchemaIT {
 
         assertThat(emptySchemaClass.getDeclaredMethod("getAdditionalProperties"), is(notNullValue()));
         assertThat(emptySchemaClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class), is(notNullValue()));
-
-        assertThat(emptySchemaClass.getAnnotation(Event.class), is(notNullValue()));
     }
 
     @Test
@@ -56,8 +53,6 @@ public class EmptySchemaIT {
         emptySchemaClass.getDeclaredField("additionalProperties").getType().getName();
         emptySchemaClass.getDeclaredMethod("getAdditionalProperties");
         emptySchemaClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class);
-
-        assertThat(emptySchemaClass.getAnnotation(Event.class), is(notNullValue()));
     }
 
     @Test
@@ -89,8 +84,6 @@ public class EmptySchemaIT {
             fail();
         } catch (final NoSuchMethodException ignored) {
         }
-
-        assertThat(emptySchemaClass.getAnnotation(Event.class), is(notNullValue()));
     }
 
     private List<Class<?>> setupAndGenerate(final String fileName) {

@@ -1,14 +1,50 @@
 package uk.gov.justice.generation.pojo.generators.plugin.classgenerator;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.BuilderGenerator;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.BuilderGeneratorFactory;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * Adds a builder for the class as an static inner class and a static
+ * method for accessing the builder. For example, a class <i>MyClass</i> specified
+ * with one property <i>myProperty</i> would be generated thusly:
+ *
+ * <pre>
+ *     {@code public class MyClass {
+ *
+ *          private final String myProperty;
+ *
+ *          public MyClass(final String myProperty) {
+ *              this.myProperty = myProperty;
+ *          }
+ *
+ *          public String getMyProperty() {
+ *              return myProperty;
+ *          }
+ *
+ *          public static Builder myClass() {
+ *              return new MyClass.Builder();
+ *          }
+ *
+ *          public static class Builder {
+ *
+ *              private String myProperty;
+ *
+ *              public Builder withMyProperty(final String myProperty) {
+ *                  this.myProperty = myProperty;
+ *                  return this;
+ *              }
+ *
+ *              public MyClass build() {
+ *                  return new MyClass(myProperty);
+ *              }
+ *          }
+ *      }
+ * }</pre>
+ */
 public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 
     private final BuilderGeneratorFactory builderGeneratorFactory;

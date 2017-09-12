@@ -19,6 +19,15 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * Plugin that adds fields, a constructor and getter methods to a class's
+ * Type Specification.
+ *
+ * Without this plugin each class will be generated with
+ * no fields nor getter methods and with an empty constructor. For this reason
+ * this class is added by default; although it is possible to override it should
+ * you need to change it's behaviour.
+ */
 public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
 
     private final AdditionalPropertiesGenerator additionalPropertiesGenerator = new AdditionalPropertiesGenerator();

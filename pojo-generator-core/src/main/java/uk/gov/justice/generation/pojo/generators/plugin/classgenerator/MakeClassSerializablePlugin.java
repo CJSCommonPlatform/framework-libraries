@@ -12,6 +12,33 @@ import java.io.Serializable;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * A class plugin that adds {@see Serializable} interface and
+ * {@Code serialVersionUID} to the generated class.
+ *
+ * Note: the serialVersionUID is always set to 1.
+ *
+ * For example:
+ *
+ * <pre>
+ *     {@code public class MyClass implements Serializable {
+ *
+ *          private static final long serialVersionUID = 1L;
+ *
+ *          private final String myProperty;
+ *
+ *          public MyClass(final String myProperty) {
+ *              this.myProperty = myProperty;
+ *          }
+ *
+ *          public String getMyProperty() {
+ *              return myProperty;
+ *          }
+ *      }
+ *     }
+ *
+ * </pre>
+ */
 public class MakeClassSerializablePlugin implements ClassModifyingPlugin {
 
     private static final String SERIAL_VERSION_FIELD_NAME = "serialVersionUID";

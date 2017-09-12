@@ -113,37 +113,4 @@ public class AddFieldsAndMethodsToClassPluginTest {
                 methodSpec)
         );
     }
-
-    @Test
-    public void shouldGenerateTypeSpecForClassDefinitionWithAdditionalProperties() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
-        classDefinition.setAllowAdditionalProperties(true);
-
-        when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
-
-        final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
-
-        new AddFieldsAndMethodsToClassPlugin()
-                .generateWith(
-                        typeSpecBuilder,
-                        classDefinition,
-                        pluginContext);
-
-        final TypeSpec typeSpec = typeSpecBuilder.build();
-
-        assertThat(typeSpec.annotations.isEmpty(), is(true));
-        assertThat(typeSpec.name, is("ClassName"));
-        assertThat(typeSpec.fieldSpecs.size(), is(1));
-
-        assertThat(typeSpec.fieldSpecs.get(0).name, is("additionalProperties"));
-
-        assertThat(typeSpec.methodSpecs.size(), is(3));
-        assertThat(typeSpec.methodSpecs.get(0), is(constructorBuilder().addModifiers(PUBLIC).build()));
-
-        final MethodSpec additionalPropertiesGetter = typeSpec.methodSpecs.get(1);
-        final MethodSpec additionalPropertiesSetter = typeSpec.methodSpecs.get(2);
-
-        assertThat(additionalPropertiesGetter.name, is("getAdditionalProperties"));
-        assertThat(additionalPropertiesSetter.name, is("setAdditionalProperty"));
-    }
 }

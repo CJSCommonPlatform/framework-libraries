@@ -7,7 +7,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.generators.AdditionalPropertiesGenerator;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.ElementGeneratable;
 
@@ -29,8 +28,6 @@ import com.squareup.javapoet.TypeSpec;
  * you need to change it's behaviour.
  */
 public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
-
-    private final AdditionalPropertiesGenerator additionalPropertiesGenerator = new AdditionalPropertiesGenerator();
 
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
@@ -57,17 +54,6 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
         typeSpecBuilder.addMethod(buildConstructor(fieldDefinitions, pluginContext.getClassNameFactory()))
                 .addFields(fields)
                 .addMethods(methods);
-
-        if (classDefinition.allowAdditionalProperties()) {
-
-            final FieldSpec additionalProperties = additionalPropertiesGenerator.generateField();
-            final List<MethodSpec> gettersAndSetters = additionalPropertiesGenerator
-                    .generateMethods()
-                    .collect(toList());
-
-            typeSpecBuilder.addField(additionalProperties);
-            typeSpecBuilder.addMethods(gettersAndSetters);
-        }
 
         return typeSpecBuilder;
     }

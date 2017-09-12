@@ -5,14 +5,14 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddFieldsAndMethodsToClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.MakeClassSerializablePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.GenerateBuilderForClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.MakeClassSerializablePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.SupportJavaOptionalsPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.SupportUuidsPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.SupportZonedDateTimePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
 
 import java.util.List;
 

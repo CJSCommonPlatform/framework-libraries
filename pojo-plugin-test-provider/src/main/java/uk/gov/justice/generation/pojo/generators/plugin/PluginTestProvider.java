@@ -3,9 +3,9 @@ package uk.gov.justice.generation.pojo.generators.plugin;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddEventAnnotationToClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddFieldsAndMethodsToClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.MakeClassSerializablePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
 

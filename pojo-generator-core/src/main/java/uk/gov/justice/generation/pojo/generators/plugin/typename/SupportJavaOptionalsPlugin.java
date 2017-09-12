@@ -10,6 +10,28 @@ import java.util.Optional;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
+/**
+ * A type modifying plugin for setting all properties which are not marked as <i>required</i>
+ * in the json schema document to be wrapped in a java {@see Optional}.
+ *
+ * For example:
+ *
+ * <pre>
+ *     {@code public class MyClass {
+ *
+ *          private final Optional<String> myProperty;
+ *
+ *          public MyClass(final Optional<String> myProperty) {
+ *              this.myProperty = myProperty;
+ *          }
+ *
+ *          public Optional<String> getMyProperty() {
+ *              return myProperty;
+ *          }
+ *      }
+ *
+ * }</pre>
+ */
 public class SupportJavaOptionalsPlugin implements TypeModifyingPlugin {
 
     @Override

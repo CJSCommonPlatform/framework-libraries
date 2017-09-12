@@ -4,8 +4,8 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddFieldsAndMethodsToClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.MakeClassSerializablePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.SupportJavaOptionalsPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;

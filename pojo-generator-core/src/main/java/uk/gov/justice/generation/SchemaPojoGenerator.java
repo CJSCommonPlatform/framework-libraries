@@ -14,9 +14,11 @@ import uk.gov.justice.generation.pojo.generators.plugin.PluginProviderFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
+import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
 import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -81,7 +83,7 @@ public class SchemaPojoGenerator implements Generator<File> {
         final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor();
         final Schema schema = schemaLoader.loadFrom(source);
         final String fieldName = nameGenerator.rootFieldNameFrom(source);
-        final DefaultAcceptorService jsonSchemaAcceptorFactory = new DefaultAcceptorService(visitableFactory);
+        final AcceptorService jsonSchemaAcceptorFactory = new DefaultAcceptorService(visitableFactory);
 
         visitableFactory.createWith(fieldName, schema, jsonSchemaAcceptorFactory)
                 .accept(definitionBuilderVisitor);
@@ -113,6 +115,6 @@ public class SchemaPojoGenerator implements Generator<File> {
     }
 
     private DefinitionBuilderVisitor constructDefinitionBuilderVisitor() {
-        return new DefinitionBuilderVisitor(new DefaultDefinitionFactory());
+        return new DefinitionBuilderVisitor(new DefaultDefinitionFactory(new ReferenceValueParser()));
     }
 }

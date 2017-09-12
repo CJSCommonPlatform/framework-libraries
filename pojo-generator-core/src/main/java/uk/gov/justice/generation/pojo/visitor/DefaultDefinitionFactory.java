@@ -34,11 +34,19 @@ import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
 
+/**
+ * The default implementation of the {@link DefinitionFactory}.  Converts the given field name and
+ * {@link Schema} to a {@link Definition}.
+ */
 public class DefaultDefinitionFactory implements DefinitionFactory {
 
     private static final String EXCEPTION_FORMAT_MESSAGE = "Schema of type: %s is not supported.";
 
-    private final ReferenceValueParser referenceValueParser = new ReferenceValueParser();
+    private final ReferenceValueParser referenceValueParser;
+
+    public DefaultDefinitionFactory(final ReferenceValueParser referenceValueParser) {
+        this.referenceValueParser = referenceValueParser;
+    }
 
     @Override
     public Definition constructRootClassDefinition(final String fieldName) {

@@ -32,6 +32,7 @@ import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.visitor.DefinitionFactory;
+import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
@@ -43,7 +44,7 @@ import org.json.JSONObject;
 public class GeneratorUtil {
 
     private final NameGenerator nameGenerator = new NameGenerator();
-    private final DefinitionFactory definitionFactory = new DefaultDefinitionFactory();
+    private final DefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ReferenceValueParser());
     private final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
     private final VisitableFactory visitableFactory = new VisitableFactory();
     private final SchemaLoader schemaLoader = new SchemaLoader();

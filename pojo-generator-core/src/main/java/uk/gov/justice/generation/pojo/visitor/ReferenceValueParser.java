@@ -8,11 +8,22 @@ import java.io.Reader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 
-class ReferenceValueParser {
+/**
+ * Allows parsing of the $ref value from a reference schema.
+ */
+public class ReferenceValueParser {
 
     private static final String REFERENCE_VALUE_FIELD_NAME = "$ref";
 
-    String parseFrom(final Reader reader, final String fieldName) {
+    /**
+     * Convert from a Reader to a JsonNode, and retrieve the $ref value
+     *
+     * @param reader    the Reader to read for the JsonNode
+     * @param fieldName the field name to be used if exception is thrown
+     * @return the $ref value
+     * @throws FailedToParseSchemaException if an IOException occurs while reading the Json
+     */
+    public String parseFrom(final Reader reader, final String fieldName) {
         try {
             final JsonNode jsonNode = JsonLoader.fromReader(reader);
             return jsonNode.get(REFERENCE_VALUE_FIELD_NAME).textValue();

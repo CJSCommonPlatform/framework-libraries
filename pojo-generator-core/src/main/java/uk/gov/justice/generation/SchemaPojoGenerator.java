@@ -29,6 +29,14 @@ import java.util.List;
 import org.everit.json.schema.Schema;
 import org.slf4j.Logger;
 
+/**
+ * Main entry point into the application.
+ *
+ * Will generate pojos from the specified json schema file.
+ *
+ * This class is called by maven which will pass in all the maven
+ * configuration specified in the maven pom
+ */
 public class SchemaPojoGenerator implements Generator<File> {
 
     private final SourceWriter sourceWriter = new SourceWriter();
@@ -37,8 +45,14 @@ public class SchemaPojoGenerator implements Generator<File> {
     private final VisitableFactory visitableFactory = new VisitableFactory();
     private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
 
+    /**
+     * Run the pojo generation based on the specified json schema file
+     *
+     * @param jsonSchemaFile The json schema file from which to generate pojos
+     * @param generatorConfig The configuration specified in the maven pom
+     */
     @Override
-    public void run(final File source, final GeneratorConfig generatorConfig) {
+    public void run(final File jsonSchemaFile, final GeneratorConfig generatorConfig) {
         final String packageName = generatorConfig.getBasePackageName();
 
         final List<String> hardCodedClassNames = javaFileSimpleNameLister.findSimpleNames(
@@ -49,14 +63,14 @@ public class SchemaPojoGenerator implements Generator<File> {
         final GenerationContext generationContext = new GenerationContext(
                 generatorConfig.getOutputDirectory(),
                 packageName,
-                source.getName(),
+                jsonSchemaFile.getName(),
                 hardCodedClassNames);
 
         final Logger logger = generationContext.getLoggerFor(getClass());
 
-        logger.info("Generating java pojos from schema file '{}'", source.getName());
+        logger.info("Generating java pojos from schema file '{}'", jsonSchemaFile.getName());
 
-        final List<Definition> definitions = createDefinitions(source);
+        final List<Definition> definitions = createDefinitions(jsonSchemaFile);
 
         final List<ClassGeneratable> classGenerators = getClassGeneratorsFrom(generatorConfig, generationContext, definitions);
 

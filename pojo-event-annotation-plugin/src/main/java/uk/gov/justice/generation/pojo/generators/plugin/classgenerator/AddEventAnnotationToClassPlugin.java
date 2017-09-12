@@ -8,7 +8,7 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class EventAnnotationPlugin implements ClassGeneratorPlugin {
+public class AddEventAnnotationToClassPlugin implements ClassModifyingPlugin {
 
     private static final char DOT_CHARACTER = '.';
     private static final int BEGIN_INDEX = 0;

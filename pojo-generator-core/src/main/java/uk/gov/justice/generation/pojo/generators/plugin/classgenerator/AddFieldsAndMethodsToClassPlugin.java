@@ -19,7 +19,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class FieldAndMethodPlugin implements ClassGeneratorPlugin {
+public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
 
     private final AdditionalPropertiesGenerator additionalPropertiesGenerator = new AdditionalPropertiesGenerator();
 

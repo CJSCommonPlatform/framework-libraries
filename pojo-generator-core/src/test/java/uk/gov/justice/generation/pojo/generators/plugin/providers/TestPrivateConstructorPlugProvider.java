@@ -1,8 +1,8 @@
 package uk.gov.justice.generation.pojo.generators.plugin.providers;
 
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeNamePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ public class TestPrivateConstructorPlugProvider implements PluginProvider {
     }
 
     @Override
-    public List<ClassGeneratorPlugin> pluginClassGenerators() {
+    public List<ClassModifyingPlugin> classModifyingPlugins() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<TypeNamePlugin> typeNamePlugins() {
+    public List<TypeModifyingPlugin> typeModifyingPlugins() {
         throw new UnsupportedOperationException();
     }
 }

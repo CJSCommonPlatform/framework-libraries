@@ -34,7 +34,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FieldAndMethodPluginTest {
+public class AddFieldsAndMethodsToClassPluginTest {
 
     @Mock
     private JavaGeneratorFactory generatorFactory;
@@ -53,7 +53,7 @@ public class FieldAndMethodPluginTest {
 
         when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
 
-        new FieldAndMethodPlugin()
+        new AddFieldsAndMethodsToClassPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
@@ -92,7 +92,7 @@ public class FieldAndMethodPluginTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodPlugin()
+        new AddFieldsAndMethodsToClassPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
@@ -123,7 +123,7 @@ public class FieldAndMethodPluginTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new FieldAndMethodPlugin()
+        new AddFieldsAndMethodsToClassPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,

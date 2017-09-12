@@ -34,7 +34,7 @@ public class ClassGenerator implements ClassGeneratable {
         final Builder typeSpecBuilder = classBuilder(getClassName())
                 .addModifiers(PUBLIC);
 
-        pluginProvider.pluginClassGenerators().forEach(plugin ->
+        pluginProvider.classModifyingPlugins().forEach(plugin ->
                 plugin.generateWith(typeSpecBuilder, classDefinition, pluginContext));
 
         return typeSpecBuilder.build();

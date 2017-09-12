@@ -12,7 +12,7 @@ import java.io.Serializable;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class SerializablePlugin implements ClassGeneratorPlugin {
+public class MakeClassSerializablePlugin implements ClassModifyingPlugin {
 
     private static final String SERIAL_VERSION_FIELD_NAME = "serialVersionUID";
     private static final String SERIAL_VERSION_VALUE = "1L";

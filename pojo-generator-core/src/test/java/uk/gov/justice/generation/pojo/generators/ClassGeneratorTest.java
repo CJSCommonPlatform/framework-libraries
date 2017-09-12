@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassGeneratorPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 
 import com.squareup.javapoet.ClassName;
@@ -46,7 +46,7 @@ public class ClassGeneratorTest {
     public void shouldReturnCorrectSimpleClassNameForGenerator() throws Exception {
         final ClassName className = get(AlcubierreDrive.class);
 
-        when(pluginProvider.pluginClassGenerators()).thenReturn(emptyList());
+        when(pluginProvider.classModifyingPlugins()).thenReturn(emptyList());
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
 
         assertThat(classGenerator.getSimpleClassName(), is("AlcubierreDrive"));
@@ -56,11 +56,11 @@ public class ClassGeneratorTest {
     public void shouldGenerateAnEmptyClassAndUseThePluginsToGenerateTheClassInternals() throws Exception {
         final ClassName className = get(AlcubierreDrive.class);
 
-        final ClassGeneratorPlugin plugin_1 = mock(ClassGeneratorPlugin.class, "plugin_1");
-        final ClassGeneratorPlugin plugin_2 = mock(ClassGeneratorPlugin.class, "plugin_2");
-        final ClassGeneratorPlugin plugin_3 = mock(ClassGeneratorPlugin.class, "plugin_3");
+        final ClassModifyingPlugin plugin_1 = mock(ClassModifyingPlugin.class, "plugin_1");
+        final ClassModifyingPlugin plugin_2 = mock(ClassModifyingPlugin.class, "plugin_2");
+        final ClassModifyingPlugin plugin_3 = mock(ClassModifyingPlugin.class, "plugin_3");
 
-        when(pluginProvider.pluginClassGenerators()).thenReturn(asList(plugin_1, plugin_2, plugin_3));
+        when(pluginProvider.classModifyingPlugins()).thenReturn(asList(plugin_1, plugin_2, plugin_3));
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
 
         final TypeSpec classSpec = classGenerator.generate();

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeNamePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TypeNamePluginProcessorTest {
+public class TypeModifyingPluginProcessorTest {
 
     @Mock
     private PluginProvider pluginProvider;
@@ -33,15 +33,15 @@ public class TypeNamePluginProcessorTest {
         final TypeName decoratedTypeName_1 = ClassName.get(Integer.class);
         final TypeName decoratedTypeName_2 = ClassName.get(Boolean.class);
 
-        final TypeNamePlugin typeNamePlugin_1 = mock(TypeNamePlugin.class);
-        final TypeNamePlugin typeNamePlugin_2 = mock(TypeNamePlugin.class);
+        final TypeModifyingPlugin typeModifyingPlugin_1 = mock(TypeModifyingPlugin.class);
+        final TypeModifyingPlugin typeModifyingPlugin_2 = mock(TypeModifyingPlugin.class);
 
 
         final Definition definition = mock(Definition.class);
 
-        when(pluginProvider.typeNamePlugins()).thenReturn(asList(typeNamePlugin_1, typeNamePlugin_2));
-        when(typeNamePlugin_1.modifyTypeName(originalTypeName, definition)).thenReturn(decoratedTypeName_1);
-        when(typeNamePlugin_2.modifyTypeName(decoratedTypeName_1, definition)).thenReturn(decoratedTypeName_2);
+        when(pluginProvider.typeModifyingPlugins()).thenReturn(asList(typeModifyingPlugin_1, typeModifyingPlugin_2));
+        when(typeModifyingPlugin_1.modifyTypeName(originalTypeName, definition)).thenReturn(decoratedTypeName_1);
+        when(typeModifyingPlugin_2.modifyTypeName(decoratedTypeName_1, definition)).thenReturn(decoratedTypeName_2);
 
         final TypeName finalTypeName = typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition);
 

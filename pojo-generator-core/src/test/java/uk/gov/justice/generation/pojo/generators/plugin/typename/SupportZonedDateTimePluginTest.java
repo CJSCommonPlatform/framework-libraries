@@ -13,7 +13,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 import org.junit.Test;
 
-public class ZonedDateTimeTypeNamePluginTest {
+public class SupportZonedDateTimePluginTest {
 
     @Test
     public void shouldReturnOriginalTypeNameIfReferenceButNotZonedDateTime() throws Exception {
@@ -23,7 +23,7 @@ public class ZonedDateTimeTypeNamePluginTest {
         when(referenceDefinition.type()).thenReturn(REFERENCE);
         when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/dateString");
 
-        final TypeName resultTypeName = new ZonedDateTimeTypeNamePlugin().modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName resultTypeName = new SupportZonedDateTimePlugin().modifyTypeName(originalTypeName, referenceDefinition);
 
         assertThat(resultTypeName.toString(), is("java.lang.String"));
     }
@@ -36,7 +36,7 @@ public class ZonedDateTimeTypeNamePluginTest {
         when(referenceDefinition.type()).thenReturn(REFERENCE);
         when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/ZonedDateTime");
 
-        final TypeName resultTypeName = new ZonedDateTimeTypeNamePlugin().modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName resultTypeName = new SupportZonedDateTimePlugin().modifyTypeName(originalTypeName, referenceDefinition);
 
         assertThat(resultTypeName.toString(), is("java.time.ZonedDateTime"));
     }
@@ -48,7 +48,7 @@ public class ZonedDateTimeTypeNamePluginTest {
 
         when(referenceDefinition.type()).thenReturn(STRING);
 
-        final TypeName resultTypeName = new ZonedDateTimeTypeNamePlugin().modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName resultTypeName = new SupportZonedDateTimePlugin().modifyTypeName(originalTypeName, referenceDefinition);
 
         assertThat(resultTypeName.toString(), is("java.lang.String"));
     }

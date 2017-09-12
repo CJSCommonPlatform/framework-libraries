@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EventAnnotationPluginTest {
+public class AddEventAnnotationToClassPluginTest {
 
     @Mock
     private PluginContext pluginContext;
@@ -33,7 +33,7 @@ public class EventAnnotationPluginTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new EventAnnotationPlugin()
+        new AddEventAnnotationToClassPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
@@ -55,7 +55,7 @@ public class EventAnnotationPluginTest {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new EventAnnotationPlugin()
+        new AddEventAnnotationToClassPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,

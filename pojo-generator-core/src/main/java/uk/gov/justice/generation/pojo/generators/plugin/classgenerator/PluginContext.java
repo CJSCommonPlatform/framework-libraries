@@ -4,6 +4,7 @@ import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 public class PluginContext {
+    
     private final JavaGeneratorFactory generatorFactory;
     private final ClassNameFactory classNameFactory;
     private final String sourceFilename;

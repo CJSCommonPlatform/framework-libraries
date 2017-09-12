@@ -11,10 +11,20 @@ import org.apache.commons.io.IOUtils;
 import org.everit.json.schema.Schema;
 import org.json.JSONObject;
 
+/**
+ * Utility class for loading json schema files
+ */
 public class SchemaLoader {
 
-    public Schema loadFrom(final File file) {
-        final JSONObject schemaJsonObject = new JSONObject(loadAsJsonString(file));
+    /**
+     * Loads the specified schema file
+     *
+     * @param jsonSchemaFile A {@link File} pointing to a json schema file
+     *
+     * @return The loaded json schema
+     */
+    public Schema loadFrom(final File jsonSchemaFile) {
+        final JSONObject schemaJsonObject = new JSONObject(loadAsJsonString(jsonSchemaFile));
         return load(schemaJsonObject);
     }
 

@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.pojo.generators.plugin;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.TypeModifyingPlugin;
 
 import com.squareup.javapoet.TypeName;
 

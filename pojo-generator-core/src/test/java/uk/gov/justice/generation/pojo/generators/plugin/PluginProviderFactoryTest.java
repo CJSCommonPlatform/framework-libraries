@@ -8,11 +8,11 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddFieldsAndMethodsToClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.GenerateBuilderForClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.SupportJavaOptionalsPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.SupportUuidsPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.GenerateBuilderForClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.MakeClassSerializablePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportJavaOptionalsPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportUuidsPlugin;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.util.HashMap;
@@ -27,11 +27,11 @@ public class PluginProviderFactoryTest {
     private static final String EXCLUDE_DEFAULT_PLUGINS_PROPERTY = "excludeDefaultPlugins";
     private static final String PLUGINS_PROPERTY = "plugins";
 
-    private static final String SINGLE_CLASS_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.generators.plugin.classgenerator.MakeClassSerializablePlugin";
-    private static final String SINGLE_TYPE_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.generators.plugin.typename.SupportUuidsPlugin";
+    private static final String SINGLE_CLASS_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.generators.plugin.classmodifying.MakeClassSerializablePlugin";
+    private static final String SINGLE_TYPE_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportUuidsPlugin";
     private static final String MULTIPLE_TYPE_MODIFYING_PLUGINS = SINGLE_TYPE_MODIFYING_PLUGIN +
             ",\n" +
-            "uk.gov.justice.generation.pojo.generators.plugin.typename.SupportJavaOptionalsPlugin";
+            "uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportJavaOptionalsPlugin";
     private static final String MULTIPLE_TYPES_OF_PLUGIN = MULTIPLE_TYPE_MODIFYING_PLUGINS +
             ",\n" +
             SINGLE_CLASS_MODIFYING_PLUGIN;

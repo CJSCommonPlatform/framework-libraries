@@ -16,7 +16,7 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 

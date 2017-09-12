@@ -13,8 +13,8 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;

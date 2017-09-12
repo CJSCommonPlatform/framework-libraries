@@ -4,8 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.TypeModifyingPlugin;
 
 import java.util.List;
 

@@ -14,6 +14,7 @@ import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.ModifyingPluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.GenerateBuilderForClassPlugin;
@@ -84,8 +85,9 @@ public class GeneratorUtil {
         final List<ClassModifyingPlugin> classGeneratorPlugins = asList(
                 new MakeClassSerializablePlugin(),
                 new AddFieldsAndMethodsToClassPlugin(),
-                new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()
-                ));
+                new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
+                new AddAdditionalPropertiesToClassPlugin()
+        );
 
         final List<TypeModifyingPlugin> typeNamePlugins = asList(
                 new SupportJavaOptionalsPlugin(),

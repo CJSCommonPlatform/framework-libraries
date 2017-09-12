@@ -1,14 +1,17 @@
-package uk.gov.justice.generation.pojo.generators;
+package uk.gov.justice.generation.pojo.generators.plugin.classmodifying;
 
 import static com.squareup.javapoet.FieldSpec.builder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
+import static java.util.Arrays.asList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
+import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -18,11 +21,23 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 
-public class AdditionalPropertiesGenerator implements ElementGeneratable {
+public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugin {
 
     @Override
-    public FieldSpec generateField() {
+    public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder, final ClassDefinition classDefinition, final PluginContext pluginContext) {
+
+        if (classDefinition.allowAdditionalProperties()) {
+            typeSpecBuilder
+                    .addField(additionalPropertiesMapField())
+                    .addMethods(gettersAndSetters());
+        }
+
+        return typeSpecBuilder;
+    }
+
+    private FieldSpec additionalPropertiesMapField() {
 
         final ParameterizedTypeName map = ParameterizedTypeName.get(
                 ClassName.get(Map.class),
@@ -36,13 +51,12 @@ public class AdditionalPropertiesGenerator implements ElementGeneratable {
                 .build();
     }
 
-    @Override
-    public Stream<MethodSpec> generateMethods() {
+    private List<MethodSpec> gettersAndSetters() {
 
         final MethodSpec getter = generateGetter();
         final MethodSpec setter = generateSetter();
 
-        return Stream.of(getter, setter);
+        return asList(getter, setter);
     }
 
     private MethodSpec generateGetter() {

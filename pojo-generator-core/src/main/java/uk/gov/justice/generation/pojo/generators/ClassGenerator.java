@@ -5,7 +5,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;

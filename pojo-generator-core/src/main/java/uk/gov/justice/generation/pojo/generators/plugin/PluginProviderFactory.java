@@ -4,11 +4,11 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.AddFieldsAndMethodsToClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.GenerateBuilderForClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.builder.BuilderGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.GenerateBuilderForClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.util.List;

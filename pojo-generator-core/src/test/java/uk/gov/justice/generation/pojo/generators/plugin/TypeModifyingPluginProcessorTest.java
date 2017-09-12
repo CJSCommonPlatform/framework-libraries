@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
-import uk.gov.justice.generation.pojo.generators.plugin.typename.TypeModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.TypeModifyingPlugin;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;

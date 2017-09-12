@@ -12,7 +12,7 @@ import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.PluginProviderFactory;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;

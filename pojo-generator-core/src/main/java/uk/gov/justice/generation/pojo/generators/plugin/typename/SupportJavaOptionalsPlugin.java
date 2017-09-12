@@ -10,7 +10,7 @@ import java.util.Optional;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
-public class OptionalTypeNamePlugin implements TypeNamePlugin {
+public class SupportJavaOptionalsPlugin implements TypeModifyingPlugin {
 
     @Override
     public TypeName modifyTypeName(final TypeName originalTypeName, final Definition definition) {

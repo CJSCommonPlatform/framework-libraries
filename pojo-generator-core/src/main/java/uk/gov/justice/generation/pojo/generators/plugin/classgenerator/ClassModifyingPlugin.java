@@ -4,7 +4,7 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 
 import com.squareup.javapoet.TypeSpec;
 
-public interface ClassGeneratorPlugin {
+public interface ClassModifyingPlugin {
 
     TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
                                   final ClassDefinition classDefinition,

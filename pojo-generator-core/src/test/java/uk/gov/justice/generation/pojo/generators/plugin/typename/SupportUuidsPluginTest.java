@@ -13,7 +13,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 import org.junit.Test;
 
-public class UuidTypeNamePluginTest {
+public class SupportUuidsPluginTest {
 
     @Test
     public void shouldReturnOriginalTypeNameIfReferenceButNotUuid() throws Exception {
@@ -23,7 +23,7 @@ public class UuidTypeNamePluginTest {
         when(referenceDefinition.type()).thenReturn(REFERENCE);
         when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/dateString");
 
-        final TypeName resultTypeName = new UuidTypeNamePlugin().modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName resultTypeName = new SupportUuidsPlugin().modifyTypeName(originalTypeName, referenceDefinition);
 
         assertThat(resultTypeName.toString(), is("java.lang.String"));
     }
@@ -36,7 +36,7 @@ public class UuidTypeNamePluginTest {
         when(referenceDefinition.type()).thenReturn(REFERENCE);
         when(referenceDefinition.getReferenceValue()).thenReturn("#/definitions/UUID");
 
-        final TypeName resultTypeName = new UuidTypeNamePlugin().modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName resultTypeName = new SupportUuidsPlugin().modifyTypeName(originalTypeName, referenceDefinition);
 
         assertThat(resultTypeName.toString(), is("java.util.UUID"));
     }
@@ -48,7 +48,7 @@ public class UuidTypeNamePluginTest {
 
         when(referenceDefinition.type()).thenReturn(STRING);
 
-        final TypeName resultTypeName = new UuidTypeNamePlugin().modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName resultTypeName = new SupportUuidsPlugin().modifyTypeName(originalTypeName, referenceDefinition);
 
         assertThat(resultTypeName.toString(), is("java.lang.String"));
     }

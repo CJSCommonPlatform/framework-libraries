@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classgenerator.PluginContext;
 
 import com.squareup.javapoet.MethodSpec;
@@ -19,13 +20,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BuilderPluginTest {
+public class GenerateBuilderForClassPluginTest {
 
     @Mock
     private BuilderGeneratorFactory builderGeneratorFactory;
 
     @InjectMocks
-    private BuilderPlugin builderPlugin;
+    private GenerateBuilderForClassPlugin generateBuilderForClassPlugin;
 
     @Test
     public void shouldGenerateTheBuilderAsAnInnerClassAndAddToTheMainClassTypeSpec() throws Exception {
@@ -50,7 +51,7 @@ public class BuilderPluginTest {
         when(builderGenerator.generate()).thenReturn(innerClassBuilder);
         when(builderGenerator.generateStaticGetBuilderMethod()).thenReturn(staticGetBuilderMethod);
 
-        final TypeSpec.Builder builder = builderPlugin.generateWith(
+        final TypeSpec.Builder builder = generateBuilderForClassPlugin.generateWith(
                 outerClassBuilder,
                 classDefinition,
                 pluginContext);

@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SerializablePluginTest {
+public class MakeClassSerializablePluginTest {
 
     @Mock
     private PluginContext pluginContext;
@@ -34,7 +34,7 @@ public class SerializablePluginTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new SerializablePlugin().generateWith(typeSpecBuilder, classDefinition, pluginContext);
+        new MakeClassSerializablePlugin().generateWith(typeSpecBuilder, classDefinition, pluginContext);
 
         final TypeSpec typeSpec = typeSpecBuilder.build();
 

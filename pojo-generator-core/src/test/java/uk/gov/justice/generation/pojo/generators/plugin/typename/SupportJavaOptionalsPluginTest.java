@@ -20,10 +20,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class OptionalTypeNamePluginTest {
+public class SupportJavaOptionalsPluginTest {
 
     @InjectMocks
-    private OptionalTypeNamePlugin optionalTypeNamePlugin;
+    private SupportJavaOptionalsPlugin optionalTypeNamePlugin;
 
     @Test
     public void shouldWrapTypeWithJavaOptionalIfFieldIsNotRequired() throws Exception {

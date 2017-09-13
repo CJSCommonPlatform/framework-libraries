@@ -21,7 +21,7 @@ import uk.gov.justice.generation.pojo.dom.CombinedDefinition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
-import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 
 import java.math.BigDecimal;
 

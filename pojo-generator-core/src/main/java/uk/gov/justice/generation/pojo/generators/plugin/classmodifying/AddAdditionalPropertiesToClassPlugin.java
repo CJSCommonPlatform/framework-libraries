@@ -26,15 +26,18 @@ import com.squareup.javapoet.TypeSpec;
 public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugin {
 
     @Override
-    public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder, final ClassDefinition classDefinition, final PluginContext pluginContext) {
+    public TypeSpec.Builder generateWith(
+            final TypeSpec.Builder classBuilder,
+            final ClassDefinition classDefinition,
+            final PluginContext pluginContext) {
 
         if (classDefinition.allowAdditionalProperties()) {
-            typeSpecBuilder
+            classBuilder
                     .addField(additionalPropertiesMapField())
                     .addMethods(gettersAndSetters());
         }
 
-        return typeSpecBuilder;
+        return classBuilder;
     }
 
     private FieldSpec additionalPropertiesMapField() {

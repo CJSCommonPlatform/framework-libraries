@@ -45,16 +45,16 @@ public class MakeClassSerializablePlugin implements ClassModifyingPlugin {
     private static final String SERIAL_VERSION_VALUE = "1L";
 
     @Override
-    public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
+    public TypeSpec.Builder generateWith(final TypeSpec.Builder classBuilder,
                                          final ClassDefinition classDefinition,
                                          final PluginContext pluginContext) {
 
-        typeSpecBuilder.addSuperinterface(Serializable.class)
+        classBuilder.addSuperinterface(Serializable.class)
                 .addField(FieldSpec
                         .builder(LONG, SERIAL_VERSION_FIELD_NAME, PRIVATE, STATIC, FINAL)
                         .initializer(SERIAL_VERSION_VALUE)
                         .build());
 
-        return typeSpecBuilder;
+        return classBuilder;
     }
 }

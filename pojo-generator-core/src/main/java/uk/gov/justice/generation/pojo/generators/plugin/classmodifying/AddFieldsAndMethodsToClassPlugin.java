@@ -30,7 +30,7 @@ import com.squareup.javapoet.TypeSpec;
 public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
 
     @Override
-    public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
+    public TypeSpec.Builder generateWith(final TypeSpec.Builder classBuilder,
                                          final ClassDefinition classDefinition,
                                          final PluginContext pluginContext) {
 
@@ -51,11 +51,11 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
                 .flatMap(ElementGeneratable::generateMethods)
                 .collect(toList());
 
-        typeSpecBuilder.addMethod(buildConstructor(fieldDefinitions, pluginContext.getClassNameFactory()))
+        classBuilder.addMethod(buildConstructor(fieldDefinitions, pluginContext.getClassNameFactory()))
                 .addFields(fields)
                 .addMethods(methods);
 
-        return typeSpecBuilder;
+        return classBuilder;
     }
 
     private MethodSpec buildConstructor(final List<Definition> definitions, final ClassNameFactory classNameFactory) {

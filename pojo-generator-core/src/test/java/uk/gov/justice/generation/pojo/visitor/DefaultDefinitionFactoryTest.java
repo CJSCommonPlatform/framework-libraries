@@ -5,7 +5,10 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.BOOLEAN;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
@@ -25,6 +28,8 @@ import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 
+import java.io.Reader;
+
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
 import org.everit.json.schema.CombinedSchema;
@@ -40,6 +45,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,6 +53,9 @@ public class DefaultDefinitionFactoryTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @Mock
+    private ReferenceValueParser referenceValueParser;
 
     @InjectMocks
     private DefaultDefinitionFactory defaultDefinitionFactory;
@@ -164,6 +173,8 @@ public class DefaultDefinitionFactoryTest {
         final String fieldName = "fieldName";
         final String referenceValue = "reference value";
         final ReferenceSchema referenceSchema = ReferenceSchema.builder().refValue(referenceValue).build();
+
+        when(referenceValueParser.parseFrom(any(Reader.class), eq(fieldName))).thenReturn(referenceValue);
 
         final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, referenceSchema);
 

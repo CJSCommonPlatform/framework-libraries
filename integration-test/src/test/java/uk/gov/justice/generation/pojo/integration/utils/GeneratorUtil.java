@@ -16,11 +16,13 @@ import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddToStringMethodToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.FieldNameFromFileNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin;
@@ -50,6 +52,8 @@ public class GeneratorUtil {
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
+
+
     public List<Class<?>> generateAndCompileJavaSource(final File jsonSchemaFile,
                                                        final String packageName,
                                                        final OutputDirectories outputDirectories) {
@@ -72,22 +76,29 @@ public class GeneratorUtil {
                 ignoredClassNames);
 
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-        final List<ClassModifyingPlugin> classGeneratorPlugins = asList(
+        final AdditionalPropertiesDeterminer additionalPropertiesDeterminer = new AdditionalPropertiesDeterminer();
+        final List<ClassModifyingPlugin> classModifyingPlugins = asList(
                 new MakeClassSerializablePlugin(),
                 new AddFieldsAndMethodsToClassPlugin(),
                 new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
                 new AddAdditionalPropertiesToClassPlugin(),
-                new AddHashcodeAndEqualsPlugin()
+                new AddHashcodeAndEqualsPlugin(additionalPropertiesDeterminer),
+                new AddToStringMethodToClassPlugin(additionalPropertiesDeterminer)
         );
 
-        final List<TypeModifyingPlugin> typeNamePlugins = asList(
+        final List<TypeModifyingPlugin> typeModifyingPlugins = asList(
                 new SupportJavaOptionalsPlugin(),
                 new SupportUuidsPlugin(),
                 new SupportZonedDateTimePlugin());
 
-        final PluginProvider pluginProvider = new ModifyingPluginProvider(classGeneratorPlugins, typeNamePlugins, new FieldNameFromFileNameGeneratorPlugin());
+        final PluginProvider pluginProvider = new ModifyingPluginProvider(
+                classModifyingPlugins,
+                typeModifyingPlugins,
+                new FieldNameFromFileNameGeneratorPlugin());
 
-        final String fieldName = pluginProvider.nameGeneratablePlugin().rootFieldNameFrom(schema, jsonSchemaFile.getName());
+        final String fieldName = pluginProvider
+                .nameGeneratablePlugin()
+                .rootFieldNameFrom(schema, jsonSchemaFile.getName());
 
         final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
 
@@ -108,7 +119,11 @@ public class GeneratorUtil {
                 .withClassNameFactory(classNameFactory)
                 .build();
 
-        final PluginContext pluginContext = new PluginContext(javaGeneratorFactory, classNameFactory, generationContext.getSourceFilename());
+        final PluginContext pluginContext = new PluginContext(
+                javaGeneratorFactory,
+                classNameFactory,
+                generationContext.getSourceFilename(),
+                classModifyingPlugins);
 
         return javaGeneratorFactory
                 .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, pluginContext, generationContext)

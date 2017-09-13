@@ -15,6 +15,7 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
 import java.util.List;
 
@@ -22,11 +23,15 @@ import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddHashcodeAndEqualsPluginTest {
+
+    @Mock
+    private AdditionalPropertiesDeterminer additionalPropertiesDeterminer;
 
     @InjectMocks
     private AddHashcodeAndEqualsPlugin addHashcodeAndEqualsPlugin;
@@ -62,7 +67,7 @@ public class AddHashcodeAndEqualsPluginTest {
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
         when(classDefinition.getFieldDefinitions()).thenReturn(fieldDefinitions);
-        when(classDefinition.allowAdditionalProperties()).thenReturn(false);
+        when(additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)).thenReturn(false);
         when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(get("org.bloggs.fred", "MyClass"));
 
@@ -127,8 +132,10 @@ public class AddHashcodeAndEqualsPluginTest {
 
         when(classDefinition.getFieldDefinitions()).thenReturn(fieldDefinitions);
         when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
-        when(classDefinition.allowAdditionalProperties()).thenReturn(true);
+        when(additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)).thenReturn(true);
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(get("org.bloggs.fred", "MyClass"));
+
+        assertThat(additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext), is(true));
 
         final TypeSpec.Builder builder = addHashcodeAndEqualsPlugin.generateWith(classBuilder, classDefinition, pluginContext);
 

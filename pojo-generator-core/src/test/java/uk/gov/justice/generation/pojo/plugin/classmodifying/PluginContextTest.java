@@ -1,11 +1,16 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -22,7 +27,8 @@ public class PluginContextTest {
         final PluginContext pluginContext = new PluginContext(
                 generatorFactory,
                 UNSPECIFIED_CLASS_NAME_FACTORY,
-                BLANK);
+                BLANK,
+                emptyList());
 
         assertThat(pluginContext.getJavaGeneratorFactory(), is(generatorFactory));
     }
@@ -34,7 +40,8 @@ public class PluginContextTest {
         final PluginContext pluginContext = new PluginContext(
                 UNSPECIFIED_GENERATOR_FACTORY,
                 classNameFactory,
-                BLANK);
+                BLANK,
+                emptyList());
 
         assertThat(pluginContext.getClassNameFactory(), is(classNameFactory));
     }
@@ -46,8 +53,28 @@ public class PluginContextTest {
         final PluginContext pluginContext = new PluginContext(
                 UNSPECIFIED_GENERATOR_FACTORY,
                 UNSPECIFIED_CLASS_NAME_FACTORY,
-                sourceFilename);
+                sourceFilename,
+                emptyList());
 
         assertThat(pluginContext.getSourceFilename(), is(sourceFilename));
+    }
+
+    @Test
+    public void shouldReturnTrueIfTheSpecifiedPluginIsInUseInTheApplication() throws Exception {
+
+        final List<ClassModifyingPlugin> classModifyingPlugins = asList(
+                new AddToStringMethodToClassPlugin(new AdditionalPropertiesDeterminer()),
+                new MakeClassSerializablePlugin()
+        );
+
+        final PluginContext pluginContext = new PluginContext(
+                UNSPECIFIED_GENERATOR_FACTORY,
+                UNSPECIFIED_CLASS_NAME_FACTORY,
+                BLANK,
+                classModifyingPlugins);
+
+        assertThat(pluginContext.isPluginInUse(AddToStringMethodToClassPlugin.class), is(true));
+        assertThat(pluginContext.isPluginInUse(MakeClassSerializablePlugin.class), is(true));
+        assertThat(pluginContext.isPluginInUse(AddAdditionalPropertiesToClassPlugin.class), is(false));
     }
 }

@@ -106,7 +106,11 @@ public class SchemaPojoGenerator implements Generator<File> {
 
         final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
         final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(classNameFactory);
-        final PluginContext pluginContext = new PluginContext(javaGeneratorFactory, classNameFactory, generationContext.getSourceFilename());
+        final PluginContext pluginContext = new PluginContext(
+                javaGeneratorFactory,
+                classNameFactory,
+                generationContext.getSourceFilename(),
+                pluginProvider.classModifyingPlugins());
 
         return javaGeneratorFactory.createClassGeneratorsFor(definitions, pluginProvider, pluginContext, generationContext);
     }

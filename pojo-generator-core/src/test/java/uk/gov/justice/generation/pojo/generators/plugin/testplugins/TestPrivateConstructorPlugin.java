@@ -12,7 +12,7 @@ public class TestPrivateConstructorPlugin implements ClassModifyingPlugin {
     }
 
     @Override
-    public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder, final ClassDefinition classDefinition, final PluginContext pluginContext) {
+    public TypeSpec.Builder generateWith(final TypeSpec.Builder classBuilder, final ClassDefinition classDefinition, final PluginContext pluginContext) {
         return null;
     }
 }

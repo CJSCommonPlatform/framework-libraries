@@ -16,6 +16,7 @@ import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.MakeClassSerializablePlugin;
@@ -87,7 +88,8 @@ public class GeneratorUtil {
                 new MakeClassSerializablePlugin(),
                 new AddFieldsAndMethodsToClassPlugin(),
                 new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
-                new AddAdditionalPropertiesToClassPlugin()
+                new AddAdditionalPropertiesToClassPlugin(),
+                new AddHashcodeAndEqualsPlugin()
         );
 
         final List<TypeModifyingPlugin> typeNamePlugins = asList(

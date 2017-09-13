@@ -55,7 +55,7 @@ public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 
     @Override
     public TypeSpec.Builder generateWith(
-            final TypeSpec.Builder outerClassBuilder,
+            final TypeSpec.Builder classBuilder,
             final ClassDefinition classDefinition,
             final PluginContext pluginContext) {
 
@@ -66,9 +66,9 @@ public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
         final TypeSpec innerClassBuilder = builderGenerator.generate();
         final MethodSpec staticGetBuilderMethod = builderGenerator.generateStaticGetBuilderMethod();
 
-        outerClassBuilder.addType(innerClassBuilder);
-        outerClassBuilder.addMethod(staticGetBuilderMethod);
+        classBuilder.addType(innerClassBuilder);
+        classBuilder.addMethod(staticGetBuilderMethod);
 
-        return outerClassBuilder;
+        return classBuilder;
     }
 }

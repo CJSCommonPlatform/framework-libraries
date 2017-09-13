@@ -14,7 +14,7 @@ public class AddEventAnnotationToClassPlugin implements ClassModifyingPlugin {
     private static final int BEGIN_INDEX = 0;
 
     @Override
-    public TypeSpec.Builder generateWith(final TypeSpec.Builder typeSpecBuilder,
+    public TypeSpec.Builder generateWith(final TypeSpec.Builder classBuilder,
                                          final ClassDefinition classDefinition,
                                          final PluginContext pluginContext) {
 
@@ -22,12 +22,12 @@ public class AddEventAnnotationToClassPlugin implements ClassModifyingPlugin {
 
             final String eventName = removeFileExtensionFrom(pluginContext.getSourceFilename());
 
-            typeSpecBuilder.addAnnotation(AnnotationSpec.builder(Event.class)
+            classBuilder.addAnnotation(AnnotationSpec.builder(Event.class)
                     .addMember("value", "$S", eventName)
                     .build());
         }
 
-        return typeSpecBuilder;
+        return classBuilder;
     }
 
     private String removeFileExtensionFrom(final String fileName) {

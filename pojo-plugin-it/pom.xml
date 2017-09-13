@@ -76,12 +76,12 @@
                             <generatorProperties>
                                 <excludeDefaultPlugins>true</excludeDefaultPlugins>
                                 <plugins>
-                                    uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin,
-                                    uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddEventAnnotationToClassPlugin,
-                                    uk.gov.justice.generation.pojo.generators.plugin.classmodifying.MakeClassSerializablePlugin,
-                                    uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportJavaOptionalsPlugin,
-                                    uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportUuidsPlugin,
-                                    uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportZonedDateTimePlugin
+                                    uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin,
+                                    uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin,
+                                    uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin,
+                                    uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin,
+                                    uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin,
+                                    uk.gov.justice.generation.pojo.plugin.typemodifying.SupportZonedDateTimePlugin
                                 </plugins>
                             </generatorProperties>
                         </configuration>

@@ -6,26 +6,26 @@ import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.ModifyingPluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.GenerateBuilderForClassPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.PluginContext;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.builder.BuilderGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportJavaOptionalsPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportUuidsPlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportZonedDateTimePlugin;
-import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.TypeModifyingPlugin;
+import uk.gov.justice.generation.pojo.plugin.ModifyingPluginProvider;
+import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.namegeneratable.FieldNameFromFileNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportZonedDateTimePlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
@@ -44,7 +44,6 @@ import org.json.JSONObject;
 
 public class GeneratorUtil {
 
-    private final NameGenerator nameGenerator = new NameGenerator();
     private final DefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ReferenceValueParser());
     private final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
     private final VisitableFactory visitableFactory = new VisitableFactory();
@@ -73,17 +72,6 @@ public class GeneratorUtil {
                 ignoredClassNames);
 
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-
-        final String fieldName = nameGenerator.rootFieldNameFrom(jsonSchemaFile);
-
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
-
-        visitableSchema.accept(definitionBuilderVisitor);
-
-        final SourceWriter sourceWriter = new SourceWriter();
-        final ClassCompiler classCompiler = new ClassCompiler();
-        final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
-
         final List<ClassModifyingPlugin> classGeneratorPlugins = asList(
                 new MakeClassSerializablePlugin(),
                 new AddFieldsAndMethodsToClassPlugin(),
@@ -97,7 +85,18 @@ public class GeneratorUtil {
                 new SupportUuidsPlugin(),
                 new SupportZonedDateTimePlugin());
 
-        final PluginProvider pluginProvider = new ModifyingPluginProvider(classGeneratorPlugins, typeNamePlugins);
+        final PluginProvider pluginProvider = new ModifyingPluginProvider(classGeneratorPlugins, typeNamePlugins, new FieldNameFromFileNameGeneratorPlugin());
+
+        final String fieldName = pluginProvider.nameGeneratablePlugin().rootFieldNameFrom(schema, jsonSchemaFile.getName());
+
+        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
+
+        visitableSchema.accept(definitionBuilderVisitor);
+
+        final SourceWriter sourceWriter = new SourceWriter();
+        final ClassCompiler classCompiler = new ClassCompiler();
+        final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
+
 
         final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);

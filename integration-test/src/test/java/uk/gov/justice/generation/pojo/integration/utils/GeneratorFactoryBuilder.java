@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.integration.utils;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 
 public class GeneratorFactoryBuilder {
 

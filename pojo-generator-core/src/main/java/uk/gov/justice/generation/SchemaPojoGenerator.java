@@ -3,16 +3,15 @@ package uk.gov.justice.generation;
 import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.core.NameGenerator;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.generators.plugin.PluginProviderFactory;
-import uk.gov.justice.generation.pojo.generators.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
+import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
@@ -36,13 +35,12 @@ import org.slf4j.Logger;
  *
  * Will generate pojos from the specified json schema file.
  *
- * This class is called by maven which will pass in all the maven
- * configuration specified in the maven pom
+ * This class is called by maven which will pass in all the maven configuration specified in the
+ * maven pom
  */
 public class SchemaPojoGenerator implements Generator<File> {
 
     private final SourceWriter sourceWriter = new SourceWriter();
-    private final NameGenerator nameGenerator = new NameGenerator();
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final VisitableFactory visitableFactory = new VisitableFactory();
     private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
@@ -50,7 +48,7 @@ public class SchemaPojoGenerator implements Generator<File> {
     /**
      * Run the pojo generation based on the specified json schema file
      *
-     * @param jsonSchemaFile The json schema file from which to generate pojos
+     * @param jsonSchemaFile  The json schema file from which to generate pojos
      * @param generatorConfig The configuration specified in the maven pom
      */
     @Override
@@ -72,17 +70,24 @@ public class SchemaPojoGenerator implements Generator<File> {
 
         logger.info("Generating java pojos from schema file '{}'", jsonSchemaFile.getName());
 
-        final List<Definition> definitions = createDefinitions(jsonSchemaFile);
+        final PluginProvider pluginProvider = createPluginProvider(generatorConfig);
 
-        final List<ClassGeneratable> classGenerators = getClassGeneratorsFrom(generatorConfig, generationContext, definitions);
+        final List<Definition> definitions = createDefinitions(jsonSchemaFile, pluginProvider);
+
+        final List<ClassGeneratable> classGenerators = getClassGeneratorsFrom(pluginProvider, generationContext, definitions);
 
         writeJavaClassesToFile(generationContext, classGenerators);
     }
 
-    private List<Definition> createDefinitions(final File source) {
+    private PluginProvider createPluginProvider(final GeneratorConfig generatorConfig) {
+        final PluginProviderFactory pluginProviderFactory = new PluginProviderFactory();
+        return pluginProviderFactory.createFor(generatorConfig);
+    }
+
+    private List<Definition> createDefinitions(final File source, final PluginProvider pluginProvider) {
         final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor();
         final Schema schema = schemaLoader.loadFrom(source);
-        final String fieldName = nameGenerator.rootFieldNameFrom(source);
+        final String fieldName = pluginProvider.nameGeneratablePlugin().rootFieldNameFrom(schema, source.getName());
         final AcceptorService jsonSchemaAcceptorFactory = new DefaultAcceptorService(visitableFactory);
 
         visitableFactory.createWith(fieldName, schema, jsonSchemaAcceptorFactory)
@@ -92,12 +97,9 @@ public class SchemaPojoGenerator implements Generator<File> {
     }
 
     private List<ClassGeneratable> getClassGeneratorsFrom(
-            final GeneratorConfig generatorConfig,
+            final PluginProvider pluginProvider,
             final GenerationContext generationContext,
             final List<Definition> definitions) {
-
-        final PluginProviderFactory pluginProviderFactory = new PluginProviderFactory();
-        final PluginProvider pluginProvider = pluginProviderFactory.createFor(generatorConfig);
 
         final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);

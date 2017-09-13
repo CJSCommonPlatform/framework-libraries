@@ -11,6 +11,8 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.MakeClassSerializablePlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.namegeneratable.FieldNameFromFileNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.testplugins.UserDefinedNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportJavaOptionalsPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportUuidsPlugin;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
@@ -29,12 +31,14 @@ public class PluginProviderFactoryTest {
 
     private static final String SINGLE_CLASS_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.generators.plugin.classmodifying.MakeClassSerializablePlugin";
     private static final String SINGLE_TYPE_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportUuidsPlugin";
+    private static final String SINGLE_NAME_GENERATBLE_PLUGIN = "uk.gov.justice.generation.pojo.generators.plugin.testplugins.UserDefinedNameGeneratorPlugin";
+    private static final String MULYIPLE_NAME_GENERATBLE_PLUGINS = SINGLE_NAME_GENERATBLE_PLUGIN + ",\n" + SINGLE_NAME_GENERATBLE_PLUGIN;
     private static final String MULTIPLE_TYPE_MODIFYING_PLUGINS = SINGLE_TYPE_MODIFYING_PLUGIN +
             ",\n" +
             "uk.gov.justice.generation.pojo.generators.plugin.typemodifying.SupportJavaOptionalsPlugin";
-    private static final String MULTIPLE_TYPES_OF_PLUGIN = MULTIPLE_TYPE_MODIFYING_PLUGINS +
-            ",\n" +
-            SINGLE_CLASS_MODIFYING_PLUGIN;
+    private static final String MULTIPLE_TYPES_OF_PLUGIN = MULTIPLE_TYPE_MODIFYING_PLUGINS + ",\n" +
+            SINGLE_CLASS_MODIFYING_PLUGIN + ",\n" +
+            SINGLE_NAME_GENERATBLE_PLUGIN;
 
     private static final String BLANK = "";
 
@@ -157,6 +161,48 @@ public class PluginProviderFactoryTest {
     }
 
     @Test
+    public void shouldReturnProviderWithDefaultNameGeneratablePlugin() throws Exception {
+        final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
+
+        final Map<String, String> properties = new HashMap<>();
+
+        when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
+
+        final PluginProvider pluginProvider = new PluginProviderFactory().createFor(generatorConfig);
+
+        assertThat(pluginProvider.nameGeneratablePlugin(), is(instanceOf(FieldNameFromFileNameGeneratorPlugin.class)));
+    }
+
+    @Test
+    public void shouldReturnProviderWithUserDefinedNameGeneratablePlugin() throws Exception {
+        final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
+
+        final Map<String, String> properties = new HashMap<>();
+        properties.put(PLUGINS_PROPERTY, SINGLE_NAME_GENERATBLE_PLUGIN);
+
+        when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
+
+        final PluginProvider pluginProvider = new PluginProviderFactory().createFor(generatorConfig);
+
+        assertThat(pluginProvider.nameGeneratablePlugin(), is(instanceOf(UserDefinedNameGeneratorPlugin.class)));
+    }
+
+    @Test
+    public void shouldTrhowExceptionIfMoreThanOneUserDefinedNameGeneratablePlugin() throws Exception {
+        final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
+
+        final Map<String, String> properties = new HashMap<>();
+        properties.put(PLUGINS_PROPERTY, MULYIPLE_NAME_GENERATBLE_PLUGINS);
+
+        when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
+
+        expectedException.expect(PluginProviderException.class);
+        expectedException.expectMessage("Multiple NameGeneratablePlugin identified, please supply only one. List: [UserDefinedNameGeneratorPlugin, UserDefinedNameGeneratorPlugin]");
+
+        new PluginProviderFactory().createFor(generatorConfig);
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void shouldReturnProviderWithMultipleTypeModifyingPlugin() throws Exception {
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
@@ -196,10 +242,12 @@ public class PluginProviderFactoryTest {
                 instanceOf(AddFieldsAndMethodsToClassPlugin.class),
                 instanceOf(GenerateBuilderForClassPlugin.class),
                 instanceOf(MakeClassSerializablePlugin.class)));
+
+        assertThat(pluginProvider.nameGeneratablePlugin(), is(instanceOf(UserDefinedNameGeneratorPlugin.class)));
     }
 
     @Test
-    public void shouldThrowExceptionIfUserDefinedPluginDoesImplementPluginInterface() throws Exception {
+    public void shouldThrowExceptionIfUserDefinedPluginDoesNotImplementPluginInterface() throws Exception {
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
 
         final Map<String, String> properties = new HashMap<>();
@@ -208,8 +256,7 @@ public class PluginProviderFactoryTest {
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
         expectedException.expect(PluginProviderException.class);
-        expectedException.expectMessage("Incorrect Class Type, Class name: uk.gov.justice.generation.pojo.generators.plugin.testplugins.TestNotPlugin, does not implement ClassModifyingPlugin or TypeModifyingPlugin.");
-        expectedException.expectCause(instanceOf(ClassCastException.class));
+        expectedException.expectMessage("Incorrect Class Type, Class name: uk.gov.justice.generation.pojo.generators.plugin.testplugins.TestNotPlugin, does not implement ClassModifyingPlugin or TypeModifyingPlugin or NameGeneratablePlugin.");
 
         new PluginProviderFactory().createFor(generatorConfig);
     }

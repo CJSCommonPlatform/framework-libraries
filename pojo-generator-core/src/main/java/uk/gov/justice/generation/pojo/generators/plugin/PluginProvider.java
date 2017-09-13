@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.generators.plugin;
 
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.TypeModifyingPlugin;
 
 import java.util.List;
@@ -28,4 +29,12 @@ public interface PluginProvider {
      * @return the List of {@link TypeModifyingPlugin}
      */
     List<TypeModifyingPlugin> typeModifyingPlugins();
+
+    /**
+     * Returns the {@link NameGeneratablePlugin} that is used to generate the root schema field
+     * name.
+     *
+     * @return the {@link NameGeneratablePlugin}
+     */
+    NameGeneratablePlugin nameGeneratablePlugin();
 }

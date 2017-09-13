@@ -1,13 +1,17 @@
 package uk.gov.justice.generation.pojo.generators.plugin;
 
 import static java.lang.String.format;
-import static java.util.stream.Collectors.partitioningBy;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.classmodifying.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.plugin.namegeneratable.FieldNameFromFileNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.generators.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.generators.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
@@ -23,8 +27,7 @@ import java.util.stream.Stream;
  *
  * The default {@link ClassModifyingPlugin} are:
  *
- * {@link AddFieldsAndMethodsToClassPlugin}
- * {@link GenerateBuilderForClassPlugin}
+ * {@link AddFieldsAndMethodsToClassPlugin} {@link GenerateBuilderForClassPlugin}
  *
  * For example the following adds the MakeClassSerializable to the default plugins and adds three
  * TypeModifyingPlugins:
@@ -73,11 +76,13 @@ public class PluginProviderFactory {
     private static final String EXCLUDE_DEFAULT_PROPERTY = "excludeDefaultPlugins";
     private static final String PLUGINS_PROPERTY = "plugins";
 
-    private static final boolean CLASS_MODIFYING_PLUGINS = true;
-    private static final boolean TYPE_MODIFYING_PLUGINS = false;
+    private static final Class<ClassModifyingPlugin> CLASS_MODIFYING_PLUGIN = ClassModifyingPlugin.class;
+    private static final Class<TypeModifyingPlugin> TYPE_MODIFYING_PLUGIN = TypeModifyingPlugin.class;
+    private static final Class<NameGeneratablePlugin> NAME_GENERATABLE_PLUGIN = NameGeneratablePlugin.class;
 
     private static final String UNABLE_TO_CREATE_INSTANCE_MESSAGE = "Unable to create instance of pojo plugin with class name %s";
-    private static final String INCORRECT_CLASS_TYPE_MESSAGE = "Incorrect Class Type, Class name: %s, does not implement ClassModifyingPlugin or TypeModifyingPlugin.";
+    private static final String INCORRECT_CLASS_TYPE_MESSAGE = "Incorrect Class Type, Class name: %s, does not implement ClassModifyingPlugin or TypeModifyingPlugin or NameGeneratablePlugin.";
+    private static final int FIRST_INDEX = 0;
 
     /**
      * Create a {@link PluginProvider} using the settings from the {@link GeneratorConfig}
@@ -87,20 +92,55 @@ public class PluginProviderFactory {
      */
     public PluginProvider createFor(final GeneratorConfig generatorConfig) {
         final Map<String, String> generatorProperties = generatorConfig.getGeneratorProperties();
-        final Map<Boolean, List<Object>> pluginTypes = partitionPluginsAccordingToType(generatorProperties);
+        final Map<Class<?>, List<Object>> pluginTypes = partitionPluginsAccordingToType(generatorProperties);
 
         return new ModifyingPluginProvider(
-                defaultAndCustomClassModifyingPlugins(generatorProperties, pluginTypes),
-                typeModifyingPlugins(pluginTypes));
+                defaultAndUserDefinedClassModifyingPlugins(generatorProperties, pluginTypes),
+                typeModifyingPlugins(pluginTypes),
+                defaultOrUserDefinedNameGeneratablePlugin(pluginTypes));
     }
 
-    private Map<Boolean, List<Object>> partitionPluginsAccordingToType(final Map<String, String> generatorProperties) {
+    private NameGeneratablePlugin defaultOrUserDefinedNameGeneratablePlugin(final Map<Class<?>, List<Object>> pluginTypes) {
+        if (pluginTypes.containsKey(NAME_GENERATABLE_PLUGIN)) {
+            final List<Object> nameGeneratablePlugins = pluginTypes.get(NAME_GENERATABLE_PLUGIN);
+
+            if (nameGeneratablePlugins.size() > 1) {
+                final List<String> pluginNames = nameGeneratablePlugins.stream().map(plugin -> plugin.getClass().getSimpleName()).collect(toList());
+                throw new PluginProviderException(format("Multiple NameGeneratablePlugin identified, please supply only one. List: %s", pluginNames));
+            }
+
+            return (NameGeneratablePlugin) nameGeneratablePlugins.get(FIRST_INDEX);
+        }
+
+        return new FieldNameFromFileNameGeneratorPlugin();
+    }
+
+    private Map<Class<?>, List<Object>> partitionPluginsAccordingToType(final Map<String, String> generatorProperties) {
         return allInstancesOfPluginsFrom(generatorProperties)
-                .collect(partitioningBy(plugin -> plugin instanceof ClassModifyingPlugin));
+                .collect(groupingBy(this::groupByPluginInterface));
     }
 
-    private List<ClassModifyingPlugin> defaultAndCustomClassModifyingPlugins(final Map<String, String> generatorProperties,
-                                                                             final Map<Boolean, List<Object>> pluginTypes) {
+    private Class<?> groupByPluginInterface(final Object plugin) {
+
+        final List<Class<?>> classList = asList(plugin.getClass().getInterfaces());
+
+        if (classList.contains(CLASS_MODIFYING_PLUGIN)) {
+            return CLASS_MODIFYING_PLUGIN;
+        }
+
+        if (classList.contains(TYPE_MODIFYING_PLUGIN)) {
+            return TYPE_MODIFYING_PLUGIN;
+        }
+
+        if (classList.contains(NAME_GENERATABLE_PLUGIN)) {
+            return NAME_GENERATABLE_PLUGIN;
+        }
+
+        throw new PluginProviderException(format(INCORRECT_CLASS_TYPE_MESSAGE, plugin.getClass().getName()));
+    }
+
+    private List<ClassModifyingPlugin> defaultAndUserDefinedClassModifyingPlugins(final Map<String, String> generatorProperties,
+                                                                                  final Map<Class<?>, List<Object>> pluginTypes) {
         return Stream
                 .concat(
                         defaultClassModifyingPlugins(generatorProperties),
@@ -108,11 +148,15 @@ public class PluginProviderFactory {
                 .collect(toList());
     }
 
-    private List<TypeModifyingPlugin> typeModifyingPlugins(final Map<Boolean, List<Object>> pluginTypes) {
-        return pluginTypes.get(TYPE_MODIFYING_PLUGINS)
-                .stream()
-                .map(this::castToTypeModifyingPlugin)
-                .collect(toList());
+    private List<TypeModifyingPlugin> typeModifyingPlugins(final Map<Class<?>, List<Object>> pluginTypes) {
+        if (pluginTypes.containsKey(TYPE_MODIFYING_PLUGIN)) {
+            return pluginTypes.get(TYPE_MODIFYING_PLUGIN)
+                    .stream()
+                    .map(this::castToTypeModifyingPlugin)
+                    .collect(toList());
+        }
+
+        return emptyList();
     }
 
     private TypeModifyingPlugin castToTypeModifyingPlugin(final Object plugin) {
@@ -123,10 +167,14 @@ public class PluginProviderFactory {
         }
     }
 
-    private Stream<ClassModifyingPlugin> userDefinedClassModifyingPlugins(final Map<Boolean, List<Object>> pluginTypes) {
-        return pluginTypes.get(CLASS_MODIFYING_PLUGINS)
-                .stream()
-                .map(plugin -> (ClassModifyingPlugin) plugin);
+    private Stream<ClassModifyingPlugin> userDefinedClassModifyingPlugins(final Map<Class<?>, List<Object>> pluginTypes) {
+        if (pluginTypes.containsKey(CLASS_MODIFYING_PLUGIN)) {
+            return pluginTypes.get(CLASS_MODIFYING_PLUGIN)
+                    .stream()
+                    .map(plugin -> (ClassModifyingPlugin) plugin);
+        }
+
+        return Stream.empty();
     }
 
     private Stream<ClassModifyingPlugin> defaultClassModifyingPlugins(final Map<String, String> generatorProperties) {

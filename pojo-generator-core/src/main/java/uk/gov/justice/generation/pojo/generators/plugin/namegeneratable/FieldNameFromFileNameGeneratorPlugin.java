@@ -1,24 +1,25 @@
-package uk.gov.justice.generation.pojo.core;
+package uk.gov.justice.generation.pojo.generators.plugin.namegeneratable;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
-import java.io.File;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.everit.json.schema.Schema;
 
-public class NameGenerator {
+public class FieldNameFromFileNameGeneratorPlugin implements NameGeneratablePlugin {
 
-    public String rootFieldNameFrom(final File jsonSchemaFile) {
+    @Override
+    public String rootFieldNameFrom(final Schema schema, final String schemaFilename) {
 
-        final String fileName = getValidFileNameWithNoExtension(jsonSchemaFile);
+        final String fileName = getValidFileNameWithNoExtension(schemaFilename);
 
         final String name = getNameFrom(fileName);
 
         if (name.isEmpty()) {
-            throw new SchemaLoadingException(format("Failed to load json schema file '%s'. File name is invalid", jsonSchemaFile.getAbsolutePath()));
+            throw new NameGenerationException(format("Failed to load json schema file '%s'. File name is invalid", schemaFilename));
         }
 
         final String className = Stream.of(name.split("-")).map(StringUtils::capitalize).collect(joining());
@@ -26,14 +27,13 @@ public class NameGenerator {
         return uncapitalize(className);
     }
 
-    private String getValidFileNameWithNoExtension(final File jsonSchemaFile) {
-        final String fileName = jsonSchemaFile.getName();
+    private String getValidFileNameWithNoExtension(final String schemaFilename) {
 
-        if (!fileName.endsWith(".json")) {
-            throw new SchemaLoadingException(format("Failed to load json schema file '%s'. File does not have a '.json' extension", jsonSchemaFile.getAbsolutePath()));
+        if (!schemaFilename.endsWith(".json")) {
+            throw new NameGenerationException(format("Failed to load json schema file '%s'. File does not have a '.json' extension", schemaFilename));
         }
 
-        return removeFileExtensionFrom(fileName);
+        return removeFileExtensionFrom(schemaFilename);
     }
 
     private String removeFileExtensionFrom(final String fileName) {

@@ -10,6 +10,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,10 +27,20 @@ import com.squareup.javapoet.TypeSpec;
  * The hashCode and equals methods use {@link Objects#hashCode(Object)} and
  * {@link Objects#equals(Object, Object)} under the hood.
  *
+ * If both {@code additionalProperties = true} and {@link AddAdditionalPropertiesToClassPlugin}
+ * is in use then the additionalProperties {@link java.util.Map} field will be added to
+ * the equals and hashCode methods.
+ *
  * NB: this plugin will not add {@link Object#equals(Object)} nor {@link Object#hashCode()} if
  * the class definition contains no fields
  */
 public class AddHashcodeAndEqualsPlugin implements ClassModifyingPlugin {
+
+    private final AdditionalPropertiesDeterminer additionalPropertiesDeterminer;
+
+    public AddHashcodeAndEqualsPlugin(final AdditionalPropertiesDeterminer additionalPropertiesDeterminer) {
+        this.additionalPropertiesDeterminer = additionalPropertiesDeterminer;
+    }
 
     @Override
     public TypeSpec.Builder generateWith(
@@ -38,7 +49,7 @@ public class AddHashcodeAndEqualsPlugin implements ClassModifyingPlugin {
             final PluginContext pluginContext) {
 
         final MethodSpec equalsMethod = generateEquals(classDefinition, pluginContext);
-        final MethodSpec hashCodeMethod = generateHashcode(classDefinition);
+        final MethodSpec hashCodeMethod = generateHashcode(classDefinition, pluginContext);
 
         if (!classDefinition.getFieldDefinitions().isEmpty()) {
             classBuilder
@@ -49,14 +60,14 @@ public class AddHashcodeAndEqualsPlugin implements ClassModifyingPlugin {
         return classBuilder;
     }
 
-    private MethodSpec generateHashcode(final ClassDefinition classDefinition) {
+    private MethodSpec generateHashcode(final ClassDefinition classDefinition, final PluginContext pluginContext) {
 
         final List<String> fieldNames = classDefinition.getFieldDefinitions()
                 .stream()
                 .map(Definition::getFieldName)
                 .collect(toList());
 
-        if (classDefinition.allowAdditionalProperties()) {
+        if (additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)) {
             fieldNames.add("additionalProperties");
         }
 
@@ -85,7 +96,7 @@ public class AddHashcodeAndEqualsPlugin implements ClassModifyingPlugin {
                 .map(Definition::getFieldName)
                 .collect(toList());
 
-        if (classDefinition.allowAdditionalProperties()) {
+        if (additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)) {
             fieldNames.add("additionalProperties");
         }
 

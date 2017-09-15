@@ -6,21 +6,47 @@ import static java.util.Comparator.comparing;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Defines a class that will be generated as a java POJO
+ */
 public class ClassDefinition extends FieldDefinition {
 
     private final List<Definition> fieldDefinitions = new ArrayList<>();
 
     private boolean allowAdditionalProperties = false;
 
+    /**
+     * Creates a ClassDefinition
+     *
+     * @param type The {@link DefinitionType} of the class. Can be a
+     *              {@link DefinitionType#CLASS}
+     *              {@link DefinitionType#ENUM}
+     *              {@link DefinitionType#ROOT} or
+     *              {@link DefinitionType#COMBINED}
+     * @param fieldName The name of the field that will be used in the generated POJO
+     */
     public ClassDefinition(final DefinitionType type, final String fieldName) {
         super(type, fieldName);
     }
 
-    public ClassDefinition addFieldDefinition(final Definition fieldDefinition) {
+    /**
+     * Adds a field to this class
+     *
+     * @param fieldDefinition The {@link Definition} of this field
+     */
+    public void addFieldDefinition(final Definition fieldDefinition) {
         fieldDefinitions.add(fieldDefinition);
-        return this;
     }
 
+    /**
+     * Gets the list of all fields defined for this class
+     *
+     * NB: The list of fields is sorted alphabetically by thier field names. This
+     * results in all fields in both the constructor and the order of fields in the class
+     * will be alphabetical.
+     * 
+     * @return The list of all fields defined for this class
+     */
     public List<Definition> getFieldDefinitions() {
 
         sortDefinitionsByFieldNameFirst();
@@ -29,10 +55,25 @@ public class ClassDefinition extends FieldDefinition {
 
     }
 
+    /**
+     * Determines whether 'additionalProperties' were allowed in the json schema definition
+     * of this class. If additionalProperties' is true and the
+     * {@link uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin}
+     * is being used, then an extra hash map is included in the POJO to hold any extra unknown
+     * properties in the json document
+     *
+     * @return Whether additionalProperties was set to true in the json schema
+     */
     public boolean allowAdditionalProperties() {
         return allowAdditionalProperties;
     }
 
+    /**
+     * Sets whether 'additionalProperties' were allowed for this class
+     *
+     * @param allowAdditionalProperties whether 'additionalProperties' in the json schema
+     *                                  file was true or false
+     */
     public void setAllowAdditionalProperties(final boolean allowAdditionalProperties) {
         this.allowAdditionalProperties = allowAdditionalProperties;
     }

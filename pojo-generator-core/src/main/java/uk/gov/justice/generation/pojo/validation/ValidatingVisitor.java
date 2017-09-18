@@ -6,6 +6,9 @@ import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
 
+/**
+ * interface of the validating visitor
+ */
 public interface ValidatingVisitor {
 
     void visit(final ObjectSchema schema);

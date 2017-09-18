@@ -23,6 +23,32 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * Plugin which creates an 'additionalProperties' Map to allow extra properties
+ * not defined in the schema to be added to the class. This is when
+ * {@code "additionalProperties": true} is specified in the json schema for an object.
+ *
+ * Without this, it would be possible to have a json document which abides by the json
+ * schema fail to be parsed into the POJO.
+ *
+ * NB: This is the only part of this application which is tied to Jackson as
+ * the Jackson {@link JsonAnyGetter} and {@link JsonAnySetter} annotations
+ * are used.
+ *
+ * {@code
+ *        private final Map<String, Object> additionalProperties = new HashMap<>();
+ *
+ *        @JsonAnyGetter
+ *        public Map<String, Object> getAdditionalProperties() {
+ *          return additionalProperties;
+ *        }
+ *
+ *        @JsonAnySetter
+ *        public void setAdditionalProperty(final String name, final Object value) {
+ *          additionalProperties.put(name, value);
+ *        }
+ * }
+ */
 public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugin {
 
     @Override

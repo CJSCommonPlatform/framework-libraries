@@ -14,6 +14,9 @@ import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 
+/**
+ * Generates an {@link EnumDefinition} as a class in it's own *.java file
+ */
 public class EnumGenerator implements ClassGeneratable {
 
     private static final String VALUE_VARIABLE_NAME = "value";

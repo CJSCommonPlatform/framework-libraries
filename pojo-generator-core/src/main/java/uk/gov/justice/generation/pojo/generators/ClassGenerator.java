@@ -11,6 +11,10 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 
+/**
+ * Generator for creating a java POJO class. The class generation can be modified
+ * using {@link uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin}s
+ */
 public class ClassGenerator implements ClassGeneratable {
 
     private final ClassDefinition classDefinition;

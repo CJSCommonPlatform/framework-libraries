@@ -9,6 +9,12 @@ import java.io.File;
 
 import org.slf4j.Logger;
 
+/**
+ * Writes the generated java POJO source file.
+ *
+ * Before writing the file system checks to see if a file with the name
+ * of the new class does not already exist and if so will skip the generation
+ */
 public class NonDuplicatingSourceWriter {
 
     private final JavaSourceFileProvider javaSourceFileProvider;
@@ -19,6 +25,14 @@ public class NonDuplicatingSourceWriter {
         this.sourceWriter = sourceWriter;
     }
 
+    /**
+     * Writes the generated java file to disk at the correct output path. Will
+     * skip writing any file that already exists
+     *
+     * @param classGeneratable The {@link ClassGeneratable} that specifeis the class to be written
+     * @param generationContext The global {@link GenerationContext}
+     * @return The written file
+     */
     public File write(final ClassGeneratable classGeneratable, final GenerationContext generationContext) {
 
         final Logger logger = generationContext.getLoggerFor(getClass());

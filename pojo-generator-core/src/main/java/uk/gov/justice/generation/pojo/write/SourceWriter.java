@@ -11,8 +11,17 @@ import java.nio.file.Path;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * Writes the {@link ClassGeneratable} as a *.java file to disk
+ */
 public class SourceWriter {
 
+    /**
+     * Writes the POJO specified by the {@link ClassGeneratable} to disk as a *.java file
+     *
+     * @param classGenerator The {@link ClassGeneratable} that specifies the POJO
+     * @param generationContext The {@link GenerationContext}
+     */
     public void write(final ClassGeneratable classGenerator, final GenerationContext generationContext) {
         final TypeSpec typeSpec = classGenerator.generate();
         writeClass(generationContext.getOutputDirectoryPath(), generationContext.getPackageName(), typeSpec);

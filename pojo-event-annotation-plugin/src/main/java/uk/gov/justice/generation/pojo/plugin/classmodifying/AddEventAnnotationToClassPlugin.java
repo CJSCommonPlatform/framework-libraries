@@ -8,6 +8,10 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * Plugin for adding the {@link Event} annotation to the top of the root POJO.
+ * The name of the event will be taked from the json schema document
+ */
 public class AddEventAnnotationToClassPlugin implements ClassModifyingPlugin {
 
     private static final char DOT_CHARACTER = '.';

@@ -16,7 +16,7 @@ public class FileTypeParser implements FileParser<File> {
 
     /**
      * Returns all the files under the given base path specified by the Collection
-     * of {@linke File}s
+     * of {@link File}s
      *
      * Used by the Maven Generator Plugin
      *

@@ -11,14 +11,15 @@ import java.time.ZonedDateTime;
 import com.squareup.javapoet.TypeName;
 
 /**
- * Adds support for using {@see ZonedDateTime} as return types and constructor parameters in the generated
+ * Adds support for using {@link ZonedDateTime} as return types and constructor parameters in the generated
  * class.
  *
- * To Use:
- * <p>
- *     The ZonedDateTime should be specified as a reference in your json schema file:
- *     <pre>
- *         {@code "myProperty": {
+ * <p>To Use:</p>
+ *
+ * <p>The ZonedDateTime should be specified as a reference in your json schema file:</p>
+ *
+ *      {@code
+ *              "myProperty": {
  *                  "$ref": "#/definitions/ZonedDateTime"
  *              },
  *              "definitions": {
@@ -27,16 +28,13 @@ import com.squareup.javapoet.TypeName;
  *                      "pattern": "^[1|2][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$"
  *                  }
  *              }
- *
- *     }</pre>
- * </p>
+ *     }
  *
  * The name {@code ZonedDateTime} in the definition is important as this is how we specify that
  * the types should be of type {@link ZonedDateTime}.
  *
- * <p>
- *      This will generate the following code:
- *      <pre>
+ * <p>This will generate the following code:</p>
+ *
  *          {@code public class MyClass {
  *
  *                  private final ZonedDateTime myProperty;
@@ -49,11 +47,8 @@ import com.squareup.javapoet.TypeName;
  *                      return myProperty;
  *                  }
  *              }
- * }</pre>
- * </p>
- *
+ * }
  */
-
 public class SupportZonedDateTimePlugin implements TypeModifyingPlugin {
 
     @Override

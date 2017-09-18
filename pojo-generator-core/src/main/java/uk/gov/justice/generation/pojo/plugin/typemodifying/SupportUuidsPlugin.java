@@ -11,13 +11,13 @@ import java.util.UUID;
 import com.squareup.javapoet.TypeName;
 
 /**
- * Adds support for using {@see UUID} as return types and constructor parameters in the generated
+ * Adds support for using {@link UUID} as return types and constructor parameters in the generated
  * class.
  *
- * To Use:
- * <p>
- *     The uuid should be specified as a reference in your json schema file:
- *     <pre>
+ * <p>To Use:</p>
+ * 
+ *  <p>The uuid should be specified as a reference in your json schema file:</p>
+ *  
  *         {@code "myProperty": {
  *                  "$ref": "#/definitions/UUID"
  *              },
@@ -28,16 +28,15 @@ import com.squareup.javapoet.TypeName;
  *                  }
  *              }
  *
- *     }</pre>
- * </p>
+ *     }
+ *
  *
  * The name {@code UUID} in the definition is important as this is how we specify that
  * the types should be of type {@link UUID}.
  *
- * <p>
- *      This will generate the following code:
- *      <pre>
- *          {@code
+ * <p>This will generate the following code:{@link java.util.Objects} </p>
+ *
+ * {@code
  *  public class MyClass {
  *
  *                  private final UUID myProperty;
@@ -50,9 +49,7 @@ import com.squareup.javapoet.TypeName;
  *                      return myProperty;
  *                  }
  *              }
- * }</pre>
- * </p>
- *
+ * }
  */
 public class SupportUuidsPlugin implements TypeModifyingPlugin {
 

@@ -19,7 +19,7 @@ public interface ElementGeneratable {
 
     /**
      * Generate this elements methods (i.e. getters and setters)
-     * @return
+     * @return The {@link MethodSpec}s of the generated methods
      */
     Stream<MethodSpec> generateMethods();
 }

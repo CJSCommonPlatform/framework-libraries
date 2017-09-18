@@ -16,6 +16,10 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
+/**
+ * Gets the correct class name for a java type. Used for return types, fields and parameters.
+ * Can handle generics and lists
+ */
 public class TypeNameProvider {
 
     private static final int FIRST_CHILD = 0;
@@ -26,6 +30,16 @@ public class TypeNameProvider {
         this.generationContext = generationContext;
     }
 
+    /**
+     * Generates the correct class name for an array. As an array is always implemented as
+     * a java {@link List} the class name will always be a list of the type specified by
+     * the {@link Definition}
+     *
+     * @param definition The {@link Definition} from which to create the class name
+     * @param classNameFactory The {@link ClassNameFactory} to create the underlying class name
+     *                         (not including any generics)
+     * @return The correct type name
+     */
     public TypeName typeNameForArray(final Definition definition, final ClassNameFactory classNameFactory) {
 
         final ClassDefinition classDefinition = (ClassDefinition) definition;
@@ -40,6 +54,15 @@ public class TypeNameProvider {
         return ParameterizedTypeName.get(get(List.class), typeName);
     }
 
+    /**
+     * Creates the correct java type name for a {@link ReferenceDefinition} by using the child
+     * reference as the java type. Can handle arrays and generics
+     *
+     * @param definition The {@link ReferenceDefinition}
+     * @param classNameFactory The {@link ClassNameFactory} to create the underlying class name
+     *                         (not including any generics)
+     * @return The correct type name
+     */
     public TypeName typeNameForReference(final Definition definition, final ClassNameFactory classNameFactory) {
         final ReferenceDefinition referenceDefinition = (ReferenceDefinition) definition;
 
@@ -51,22 +74,42 @@ public class TypeNameProvider {
         return classNameFactory.createTypeNameFrom(childDefinition);
     }
 
+    /**
+     * Generates the correct type name for a {@link String}
+     * @return The class name for {@link String}
+     */
     public ClassName typeNameForString() {
         return get(String.class);
     }
 
+    /**
+     * Generates the correct type name for a java class
+     * @return The class name for a java class
+     */
     public ClassName typeNameForClass(final Definition definition) {
         return get(generationContext.getPackageName(), capitalize(definition.getFieldName()));
     }
 
+    /**
+     * Generates the correct type name for a {@link BigDecimal}
+     * @return The class name for {@link BigDecimal}
+     */
     public ClassName typeNameForNumber() {
         return get(BigDecimal.class);
     }
 
+    /**
+     * Generates the correct type name for a {@link Integer}
+     * @return The class name for {@link Integer}
+     */
     public ClassName typeNameForInteger() {
         return get(Integer.class);
     }
 
+    /**
+     * Generates the correct type name for a {@link Boolean}
+     * @return The class name for {@link Boolean}
+     */
     public ClassName typeNameForBoolean() {
         return get(Boolean.class);
     }

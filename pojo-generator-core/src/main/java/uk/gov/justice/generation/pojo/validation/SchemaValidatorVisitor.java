@@ -13,6 +13,9 @@ import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.StringSchema;
 
+/**
+ * Runs validation against each schema in the json document
+ */
 public class SchemaValidatorVisitor implements Visitor {
 
     private final Validator validator;

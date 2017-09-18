@@ -7,6 +7,13 @@ import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
+/**
+ * Generates the correct {@link TypeName} for the specifed {@link Definition}.
+ * Used for generating the correct return types and parameters. Can handle
+ * generic types.
+ *
+ * The behaviour can be modified using {@link uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin}s
+ */
 public class ClassNameFactory {
 
     private final TypeNameProvider typeNameProvider;
@@ -19,6 +26,12 @@ public class ClassNameFactory {
         this.typeNamePluginProcessor = typeNamePluginProcessor;
     }
 
+    /**
+     * Generate to correct return type/parameter type for the specified {@link Definition}
+     *
+     * @param definition The definition for which to generate the correct return type
+     * @return The correct type for returns and parameters
+     */
     public TypeName createTypeNameFrom(final Definition definition) {
 
         final TypeName typeName;

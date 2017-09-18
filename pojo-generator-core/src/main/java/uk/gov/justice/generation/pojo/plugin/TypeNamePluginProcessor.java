@@ -13,6 +13,13 @@ public class TypeNamePluginProcessor {
         this.pluginProvider = pluginProvider;
     }
 
+    /**
+     * Runs the list of {@link TypeModifyingPlugin}s against the specified {@link Definition}
+     *
+     * @param originalTypeName The {@link TypeName} to be modified
+     * @param definition The definition who's {@link TypeName}s are to be modified
+     * @return The modified {@link TypeName}
+     */
     public TypeName processTypeNamePlugins(final TypeName originalTypeName, final Definition definition) {
 
         TypeName decoratedTypeName = originalTypeName;

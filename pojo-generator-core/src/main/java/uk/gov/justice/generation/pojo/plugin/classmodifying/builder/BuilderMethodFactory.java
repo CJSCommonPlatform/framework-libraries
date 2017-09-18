@@ -16,6 +16,9 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 
+/**
+ * Factory for creating the 'with' and 'build' methods of the POJO's static inner Builder
+ */
 public class BuilderMethodFactory {
 
     public List<MethodSpec> createTheWithMethods(

@@ -18,6 +18,9 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * A {@link ClassGeneratable} for creating a Builder as a static class inside your POJO
+ */
 public class BuilderGenerator implements ClassGeneratable {
 
     private static final String BUILDER_SIMPLE_NAME = "Builder";

@@ -15,6 +15,9 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
+/**
+ * Plugin to add a {@code toString()} method to the generated class.
+ */
 public class AddToStringMethodToClassPlugin implements ClassModifyingPlugin {
 
     private final AdditionalPropertiesDeterminer additionalPropertiesDeterminer;

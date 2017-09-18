@@ -13,6 +13,12 @@ import org.everit.json.schema.Schema;
 
 public class Validator {
 
+    /**
+     * Validates that an Enum Schema contains members that are the same type. i.e
+     * all strings, numbers etc
+     *
+     * @param enumSchema The Enum Schema for validation
+     */
     public void validate(final EnumSchema enumSchema) {
         final Set<Object> possibleValues = enumSchema.getPossibleValues();
 

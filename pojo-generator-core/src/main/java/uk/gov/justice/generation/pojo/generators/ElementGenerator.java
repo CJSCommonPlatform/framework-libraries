@@ -15,6 +15,11 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
+/**
+ * A generator for creating the containing field and accessor methods for a
+ * {@link uk.gov.justice.generation.pojo.dom.EnumDefinition}
+ * or {@link uk.gov.justice.generation.pojo.dom.ClassDefinition}
+ */
 public class ElementGenerator implements ElementGeneratable {
 
     private final Definition classTypeDefinition;

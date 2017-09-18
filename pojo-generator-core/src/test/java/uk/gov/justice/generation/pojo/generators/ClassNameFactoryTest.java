@@ -13,7 +13,6 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.COMBINED;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.REFERENCE;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
@@ -179,23 +178,6 @@ public class ClassNameFactoryTest {
 
         verify(typeNameProvider).typeNameForClass(combinedDefinition);
         verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, combinedDefinition);
-    }
-
-    @Test
-    public void shouldCreateTheCorrectTypeNameForRootSchemas() throws Exception {
-
-        final ClassDefinition rootDefinition = mock(ClassDefinition.class);
-        final ClassName originalClassName = get(TestClass.class);
-        final TypeName modifiedTypeName = mock(TypeName.class);
-
-        when(rootDefinition.type()).thenReturn(ROOT);
-        when(typeNameProvider.typeNameForClass(rootDefinition)).thenReturn(originalClassName);
-        when(typeNamePluginProcessor.processTypeNamePlugins(originalClassName, rootDefinition)).thenReturn(modifiedTypeName);
-
-        assertThat(classNameFactory.createTypeNameFrom(rootDefinition), is(modifiedTypeName));
-
-        verify(typeNameProvider).typeNameForClass(rootDefinition);
-        verify(typeNamePluginProcessor).processTypeNamePlugins(originalClassName, rootDefinition);
     }
 
     @Test

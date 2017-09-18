@@ -1,7 +1,5 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
-
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 
@@ -22,7 +20,7 @@ public class AddEventAnnotationToClassPlugin implements ClassModifyingPlugin {
                                          final ClassDefinition classDefinition,
                                          final PluginContext pluginContext) {
 
-        if (ROOT.equals(classDefinition.type())) {
+        if (classDefinition.isRoot()) {
 
             final String eventName = removeFileExtensionFrom(pluginContext.getSourceFilename());
 

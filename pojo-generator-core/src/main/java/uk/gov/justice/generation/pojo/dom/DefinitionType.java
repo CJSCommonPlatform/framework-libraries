@@ -79,11 +79,6 @@ public enum DefinitionType {
     REFERENCE,
 
     /**
-     * This refers to the containing root object of the schema and will be generated as a class
-     */
-    ROOT,
-
-    /**
      * This property was defined as an string in the json schema:
      *
      * {@code { "type": "string" } }

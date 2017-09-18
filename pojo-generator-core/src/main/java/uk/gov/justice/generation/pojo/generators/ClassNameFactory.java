@@ -63,7 +63,6 @@ public class ClassNameFactory {
             case CLASS:
             case ENUM:
             case COMBINED:
-            case ROOT:
             default:
                 typeName = typeNameProvider.typeNameForClass(definition);
         }

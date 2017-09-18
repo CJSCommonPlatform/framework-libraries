@@ -84,6 +84,8 @@ public class TypeNameProvider {
 
     /**
      * Generates the correct type name for a java class
+     * @param definition The definition from which to generated the type name
+     *
      * @return The class name for a java class
      */
     public ClassName typeNameForClass(final Definition definition) {

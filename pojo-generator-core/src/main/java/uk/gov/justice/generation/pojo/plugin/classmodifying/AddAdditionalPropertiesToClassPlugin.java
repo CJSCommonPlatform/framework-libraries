@@ -35,19 +35,21 @@ import com.squareup.javapoet.TypeSpec;
  * the Jackson {@link JsonAnyGetter} and {@link JsonAnySetter} annotations
  * are used.
  *
+ * <blockquote><pre>
  * {@code
  *        private final Map<String, Object> additionalProperties = new HashMap<>();
  *
- *        @JsonAnyGetter
+ *        {@literal @}JsonAnyGetter
  *        public Map<String, Object> getAdditionalProperties() {
  *          return additionalProperties;
  *        }
  *
- *        @JsonAnySetter
+ *        {@literal @}JsonAnySetter
  *        public void setAdditionalProperty(final String name, final Object value) {
  *          additionalProperties.put(name, value);
  *        }
  * }
+ * </pre></blockquote>
  */
 public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugin {
 

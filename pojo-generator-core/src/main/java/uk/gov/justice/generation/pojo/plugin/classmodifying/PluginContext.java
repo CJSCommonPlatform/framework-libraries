@@ -30,7 +30,7 @@ public class PluginContext {
 
     /**
      * Gets the {@link JavaGeneratorFactory} for the application
-     * @return The {@see JavaGeneratorFactory}
+     * @return The {@link JavaGeneratorFactory}
      */
     public JavaGeneratorFactory getJavaGeneratorFactory() {
         return generatorFactory;
@@ -38,7 +38,7 @@ public class PluginContext {
 
     /**
      * Gets the {@link JavaGeneratorFactory} for the application
-     * @return The {@see JavaGeneratorFactory}
+     * @return The {@link JavaGeneratorFactory}
      */
     public ClassNameFactory getClassNameFactory() {
         return classNameFactory;

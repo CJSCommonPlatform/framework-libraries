@@ -12,7 +12,7 @@ import com.squareup.javapoet.TypeName;
 
 /**
  * A type modifying plugin for setting all properties which are not marked as <i>required</i>
- * in the json schema document to be wrapped in a java {@see Optional}.
+ * in the json schema document to be wrapped in a java {@link Optional}.
  *
  * For example:
  *

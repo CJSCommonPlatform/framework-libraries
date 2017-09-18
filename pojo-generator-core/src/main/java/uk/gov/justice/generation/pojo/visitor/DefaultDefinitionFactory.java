@@ -49,8 +49,16 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
 
     @Override
     public Definition constructRootDefinitionFor(final String fieldName, final Schema schema) {
-        final ClassDefinition definition = new ClassDefinition(CLASS, fieldName);
+
+        final ClassDefinition definition;
+        if (schema instanceof CombinedSchema) {
+            definition = new CombinedDefinition(fieldName);
+        } else {
+            definition = new ClassDefinition(CLASS, fieldName);
+        } 
+
         definition.setRoot(true);
+
         return definition;
     }
 
@@ -65,6 +73,10 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
             return new CombinedDefinition(fieldName);
         }
 
+        if (schema instanceof ObjectSchema) {
+            return new ClassDefinition(CLASS, fieldName);
+        }
+
         if (schema instanceof ArraySchema) {
             return new ClassDefinition(ARRAY, fieldName);
         }
@@ -74,10 +86,6 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
             final List<String> enumValues = possibleValues.stream().map(Object::toString).collect(toList());
 
             return new EnumDefinition(fieldName, enumValues);
-        }
-
-        if (schema instanceof ObjectSchema) {
-            return new ClassDefinition(CLASS, fieldName);
         }
 
         if (schema instanceof StringSchema) {

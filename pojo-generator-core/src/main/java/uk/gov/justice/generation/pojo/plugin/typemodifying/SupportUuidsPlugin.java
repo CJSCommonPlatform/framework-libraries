@@ -36,6 +36,7 @@ import com.squareup.javapoet.TypeName;
  *
  * <p>This will generate the following code:{@link java.util.Objects} </p>
  *
+ * <pre><blockquote>
  * {@code
  *  public class MyClass {
  *
@@ -50,6 +51,7 @@ import com.squareup.javapoet.TypeName;
  *                  }
  *              }
  * }
+ * </blockquote></pre>
  */
 public class SupportUuidsPlugin implements TypeModifyingPlugin {
 

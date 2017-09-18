@@ -17,7 +17,7 @@ import com.squareup.javapoet.TypeName;
  * <p>To Use:</p>
  *
  * <p>The ZonedDateTime should be specified as a reference in your json schema file:</p>
- *
+ * <pre><blockquote>
  *      {@code
  *              "myProperty": {
  *                  "$ref": "#/definitions/ZonedDateTime"
@@ -29,12 +29,13 @@ import com.squareup.javapoet.TypeName;
  *                  }
  *              }
  *     }
+ * </blockquote></pre>
  *
  * The name {@code ZonedDateTime} in the definition is important as this is how we specify that
  * the types should be of type {@link ZonedDateTime}.
  *
  * <p>This will generate the following code:</p>
- *
+ * <pre><blockquote>
  *          {@code public class MyClass {
  *
  *                  private final ZonedDateTime myProperty;
@@ -48,6 +49,7 @@ import com.squareup.javapoet.TypeName;
  *                  }
  *              }
  * }
+ * </blockquote></pre>
  */
 public class SupportZonedDateTimePlugin implements TypeModifyingPlugin {
 

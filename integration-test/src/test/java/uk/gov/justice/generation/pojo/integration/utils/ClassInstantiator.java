@@ -11,19 +11,19 @@ public class ClassInstantiator {
 
     public Object newInstance(final Class<?> clazz, final Object... constructorParameters) throws Exception {
 
-        final Class[] parameterClasses = asArrayOfClasses(constructorParameters);
+        final Class<?>[] parameterClasses = asArrayOfClasses(constructorParameters);
 
         final Constructor<?> constructor = clazz.getConstructor(parameterClasses);
 
         return constructor.newInstance(asArrayOfValues(constructorParameters));
     }
 
-    private Class[] asArrayOfClasses(final Object[] constructorParameters) {
+    private Class<?>[] asArrayOfClasses(final Object[] constructorParameters) {
 
         return of(constructorParameters)
                 .map(this::getClass)
                 .collect(toList())
-                .toArray(new Class[constructorParameters.length]);
+                .toArray(new Class<?>[constructorParameters.length]);
     }
 
     private Class<?> getClass(final Object o) {

@@ -15,6 +15,9 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
+/**
+ * Generator for creating a field in the POJO and any corresponding 'getter' method
+ */
 public class FieldGenerator implements ElementGeneratable {
 
     private final FieldDefinition fieldDefinition;

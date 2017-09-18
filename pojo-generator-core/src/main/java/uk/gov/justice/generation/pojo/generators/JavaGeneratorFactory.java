@@ -13,6 +13,9 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
+/**
+ * Factory for creating the correct generator for the specified {@link Definition}
+ */
 public class JavaGeneratorFactory {
 
     private final ClassNameFactory classNameFactory;

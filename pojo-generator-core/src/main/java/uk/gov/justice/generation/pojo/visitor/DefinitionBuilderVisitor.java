@@ -51,13 +51,7 @@ public class DefinitionBuilderVisitor implements Visitor {
     @Override
     public void enter(final String fieldName, final ObjectSchema schema) {
 
-        final ClassDefinition definition;
-
-        if (definitions.isEmpty()) {
-            definition = (ClassDefinition) definitionFactory.constructRootDefinitionFor(fieldName, schema);
-        } else {
-            definition = (ClassDefinition) definitionFactory.constructDefinitionFor(fieldName, schema);
-        }
+        final ClassDefinition definition = createClassDefinition(fieldName, schema);
 
         definition.setAllowAdditionalProperties(schema.permitsAdditionalProperties());
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
@@ -84,7 +78,7 @@ public class DefinitionBuilderVisitor implements Visitor {
      */
     @Override
     public void enter(final String fieldName, final CombinedSchema schema) {
-        final Definition definition = definitionFactory.constructDefinitionFor(fieldName, schema);
+        final ClassDefinition definition = createClassDefinition(fieldName, schema);
 
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
 
@@ -230,12 +224,7 @@ public class DefinitionBuilderVisitor implements Visitor {
      */
     @Override
     public void visit(final String fieldName, final EmptySchema schema) {
-        final ClassDefinition definition;
-        if (definitions.isEmpty()) {
-            definition = (ClassDefinition) definitionFactory.constructRootDefinitionFor(fieldName, schema);
-        } else {
-            definition = (ClassDefinition) definitionFactory.constructDefinitionFor(fieldName, schema);
-        }
+        final ClassDefinition definition = createClassDefinition(fieldName, schema);
 
         definition.setAllowAdditionalProperties(true);
         addToClassDefinitionsIfNotPartOfCombinedDefinition(fieldName, definition);
@@ -268,6 +257,14 @@ public class DefinitionBuilderVisitor implements Visitor {
         final String combinedFieldName = combinedDefinitions.peek().fieldName;
 
         return combinedFieldName.equals(fieldName);
+    }
+
+    private ClassDefinition createClassDefinition(final String fieldName, final Schema schema) {
+        if (definitions.isEmpty()) {
+            return (ClassDefinition) definitionFactory.constructRootDefinitionFor(fieldName, schema);
+        }
+        
+        return (ClassDefinition) definitionFactory.constructDefinitionFor(fieldName, schema);
     }
 
     /**

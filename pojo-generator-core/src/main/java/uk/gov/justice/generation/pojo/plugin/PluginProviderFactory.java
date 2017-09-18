@@ -54,7 +54,7 @@ import java.util.stream.Stream;
  * If the default ClassModifyingPlugins are not required and other plugins can be used instead, the
  * then the excludeDefaultPlugins tag can be set to true, for example:
  *
- * <pre>
+ * <pre><blockquote>
  *     {@code
  *
  *      <configuration>
@@ -69,7 +69,7 @@ import java.util.stream.Stream;
  *      </configuration>
  *
  *     }
- * </pre>
+ * </blockquote></pre>
  */
 public class PluginProviderFactory {
 

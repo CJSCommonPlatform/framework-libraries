@@ -96,6 +96,16 @@ public class ClassDefinition extends FieldDefinition {
         this.root = root;
     }
 
+    @Override
+    public String toString() {
+        return "ClassDefinition{" +
+                "fieldName=" + getFieldName() +
+                ", type=" + type() +
+                ", required=" + isRequired() +
+                ", allowAdditionalProperties=" + allowAdditionalProperties +
+                '}';
+    }
+
     private void sortDefinitionsByFieldNameFirst() {
         fieldDefinitions.sort(comparing(Definition::getFieldName));
     }

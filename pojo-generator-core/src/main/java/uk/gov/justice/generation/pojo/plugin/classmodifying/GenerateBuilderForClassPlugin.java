@@ -12,7 +12,7 @@ import com.squareup.javapoet.TypeSpec;
  * method for accessing the builder. For example, a class <i>MyClass</i> specified
  * with one property <i>myProperty</i> would be generated thusly:
  *
- * <pre>
+ * <pre><blockquote>
  *     {@code public class MyClass {
  *
  *          private final String myProperty;
@@ -43,7 +43,7 @@ import com.squareup.javapoet.TypeSpec;
  *              }
  *          }
  *      }
- * }</pre>
+ * }</blockquote></pre>
  */
 public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 

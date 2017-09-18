@@ -52,22 +52,39 @@ public class GeneratorUtil {
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
+    private List<String> ignoredClassNames = emptyList();
 
+    private List<ClassModifyingPlugin> classModifyingPlugins = asList(
+            new MakeClassSerializablePlugin(),
+            new AddFieldsAndMethodsToClassPlugin(),
+            new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
+            new AddAdditionalPropertiesToClassPlugin(),
+            new AddHashcodeAndEqualsPlugin(new AdditionalPropertiesDeterminer()),
+            new AddToStringMethodToClassPlugin(new AdditionalPropertiesDeterminer())
+    );
+    private List<TypeModifyingPlugin> typeModifyingPlugins = asList(
+            new SupportJavaOptionalsPlugin(),
+            new SupportUuidsPlugin(),
+            new SupportZonedDateTimePlugin());
 
-    public List<Class<?>> generateAndCompileJavaSource(final File jsonSchemaFile,
-                                                       final String packageName,
-                                                       final OutputDirectories outputDirectories) {
-        return generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories,
-                emptyList());
+    public GeneratorUtil withIgnoredClassNames(final List<String> ignoredClassNames) {
+        this.ignoredClassNames = ignoredClassNames;
+        return this;
+    }
+
+    public GeneratorUtil withClassModifyingPlugins(final List<ClassModifyingPlugin> classModifyingPlugins) {
+        this.classModifyingPlugins = classModifyingPlugins;
+        return this;
+    }
+
+    public GeneratorUtil withTypeModifyingPlugins(final List<TypeModifyingPlugin> typeModifyingPlugins) {
+        this.typeModifyingPlugins = typeModifyingPlugins;
+        return this;
     }
 
     public List<Class<?>> generateAndCompileJavaSource(final File jsonSchemaFile,
                                                        final String packageName,
-                                                       final OutputDirectories outputDirectories,
-                                                       final List<String> ignoredClassNames) {
+                                                       final OutputDirectories outputDirectories) {
 
         final GenerationContext generationContext = new GenerationContext(
                 outputDirectories.getSourceOutputDirectory(),
@@ -76,20 +93,6 @@ public class GeneratorUtil {
                 ignoredClassNames);
 
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
-        final AdditionalPropertiesDeterminer additionalPropertiesDeterminer = new AdditionalPropertiesDeterminer();
-        final List<ClassModifyingPlugin> classModifyingPlugins = asList(
-                new MakeClassSerializablePlugin(),
-                new AddFieldsAndMethodsToClassPlugin(),
-                new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
-                new AddAdditionalPropertiesToClassPlugin(),
-                new AddHashcodeAndEqualsPlugin(additionalPropertiesDeterminer),
-                new AddToStringMethodToClassPlugin(additionalPropertiesDeterminer)
-        );
-
-        final List<TypeModifyingPlugin> typeModifyingPlugins = asList(
-                new SupportJavaOptionalsPlugin(),
-                new SupportUuidsPlugin(),
-                new SupportZonedDateTimePlugin());
 
         final PluginProvider pluginProvider = new ModifyingPluginProvider(
                 classModifyingPlugins,

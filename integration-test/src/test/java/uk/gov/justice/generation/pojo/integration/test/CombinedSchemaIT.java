@@ -1,13 +1,27 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.NullParameter;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddToStringMethodToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
@@ -35,10 +49,22 @@ public class CombinedSchemaIT {
         final File jsonSchemaFile = new File("src/test/resources/schemas/address.json");
         final String packageName = "uk.gov.justice.pojo.combined.schema";
 
-        final List<Class<?>> newClasses = generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories);
+        final List<ClassModifyingPlugin> classModifyingPlugins = asList(
+                new AddAdditionalPropertiesToClassPlugin(),
+                new AddEventAnnotationToClassPlugin(),
+                new AddFieldsAndMethodsToClassPlugin(),
+                new AddHashcodeAndEqualsPlugin(new AdditionalPropertiesDeterminer()),
+                new AddToStringMethodToClassPlugin(new AdditionalPropertiesDeterminer()),
+                new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
+                new MakeClassSerializablePlugin()
+        );
+
+        final List<Class<?>> newClasses = generatorUtil
+                .withClassModifyingPlugins(classModifyingPlugins)
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         assertThat(newClasses.size(), is(4));
         final Class<?> ukCommsClass = newClasses.get(0);
@@ -50,6 +76,8 @@ public class CombinedSchemaIT {
         assertThat(usCommsClass.getSimpleName(), is("UsComms"));
         assertThat(communicationClass.getSimpleName(), is("Communication"));
         assertThat(addressClass.getSimpleName(), is("Address"));
+
+        assertThat(addressClass.getAnnotation(Event.class), is(notNullValue()));
 
         final Object ukComms = classInstantiator.newInstance(ukCommsClass, true);
         final Object usComms = classInstantiator.newInstance(usCommsClass, true);

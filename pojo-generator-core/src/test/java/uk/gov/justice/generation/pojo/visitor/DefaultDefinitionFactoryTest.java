@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.visitor;
 
 import static org.everit.json.schema.CombinedSchema.ANY_CRITERION;
+import static org.everit.json.schema.CombinedSchema.ONE_CRITERION;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -60,7 +61,7 @@ public class DefaultDefinitionFactoryTest {
     private DefaultDefinitionFactory defaultDefinitionFactory;
 
     @Test
-    public void shouldConstructRootClassDefinition() throws Exception {
+    public void shouldConstructRootClassDefinitionFromAnObjectSchema() throws Exception {
         final String fieldName = "fieldName";
         final ObjectSchema objectSchema = ObjectSchema.builder().build();
 
@@ -68,6 +69,22 @@ public class DefaultDefinitionFactoryTest {
 
         assertThat(definition, is(instanceOf(ClassDefinition.class)));
         assertThat(definition.type(), is(CLASS));
+        assertThat(definition.getFieldName(), is(fieldName));
+        assertThat(((ClassDefinition) definition).isRoot(), is(true));
+    }
+
+    @Test
+    public void shouldConstructRootClassDefinitionFromACombinedSchema() throws Exception {
+        final String fieldName = "fieldName";
+        final CombinedSchema combinedSchema = CombinedSchema
+                .builder()
+                .criterion(ANY_CRITERION)
+                .build();
+
+        final Definition definition = defaultDefinitionFactory.constructRootDefinitionFor(fieldName, combinedSchema);
+
+        assertThat(definition, is(instanceOf(ClassDefinition.class)));
+        assertThat(definition.type(), is(COMBINED));
         assertThat(definition.getFieldName(), is(fieldName));
         assertThat(((ClassDefinition) definition).isRoot(), is(true));
     }
@@ -199,23 +216,24 @@ public class DefaultDefinitionFactoryTest {
     }
 
     @Test
-    public void shouldThrowExceptionIfUnknownSchemaProcessedForConstructDefintion() throws Exception {
+    @SuppressWarnings("unchecked")
+    public void shouldThrowExceptionIfUnknownSchemaProcessedForConstructDefinition() throws Exception {
         expectedException.expect(UnsupportedSchemaException.class);
         expectedException.expectMessage("Schema of type: DummySchema is not supported.");
 
-        final Schema.Builder builder = mock(Schema.Builder.class);
+        final Schema.Builder<DummySchema> builder = mock(Schema.Builder.class);
         final String fieldName = "myDummy";
-        final String packageName = "package.name";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
         defaultDefinitionFactory.constructDefinitionFor(fieldName, dummySchema);
     }
 
     @Test
-    public void shouldThrowExceptionIfUnknownSchemaProcessedForConstructFieldDefintion() throws Exception {
+    @SuppressWarnings("unchecked")
+    public void shouldThrowExceptionIfUnknownSchemaProcessedForConstructFieldDefinition() throws Exception {
         expectedException.expect(UnsupportedSchemaException.class);
         expectedException.expectMessage("Schema of type: DummySchema is not supported.");
 
-        final Schema.Builder builder = mock(Schema.Builder.class);
+        final Schema.Builder<DummySchema> builder = mock(Schema.Builder.class);
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
         defaultDefinitionFactory.constructDefinitionFor("fieldName", dummySchema);

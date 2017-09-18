@@ -19,7 +19,7 @@ import com.squareup.javapoet.TypeSpec;
  * Note: the serialVersionUID is always set to 1.
  *
  * <p>For example:</p>
- *
+ * <pre><blockquote>
  *     {@code public class MyClass implements Serializable {
  *
  *          private static final long serialVersionUID = 1L;
@@ -35,6 +35,7 @@ import com.squareup.javapoet.TypeSpec;
  *          }
  *      }
  *     }
+ * </blockquote></pre>
  */
 public class MakeClassSerializablePlugin implements ClassModifyingPlugin {
 

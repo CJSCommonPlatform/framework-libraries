@@ -110,4 +110,13 @@ public class ClassDefinitionTest {
         assertThat(classDefinition, is(instanceOf(FieldDefinition.class)));
         assertThat(classDefinition.isRoot(), is(false));
     }
+
+    @Test
+    public void shouldTestToStringMethodToStopCoverallsWhining() throws Exception {
+
+        final String fieldName = "test";
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName);
+
+        assertThat(classDefinition.toString(), is("ClassDefinition{fieldName=test, type=CLASS, required=true, allowAdditionalProperties=false}"));
+    }
 }

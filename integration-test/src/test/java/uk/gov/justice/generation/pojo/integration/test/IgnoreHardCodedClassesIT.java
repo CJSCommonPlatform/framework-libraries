@@ -8,7 +8,6 @@ import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 
 import java.io.File;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,13 +27,12 @@ public class IgnoreHardCodedClassesIT {
         final File jsonSchemaFile = new File("src/test/resources/schemas/first-hard-coded-class-example.json");
         final String packageName = "uk.gov.justice.pojo.example.hard.coded.javaclass.first.testcase";
 
-        final List<String> ignoredClassNames = singletonList("IgnoreMeAsIAlreadyExist");
-
-        generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories,
-                ignoredClassNames);
+        generatorUtil
+                .withIgnoredClassNames(singletonList("IgnoreMeAsIAlreadyExist"))
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         final File generatedSourceDir = new File("target/test-generation/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/first/testcase");
 
@@ -47,13 +45,12 @@ public class IgnoreHardCodedClassesIT {
         final File jsonSchemaFile = new File("src/test/resources/schemas/second-hard-coded-class-example.json");
         final String packageName = "uk.gov.justice.pojo.example.hard.coded.javaclass.second.testcase";
 
-        final List<String> ignoredClassNames = singletonList("SecondHardCodedClassExample");
-
-        generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories,
-                ignoredClassNames);
+        generatorUtil
+                .withIgnoredClassNames(singletonList("SecondHardCodedClassExample"))
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         final File generatedSourceDir = new File("target/test-generation/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/second/testcase");
 

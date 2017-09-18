@@ -16,7 +16,7 @@ import com.squareup.javapoet.TypeName;
  *
  * For example:
  *
- * <pre>
+ * <pre><blockquote>
  *     {@code public class MyClass {
  *
  *          private final Optional<String> myProperty;
@@ -30,7 +30,8 @@ import com.squareup.javapoet.TypeName;
  *          }
  *      }
  *
- * }</pre>
+ * }
+ * </blockquote></pre>
  */
 public class SupportJavaOptionalsPlugin implements TypeModifyingPlugin {
 

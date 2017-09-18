@@ -43,7 +43,7 @@ public class EnumGeneratorIT {
         final Class<?> studentClass = classes.get(1);
 
         final Class<? extends Enum> enumClass = (Class<? extends Enum>) classes.get(0);
-        final Enum red = Enum.valueOf(enumClass, "RED");
+        final Enum<?> red = Enum.valueOf(enumClass, "RED");
 
         final String name = "Fred";
         final Integer age = 21;

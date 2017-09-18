@@ -34,7 +34,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class DefinitionBuilderVisitorTest {
 
@@ -319,7 +318,7 @@ public class DefinitionBuilderVisitorTest {
         final CombinedDefinition combinedDefinition = mock(CombinedDefinition.class);
         final ClassDefinition objectDefinition = mock(ClassDefinition.class);
 
-        when(definitionFactory.constructDefinitionFor(combinedFieldName, combinedSchema)).thenReturn(combinedDefinition);
+        when(definitionFactory.constructRootDefinitionFor(combinedFieldName, combinedSchema)).thenReturn(combinedDefinition);
         when(definitionFactory.constructDefinitionFor(combinedFieldName, objectSchema)).thenReturn(objectDefinition);
 
         definitionBuilderVisitor.enter(combinedFieldName, combinedSchema);
@@ -356,7 +355,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition objectDefinition = mock(ClassDefinition.class);
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionFor(combinedFieldName, combinedSchema)).thenReturn(combinedDefinition);
+        when(definitionFactory.constructRootDefinitionFor(combinedFieldName, combinedSchema)).thenReturn(combinedDefinition);
         when(definitionFactory.constructDefinitionFor(combinedFieldName, objectSchema)).thenReturn(objectDefinition);
         when(definitionFactory.constructDefinitionFor(innerFieldName, stringSchema)).thenReturn(stringDefinition);
 
@@ -405,7 +404,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition objectDefinition = mock(ClassDefinition.class);
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructDefinitionFor(combinedFieldName, combinedSchema)).thenReturn(outerCombinedDefinition);
+        when(definitionFactory.constructRootDefinitionFor(combinedFieldName, combinedSchema)).thenReturn(outerCombinedDefinition);
         when(definitionFactory.constructDefinitionFor(combinedFieldName, innerCombinedSchema)).thenReturn(innerCombinedDefinition);
         when(definitionFactory.constructDefinitionFor(innerObjectFieldName, objectSchema)).thenReturn(objectDefinition);
         when(definitionFactory.constructDefinitionFor(innerFieldName, stringSchema)).thenReturn(stringDefinition);

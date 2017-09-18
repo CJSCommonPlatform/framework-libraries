@@ -16,7 +16,7 @@ public interface DefinitionFactory {
      * @param fieldName the field name to use for the ROOT definition
      * @return the {@link Definition}
      */
-    Definition constructRootClassDefinition(final String fieldName);
+    Definition constructRootDefinitionFor(final String fieldName, final Schema schema);
 
     /**
      * Constructs a {@link Definition} for the given field name and {@link Schema}.

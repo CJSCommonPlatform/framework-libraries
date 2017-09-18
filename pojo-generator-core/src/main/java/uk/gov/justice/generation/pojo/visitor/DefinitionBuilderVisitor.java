@@ -54,7 +54,7 @@ public class DefinitionBuilderVisitor implements Visitor {
         final ClassDefinition definition;
 
         if (definitions.isEmpty()) {
-            definition = (ClassDefinition) definitionFactory.constructRootClassDefinition(fieldName);
+            definition = (ClassDefinition) definitionFactory.constructRootDefinitionFor(fieldName, schema);
         } else {
             definition = (ClassDefinition) definitionFactory.constructDefinitionFor(fieldName, schema);
         }
@@ -232,7 +232,7 @@ public class DefinitionBuilderVisitor implements Visitor {
     public void visit(final String fieldName, final EmptySchema schema) {
         final ClassDefinition definition;
         if (definitions.isEmpty()) {
-            definition = (ClassDefinition) definitionFactory.constructRootClassDefinition(fieldName);
+            definition = (ClassDefinition) definitionFactory.constructRootDefinitionFor(fieldName, schema);
         } else {
             definition = (ClassDefinition) definitionFactory.constructDefinitionFor(fieldName, schema);
         }

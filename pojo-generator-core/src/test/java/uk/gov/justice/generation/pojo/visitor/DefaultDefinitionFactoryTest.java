@@ -17,7 +17,6 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.ENUM;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.REFERENCE;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
@@ -63,11 +62,14 @@ public class DefaultDefinitionFactoryTest {
     @Test
     public void shouldConstructRootClassDefinition() throws Exception {
         final String fieldName = "fieldName";
-        final Definition definition = defaultDefinitionFactory.constructRootClassDefinition(fieldName);
+        final ObjectSchema objectSchema = ObjectSchema.builder().build();
+
+        final Definition definition = defaultDefinitionFactory.constructRootDefinitionFor(fieldName, objectSchema);
 
         assertThat(definition, is(instanceOf(ClassDefinition.class)));
-        assertThat(definition.type(), is(ROOT));
+        assertThat(definition.type(), is(CLASS));
         assertThat(definition.getFieldName(), is(fieldName));
+        assertThat(((ClassDefinition) definition).isRoot(), is(true));
     }
 
     @Test

@@ -82,4 +82,32 @@ public class ClassDefinitionTest {
 
         assertThat(classDefinition.allowAdditionalProperties(), is(true));
     }
+
+    @Test
+    public void shouldBeTheRootClass() throws Exception {
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test");
+
+        classDefinition.setRoot(true);
+
+        assertThat(classDefinition, is(instanceOf(FieldDefinition.class)));
+        assertThat(classDefinition.isRoot(), is(true));
+    }
+
+    @Test
+    public void shouldNotBeTheRootClass() throws Exception {
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test");
+
+        classDefinition.setRoot(false);
+
+        assertThat(classDefinition, is(instanceOf(FieldDefinition.class)));
+        assertThat(classDefinition.isRoot(), is(false));
+    }
+
+    @Test
+    public void shouldDefaultToNotBeTheRootClass() throws Exception {
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test");
+
+        assertThat(classDefinition, is(instanceOf(FieldDefinition.class)));
+        assertThat(classDefinition.isRoot(), is(false));
+    }
 }

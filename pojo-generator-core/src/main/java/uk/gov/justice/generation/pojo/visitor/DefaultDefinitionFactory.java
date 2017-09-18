@@ -7,7 +7,6 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.BOOLEAN;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.NUMBER;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
@@ -49,8 +48,10 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
     }
 
     @Override
-    public Definition constructRootClassDefinition(final String fieldName) {
-        return new ClassDefinition(ROOT, fieldName);
+    public Definition constructRootDefinitionFor(final String fieldName, final Schema schema) {
+        final ClassDefinition definition = new ClassDefinition(CLASS, fieldName);
+        definition.setRoot(true);
+        return definition;
     }
 
     @Override

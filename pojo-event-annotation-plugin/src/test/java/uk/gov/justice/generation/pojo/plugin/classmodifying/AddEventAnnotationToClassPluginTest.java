@@ -8,7 +8,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
-import static uk.gov.justice.generation.pojo.dom.DefinitionType.ROOT;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
@@ -27,7 +26,8 @@ public class AddEventAnnotationToClassPluginTest {
 
     @Test
     public void shouldAddEventAnnotationToTypeSpecIfRoot() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(ROOT, "address");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
+        classDefinition.setRoot(true);
 
         when(pluginContext.getSourceFilename()).thenReturn("example.events.address.json");
 

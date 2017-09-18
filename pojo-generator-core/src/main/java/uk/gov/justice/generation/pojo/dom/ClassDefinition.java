@@ -14,14 +14,14 @@ public class ClassDefinition extends FieldDefinition {
     private final List<Definition> fieldDefinitions = new ArrayList<>();
 
     private boolean allowAdditionalProperties = false;
+    private boolean root = false;
 
     /**
-     * Creates a ClassDefinition
+     * Creates a ClassDefinition that is not the root class.
      *
      * @param type The {@link DefinitionType} of the class. Can be a
      *              {@link DefinitionType#CLASS}
-     *              {@link DefinitionType#ENUM}
-     *              {@link DefinitionType#ROOT} or
+     *              {@link DefinitionType#ENUM} or
      *              {@link DefinitionType#COMBINED}
      * @param fieldName The name of the field that will be used in the generated POJO
      */
@@ -44,7 +44,7 @@ public class ClassDefinition extends FieldDefinition {
      * NB: The list of fields is sorted alphabetically by thier field names. This
      * results in all fields in both the constructor and the order of fields in the class
      * will be alphabetical.
-     * 
+     *
      * @return The list of all fields defined for this class
      */
     public List<Definition> getFieldDefinitions() {
@@ -76,6 +76,24 @@ public class ClassDefinition extends FieldDefinition {
      */
     public void setAllowAdditionalProperties(final boolean allowAdditionalProperties) {
         this.allowAdditionalProperties = allowAdditionalProperties;
+    }
+
+    /**
+     * Determines whether this is the root definition.
+     *
+     * @return true if the root
+     */
+    public boolean isRoot() {
+        return root;
+    }
+
+    /**
+     * Sets whether this is the root defintion.
+     *
+     * @param root true if the root
+     */
+    public void setRoot(final boolean root) {
+        this.root = root;
     }
 
     private void sortDefinitionsByFieldNameFirst() {

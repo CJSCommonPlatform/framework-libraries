@@ -69,7 +69,7 @@ public class DefinitionBuilderVisitorTest {
         final FieldDefinition innerStringDefinition = mock(FieldDefinition.class);
         final FieldDefinition outerStringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructRootDefinitionFor(outerFieldName, outerObjectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructDefinitionFor(innerFieldName, innerObjectSchema)).thenReturn(innerDefinition);
         when(definitionFactory.constructDefinitionFor(outerStringFieldName, outerStringSchema)).thenReturn(outerStringDefinition);
         when(definitionFactory.constructDefinitionFor(innerStringField, innerStringSchema)).thenReturn(innerStringDefinition);
@@ -107,7 +107,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition outerDefinition = mock(ClassDefinition.class);
         final FieldDefinition booleanDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructRootDefinitionFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructDefinitionFor(booleanFieldName, booleanSchema)).thenReturn(booleanDefinition);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
@@ -137,7 +137,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition outerDefinition = mock(ClassDefinition.class);
         final EnumDefinition enumDefinition = mock(EnumDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructRootDefinitionFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructDefinitionFor(enumFieldName, enumSchema)).thenReturn(enumDefinition);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
@@ -170,7 +170,7 @@ public class DefinitionBuilderVisitorTest {
         final FieldDefinition numberDefinition = mock(FieldDefinition.class);
         final FieldDefinition integerDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructRootDefinitionFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructDefinitionFor(numberFieldName, numberProperty)).thenReturn(numberDefinition);
         when(definitionFactory.constructDefinitionFor(integerFieldName, integerProperty)).thenReturn(integerDefinition);
 
@@ -209,7 +209,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition arrayDefinition = mock(ClassDefinition.class);
         final ClassDefinition arrayObjectDefinition = mock(ClassDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructRootDefinitionFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructDefinitionFor(arrayFieldName, arraySchema)).thenReturn(arrayDefinition);
         when(definitionFactory.constructDefinitionFor(arrayObjectFieldName, arrayObjectSchema)).thenReturn(arrayObjectDefinition);
 
@@ -250,7 +250,7 @@ public class DefinitionBuilderVisitorTest {
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
         final ClassDefinition referredDefinition = mock(ClassDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructRootDefinitionFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructDefinitionFor(referenceFieldName, referenceSchema)).thenReturn(referenceDefinition);
         when(definitionFactory.constructDefinitionFor(referredFieldName, referredSchema)).thenReturn(referredDefinition);
 
@@ -286,7 +286,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition outerDefinition = mock(ClassDefinition.class);
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(outerFieldName)).thenReturn(outerDefinition);
+        when(definitionFactory.constructRootDefinitionFor(outerFieldName, objectSchema)).thenReturn(outerDefinition);
         when(definitionFactory.constructDefinitionFor(stringFieldName, stringSchema)).thenReturn(stringDefinition);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
@@ -446,7 +446,7 @@ public class DefinitionBuilderVisitorTest {
 
         final ClassDefinition emptyClassDefinition = mock(ClassDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(emptyFieldName)).thenReturn(emptyClassDefinition);
+        when(definitionFactory.constructRootDefinitionFor(emptyFieldName, rootEmptySchema)).thenReturn(emptyClassDefinition);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
 
@@ -475,7 +475,7 @@ public class DefinitionBuilderVisitorTest {
         final ClassDefinition rootClassDefinition = mock(ClassDefinition.class);
         final ClassDefinition emptyClassDefinition = mock(ClassDefinition.class);
 
-        when(definitionFactory.constructRootClassDefinition(rootObjectFieldName)).thenReturn(rootClassDefinition);
+        when(definitionFactory.constructRootDefinitionFor(rootObjectFieldName, objectSchema)).thenReturn(rootClassDefinition);
         when(definitionFactory.constructDefinitionFor(emptyFieldName, emptySchema)).thenReturn(emptyClassDefinition);
 
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);

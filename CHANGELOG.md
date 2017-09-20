@@ -15,9 +15,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Changed
 
 - Travis CI user updated to common CI user
+- Test utils upgraded to version 1.7.0
 
 ### Added
-
+- Support for enums for ObjectMapper and ObjectMapperProducer
 - Added Sonarcloud analysis
 - Moved compiler classes to Utilities from Microservices Framework
 

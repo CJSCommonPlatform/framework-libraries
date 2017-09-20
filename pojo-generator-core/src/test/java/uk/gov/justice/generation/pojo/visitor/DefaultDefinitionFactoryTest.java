@@ -1,7 +1,6 @@
 package uk.gov.justice.generation.pojo.visitor;
 
 import static org.everit.json.schema.CombinedSchema.ANY_CRITERION;
-import static org.everit.json.schema.CombinedSchema.ONE_CRITERION;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;

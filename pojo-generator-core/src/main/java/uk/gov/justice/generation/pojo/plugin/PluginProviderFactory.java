@@ -41,8 +41,7 @@ import java.util.stream.Stream;
  *              <plugins>
  *                  uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin,
  *                  uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin,
- *                  uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin,
- *                  uk.gov.justice.generation.pojo.plugin.typemodifying.SupportZonedDateTimePlugin
+ *                  uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin
  *              </plugins>
  *          </generatorProperties>
  *          ...
@@ -203,6 +202,7 @@ public class PluginProviderFactory {
     }
 
     private Object pluginInstance(final String className) {
+
         try {
             return Class.forName(className.trim()).newInstance();
         } catch (final InstantiationException | IllegalAccessException | ClassNotFoundException e) {

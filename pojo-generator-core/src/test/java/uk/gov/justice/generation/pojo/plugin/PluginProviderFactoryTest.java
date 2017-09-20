@@ -13,11 +13,13 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForCl
 import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.FieldNameFromFileNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.plugin.testplugins.UserDefinedNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
-import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Rule;
@@ -29,16 +31,16 @@ public class PluginProviderFactoryTest {
     private static final String EXCLUDE_DEFAULT_PLUGINS_PROPERTY = "excludeDefaultPlugins";
     private static final String PLUGINS_PROPERTY = "plugins";
 
-    private static final String SINGLE_CLASS_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin";
-    private static final String SINGLE_TYPE_MODIFYING_PLUGIN = "uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin";
-    private static final String SINGLE_NAME_GENERATBLE_PLUGIN = "uk.gov.justice.generation.pojo.plugin.testplugins.UserDefinedNameGeneratorPlugin";
-    private static final String MULYIPLE_NAME_GENERATBLE_PLUGINS = SINGLE_NAME_GENERATBLE_PLUGIN + ",\n" + SINGLE_NAME_GENERATBLE_PLUGIN;
-    private static final String MULTIPLE_TYPE_MODIFYING_PLUGINS = SINGLE_TYPE_MODIFYING_PLUGIN +
-            ",\n" +
-            "uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin";
-    private static final String MULTIPLE_TYPES_OF_PLUGIN = MULTIPLE_TYPE_MODIFYING_PLUGINS + ",\n" +
-            SINGLE_CLASS_MODIFYING_PLUGIN + ",\n" +
-            SINGLE_NAME_GENERATBLE_PLUGIN;
+    private static final String MULTIPLE_NAME_GENERATBLE_PLUGINS =
+                    UserDefinedNameGeneratorPlugin.class.getName() + ",\n" +
+                    UserDefinedNameGeneratorPlugin.class.getName();
+
+
+    private static final String MULTIPLE_TYPES_OF_PLUGIN =
+                    CustomReturnTypePlugin.class.getName() + ",\n" +
+                    SupportJavaOptionalsPlugin.class.getName() + ",\n" +
+                    MakeClassSerializablePlugin.class.getName() + ",\n" +
+                    UserDefinedNameGeneratorPlugin.class.getName();
 
     private static final String BLANK = "";
 
@@ -101,7 +103,7 @@ public class PluginProviderFactoryTest {
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
 
         final Map<String, String> properties = new HashMap<>();
-        properties.put(PLUGINS_PROPERTY, SINGLE_CLASS_MODIFYING_PLUGIN);
+        properties.put(PLUGINS_PROPERTY, MakeClassSerializablePlugin.class.getName());
 
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
@@ -150,14 +152,14 @@ public class PluginProviderFactoryTest {
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
 
         final Map<String, String> properties = new HashMap<>();
-        properties.put(PLUGINS_PROPERTY, SINGLE_TYPE_MODIFYING_PLUGIN);
+        properties.put(PLUGINS_PROPERTY, CustomReturnTypePlugin.class.getName());
 
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
         final PluginProvider pluginProvider = new PluginProviderFactory().createFor(generatorConfig);
 
         assertThat(pluginProvider.typeModifyingPlugins().size(), is(1));
-        assertThat(pluginProvider.typeModifyingPlugins(), hasItem(instanceOf(SupportUuidsPlugin.class)));
+        assertThat(pluginProvider.typeModifyingPlugins(), hasItem(instanceOf(CustomReturnTypePlugin.class)));
     }
 
     @Test
@@ -178,7 +180,7 @@ public class PluginProviderFactoryTest {
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
 
         final Map<String, String> properties = new HashMap<>();
-        properties.put(PLUGINS_PROPERTY, SINGLE_NAME_GENERATBLE_PLUGIN);
+        properties.put(PLUGINS_PROPERTY, UserDefinedNameGeneratorPlugin.class.getName());
 
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
@@ -192,7 +194,7 @@ public class PluginProviderFactoryTest {
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
 
         final Map<String, String> properties = new HashMap<>();
-        properties.put(PLUGINS_PROPERTY, MULYIPLE_NAME_GENERATBLE_PLUGINS);
+        properties.put(PLUGINS_PROPERTY, MULTIPLE_NAME_GENERATBLE_PLUGINS);
 
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
@@ -208,15 +210,18 @@ public class PluginProviderFactoryTest {
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
 
         final Map<String, String> properties = new HashMap<>();
-        properties.put(PLUGINS_PROPERTY, MULTIPLE_TYPE_MODIFYING_PLUGINS);
+        properties.put(PLUGINS_PROPERTY, CustomReturnTypePlugin.class.getName() + ",\n" +
+                SupportJavaOptionalsPlugin.class.getName());
 
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
         final PluginProvider pluginProvider = new PluginProviderFactory().createFor(generatorConfig);
 
-        assertThat(pluginProvider.typeModifyingPlugins().size(), is(2));
-        assertThat(pluginProvider.typeModifyingPlugins(), hasItems(
-                instanceOf(SupportUuidsPlugin.class),
+        final List<TypeModifyingPlugin> typeModifyingPlugins = pluginProvider.typeModifyingPlugins();
+
+        assertThat(typeModifyingPlugins.size(), is(2));
+        assertThat(typeModifyingPlugins, hasItems(
+                instanceOf(CustomReturnTypePlugin.class),
                 instanceOf(SupportJavaOptionalsPlugin.class)));
     }
 
@@ -234,7 +239,7 @@ public class PluginProviderFactoryTest {
 
         assertThat(pluginProvider.typeModifyingPlugins().size(), is(2));
         assertThat(pluginProvider.typeModifyingPlugins(), hasItems(
-                instanceOf(SupportUuidsPlugin.class),
+                instanceOf(CustomReturnTypePlugin.class),
                 instanceOf(SupportJavaOptionalsPlugin.class)));
 
         assertThat(pluginProvider.classModifyingPlugins().size(), is(3));

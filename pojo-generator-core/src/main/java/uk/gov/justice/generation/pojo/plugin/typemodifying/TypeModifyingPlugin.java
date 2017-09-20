@@ -12,8 +12,7 @@ import com.squareup.javapoet.TypeName;
  * parameters
  *
  * {@link SupportJavaOptionalsPlugin}
- * {@link SupportUuidsPlugin}
- * {@link SupportZonedDateTimePlugin}
+ * {@link CustomReturnTypePlugin}
  */
 public interface TypeModifyingPlugin {
 

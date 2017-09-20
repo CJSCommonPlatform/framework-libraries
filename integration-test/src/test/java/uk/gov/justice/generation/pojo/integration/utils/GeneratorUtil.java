@@ -24,9 +24,8 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.FieldNameFromFileNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
-import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin;
-import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportZonedDateTimePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
@@ -64,8 +63,7 @@ public class GeneratorUtil {
     );
     private List<TypeModifyingPlugin> typeModifyingPlugins = asList(
             new SupportJavaOptionalsPlugin(),
-            new SupportUuidsPlugin(),
-            new SupportZonedDateTimePlugin());
+            new CustomReturnTypePlugin());
 
     public GeneratorUtil withIgnoredClassNames(final List<String> ignoredClassNames) {
         this.ignoredClassNames = ignoredClassNames;

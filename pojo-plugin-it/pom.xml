@@ -80,8 +80,7 @@
                                     uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin,
                                     uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin,
                                     uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin,
-                                    uk.gov.justice.generation.pojo.plugin.typemodifying.SupportUuidsPlugin,
-                                    uk.gov.justice.generation.pojo.plugin.typemodifying.SupportZonedDateTimePlugin
+                                    uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin
                                 </plugins>
                             </generatorProperties>
                         </configuration>

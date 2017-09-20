@@ -2,7 +2,6 @@ package uk.gov.justice.generation.pojo.integration.test;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;

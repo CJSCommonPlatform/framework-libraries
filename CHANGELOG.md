@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.8.1] - 2017-09-20
+
+### Fixed
+- Potential leak of sensitive information to log files when JSON errors are encountered in JsonObjectToObjectConverter class
+
 ## [1.8.0] - 2017-08-21
 
 ### Changed
@@ -57,3 +62,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 - Initial project configuration
 - Initial Utilities
+
+[Unreleased]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.8.1...HEAD
+[1.8.1]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.8.0...release-1.8.1
+[1.8.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.7.0...release-1.8.0
+[1.7.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.6.0...release-1.7.0
+[1.6.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.5.0...release-1.6.0
+[1.5.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.4.0...release-1.5.0
+[1.4.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.3.0...release-1.4.0
+[1.3.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.2.0...release-1.3.0
+[1.2.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.1.0...release-1.2.0
+[1.1.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.0.0...release-1.1.0
+[1.0.0]: https://github.com/CJSCommonPlatform/utilities/commits/release-1.0.0

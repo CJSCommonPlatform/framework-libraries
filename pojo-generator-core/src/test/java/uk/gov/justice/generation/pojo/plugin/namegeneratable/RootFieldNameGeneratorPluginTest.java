@@ -12,13 +12,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FieldNameFromFileNameGeneratorTest {
+public class RootFieldNameGeneratorPluginTest {
 
     @Mock
     private Schema schema;
 
     @InjectMocks
-    private FieldNameFromFileNameGeneratorPlugin nameGenerator;
+    private RootFieldNameGeneratorPlugin nameGenerator;
 
     @Test
     public void shouldParseTheFileNameIntoAValidJavaClassName() throws Exception {

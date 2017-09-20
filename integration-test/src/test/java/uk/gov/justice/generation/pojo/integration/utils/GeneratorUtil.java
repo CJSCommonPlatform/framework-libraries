@@ -23,7 +23,7 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializabl
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
-import uk.gov.justice.generation.pojo.plugin.namegeneratable.FieldNameFromFileNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootFieldNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
@@ -95,7 +95,7 @@ public class GeneratorUtil {
         final PluginProvider pluginProvider = new ModifyingPluginProvider(
                 classModifyingPlugins,
                 typeModifyingPlugins,
-                new FieldNameFromFileNameGeneratorPlugin());
+                new RootFieldNameGeneratorPlugin());
 
         final String fieldName = pluginProvider
                 .nameGeneratablePlugin()

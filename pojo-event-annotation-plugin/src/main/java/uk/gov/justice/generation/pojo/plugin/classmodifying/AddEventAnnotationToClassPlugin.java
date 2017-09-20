@@ -8,7 +8,7 @@ import com.squareup.javapoet.TypeSpec;
 
 /**
  * Plugin for adding the {@link Event} annotation to the top of the root POJO.
- * The name of the event will be taked from the json schema document
+ * The name of the event will be taken from the json schema document
  */
 public class AddEventAnnotationToClassPlugin implements ClassModifyingPlugin {
 

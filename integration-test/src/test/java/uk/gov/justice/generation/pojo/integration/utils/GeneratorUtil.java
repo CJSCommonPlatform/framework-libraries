@@ -38,6 +38,7 @@ import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import org.everit.json.schema.Schema;
@@ -97,22 +98,11 @@ public class GeneratorUtil {
                 typeModifyingPlugins,
                 new RootNameGeneratorPlugin());
 
-        final String fieldName = pluginProvider
-                .nameGeneratablePlugin()
-                .rootFieldNameFrom(schema, jsonSchemaFile.getName());
-
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
-
-        visitableSchema.accept(definitionBuilderVisitor);
-
-        final SourceWriter sourceWriter = new SourceWriter();
-        final ClassCompiler classCompiler = new ClassCompiler();
-        final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
-
-
         final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
         final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
+
+        final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
 
         final JavaGeneratorFactory javaGeneratorFactory = generatorFactoryBuilder
                 .withGenerationContext(generationContext)
@@ -124,7 +114,19 @@ public class GeneratorUtil {
                 javaGeneratorFactory,
                 classNameFactory,
                 generationContext.getSourceFilename(),
-                classModifyingPlugins);
+                classModifyingPlugins,
+                new HashMap<>());
+
+        final String fieldName = pluginProvider
+                .nameGeneratablePlugin()
+                .rootFieldNameFrom(schema, jsonSchemaFile.getName(), pluginContext);
+
+        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
+
+        visitableSchema.accept(definitionBuilderVisitor);
+
+        final SourceWriter sourceWriter = new SourceWriter();
+        final ClassCompiler classCompiler = new ClassCompiler();
 
         return javaGeneratorFactory
                 .createClassGeneratorsFor(definitionBuilderVisitor.getDefinitions(), pluginProvider, pluginContext, generationContext)

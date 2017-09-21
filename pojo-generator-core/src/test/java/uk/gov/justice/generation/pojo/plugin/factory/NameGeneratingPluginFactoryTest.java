@@ -9,6 +9,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import uk.gov.justice.generation.pojo.plugin.PluginProviderException;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootNameGeneratorPlugin;
 
@@ -82,18 +83,18 @@ public class NameGeneratingPluginFactoryTest {
     }
 }
 
-class MyNameGeneratablePlugin  implements NameGeneratablePlugin {
+class MyNameGeneratablePlugin implements NameGeneratablePlugin {
 
     @Override
-    public String rootFieldNameFrom(final Schema schema, final String schemaFilename) {
+    public String rootFieldNameFrom(final Schema schema, final String schemaFilename, final PluginContext pluginContext) {
         return null;
     }
 }
 
-class MyOtherNameGeneratablePlugin  implements NameGeneratablePlugin {
+class MyOtherNameGeneratablePlugin implements NameGeneratablePlugin {
 
     @Override
-    public String rootFieldNameFrom(final Schema schema, final String schemaFilename) {
+    public String rootFieldNameFrom(final Schema schema, final String schemaFilename, final PluginContext pluginContext) {
         return null;
     }
 }

@@ -74,9 +74,20 @@ public class SchemaPojoGenerator implements Generator<File> {
 
         final PluginProvider pluginProvider = createPluginProvider(generatorConfig);
 
-        final List<Definition> definitions = createDefinitions(jsonSchemaFile, pluginProvider);
+        final ClassNameFactory classNameFactory = createClassNameFactory(pluginProvider, generationContext);
 
-        final List<ClassGeneratable> classGenerators = getClassGeneratorsFrom(pluginProvider, generationContext, definitions);
+        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(classNameFactory);
+
+        final PluginContext pluginContext = new PluginContext(
+                javaGeneratorFactory,
+                classNameFactory,
+                generationContext.getSourceFilename(),
+                pluginProvider.classModifyingPlugins(),
+                generatorConfig.getGeneratorProperties());
+
+        final List<Definition> definitions = createDefinitions(jsonSchemaFile, pluginProvider, pluginContext);
+
+        final List<ClassGeneratable> classGenerators = javaGeneratorFactory.createClassGeneratorsFor(definitions, pluginProvider, pluginContext, generationContext);
 
         writeJavaClassesToFile(generationContext, classGenerators);
     }
@@ -86,10 +97,10 @@ public class SchemaPojoGenerator implements Generator<File> {
         return pluginProviderFactory.createFor(generatorConfig);
     }
 
-    private List<Definition> createDefinitions(final File source, final PluginProvider pluginProvider) {
+    private List<Definition> createDefinitions(final File source, final PluginProvider pluginProvider, final PluginContext pluginContext) {
         final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor();
         final Schema schema = schemaLoader.loadFrom(source);
-        final String fieldName = pluginProvider.nameGeneratablePlugin().rootFieldNameFrom(schema, source.getName());
+        final String fieldName = pluginProvider.nameGeneratablePlugin().rootFieldNameFrom(schema, source.getName(), pluginContext);
         final AcceptorService jsonSchemaAcceptorFactory = new DefaultAcceptorService(visitableFactory);
 
         visitableFactory.createWith(fieldName, schema, jsonSchemaAcceptorFactory)
@@ -98,23 +109,11 @@ public class SchemaPojoGenerator implements Generator<File> {
         return definitionBuilderVisitor.getDefinitions();
     }
 
-    private List<ClassGeneratable> getClassGeneratorsFrom(
-            final PluginProvider pluginProvider,
-            final GenerationContext generationContext,
-            final List<Definition> definitions) {
-
+    private ClassNameFactory createClassNameFactory(final PluginProvider pluginProvider, final GenerationContext generationContext) {
         final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
 
-        final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
-        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(classNameFactory);
-        final PluginContext pluginContext = new PluginContext(
-                javaGeneratorFactory,
-                classNameFactory,
-                generationContext.getSourceFilename(),
-                pluginProvider.classModifyingPlugins());
-
-        return javaGeneratorFactory.createClassGeneratorsFor(definitions, pluginProvider, pluginContext, generationContext);
+        return new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
     }
 
     private void writeJavaClassesToFile(final GenerationContext generationContext, final List<ClassGeneratable> classGenerators) {

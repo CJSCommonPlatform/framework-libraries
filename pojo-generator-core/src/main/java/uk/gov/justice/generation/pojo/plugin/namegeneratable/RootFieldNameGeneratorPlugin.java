@@ -9,7 +9,21 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.everit.json.schema.Schema;
 
-public class FieldNameFromFileNameGeneratorPlugin implements NameGeneratablePlugin {
+/**
+ * Generate the root class name from a schema filename.
+ *
+ * The filename extension is removed, any prepending '.' are removed from the filename and then all
+ * '-' are removed and the first letter after each '-' is capitalized.
+ *
+ * For example:
+ *
+ * context.something-has-happened.json
+ *
+ * becomes:
+ *
+ * somethingHasHappened
+ */
+public class RootFieldNameGeneratorPlugin implements NameGeneratablePlugin {
 
     @Override
     public String rootFieldNameFrom(final Schema schema, final String schemaFilename) {

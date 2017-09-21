@@ -23,7 +23,7 @@ import org.everit.json.schema.Schema;
  *
  * somethingHasHappened
  */
-public class RootFieldNameGeneratorPlugin implements NameGeneratablePlugin {
+public class RootNameGeneratorPlugin implements NameGeneratablePlugin {
 
     @Override
     public String rootFieldNameFrom(final Schema schema, final String schemaFilename) {

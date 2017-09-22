@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
@@ -30,10 +31,14 @@ public class ElementGeneratorTest {
     public void shouldGenerateField() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
-        when(classNameFactory.createTypeNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
+        when(classNameFactory.createTypeNameFrom(classDefinition, pluginContext)).thenReturn(ClassName.get("org.something", "Address"));
 
-        final ElementGenerator elementGenerator = new ElementGenerator(classDefinition, classNameFactory);
+        final ElementGenerator elementGenerator = new ElementGenerator(
+                classDefinition,
+                classNameFactory,
+                pluginContext);
         final FieldSpec fieldSpec = elementGenerator.generateField();
 
         assertThat(fieldSpec, is(builder(get("org.something", "Address"), "address", PRIVATE, FINAL).build()));
@@ -43,10 +48,14 @@ public class ElementGeneratorTest {
     public void shouldGenerateMethodFromClassDefintion() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, "address");
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
-        when(classNameFactory.createTypeNameFrom(classDefinition)).thenReturn(ClassName.get("org.something", "Address"));
+        when(classNameFactory.createTypeNameFrom(classDefinition, pluginContext)).thenReturn(ClassName.get("org.something", "Address"));
 
-        final ElementGenerator elementGenerator = new ElementGenerator(classDefinition, classNameFactory);
+        final ElementGenerator elementGenerator = new ElementGenerator(
+                classDefinition,
+                classNameFactory,
+                pluginContext);
         final List<MethodSpec> methodSpecs = elementGenerator.generateMethods().collect(toList());
 
         assertThat(methodSpecs, hasItem(methodBuilder("getAddress")

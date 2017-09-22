@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 
 import com.squareup.javapoet.ClassName;
@@ -35,15 +36,19 @@ public class TypeModifyingPluginProcessorTest {
 
         final TypeModifyingPlugin typeModifyingPlugin_1 = mock(TypeModifyingPlugin.class);
         final TypeModifyingPlugin typeModifyingPlugin_2 = mock(TypeModifyingPlugin.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
 
         final Definition definition = mock(Definition.class);
 
         when(pluginProvider.typeModifyingPlugins()).thenReturn(asList(typeModifyingPlugin_1, typeModifyingPlugin_2));
-        when(typeModifyingPlugin_1.modifyTypeName(originalTypeName, definition)).thenReturn(decoratedTypeName_1);
-        when(typeModifyingPlugin_2.modifyTypeName(decoratedTypeName_1, definition)).thenReturn(decoratedTypeName_2);
+        when(typeModifyingPlugin_1.modifyTypeName(originalTypeName, definition, pluginContext)).thenReturn(decoratedTypeName_1);
+        when(typeModifyingPlugin_2.modifyTypeName(decoratedTypeName_1, definition, pluginContext)).thenReturn(decoratedTypeName_2);
 
-        final TypeName finalTypeName = typeNamePluginProcessor.processTypeNamePlugins(originalTypeName, definition);
+        final TypeName finalTypeName = typeNamePluginProcessor.processTypeNamePlugins(
+                originalTypeName,
+                definition,
+                pluginContext);
 
         assertThat(finalTypeName, is(decoratedTypeName_2));
     }

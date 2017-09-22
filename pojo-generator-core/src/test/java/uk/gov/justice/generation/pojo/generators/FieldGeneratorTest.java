@@ -14,6 +14,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.BOOLEAN;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
@@ -29,13 +30,14 @@ public class FieldGeneratorTest {
     public void shouldGenerateField() throws Exception {
         final FieldDefinition fieldDefinition = mock(FieldDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(fieldDefinition.type()).thenReturn(BOOLEAN);
         when(fieldDefinition.getFieldName()).thenReturn("fieldName");
         when(fieldDefinition.isRequired()).thenReturn(true);
-        when(classNameFactory.createTypeNameFrom(fieldDefinition)).thenReturn(ClassName.get(Boolean.class));
+        when(classNameFactory.createTypeNameFrom(fieldDefinition, pluginContext)).thenReturn(ClassName.get(Boolean.class));
 
-        final FieldGenerator fieldGenerator = new FieldGenerator(fieldDefinition, classNameFactory);
+        final FieldGenerator fieldGenerator = new FieldGenerator(fieldDefinition, classNameFactory, pluginContext);
         final FieldSpec fieldSpec = fieldGenerator.generateField();
 
         assertThat(fieldSpec, is(builder(Boolean.class, "fieldName", PRIVATE, FINAL).build()));
@@ -45,13 +47,17 @@ public class FieldGeneratorTest {
     public void shouldGenerateMethod() throws Exception {
         final FieldDefinition stringDefinition = mock(FieldDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(stringDefinition.type()).thenReturn(STRING);
         when(stringDefinition.getFieldName()).thenReturn("firstName");
         when(stringDefinition.isRequired()).thenReturn(true);
-        when(classNameFactory.createTypeNameFrom(stringDefinition)).thenReturn(ClassName.get(String.class));
+        when(classNameFactory.createTypeNameFrom(stringDefinition, pluginContext)).thenReturn(ClassName.get(String.class));
 
-        final FieldGenerator fieldGenerator = new FieldGenerator(stringDefinition, classNameFactory);
+        final FieldGenerator fieldGenerator = new FieldGenerator(
+                stringDefinition,
+                classNameFactory,
+                pluginContext);
         final List<MethodSpec> methodSpecs = fieldGenerator.generateMethods().collect(toList());
 
         assertThat(methodSpecs, hasItem(MethodSpec.methodBuilder("getFirstName")

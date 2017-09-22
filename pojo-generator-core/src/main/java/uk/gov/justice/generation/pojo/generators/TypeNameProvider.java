@@ -8,6 +8,7 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,7 +41,10 @@ public class TypeNameProvider {
      *                         (not including any generics)
      * @return The correct type name
      */
-    public TypeName typeNameForArray(final Definition definition, final ClassNameFactory classNameFactory) {
+    public TypeName typeNameForArray(
+            final Definition definition,
+            final ClassNameFactory classNameFactory,
+            final PluginContext pluginContext) {
 
         final ClassDefinition classDefinition = (ClassDefinition) definition;
 
@@ -49,7 +53,7 @@ public class TypeNameProvider {
         }
 
         final Definition childDefinition = classDefinition.getFieldDefinitions().get(FIRST_CHILD);
-        final TypeName typeName = classNameFactory.createTypeNameFrom(childDefinition);
+        final TypeName typeName = classNameFactory.createTypeNameFrom(childDefinition, pluginContext);
 
         return ParameterizedTypeName.get(get(List.class), typeName);
     }
@@ -63,7 +67,10 @@ public class TypeNameProvider {
      *                         (not including any generics)
      * @return The correct type name
      */
-    public TypeName typeNameForReference(final Definition definition, final ClassNameFactory classNameFactory) {
+    public TypeName typeNameForReference(
+            final Definition definition,
+            final ClassNameFactory classNameFactory,
+            final PluginContext pluginContext) {
         final ReferenceDefinition referenceDefinition = (ReferenceDefinition) definition;
 
         if (referenceDefinition.getFieldDefinitions().isEmpty()) {
@@ -71,7 +78,7 @@ public class TypeNameProvider {
         }
 
         final Definition childDefinition = referenceDefinition.getFieldDefinitions().get(FIRST_CHILD);
-        return classNameFactory.createTypeNameFrom(childDefinition);
+        return classNameFactory.createTypeNameFrom(childDefinition, pluginContext);
     }
 
     /**

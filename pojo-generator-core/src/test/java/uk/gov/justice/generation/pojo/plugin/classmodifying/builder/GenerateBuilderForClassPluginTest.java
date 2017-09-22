@@ -46,7 +46,8 @@ public class GenerateBuilderForClassPluginTest {
         when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(builderGeneratorFactory.create(
                 classDefinition,
-                classNameFactory)).thenReturn(builderGenerator);
+                classNameFactory,
+                pluginContext)).thenReturn(builderGenerator);
 
         when(builderGenerator.generate()).thenReturn(innerClassBuilder);
         when(builderGenerator.generateStaticGetBuilderMethod()).thenReturn(staticGetBuilderMethod);

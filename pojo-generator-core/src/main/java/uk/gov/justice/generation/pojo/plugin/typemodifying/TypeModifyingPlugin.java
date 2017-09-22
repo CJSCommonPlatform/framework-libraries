@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.typemodifying;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.TypeName;
 
@@ -22,8 +23,12 @@ public interface TypeModifyingPlugin {
      *
      * @param typeName The type name to be modified
      * @param definition The FieldDefinition of the type to be modified
+     * @param pluginContext The {@link PluginContext}
      *
      * @return The modified type name
      */
-    TypeName modifyTypeName(final TypeName typeName, final Definition definition);
+    TypeName modifyTypeName(
+            final TypeName typeName,
+            final Definition definition,
+            final PluginContext pluginContext);
 }

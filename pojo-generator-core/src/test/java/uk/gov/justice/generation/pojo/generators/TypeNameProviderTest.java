@@ -13,6 +13,7 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -39,11 +40,15 @@ public class TypeNameProviderTest {
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
         final Definition childDefinition = mock(Definition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(classDefinition.getFieldDefinitions()).thenReturn(singletonList(childDefinition));
-        when(classNameFactory.createTypeNameFrom(childDefinition)).thenReturn(stringTypeName);
+        when(classNameFactory.createTypeNameFrom(childDefinition, pluginContext)).thenReturn(stringTypeName);
 
-        final TypeName typeName = typeNameProvider.typeNameForArray(classDefinition, classNameFactory);
+        final TypeName typeName = typeNameProvider.typeNameForArray(
+                classDefinition,
+                classNameFactory,
+                pluginContext);
 
         assertThat(typeName.toString(), is("java.util.List<java.lang.String>"));
     }
@@ -53,12 +58,13 @@ public class TypeNameProviderTest {
 
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(classDefinition.getFieldDefinitions()).thenReturn(emptyList());
         when(classDefinition.getFieldName()).thenReturn("myListOfStringsField");
 
         try {
-            typeNameProvider.typeNameForArray(classDefinition, classNameFactory);
+            typeNameProvider.typeNameForArray(classDefinition, classNameFactory, pluginContext);
             fail();
         } catch (final GenerationException expected) {
             assertThat(expected.getMessage(), is("No definition present for array types. For field: myListOfStringsField"));
@@ -73,11 +79,15 @@ public class TypeNameProviderTest {
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
         final Definition referredDefinition = mock(Definition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(referenceDefinition.getFieldDefinitions()).thenReturn(singletonList(referredDefinition));
-        when(classNameFactory.createTypeNameFrom(referredDefinition)).thenReturn(stringTypeName);
+        when(classNameFactory.createTypeNameFrom(referredDefinition, pluginContext)).thenReturn(stringTypeName);
 
-        final TypeName typeName = typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
+        final TypeName typeName = typeNameProvider.typeNameForReference(
+                referenceDefinition,
+                classNameFactory,
+                pluginContext);
 
         assertThat(typeName.toString(), is("java.lang.String"));
     }
@@ -87,12 +97,16 @@ public class TypeNameProviderTest {
 
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(referenceDefinition.getFieldDefinitions()).thenReturn(emptyList());
         when(referenceDefinition.getFieldName()).thenReturn("startDate");
 
         try {
-            typeNameProvider.typeNameForReference(referenceDefinition, classNameFactory);
+            typeNameProvider.typeNameForReference(
+                    referenceDefinition,
+                    classNameFactory,
+                    pluginContext);
             fail();
         } catch (final GenerationException expected) {
             assertThat(expected.getMessage(), is("No definition present for reference type. For field: startDate"));

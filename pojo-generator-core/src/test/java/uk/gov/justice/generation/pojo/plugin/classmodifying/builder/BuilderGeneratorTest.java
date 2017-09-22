@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
@@ -42,6 +43,9 @@ public class BuilderGeneratorTest {
     @Mock
     private BuilderFieldFactory builderFieldFactory;
 
+    @Mock
+    private PluginContext pluginContext;
+
     @InjectMocks
     private BuilderGenerator builderGenerator;
 
@@ -64,11 +68,15 @@ public class BuilderGeneratorTest {
         when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(classDefinition.getFieldDefinitions()).thenReturn(fieldDefinitions);
 
-        when(builderFieldFactory.createFields(fieldDefinitions, classNameFactory)).thenReturn(fieldSpecs);
+        when(builderFieldFactory.createFields(
+                fieldDefinitions,
+                classNameFactory,
+                pluginContext)).thenReturn(fieldSpecs);
         when(builderMethodFactory.createTheWithMethods(
                 fieldDefinitions,
                 classNameFactory,
-                builderClassName)).thenReturn(singletonList(withMethod));
+                builderClassName,
+                pluginContext)).thenReturn(singletonList(withMethod));
 
         when(builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName)).thenReturn(buildMethod);
 

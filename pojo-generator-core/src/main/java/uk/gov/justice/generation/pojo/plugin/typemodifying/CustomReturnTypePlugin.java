@@ -5,6 +5,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.REFERENCE;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.time.ZonedDateTime;
 
@@ -70,11 +71,15 @@ public class CustomReturnTypePlugin implements TypeModifyingPlugin {
      *
      * @param typeName The type name to be modified
      * @param definition The FieldDefinition of the type to be modified
+     * @param pluginContext The {@link PluginContext}
      *
      * @return The type name as taken from the schema reference value
      */
     @Override
-    public TypeName modifyTypeName(final TypeName typeName, final Definition definition) {
+    public TypeName modifyTypeName(
+            final TypeName typeName,
+            final Definition definition,
+            final PluginContext pluginContext) {
 
         if(REFERENCE.equals(definition.type())) {
             final ReferenceDefinition referenceDefinition = (ReferenceDefinition) definition;

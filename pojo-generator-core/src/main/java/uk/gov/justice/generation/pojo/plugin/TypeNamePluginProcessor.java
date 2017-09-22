@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 
 import com.squareup.javapoet.TypeName;
@@ -18,13 +19,18 @@ public class TypeNamePluginProcessor {
      *
      * @param originalTypeName The {@link TypeName} to be modified
      * @param definition The definition who's {@link TypeName}s are to be modified
+     * @param pluginContext The {@link PluginContext}
+     *                      
      * @return The modified {@link TypeName}
      */
-    public TypeName processTypeNamePlugins(final TypeName originalTypeName, final Definition definition) {
+    public TypeName processTypeNamePlugins(
+            final TypeName originalTypeName,
+            final Definition definition,
+            final PluginContext pluginContext) {
 
         TypeName decoratedTypeName = originalTypeName;
         for (final TypeModifyingPlugin typeModifyingPlugin : pluginProvider.typeModifyingPlugins()) {
-            decoratedTypeName = typeModifyingPlugin.modifyTypeName(decoratedTypeName, definition);
+            decoratedTypeName = typeModifyingPlugin.modifyTypeName(decoratedTypeName, definition, pluginContext);
         }
 
         return decoratedTypeName;

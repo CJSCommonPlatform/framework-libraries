@@ -8,12 +8,14 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.stream.Stream;
 
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 
 /**
  * A generator for creating the containing field and accessor methods for a
@@ -24,22 +26,28 @@ public class ElementGenerator implements ElementGeneratable {
 
     private final Definition classTypeDefinition;
     private final ClassNameFactory classNameFactory;
+    private final PluginContext pluginContext;
 
-    ElementGenerator(final Definition classTypeDefinition, final ClassNameFactory classNameFactory) {
+    ElementGenerator(
+            final Definition classTypeDefinition,
+            final ClassNameFactory classNameFactory,
+            final PluginContext pluginContext) {
         this.classTypeDefinition = classTypeDefinition;
         this.classNameFactory = classNameFactory;
+        this.pluginContext = pluginContext;
     }
 
     @Override
     public FieldSpec generateField() {
-        return builder(classNameFactory.createTypeNameFrom(classTypeDefinition), classTypeDefinition.getFieldName(), PRIVATE, FINAL).build();
+        final TypeName typeName = classNameFactory.createTypeNameFrom(classTypeDefinition, pluginContext);
+        return builder(typeName, classTypeDefinition.getFieldName(), PRIVATE, FINAL).build();
     }
 
     @Override
     public Stream<MethodSpec> generateMethods() {
         return Stream.of(methodBuilder(toGetterMethodName())
                 .addModifiers(PUBLIC)
-                .returns(classNameFactory.createTypeNameFrom(classTypeDefinition))
+                .returns(classNameFactory.createTypeNameFrom(classTypeDefinition, pluginContext))
                 .addCode(CodeBlock.builder().addStatement("return $L", classTypeDefinition.getFieldName()).build())
                 .build());
     }

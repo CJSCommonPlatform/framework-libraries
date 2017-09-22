@@ -9,6 +9,7 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
@@ -29,16 +30,19 @@ public class BuilderGenerator implements ClassGeneratable {
     private final ClassNameFactory classNameFactory;
     private final BuilderFieldFactory builderFieldFactory;
     private final BuilderMethodFactory builderMethodFactory;
+    private final PluginContext pluginContext;
 
     public BuilderGenerator(
             final ClassDefinition classDefinition,
             final ClassNameFactory classNameFactory,
             final BuilderFieldFactory builderFieldFactory,
-            final BuilderMethodFactory builderMethodFactory) {
+            final BuilderMethodFactory builderMethodFactory,
+            final PluginContext pluginContext) {
         this.classDefinition = classDefinition;
         this.classNameFactory = classNameFactory;
         this.builderFieldFactory = builderFieldFactory;
         this.builderMethodFactory = builderMethodFactory;
+        this.pluginContext = pluginContext;
     }
 
     @Override
@@ -47,11 +51,15 @@ public class BuilderGenerator implements ClassGeneratable {
         final ClassName pojoClassName = classNameFactory.createClassNameFrom(classDefinition);
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
-        final List<FieldSpec> fieldSpecs = builderFieldFactory.createFields(fieldDefinitions, classNameFactory);
+        final List<FieldSpec> fieldSpecs = builderFieldFactory.createFields(
+                fieldDefinitions,
+                classNameFactory,
+                pluginContext);
         final List<MethodSpec> withMethods = builderMethodFactory.createTheWithMethods(
                 fieldDefinitions,
                 classNameFactory,
-                getBuilderClassName());
+                getBuilderClassName(),
+                pluginContext);
 
         final MethodSpec buildMethod = builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName);
 

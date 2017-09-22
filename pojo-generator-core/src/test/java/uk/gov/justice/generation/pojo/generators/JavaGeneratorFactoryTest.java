@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
@@ -43,7 +44,10 @@ public class JavaGeneratorFactoryTest {
     @Test
     public void shouldReturnInstanceOfFieldGeneratorForFieldDefinition() throws Exception {
         final FieldDefinition fieldDefinition = new FieldDefinition(STRING, "test");
-        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory(classNameFactory).createGeneratorFor(fieldDefinition);
+        final PluginContext pluginContext = mock(PluginContext.class);
+
+        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory(classNameFactory)
+                .createGeneratorFor(fieldDefinition, pluginContext);
 
         assertThat(elementGeneratable, is(instanceOf(FieldGenerator.class)));
     }
@@ -51,7 +55,10 @@ public class JavaGeneratorFactoryTest {
     @Test
     public void shouldReturnInstanceOfElementGeneratorForClassDefinition() throws Exception {
         final ClassDefinition classDefinition = new ClassDefinition(STRING, "test");
-        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory(classNameFactory).createGeneratorFor(classDefinition);
+        final PluginContext pluginContext = mock(PluginContext.class);
+
+        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory(classNameFactory)
+                .createGeneratorFor(classDefinition, pluginContext);
 
         assertThat(elementGeneratable, is(instanceOf(ElementGenerator.class)));
     }
@@ -59,7 +66,10 @@ public class JavaGeneratorFactoryTest {
     @Test
     public void shouldReturnInstanceOfElementGeneratorForEnumDefinition() throws Exception {
         final EnumDefinition enumDefinition = new EnumDefinition("test", emptyList());
-        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory(classNameFactory).createGeneratorFor(enumDefinition);
+        final PluginContext pluginContext = mock(PluginContext.class);
+
+        final ElementGeneratable elementGeneratable = new JavaGeneratorFactory(classNameFactory)
+                .createGeneratorFor(enumDefinition, pluginContext);
 
         assertThat(elementGeneratable, is(instanceOf(ElementGenerator.class)));
     }

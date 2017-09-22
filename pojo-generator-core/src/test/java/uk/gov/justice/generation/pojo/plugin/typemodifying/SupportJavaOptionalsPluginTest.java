@@ -8,6 +8,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
@@ -31,11 +32,15 @@ public class SupportJavaOptionalsPluginTest {
         final TypeName originalTypeName = ClassName.get(String.class);
 
         final Definition definition = mock(Definition.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(definition.isRequired()).thenReturn(false);
         when(definition.type()).thenReturn(STRING);
 
-        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(originalTypeName, definition);
+        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(
+                originalTypeName,
+                definition,
+                pluginContext);
 
         assertThat(typeName.toString(), is("java.util.Optional<java.lang.String>"));
     }
@@ -46,11 +51,15 @@ public class SupportJavaOptionalsPluginTest {
         final TypeName originalTypeName = ClassName.get(String.class);
 
         final Definition definition = mock(Definition.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(definition.isRequired()).thenReturn(true);
         when(definition.type()).thenReturn(STRING);
 
-        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(originalTypeName, definition);
+        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(
+                originalTypeName,
+                definition,
+                pluginContext);
 
         assertThat(typeName.toString(), is("java.lang.String"));
     }
@@ -61,11 +70,15 @@ public class SupportJavaOptionalsPluginTest {
         final TypeName originalTypeName = ClassName.get(List.class);
 
         final Definition definition = mock(Definition.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(definition.isRequired()).thenReturn(false);
         when(definition.type()).thenReturn(ARRAY);
 
-        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(originalTypeName, definition);
+        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(
+                originalTypeName,
+                definition,
+                pluginContext);
 
         assertThat(typeName.toString(), is("java.util.List"));
     }
@@ -76,11 +89,15 @@ public class SupportJavaOptionalsPluginTest {
         final TypeName originalTypeName = ClassName.get(List.class);
 
         final Definition definition = mock(Definition.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(definition.isRequired()).thenReturn(true);
         when(definition.type()).thenReturn(ARRAY);
 
-        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(originalTypeName, definition);
+        final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(
+                originalTypeName,
+                definition,
+                pluginContext);
 
         assertThat(typeName.toString(), is("java.util.List"));
     }

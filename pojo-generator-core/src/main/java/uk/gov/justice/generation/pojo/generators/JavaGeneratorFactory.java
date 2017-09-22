@@ -24,13 +24,13 @@ public class JavaGeneratorFactory {
         this.classNameFactory = classNameFactory;
     }
 
-    public ElementGeneratable createGeneratorFor(final Definition definition) {
+    public ElementGeneratable createGeneratorFor(final Definition definition, final PluginContext pluginContext) {
 
         if (definition.getClass() == ClassDefinition.class || definition.getClass() == EnumDefinition.class) {
-            return new ElementGenerator(definition, classNameFactory);
+            return new ElementGenerator(definition, classNameFactory, pluginContext);
         }
 
-        return new FieldGenerator((FieldDefinition) definition, classNameFactory);
+        return new FieldGenerator((FieldDefinition) definition, classNameFactory, pluginContext);
     }
 
     public List<ClassGeneratable> createClassGeneratorsFor(final List<Definition> definitions,

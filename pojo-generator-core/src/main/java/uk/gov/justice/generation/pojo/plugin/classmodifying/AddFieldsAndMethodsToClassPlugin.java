@@ -9,6 +9,7 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.ElementGeneratable;
+import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 /**
@@ -35,10 +37,11 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
                                          final PluginContext pluginContext) {
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
+        final JavaGeneratorFactory javaGeneratorFactory = pluginContext.getJavaGeneratorFactory();
 
         final List<ElementGeneratable> fieldGenerators = fieldDefinitions
                 .stream()
-                .map(pluginContext.getJavaGeneratorFactory()::createGeneratorFor)
+                .map((Definition definition) -> javaGeneratorFactory.createGeneratorFor(definition, pluginContext))
                 .collect(toList());
 
         final List<FieldSpec> fields = fieldGenerators
@@ -51,19 +54,30 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
                 .flatMap(ElementGeneratable::generateMethods)
                 .collect(toList());
 
-        classBuilder.addMethod(buildConstructor(fieldDefinitions, pluginContext.getClassNameFactory()))
+        final MethodSpec constructor = buildConstructor(
+                fieldDefinitions,
+                pluginContext.getClassNameFactory(),
+                pluginContext);
+        classBuilder.addMethod(constructor)
                 .addFields(fields)
                 .addMethods(methods);
 
         return classBuilder;
     }
 
-    private MethodSpec buildConstructor(final List<Definition> definitions, final ClassNameFactory classNameFactory) {
+    private MethodSpec buildConstructor(
+            final List<Definition> definitions,
+            final ClassNameFactory classNameFactory,
+            final PluginContext pluginContext) {
         final List<String> fieldNames = definitions.stream().map(Definition::getFieldName).collect(toList());
 
+        final List<ParameterSpec> constructorParameters = constructorParameters(
+                definitions,
+                classNameFactory,
+                pluginContext);
         return constructorBuilder()
                 .addModifiers(PUBLIC)
-                .addParameters(constructorParameters(definitions, classNameFactory))
+                .addParameters(constructorParameters)
                 .addCode(constructorStatements(fieldNames))
                 .build();
     }
@@ -76,9 +90,15 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
         return builder.build();
     }
 
-    private List<ParameterSpec> constructorParameters(final List<Definition> definitions, final ClassNameFactory classNameFactory) {
+    private List<ParameterSpec> constructorParameters(
+            final List<Definition> definitions,
+            final ClassNameFactory classNameFactory,
+            final PluginContext pluginContext) {
         return definitions.stream()
-                .map(definition -> ParameterSpec.builder(classNameFactory.createTypeNameFrom(definition), definition.getFieldName(), FINAL).build())
+                .map(definition -> {
+                    final TypeName typeName = classNameFactory.createTypeNameFrom(definition, pluginContext);
+                    return ParameterSpec.builder(typeName, definition.getFieldName(), FINAL).build();
+                })
                 .collect(toList());
     }
 }

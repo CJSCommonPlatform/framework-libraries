@@ -11,7 +11,7 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
-import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootFieldNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
@@ -111,7 +111,7 @@ public class PluginProviderFactory {
             return (NameGeneratablePlugin) nameGeneratablePlugins.get(FIRST_INDEX);
         }
 
-        return new RootFieldNameGeneratorPlugin();
+        return new RootNameGeneratorPlugin();
     }
 
     private Map<Class<?>, List<Object>> partitionPluginsAccordingToType(final Map<String, String> generatorProperties) {

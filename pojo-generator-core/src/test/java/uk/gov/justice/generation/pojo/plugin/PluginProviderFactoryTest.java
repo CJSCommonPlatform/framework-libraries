@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootFieldNameGeneratorPlugin;
+import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.plugin.testplugins.UserDefinedNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
@@ -172,7 +172,7 @@ public class PluginProviderFactoryTest {
 
         final PluginProvider pluginProvider = new PluginProviderFactory().createFor(generatorConfig);
 
-        assertThat(pluginProvider.nameGeneratablePlugin(), is(instanceOf(RootFieldNameGeneratorPlugin.class)));
+        assertThat(pluginProvider.nameGeneratablePlugin(), is(instanceOf(RootNameGeneratorPlugin.class)));
     }
 
     @Test

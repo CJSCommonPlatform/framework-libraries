@@ -3,10 +3,13 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying;
 import static com.squareup.javapoet.ClassName.get;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
 import static java.util.Collections.emptyList;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
@@ -15,9 +18,12 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
@@ -144,5 +150,22 @@ public class AddHashcodeAndEqualsPluginTest {
         assertThat(modifiedClassBuilder.methodSpecs.size(), is(2));
         assertThat(modifiedClassBuilder.methodSpecs.get(0).toString(), is(expectedEqualsMethod));
         assertThat(modifiedClassBuilder.methodSpecs.get(1).toString(), is(expectedHashCodeMethod));
+    }
+
+    @Test
+    public void shouldBeInstantiableUsingItsFactoryMethod() throws Exception {
+
+        final Method[] declaredMethods = AddHashcodeAndEqualsPlugin.class.getDeclaredMethods();
+
+        final Optional<Method> methodOptional = stream(declaredMethods)
+                .filter(method -> method.isAnnotationPresent(FactoryMethod.class))
+                .findFirst();
+
+        if (methodOptional.isPresent()) {
+            final Object plugin = methodOptional.get().invoke(null);
+            assertThat(plugin, is(instanceOf(AddHashcodeAndEqualsPlugin.class)));
+        } else {
+            fail();
+        }
     }
 }

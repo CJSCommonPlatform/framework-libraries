@@ -63,7 +63,7 @@ public class GeneratorUtil {
     );
     private List<TypeModifyingPlugin> typeModifyingPlugins = asList(
             new SupportJavaOptionalsPlugin(),
-            new CustomReturnTypePlugin());
+            CustomReturnTypePlugin.create());
 
     public GeneratorUtil withIgnoredClassNames(final List<String> ignoredClassNames) {
         this.ignoredClassNames = ignoredClassNames;

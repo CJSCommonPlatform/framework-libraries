@@ -10,6 +10,7 @@ import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
+import uk.gov.justice.generation.pojo.plugin.PluginProviderFactoryFactory;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
@@ -44,6 +45,7 @@ public class SchemaPojoGenerator implements Generator<File> {
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final VisitableFactory visitableFactory = new VisitableFactory();
     private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
+    private final PluginProviderFactoryFactory pluginProviderFactoryFactory = new PluginProviderFactoryFactory();
 
     /**
      * Run the pojo generation based on the specified json schema file
@@ -80,7 +82,7 @@ public class SchemaPojoGenerator implements Generator<File> {
     }
 
     private PluginProvider createPluginProvider(final GeneratorConfig generatorConfig) {
-        final PluginProviderFactory pluginProviderFactory = new PluginProviderFactory();
+        final PluginProviderFactory pluginProviderFactory = pluginProviderFactoryFactory.create();
         return pluginProviderFactory.createFor(generatorConfig);
     }
 

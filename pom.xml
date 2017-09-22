@@ -17,7 +17,7 @@
     <description>Parent POM for the Microservices framework</description>
 
     <properties>
-        <plugins.maven.wildfly.version>1.2.0.Alpha6</plugins.maven.wildfly.version>
+        <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
 
         <cpp.repo.name>maven-framework-parent-pom</cpp.repo.name>
     </properties>

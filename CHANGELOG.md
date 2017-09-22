@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+ - wildfly-maven-plugin 1.2.0.Alpha6 -> 1.2.0.Final
+
 ## [1.6.1] - 2017-07-31
 ### Changed
  - Don't add the wildfly plugin to the build process in "skipped" mode. Leave it out entirely

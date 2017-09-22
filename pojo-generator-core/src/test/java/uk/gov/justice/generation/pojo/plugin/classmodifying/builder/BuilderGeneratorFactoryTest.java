@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.lang.reflect.Field;
 
@@ -26,10 +27,12 @@ public class BuilderGeneratorFactoryTest {
 
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         final BuilderGenerator builderGenerator = builderGeneratorFactory.create(
                 classDefinition,
-                classNameFactory
+                classNameFactory,
+                pluginContext
         );
 
         assertThat(getPrivateFieldFrom(builderGenerator, "classDefinition"), is(classDefinition));

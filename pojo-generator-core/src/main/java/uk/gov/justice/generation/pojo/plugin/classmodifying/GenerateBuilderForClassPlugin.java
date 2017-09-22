@@ -61,7 +61,8 @@ public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 
         final BuilderGenerator builderGenerator = builderGeneratorFactory.create(
                 classDefinition,
-                pluginContext.getClassNameFactory());
+                pluginContext.getClassNameFactory(),
+                pluginContext);
 
         final TypeSpec innerClassBuilder = builderGenerator.generate();
         final MethodSpec staticGetBuilderMethod = builderGenerator.generateStaticGetBuilderMethod();

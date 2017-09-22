@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 /**
  * Factory for creating a {@link BuilderGenerator}
@@ -18,13 +19,15 @@ public class BuilderGeneratorFactory {
      * @return a newly constructed {@link BuilderGenerator}
      */
     public BuilderGenerator create(final ClassDefinition classDefinition,
-                                   final ClassNameFactory classNameFactory) {
+                                   final ClassNameFactory classNameFactory,
+                                   final PluginContext pluginContext) {
 
         return new BuilderGenerator(
                 classDefinition,
                 classNameFactory,
                 new BuilderFieldFactory(),
-                new BuilderMethodFactory()
+                new BuilderMethodFactory(),
+                pluginContext
         );
     }
 }

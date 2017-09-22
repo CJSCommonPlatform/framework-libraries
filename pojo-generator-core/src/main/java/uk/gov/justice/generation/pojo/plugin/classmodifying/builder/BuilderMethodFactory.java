@@ -9,12 +9,14 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 
 /**
  * Factory for creating the 'with' and 'build' methods of the POJO's static inner Builder
@@ -24,14 +26,21 @@ public class BuilderMethodFactory {
     public List<MethodSpec> createTheWithMethods(
             final List<Definition> fieldDefinitions,
             final ClassNameFactory classNameFactory,
-            final ClassName builderClassName) {
+            final ClassName builderClassName,
+            final PluginContext pluginContext) {
 
         return fieldDefinitions.stream()
-                .map(fieldDefinition -> generateWithMethod(fieldDefinition, builderClassName, classNameFactory))
+                .map(fieldDefinition -> generateWithMethod(
+                        fieldDefinition,
+                        builderClassName,
+                        classNameFactory,
+                        pluginContext))
                 .collect(toList());
     }
 
-    public MethodSpec createTheBuildMethod(final List<Definition> fieldDefinitions, final ClassName pojoClassName) {
+    public MethodSpec createTheBuildMethod(
+            final List<Definition> fieldDefinitions,
+            final ClassName pojoClassName) {
         final String params = fieldDefinitions.stream()
                 .map(Definition::getFieldName)
                 .collect(joining(", "));
@@ -46,12 +55,15 @@ public class BuilderMethodFactory {
     private MethodSpec generateWithMethod(
             final Definition fieldDefinition,
             final ClassName builderClassName,
-            final ClassNameFactory classNameFactory) {
+            final ClassNameFactory classNameFactory,
+            final PluginContext pluginContext) {
 
         final String fieldName = fieldDefinition.getFieldName();
+        final TypeName typeName = classNameFactory.createTypeNameFrom(fieldDefinition, pluginContext);
+
         return methodBuilder("with" + capitalize(fieldName))
                 .addModifiers(PUBLIC)
-                .addParameter(classNameFactory.createTypeNameFrom(fieldDefinition), fieldName, FINAL)
+                .addParameter(typeName, fieldName, FINAL)
                 .returns(builderClassName)
                 .addCode(CodeBlock.builder()
                         .addStatement("this.$L = $L", fieldName, fieldName)

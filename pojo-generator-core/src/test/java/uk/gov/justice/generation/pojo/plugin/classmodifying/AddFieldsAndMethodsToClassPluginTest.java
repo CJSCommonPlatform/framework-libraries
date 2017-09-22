@@ -82,13 +82,14 @@ public class AddFieldsAndMethodsToClassPluginTest {
                 .build();
 
         final FieldGenerator fieldGenerator = mock(FieldGenerator.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
         when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
-        when(generatorFactory.createGeneratorFor(fieldDefinition)).thenReturn(fieldGenerator);
+        when(generatorFactory.createGeneratorFor(fieldDefinition, pluginContext)).thenReturn(fieldGenerator);
         when(fieldGenerator.generateField()).thenReturn(fieldSpec);
         when(fieldGenerator.generateMethods()).thenReturn(Stream.of(methodSpec));
-        when(classNameFactory.createTypeNameFrom(fieldDefinition)).thenReturn(ClassName.get(String.class));
+        when(classNameFactory.createTypeNameFrom(fieldDefinition, pluginContext)).thenReturn(ClassName.get(String.class));
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 

@@ -12,6 +12,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.lang.reflect.Method;
 import java.time.ZonedDateTime;
@@ -42,13 +43,17 @@ public class CustomReturnTypePluginTest {
 
         final ClassName originalTypeName = ClassName.get(String.class);
         final ClassName modifiedTypeName = ClassName.get(ZonedDateTime.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
         when(referenceDefinition.type()).thenReturn(REFERENCE);
         when(referenceDefinition.getReferenceValue()).thenReturn(referenceValue);
         when(referenceToClassNameConverter.get(referenceValue)).thenReturn(modifiedTypeName);
 
-        final TypeName typeName = customReturnTypePlugin.modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName typeName = customReturnTypePlugin.modifyTypeName(
+                originalTypeName,
+                referenceDefinition,
+                pluginContext);
 
         assertThat(typeName, is(modifiedTypeName));
     }
@@ -59,9 +64,14 @@ public class CustomReturnTypePluginTest {
         final ClassName originalTypeName = ClassName.get(String.class);
 
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
+
         when(referenceDefinition.type()).thenReturn(STRING);
 
-        final TypeName typeName = customReturnTypePlugin.modifyTypeName(originalTypeName, referenceDefinition);
+        final TypeName typeName = customReturnTypePlugin.modifyTypeName(
+                originalTypeName,
+                referenceDefinition,
+                pluginContext);
 
         assertThat(typeName, is(originalTypeName));
     }

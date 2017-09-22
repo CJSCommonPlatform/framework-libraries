@@ -3,6 +3,7 @@ package uk.gov.justice.generation.pojo.generators;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -30,14 +31,16 @@ public class ClassNameFactory {
      * Generate to correct return type/parameter type for the specified {@link Definition}
      *
      * @param definition The definition for which to generate the correct return type
+     * @param pluginContext The {@link PluginContext}
+     *                      
      * @return The correct type for returns and parameters
      */
-    public TypeName createTypeNameFrom(final Definition definition) {
+    public TypeName createTypeNameFrom(final Definition definition, final PluginContext pluginContext) {
 
         final TypeName typeName;
         switch (definition.type()) {
             case ARRAY:
-                typeName = typeNameProvider.typeNameForArray(definition, this);
+                typeName = typeNameProvider.typeNameForArray(definition, this, pluginContext);
                 break;
 
             case BOOLEAN:
@@ -53,7 +56,7 @@ public class ClassNameFactory {
                 break;
 
             case REFERENCE:
-                typeName = typeNameProvider.typeNameForReference(definition, this);
+                typeName = typeNameProvider.typeNameForReference(definition, this, pluginContext);
                 break;
 
             case STRING:
@@ -67,7 +70,7 @@ public class ClassNameFactory {
                 typeName = typeNameProvider.typeNameForClass(definition);
         }
 
-        return typeNamePluginProcessor.processTypeNamePlugins(typeName, definition);
+        return typeNamePluginProcessor.processTypeNamePlugins(typeName, definition, pluginContext);
     }
 
     public ClassName createClassNameFrom(final ClassDefinition classDefinition) {

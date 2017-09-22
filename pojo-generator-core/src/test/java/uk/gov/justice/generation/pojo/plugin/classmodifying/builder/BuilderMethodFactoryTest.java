@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 
@@ -58,15 +59,21 @@ public class BuilderMethodFactoryTest {
         final Definition fieldDefinition_2 = mock(Definition.class);
         final List<Definition> fieldDefinitions = asList(fieldDefinition_1, fieldDefinition_2);
 
+        final PluginContext pluginContext = mock(PluginContext.class);
+
         final ClassName builderClassName = get("org.bloggs.fred", "AlcubierreDrive").nestedClass("Builder");
 
         when(fieldDefinition_1.getFieldName()).thenReturn("fieldDefinition_1");
         when(fieldDefinition_2.getFieldName()).thenReturn("fieldDefinition_2");
 
-        when(classNameFactory.createTypeNameFrom(fieldDefinition_1)).thenReturn(get(String.class));
-        when(classNameFactory.createTypeNameFrom(fieldDefinition_2)).thenReturn(get(Integer.class));
+        when(classNameFactory.createTypeNameFrom(fieldDefinition_1, pluginContext)).thenReturn(get(String.class));
+        when(classNameFactory.createTypeNameFrom(fieldDefinition_2, pluginContext)).thenReturn(get(Integer.class));
 
-        final List<MethodSpec> withMethods = builderMethodFactory.createTheWithMethods(fieldDefinitions, classNameFactory, builderClassName);
+        final List<MethodSpec> withMethods = builderMethodFactory.createTheWithMethods(
+                fieldDefinitions,
+                classNameFactory,
+                builderClassName,
+                pluginContext);
 
         assertThat(withMethods.size(), is(2));
 

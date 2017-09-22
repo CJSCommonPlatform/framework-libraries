@@ -37,9 +37,11 @@ public class SchemaPojoGeneratorTest {
     public void shouldConvertSchemaFileToJavaPojo() throws Exception {
         final File schemaFile = get("src/test/resources/schemas/person-schema.json").toFile();
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
+        final Map<String, String> properties = new HashMap<>();
 
         when(generatorConfig.getOutputDirectory()).thenReturn(sourceOutputDirectory.toPath());
         when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.pojo");
+        when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
         final SchemaPojoGenerator schemaPojoGenerator = new SchemaPojoGenerator();
 
@@ -55,26 +57,26 @@ public class SchemaPojoGeneratorTest {
     }
 
     @Test
-    public void shouldUsePluginProviderSetInGeneratorConfigAndNotUseEventAnnotationPlugin() throws Exception {
-        final File schemaFile = get("src/test/resources/schemas/example.events.person-event.json").toFile();
+    public void shouldUseRooClassNameSettingInGeneratorProperties() throws Exception {
+        final File schemaFile = get("src/test/resources/schemas/person-schema.json").toFile();
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
         final Map<String, String> properties = new HashMap<>();
-        properties.put("pojo-plugin-provider", "uk.gov.justice.generation.pojo.TestPluginProvider");
+        properties.put("rootClassName", "TestClassName");
 
         when(generatorConfig.getOutputDirectory()).thenReturn(sourceOutputDirectory.toPath());
-        when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.event");
+        when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.pojo");
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
         final SchemaPojoGenerator schemaPojoGenerator = new SchemaPojoGenerator();
 
         schemaPojoGenerator.run(schemaFile, generatorConfig);
 
-        final File directory = Paths.get("target/test-generation/uk/gov/justice/generation/event").toFile();
+        final File directory = Paths.get("target/test-generation/uk/gov/justice/generation/pojo").toFile();
         assertThat(directory.exists(), is(true));
 
         final File[] files = directory.listFiles();
         assertThat(files, notNullValue());
         assertThat(files.length, is(1));
-        assertThat(files[0].toPath().toString(), is("target/test-generation/uk/gov/justice/generation/event/PersonEvent.java"));
+        assertThat(files[0].toPath().toString(), is("target/test-generation/uk/gov/justice/generation/pojo/TestClassName.java"));
     }
 }

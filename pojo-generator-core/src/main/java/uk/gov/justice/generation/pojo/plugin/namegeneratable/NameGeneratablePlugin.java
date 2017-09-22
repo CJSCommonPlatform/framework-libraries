@@ -1,6 +1,8 @@
 package uk.gov.justice.generation.pojo.plugin.namegeneratable;
 
 
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+
 import org.everit.json.schema.Schema;
 
 /**
@@ -19,5 +21,7 @@ public interface NameGeneratablePlugin {
      * @param schemaFilename the schema filename to produce a field name for
      * @return the root field name
      */
-    String rootFieldNameFrom(final Schema schema, final String schemaFilename);
+    String rootFieldNameFrom(final Schema schema,
+                             final String schemaFilename,
+                             final PluginContext pluginContext);
 }

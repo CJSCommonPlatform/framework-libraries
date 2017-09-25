@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.integration.test;
 
+import static com.google.common.collect.ImmutableMap.of;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
 
@@ -13,6 +14,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -40,10 +42,16 @@ public class ZoneDateTimeIT {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/employee-with-date.json");
 
-        final List<Class<?>> classes = generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories);
+        final Map<String, String> generatorProperties = of(
+                "typemapping.reference.date", "java.time.ZonedDateTime"
+        );
+
+        final List<Class<?>> classes = generatorUtil
+                .withGeneratorProperties(generatorProperties)
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         final String firstName = "firstName";
         final String lastName = "lastName";

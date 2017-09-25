@@ -21,11 +21,15 @@ public class ReferenceValueParserTest {
 
     @Test
     public void shouldParseReferenceValueFromValidJsonString() throws Exception {
-        final String jsonValue = "{\n\"$ref\": \"#/definitions/uuid\"\n}";
 
-        final String result = new ReferenceValueParser().parseFrom(new StringReader(jsonValue), "fieldName");
+        final String definitionString = "#/definitions/uuid";
+        final String jsonValue = "{\n\"$ref\": \"" + definitionString + "\"\n}";
 
-        assertThat(result, is("#/definitions/uuid"));
+        final ReferenceValue result = new ReferenceValueParser().parseFrom(new StringReader(jsonValue), "fieldName");
+
+        assertThat(result.getPath(), is("#/definitions"));
+        assertThat(result.getName(), is("uuid"));
+        assertThat(result.toString(), is(definitionString));
     }
 
     @Test

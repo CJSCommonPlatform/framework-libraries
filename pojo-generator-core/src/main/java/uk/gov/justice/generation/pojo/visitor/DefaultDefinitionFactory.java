@@ -108,7 +108,7 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
         throw new UnsupportedSchemaException(format(EXCEPTION_FORMAT_MESSAGE, schema.getClass().getSimpleName()));
     }
 
-    private String parseReferenceValueFrom(final String fieldName, final ReferenceSchema referenceSchema) {
+    private ReferenceValue parseReferenceValueFrom(final String fieldName, final ReferenceSchema referenceSchema) {
         final StringReader stringReader = new StringReader(referenceSchema.toString());
         return referenceValueParser.parseFrom(stringReader, fieldName);
     }

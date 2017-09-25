@@ -9,7 +9,7 @@
       "type": "string"
     },
     "salary": {
-      "$ref": "#/definitions/java.math.BigInteger"
+      "$ref": "#/definitions/bigInteger"
     }
   },
   "additionalProperties": false,
@@ -19,7 +19,7 @@
     "salary"
   ],
   "definitions": {
-    "java.math.BigInteger": {
+    "bigInteger": {
       "type": "number"
     }
   }

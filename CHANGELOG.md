@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [2.0.0] - 2017-09-25
 ### Added
 - GeneratorFactory interface to allow factory creation of Generators
 - GeneratorProperties interface for custom implementation of property class

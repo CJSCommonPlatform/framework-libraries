@@ -5,6 +5,7 @@ import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_
 
 import uk.gov.justice.maven.generator.io.files.parser.FileParser;
 import uk.gov.justice.maven.generator.io.files.parser.common.BasicMojo;
+import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorProperties;
 import uk.gov.justice.maven.generator.io.files.parser.io.FileTreeScannerFactory;
 
 import java.io.File;
@@ -12,7 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -48,7 +48,7 @@ public class GenerateMojo extends BasicMojo {
     private String basePackageName;
 
     @Parameter(property = "generatorProperties", required = false)
-    private Map<String, String> generatorProperties;
+    private GeneratorProperties generatorProperties;
 
     @Parameter(property = "skipGeneration", defaultValue = "false")
     private boolean skip = false;

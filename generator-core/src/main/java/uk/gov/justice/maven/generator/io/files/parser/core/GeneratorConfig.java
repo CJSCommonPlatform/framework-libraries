@@ -2,20 +2,19 @@ package uk.gov.justice.maven.generator.io.files.parser.core;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 public class GeneratorConfig {
 
     private final Path outputDirectory;
     private final String basePackageName;
     private final Path sourceDirectory;
-    private final Map<String, String> generatorProperties;
+    private final GeneratorProperties generatorProperties;
     private final List<Path> sourcePaths;
 
     public GeneratorConfig(final Path sourceDirectory,
                            final Path outputDirectory,
                            final String basePackageName,
-                           final Map<String, String> generatorProperties,
+                           final GeneratorProperties generatorProperties,
                            final List<Path> sourcePaths) {
         this.outputDirectory = outputDirectory;
         this.basePackageName = basePackageName;
@@ -36,7 +35,7 @@ public class GeneratorConfig {
         return sourceDirectory;
     }
 
-    public Map<String, String> getGeneratorProperties() {
+    public GeneratorProperties getGeneratorProperties() {
         return generatorProperties;
     }
 

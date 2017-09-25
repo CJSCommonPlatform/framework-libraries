@@ -4,11 +4,13 @@ import static java.nio.file.Files.exists;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
+import uk.gov.justice.maven.generator.io.files.parser.generator.property.TestGeneratorProperties;
 import uk.gov.justice.maven.generator.io.files.parser.test.utils.BetterAbstractMojoTestCase;
 
 import java.io.File;
@@ -53,8 +55,12 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         assertThat(config.getSourceDirectory(), equalTo(expectedSourceDirectory));
         assertThat(config.getOutputDirectory(), equalTo(expectedOutputDirectory));
         assertThat(config.getBasePackageName(), equalTo("uk.gov.justice.api"));
-        assertThat(config.getGeneratorProperties().get("property1"), equalTo("propertyValueABC"));
-        assertThat(config.getGeneratorProperties().get("property2"), equalTo("propertyValueDDD"));
+
+        final TestGeneratorProperties customGeneratorProperties = (TestGeneratorProperties) config.getGeneratorProperties();
+        assertThat(customGeneratorProperties.getProperty1(), equalTo("propertyValueABC"));
+        assertThat(customGeneratorProperties.getProperty2(), equalTo("propertyValueDDD"));
+
+        assertThat(customGeneratorProperties.getNestedProperty(), hasItems("test1", "test2", "test3"));
 
         assertThat((project.getCompileSourceRoots()), hasItem(expectedOutputDirectory.toString()));
         assertThat((project.getTestCompileSourceRoots()), hasItem(expectedOutputDirectory.toString()));

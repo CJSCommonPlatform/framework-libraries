@@ -85,9 +85,16 @@ public class SchemaPojoGenerator implements Generator<File> {
                 pluginProvider.classModifyingPlugins(),
                 generatorConfig.getGeneratorProperties());
 
-        final List<Definition> definitions = createDefinitions(jsonSchemaFile, pluginProvider, pluginContext);
+        final List<Definition> definitions = createDefinitions(
+                jsonSchemaFile,
+                pluginProvider,
+                pluginContext);
 
-        final List<ClassGeneratable> classGenerators = javaGeneratorFactory.createClassGeneratorsFor(definitions, pluginProvider, pluginContext, generationContext);
+        final List<ClassGeneratable> classGenerators = javaGeneratorFactory.createClassGeneratorsFor(
+                definitions,
+                pluginProvider,
+                pluginContext,
+                generationContext);
 
         writeJavaClassesToFile(generationContext, classGenerators);
     }

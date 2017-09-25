@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.visitor;
 
 import static java.lang.String.format;
+import static uk.gov.justice.generation.pojo.visitor.ReferenceValue.fromReferenceValueString;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -23,10 +24,13 @@ public class ReferenceValueParser {
      * @return the $ref value
      * @throws FailedToParseSchemaException if an IOException occurs while reading the Json
      */
-    public String parseFrom(final Reader reader, final String fieldName) {
+    public ReferenceValue parseFrom(final Reader reader, final String fieldName) {
         try {
             final JsonNode jsonNode = JsonLoader.fromReader(reader);
-            return jsonNode.get(REFERENCE_VALUE_FIELD_NAME).textValue();
+            final String referenceValueString = jsonNode.get(REFERENCE_VALUE_FIELD_NAME).textValue();
+
+            return fromReferenceValueString(referenceValueString);
+            
         } catch (final IOException e) {
             throw new FailedToParseSchemaException(format("Failed to parse ReferenceSchema $ref value for field name: %s", fieldName), e);
         }

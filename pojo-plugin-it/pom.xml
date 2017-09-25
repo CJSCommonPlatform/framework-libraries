@@ -82,6 +82,8 @@
                                     uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin,
                                     uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin
                                 </plugins>
+                                <typemapping.reference.uuid>java.util.UUID</typemapping.reference.uuid>
+                                <typemapping.format.custom-date-time>java.time.ZonedDateTime</typemapping.format.custom-date-time>
                             </generatorProperties>
                         </configuration>
                         <goals>

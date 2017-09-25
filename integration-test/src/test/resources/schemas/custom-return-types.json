@@ -2,48 +2,41 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+    "employeeId": {
+      "$ref": "#/definitions/uuid"
+    },
     "firstName": {
       "type": "string"
     },
     "lastName": {
       "type": "string"
     },
-    "poundsPerHour": {
-      "type": "number"
+    "salary": {
+      "$ref": "#/definitions/bigInteger"
     },
     "startDate": {
       "$ref": "#/definitions/date"
-    },
-    "address": {
-      "type": "object",
-      "properties": {
-        "firstLine": {
-          "type": "string"
-        },
-        "postCode": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "firstLine",
-        "postCode"
-      ]
     }
   },
   "additionalProperties": false,
   "required": [
+    "employeeId",
     "firstName",
     "lastName",
-    "poundsPerHour",
-    "startDate",
-    "address"
+    "salary",
+    "startDate"
   ],
   "definitions": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+    },
     "date": {
       "type": "string",
-      "format": "date-time",
       "pattern": "^[1|2][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\.[0-9]{3}Z$"
+    },
+    "bigInteger": {
+      "type": "integer"
     }
   }
 }

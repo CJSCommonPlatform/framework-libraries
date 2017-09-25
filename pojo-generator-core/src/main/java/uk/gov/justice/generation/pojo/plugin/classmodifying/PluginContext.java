@@ -8,6 +8,7 @@ import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Placeholder for all resources required by any {@link ClassModifyingPlugin} or {@link
@@ -84,5 +85,9 @@ public class PluginContext {
 
     public Optional<String> generatorPropertyValueOf(final String propertyName) {
         return Optional.ofNullable(generatorProperties.get(propertyName));
+    }
+
+    public Set<String> getPropertyNames() {
+        return generatorProperties.keySet();
     }
 }

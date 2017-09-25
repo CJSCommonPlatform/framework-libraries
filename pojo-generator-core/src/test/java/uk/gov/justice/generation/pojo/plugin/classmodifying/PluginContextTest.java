@@ -1,7 +1,9 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
+import static com.google.common.collect.ImmutableMap.of;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -14,7 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 public class PluginContextTest {
@@ -119,5 +123,30 @@ public class PluginContextTest {
                 generatorProperties);
 
         assertThat(pluginContext.generatorPropertyValueOf(propertyName), is(Optional.empty()));
+    }
+
+    @Test
+    public void shouldGetTheSetOfGeneratorPropertyNames() throws Exception {
+
+        final ImmutableMap<String, String> generatorProperties = of(
+                "key_1", "value_1",
+                "key_2", "value_2",
+                "key_3", "value_3"
+        );
+
+        final PluginContext pluginContext = new PluginContext(
+                UNSPECIFIED_GENERATOR_FACTORY,
+                UNSPECIFIED_CLASS_NAME_FACTORY,
+                BLANK,
+                EMPTY_CLASS_MODIFYING_PLUGINS,
+                generatorProperties);
+
+        final Set<String> propertyNames = pluginContext.getPropertyNames();
+
+        assertThat(propertyNames.size(), is(3));
+
+        assertThat(propertyNames, hasItem("key_1"));
+        assertThat(propertyNames, hasItem("key_2"));
+        assertThat(propertyNames, hasItem("key_3"));
     }
 }

@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.integration.utils;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
@@ -38,8 +39,8 @@ import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.everit.json.schema.Schema;
 import org.json.JSONObject;
@@ -53,6 +54,7 @@ public class GeneratorUtil {
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
     private List<String> ignoredClassNames = emptyList();
+    private Map<String, String> generatorProperties = emptyMap();
 
     private List<ClassModifyingPlugin> classModifyingPlugins = asList(
             new MakeClassSerializablePlugin(),
@@ -78,6 +80,11 @@ public class GeneratorUtil {
 
     public GeneratorUtil withTypeModifyingPlugins(final List<TypeModifyingPlugin> typeModifyingPlugins) {
         this.typeModifyingPlugins = typeModifyingPlugins;
+        return this;
+    }
+
+    public GeneratorUtil withGeneratorProperties(final Map<String, String> generatorProperties) {
+        this.generatorProperties = generatorProperties;
         return this;
     }
 
@@ -115,7 +122,7 @@ public class GeneratorUtil {
                 classNameFactory,
                 generationContext.getSourceFilename(),
                 classModifyingPlugins,
-                new HashMap<>());
+                generatorProperties);
 
         final String fieldName = pluginProvider
                 .nameGeneratablePlugin()

@@ -189,8 +189,8 @@ public class DefaultDefinitionFactoryTest {
     @Test
     public void shouldConstructReferenceDefinition() throws Exception {
         final String fieldName = "fieldName";
-        final String referenceValue = "reference value";
-        final ReferenceSchema referenceSchema = ReferenceSchema.builder().refValue(referenceValue).build();
+        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "uuid");
+        final ReferenceSchema referenceSchema = ReferenceSchema.builder().refValue(referenceValue.toString()).build();
 
         when(referenceValueParser.parseFrom(any(Reader.class), eq(fieldName))).thenReturn(referenceValue);
 

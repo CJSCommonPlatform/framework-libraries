@@ -6,9 +6,14 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.custom.CustomReturnTypeMapper;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.custom.FullyQualifiedNameToClassNameConverter;
+import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
 /**
@@ -55,15 +60,21 @@ import com.squareup.javapoet.TypeName;
  */
 public class CustomReturnTypePlugin implements TypeModifyingPlugin {
 
-    private final ReferenceToClassNameConverter referenceToClassNameConverter;
+    private final CustomReturnTypeMapper customReturnTypeMapper;
 
-    public CustomReturnTypePlugin(final ReferenceToClassNameConverter referenceToClassNameConverter) {
-        this.referenceToClassNameConverter = referenceToClassNameConverter;
+    public CustomReturnTypePlugin(final CustomReturnTypeMapper customReturnTypeMapper) {
+        this.customReturnTypeMapper = customReturnTypeMapper;
     }
 
     @FactoryMethod
     public static CustomReturnTypePlugin create() {
-        return new CustomReturnTypePlugin(new ReferenceToClassNameConverter());
+
+        final FullyQualifiedNameToClassNameConverter fullyQualifiedNameToClassNameConverter =
+                new FullyQualifiedNameToClassNameConverter();
+        final CustomReturnTypeMapper customReturnTypeMapper =
+                new CustomReturnTypeMapper(fullyQualifiedNameToClassNameConverter);
+
+        return new CustomReturnTypePlugin(customReturnTypeMapper);
     }
 
     /**
@@ -83,8 +94,12 @@ public class CustomReturnTypePlugin implements TypeModifyingPlugin {
 
         if(REFERENCE.equals(definition.type())) {
             final ReferenceDefinition referenceDefinition = (ReferenceDefinition) definition;
-            final String referenceValue = referenceDefinition.getReferenceValue();
-            return referenceToClassNameConverter.get(referenceValue);
+            final ReferenceValue referenceValue = referenceDefinition.getReferenceValue();
+            final Optional<ClassName> className = customReturnTypeMapper.customType(referenceValue, pluginContext);
+
+            if (className.isPresent()) {
+                return className.get();
+            }
         }
 
         return typeName;

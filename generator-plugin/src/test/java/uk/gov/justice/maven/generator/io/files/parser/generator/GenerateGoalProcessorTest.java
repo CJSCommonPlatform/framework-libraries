@@ -14,12 +14,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.maven.generator.io.files.parser.FileParser;
+import uk.gov.justice.maven.generator.io.files.parser.RamlFileParser;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 import uk.gov.justice.maven.generator.io.files.parser.io.FileTreeScanner;
 import uk.gov.justice.maven.generator.io.files.parser.io.FileTreeScannerFactory;
-import uk.gov.justice.maven.generator.io.files.parser.FileParser;
-import uk.gov.justice.maven.generator.io.files.parser.RamlFileParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class GenerateGoalProcessorTest {
     @Mock
     private Generator generator;
     @Mock
-    private GeneratorFactory generatorFactory;
+    private MojoGeneratorFactory mojoGeneratorFactory;
     @Mock
     private FileTreeScannerFactory scannerFactory;
     @Mock
@@ -70,7 +70,7 @@ public class GenerateGoalProcessorTest {
     public void setup() {
         String generatorName = "mock.generator";
 
-        when(generatorFactory.instanceOf(generatorName)).thenReturn(generator);
+        when(mojoGeneratorFactory.instanceOf(generatorName)).thenReturn(generator);
         when(config.getGeneratorName()).thenReturn(generatorName);
         when(config.getSourceDirectory()).thenReturn(sourceDirectory.getRoot().toPath());
         when(config.getIncludes()).thenReturn(asList(includes));
@@ -111,6 +111,7 @@ public class GenerateGoalProcessorTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldCallGeneratorWithEmptyRamlForEmptyFile() throws Exception {
         File ramlFile = sourceDirectory.newFile("file3.raml");
 
@@ -129,6 +130,7 @@ public class GenerateGoalProcessorTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldPassPatternsToFileTreeScanner() throws Exception {
 
         final String[] customIncludes = {"**/*.txt"};
@@ -161,7 +163,7 @@ public class GenerateGoalProcessorTest {
         when(scanner.find(any(Path.class), any(String[].class), any(String[].class))).thenReturn(emptyList());
         generateGoalProcessor.generate(config);
 
-        verifyZeroInteractions(generatorFactory);
+        verifyZeroInteractions(mojoGeneratorFactory);
 
     }
 }

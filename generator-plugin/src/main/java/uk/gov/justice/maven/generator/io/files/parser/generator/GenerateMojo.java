@@ -3,9 +3,9 @@ package uk.gov.justice.maven.generator.io.files.parser.generator;
 import static java.lang.Class.forName;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
+import uk.gov.justice.maven.generator.io.files.parser.FileParser;
 import uk.gov.justice.maven.generator.io.files.parser.common.BasicMojo;
 import uk.gov.justice.maven.generator.io.files.parser.io.FileTreeScannerFactory;
-import uk.gov.justice.maven.generator.io.files.parser.FileParser;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -57,13 +57,18 @@ public class GenerateMojo extends BasicMojo {
     public void execute() throws MojoExecutionException {
         if (!skip) {
             configureDefaultFileIncludes();
+
             project.addCompileSourceRoot(outputDirectory.getPath());
             project.addTestCompileSourceRoot(outputDirectory.getPath());
+
             final List<Path> sourcePaths = new ArrayList<>();
-            project.getCompileSourceRoots().stream().forEach(root -> sourcePaths.add(Paths.get(root)));
+
+            project.getCompileSourceRoots().forEach(root -> sourcePaths.add(Paths.get(root)));
+
             try {
                 FileUtils.forceMkdir(outputDirectory);
-                new GenerateGoalProcessor(new GeneratorFactory(),
+                new GenerateGoalProcessor(
+                        new MojoGeneratorFactory(),
                         new FileTreeScannerFactory(),
                         (FileParser) forName(parserName).newInstance())
                         .generate(configuration(sourcePaths));

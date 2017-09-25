@@ -8,25 +8,32 @@ import static org.junit.Assert.assertThat;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.generator.generators.NonInstantiableTestGenerator;
 import uk.gov.justice.maven.generator.io.files.parser.generator.generators.TestGenerator;
+import uk.gov.justice.maven.generator.io.files.parser.generator.generators.TestGeneratorFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for the {@link GeneratorFactory} class.
+ * Unit tests for the {@link MojoGeneratorFactory} class.
  */
-public class GeneratorFactoryTest {
+public class MojoGeneratorFactoryTest {
 
-    private GeneratorFactory factory;
+    private MojoGeneratorFactory factory;
 
     @Before
     public void setup() {
-        factory = new GeneratorFactory();
+        factory = new MojoGeneratorFactory();
     }
 
     @Test
     public void shouldCreateGenerator() {
         final Generator generator = factory.instanceOf(TestGenerator.class.getName());
+        assertThat(generator, is(instanceOf(TestGenerator.class)));
+    }
+
+    @Test
+    public void shouldCreateGeneratorFromFactory() {
+        final Generator generator = factory.instanceOf(TestGeneratorFactory.class.getName());
         assertThat(generator, is(instanceOf(TestGenerator.class)));
     }
 
@@ -38,19 +45,27 @@ public class GeneratorFactoryTest {
         assertThat(generator1, sameInstance(generator2));
     }
 
+    @Test
+    public void shouldCreateOnlyOneInstanceOfGeneratorFromFactory() {
+        final Generator generator1 = factory.instanceOf(TestGeneratorFactory.class.getName());
+        final Generator generator2 = factory.instanceOf(TestGeneratorFactory.class.getName());
+
+        assertThat(generator1, sameInstance(generator2));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfClassDoesNotExists() {
         factory.instanceOf("nonexistent.GeneratorClass");
     }
 
     @Test
-    public void shouldThrowAnIllegalArgumentExceptionIfThegeneratorCannotBeInstantiated() throws Exception {
+    public void shouldThrowExceptionIfThegeneratorCannotBeInstantiated() throws Exception {
 
         try {
             factory.instanceOf(NonInstantiableTestGenerator.class.getName());
         } catch (final IllegalArgumentException expected) {
             assertThat(expected.getMessage(), is("Could not instantiate generator " + NonInstantiableTestGenerator.class.getName()));
-            assertThat(expected.getCause(), is(instanceOf(NoSuchMethodException.class)));
+            assertThat(expected.getCause(), is(instanceOf(IllegalAccessException.class)));
         }
     }
 }

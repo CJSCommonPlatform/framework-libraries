@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- GeneratorFactory interface to allow factory creation of Generators
 
 ## [1.7.0] - 2017-08-17
 ### Added

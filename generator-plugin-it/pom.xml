@@ -114,7 +114,7 @@
                         <id>internal-jsons</id>
                         <configuration>
                             <generatorName>
-                                uk.gov.justice.maven.generator.io.files.parser.json.test.JsonTitleAppendingGenerator
+                                uk.gov.justice.maven.generator.io.files.parser.json.test.JsonTitleAppendingGeneratorFactory
                             </generatorName>
                             <parserName>uk.gov.justice.maven.generator.io.files.parser.JsonSchemaFileParser</parserName>
                             <basePackageName>uk.gov.justice.api</basePackageName>

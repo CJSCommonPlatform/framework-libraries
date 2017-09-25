@@ -1,10 +1,10 @@
 package uk.gov.justice.maven.generator.io.files.parser.generator;
 
 import uk.gov.justice.maven.generator.io.files.parser.common.BasicGoalConfig;
+import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorProperties;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 /**
  * POJO to hold config for the generate goal.
@@ -17,7 +17,7 @@ public class GenerateGoalConfig extends BasicGoalConfig {
 
     private final String basePackageName;
 
-    private final Map<String, String> properties;
+    private final GeneratorProperties properties;
 
     private final List<Path> sourcePaths;
 
@@ -27,7 +27,7 @@ public class GenerateGoalConfig extends BasicGoalConfig {
                               final String basePackageName,
                               final List<String> includes,
                               final List<String> excludes,
-                              final Map<String, String> properties,
+                              final GeneratorProperties properties,
                               final List<Path> sourcePaths) {
         super(sourceDirectory, includes, excludes);
         this.generatorName = generatorName;
@@ -49,7 +49,7 @@ public class GenerateGoalConfig extends BasicGoalConfig {
         return basePackageName;
     }
 
-    public Map<String, String> getProperties() {
+    public GeneratorProperties getProperties() {
         return properties;
     }
 

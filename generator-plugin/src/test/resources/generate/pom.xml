@@ -18,9 +18,15 @@
                     <parserName>uk.gov.justice.maven.generator.io.files.parser.RamlFileParser</parserName>
                     <basePackageName>uk.gov.justice.api</basePackageName>
                     <sourceDirectory>${basedir}/src/raml</sourceDirectory>
-                    <generatorProperties>
+                    <generatorProperties implementation="uk.gov.justice.maven.generator.io.files.parser.generator.property.TestGeneratorProperties">
                         <property1>propertyValueABC</property1>
                         <property2>propertyValueDDD</property2>
+
+                        <nestedProperty>
+                            <property>test1</property>
+                            <property>test2</property>
+                            <property>test3</property>
+                        </nestedProperty>
                     </generatorProperties>
                 </configuration>
             </plugin>

@@ -4,7 +4,9 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.USE_BIG_INTE
 import static com.google.common.collect.ImmutableMap.of;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
@@ -13,7 +15,6 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import java.io.File;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -42,9 +43,10 @@ public class BigIntegerIT {
         final String packageName = "uk.gov.justice.pojo.custom.type";
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/custom-return-type.json");
-        final Map<String, String> generatorProperties = of(
-                "typemapping.reference.bigInteger", "java.math.BigInteger"
-        );
+
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withTypeMappings(of("reference.bigInteger", "java.math.BigInteger"))
+                .build();
 
         final List<Class<?>> classes = generatorUtil
                 .withGeneratorProperties(generatorProperties)

@@ -3,7 +3,9 @@ package uk.gov.justice.generation.pojo.integration.test;
 import static com.google.common.collect.ImmutableMap.of;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
@@ -14,7 +16,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -42,9 +43,9 @@ public class ZoneDateTimeIT {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/employee-with-date.json");
 
-        final Map<String, String> generatorProperties = of(
-                "typemapping.reference.date", "java.time.ZonedDateTime"
-        );
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withTypeMappings(of("reference.date", "java.time.ZonedDateTime"))
+                .build();
 
         final List<Class<?>> classes = generatorUtil
                 .withGeneratorProperties(generatorProperties)

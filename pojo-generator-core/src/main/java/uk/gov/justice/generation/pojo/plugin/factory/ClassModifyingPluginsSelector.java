@@ -3,6 +3,7 @@ package uk.gov.justice.generation.pojo.plugin.factory;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 
 import java.util.List;
@@ -13,17 +14,13 @@ public class ClassModifyingPluginsSelector {
 
     private static final Class<ClassModifyingPlugin> CLASS_MODIFYING_PLUGIN = ClassModifyingPlugin.class;
 
-    private final ExcludeDefaultPluginsSwitch excludeDefaultPluginsSwitch;
     private final DefaultPluginsProvider defaultPluginsProvider;
 
-    public ClassModifyingPluginsSelector(
-            final ExcludeDefaultPluginsSwitch excludeDefaultPluginsSwitch,
-            final DefaultPluginsProvider defaultPluginsProvider) {
-        this.excludeDefaultPluginsSwitch = excludeDefaultPluginsSwitch;
+    public ClassModifyingPluginsSelector(final DefaultPluginsProvider defaultPluginsProvider) {
         this.defaultPluginsProvider = defaultPluginsProvider;
     }
 
-    public List<ClassModifyingPlugin> selectFrom(final Map<Class<?>, List<Object>> pluginTypes, final Map<String, String> generatorProperties) {
+    public List<ClassModifyingPlugin> selectFrom(final Map<Class<?>, List<Object>> pluginTypes, final PojoGeneratorProperties generatorProperties) {
         return concat(
                 defaultClassModifyingPlugins(generatorProperties),
                 userDefinedClassModifyingPlugins(pluginTypes)
@@ -40,8 +37,8 @@ public class ClassModifyingPluginsSelector {
         return Stream.empty();
     }
 
-    private Stream<ClassModifyingPlugin> defaultClassModifyingPlugins(final Map<String, String> generatorProperties) {
-        if (excludeDefaultPluginsSwitch.shouldExcludeDefaultPlugins(generatorProperties)) {
+    private Stream<ClassModifyingPlugin> defaultClassModifyingPlugins(final PojoGeneratorProperties generatorProperties) {
+        if (generatorProperties.isExcludeDefaultPlugins()) {
             return Stream.empty();
         }
 

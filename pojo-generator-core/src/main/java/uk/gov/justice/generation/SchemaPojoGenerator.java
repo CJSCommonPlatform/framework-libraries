@@ -1,34 +1,19 @@
 package uk.gov.justice.generation;
 
-import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
-import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
-import uk.gov.justice.generation.pojo.plugin.PluginProviderFactoryFactory;
-import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
-import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
-import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
-import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
-import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
-import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
-import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
-import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
-import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.io.File;
 import java.util.List;
 
-import org.everit.json.schema.Schema;
 import org.slf4j.Logger;
 
 /**
@@ -41,11 +26,26 @@ import org.slf4j.Logger;
  */
 public class SchemaPojoGenerator implements Generator<File> {
 
-    private final SourceWriter sourceWriter = new SourceWriter();
-    private final SchemaLoader schemaLoader = new SchemaLoader();
-    private final VisitableFactory visitableFactory = new VisitableFactory();
-    private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
-    private final PluginProviderFactoryFactory pluginProviderFactoryFactory = new PluginProviderFactoryFactory();
+    private final GeneratorContextProvider generatorContextProvider;
+    private final ClassNameFactoryProvider classNameFactoryProvider;
+    private final JavaGeneratorFactoryProvider javaGeneratorFactoryProvider;
+    private final JavaClassFileWriter javaClassFileWriter;
+    private final PluginProviderFactory pluginProviderFactory;
+    private final DefinitionProvider definitionProvider;
+
+    public SchemaPojoGenerator(final PluginProviderFactory pluginProviderFactory,
+                               final DefinitionProvider definitionProvider,
+                               final GeneratorContextProvider generatorContextProvider,
+                               final ClassNameFactoryProvider classNameFactoryProvider,
+                               final JavaGeneratorFactoryProvider javaGeneratorFactoryProvider,
+                               final JavaClassFileWriter javaClassFileWriter) {
+        this.pluginProviderFactory = pluginProviderFactory;
+        this.definitionProvider = definitionProvider;
+        this.generatorContextProvider = generatorContextProvider;
+        this.classNameFactoryProvider = classNameFactoryProvider;
+        this.javaGeneratorFactoryProvider = javaGeneratorFactoryProvider;
+        this.javaClassFileWriter = javaClassFileWriter;
+    }
 
     /**
      * Run the pojo generation based on the specified json schema file
@@ -55,28 +55,15 @@ public class SchemaPojoGenerator implements Generator<File> {
      */
     @Override
     public void run(final File jsonSchemaFile, final GeneratorConfig generatorConfig) {
-        final String packageName = generatorConfig.getBasePackageName();
 
-        final List<String> hardCodedClassNames = javaFileSimpleNameLister.findSimpleNames(
-                generatorConfig.getSourcePaths(),
-                generatorConfig.getOutputDirectory(),
-                generatorConfig.getBasePackageName());
-
-        final GenerationContext generationContext = new GenerationContext(
-                generatorConfig.getOutputDirectory(),
-                packageName,
-                jsonSchemaFile.getName(),
-                hardCodedClassNames);
+        final GenerationContext generationContext = generatorContextProvider.getGenerationContext(jsonSchemaFile, generatorConfig);
+        final PluginProvider pluginProvider = pluginProviderFactory.createFor(generatorConfig);
 
         final Logger logger = generationContext.getLoggerFor(getClass());
-
         logger.info("Generating java pojos from schema file '{}'", jsonSchemaFile.getName());
 
-        final PluginProvider pluginProvider = createPluginProvider(generatorConfig);
-
-        final ClassNameFactory classNameFactory = createClassNameFactory(pluginProvider, generationContext);
-
-        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactory(classNameFactory);
+        final ClassNameFactory classNameFactory = classNameFactoryProvider.getClassNameFactory(generationContext, pluginProvider);
+        final JavaGeneratorFactory javaGeneratorFactory = javaGeneratorFactoryProvider.getJavaGeneratorFactory(classNameFactory);
 
         final PluginContext pluginContext = new PluginContext(
                 javaGeneratorFactory,
@@ -85,7 +72,7 @@ public class SchemaPojoGenerator implements Generator<File> {
                 pluginProvider.classModifyingPlugins(),
                 generatorConfig.getGeneratorProperties());
 
-        final List<Definition> definitions = createDefinitions(
+        final List<Definition> definitions = definitionProvider.createDefinitions(
                 jsonSchemaFile,
                 pluginProvider,
                 pluginContext);
@@ -96,39 +83,6 @@ public class SchemaPojoGenerator implements Generator<File> {
                 pluginContext,
                 generationContext);
 
-        writeJavaClassesToFile(generationContext, classGenerators);
-    }
-
-    private PluginProvider createPluginProvider(final GeneratorConfig generatorConfig) {
-        final PluginProviderFactory pluginProviderFactory = pluginProviderFactoryFactory.create();
-        return pluginProviderFactory.createFor(generatorConfig);
-    }
-
-    private List<Definition> createDefinitions(final File source, final PluginProvider pluginProvider, final PluginContext pluginContext) {
-        final DefinitionBuilderVisitor definitionBuilderVisitor = constructDefinitionBuilderVisitor();
-        final Schema schema = schemaLoader.loadFrom(source);
-        final String fieldName = pluginProvider.nameGeneratablePlugin().rootFieldNameFrom(schema, source.getName(), pluginContext);
-        final AcceptorService jsonSchemaAcceptorFactory = new DefaultAcceptorService(visitableFactory);
-
-        visitableFactory.createWith(fieldName, schema, jsonSchemaAcceptorFactory)
-                .accept(definitionBuilderVisitor);
-
-        return definitionBuilderVisitor.getDefinitions();
-    }
-
-    private ClassNameFactory createClassNameFactory(final PluginProvider pluginProvider, final GenerationContext generationContext) {
-        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
-        final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
-
-        return new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
-    }
-
-    private void writeJavaClassesToFile(final GenerationContext generationContext, final List<ClassGeneratable> classGenerators) {
-        final NonDuplicatingSourceWriter writer = new NonDuplicatingSourceWriter(new JavaSourceFileProvider(), sourceWriter);
-        classGenerators.forEach(classGeneratable -> writer.write(classGeneratable, generationContext));
-    }
-
-    private DefinitionBuilderVisitor constructDefinitionBuilderVisitor() {
-        return new DefinitionBuilderVisitor(new DefaultDefinitionFactory(new ReferenceValueParser()));
+        javaClassFileWriter.writeJavaClassesToFile(generationContext, classGenerators);
     }
 }

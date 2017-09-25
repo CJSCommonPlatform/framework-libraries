@@ -58,7 +58,7 @@
                         <id>internal-jsons</id>
                         <configuration>
                             <generatorName>
-                                uk.gov.justice.generation.SchemaPojoGenerator
+                                uk.gov.justice.generation.SchemaPojoGeneratorFactory
                             </generatorName>
                             <parserName>
                                 uk.gov.justice.generation.io.files.parser.FileTypeParser
@@ -73,17 +73,20 @@
                             </includes>
                             <excludes>
                             </excludes>
-                            <generatorProperties>
+                            <generatorProperties
+                                    implementation="uk.gov.justice.generation.pojo.core.PojoGeneratorProperties">
                                 <excludeDefaultPlugins>true</excludeDefaultPlugins>
                                 <plugins>
-                                    uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin,
-                                    uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin,
-                                    uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin,
-                                    uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin,
-                                    uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin
+                                    <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin</plugin>
+                                    <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin</plugin>
+                                    <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin</plugin>
+                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin</plugin>
+                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin</plugin>
                                 </plugins>
-                                <typemapping.reference.uuid>java.util.UUID</typemapping.reference.uuid>
-                                <typemapping.format.custom-date-time>java.time.ZonedDateTime</typemapping.format.custom-date-time>
+                                <typeMappings>
+                                    <reference.uuid>java.util.UUID</reference.uuid>
+                                    <format.custom-date-time>java.time.ZonedDateTime</format.custom-date-time>
+                                </typeMappings>
                             </generatorProperties>
                         </configuration>
                         <goals>

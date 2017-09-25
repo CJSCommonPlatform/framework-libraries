@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
@@ -54,7 +55,7 @@ public class GeneratorUtil {
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
     private List<String> ignoredClassNames = emptyList();
-    private Map<String, String> generatorProperties = emptyMap();
+    private PojoGeneratorProperties generatorProperties = new PojoGeneratorProperties();
 
     private List<ClassModifyingPlugin> classModifyingPlugins = asList(
             new MakeClassSerializablePlugin(),
@@ -83,7 +84,7 @@ public class GeneratorUtil {
         return this;
     }
 
-    public GeneratorUtil withGeneratorProperties(final Map<String, String> generatorProperties) {
+    public GeneratorUtil withGeneratorProperties(final PojoGeneratorProperties generatorProperties) {
         this.generatorProperties = generatorProperties;
         return this;
     }

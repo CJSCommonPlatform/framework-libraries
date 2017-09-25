@@ -7,13 +7,14 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.core.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
+import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,13 +38,13 @@ public class SchemaPojoGeneratorTest {
     public void shouldConvertSchemaFileToJavaPojo() throws Exception {
         final File schemaFile = get("src/test/resources/schemas/person-schema.json").toFile();
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
-        final Map<String, String> properties = new HashMap<>();
+        final PojoGeneratorProperties properties = pojoGeneratorPropertiesBuilder().build();
 
         when(generatorConfig.getOutputDirectory()).thenReturn(sourceOutputDirectory.toPath());
         when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.pojo");
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
-        final SchemaPojoGenerator schemaPojoGenerator = new SchemaPojoGenerator();
+        final Generator<File> schemaPojoGenerator = new SchemaPojoGeneratorFactory().create();
 
         schemaPojoGenerator.run(schemaFile, generatorConfig);
 
@@ -60,14 +61,15 @@ public class SchemaPojoGeneratorTest {
     public void shouldUseRooClassNameSettingInGeneratorProperties() throws Exception {
         final File schemaFile = get("src/test/resources/schemas/person-schema.json").toFile();
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
-        final Map<String, String> properties = new HashMap<>();
-        properties.put("rootClassName", "TestClassName");
+        final PojoGeneratorProperties properties = pojoGeneratorPropertiesBuilder()
+                .withRootClassName("TestClassName")
+                .build();
 
         when(generatorConfig.getOutputDirectory()).thenReturn(sourceOutputDirectory.toPath());
         when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.pojo");
         when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
 
-        final SchemaPojoGenerator schemaPojoGenerator = new SchemaPojoGenerator();
+        final Generator<File> schemaPojoGenerator = new SchemaPojoGeneratorFactory().create();
 
         schemaPojoGenerator.run(schemaFile, generatorConfig);
 

@@ -5,7 +5,7 @@ import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static uk.gov.justice.generation.pojo.core.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
+import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 

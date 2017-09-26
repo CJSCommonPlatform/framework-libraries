@@ -4,7 +4,7 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static uk.gov.justice.generation.pojo.core.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
+import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import java.util.List;
 import java.util.Map;

@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.generation.pojo.core.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
+import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;

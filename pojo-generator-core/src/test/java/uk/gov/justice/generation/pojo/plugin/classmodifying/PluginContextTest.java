@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.generation.pojo.core.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
+import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;

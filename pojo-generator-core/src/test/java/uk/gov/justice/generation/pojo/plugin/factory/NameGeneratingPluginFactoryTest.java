@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderException;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
@@ -32,7 +33,7 @@ public class NameGeneratingPluginFactoryTest {
     @Test
     public void shouldGetTheRootFieldNameGeneratorPluginIfNoOverriddenNameGeneratingPluginSpecified() throws Exception {
 
-        final Map<Class<?>, List<Object>> pluginTypes = emptyMap();
+        final Map<Class<?>, List<Plugin>> pluginTypes = emptyMap();
 
         final NameGeneratablePlugin nameGeneratablePlugin = nameGeneratingPluginFactory.create(pluginTypes);
 
@@ -42,7 +43,7 @@ public class NameGeneratingPluginFactoryTest {
     @Test
     public void shouldGetTheOverriddenNameGeneratingPluginSpecified() throws Exception {
 
-        final Map<Class<?>, List<Object>> pluginTypes = getSinglePluginTypes();
+        final Map<Class<?>, List<Plugin>> pluginTypes = getSinglePluginTypes();
 
         final NameGeneratablePlugin nameGeneratablePlugin = nameGeneratingPluginFactory.create(pluginTypes);
 
@@ -52,7 +53,7 @@ public class NameGeneratingPluginFactoryTest {
     @Test
     public void shouldFailMoreThanOneOverriddenNameGeneratingPluginSpecified() throws Exception {
 
-        final Map<Class<?>, List<Object>> pluginTypes = getMultiplePluginTypes();
+        final Map<Class<?>, List<Plugin>> pluginTypes = getMultiplePluginTypes();
 
         try {
             nameGeneratingPluginFactory.create(pluginTypes);
@@ -62,21 +63,21 @@ public class NameGeneratingPluginFactoryTest {
         }
     }
 
-    private Map<Class<?>, List<Object>> getSinglePluginTypes() {
+    private Map<Class<?>, List<Plugin>> getSinglePluginTypes() {
 
-        final HashMap<Class<?>, List<Object>> pluginTypes = new HashMap<>();
+        final HashMap<Class<?>, List<Plugin>> pluginTypes = new HashMap<>();
 
-        final List<Object> plugins = singletonList(new MyNameGeneratablePlugin());
+        final List<Plugin> plugins = singletonList(new MyNameGeneratablePlugin());
         pluginTypes.put(NameGeneratablePlugin.class, plugins);
 
         return pluginTypes;
     }
 
-    private Map<Class<?>, List<Object>> getMultiplePluginTypes() {
+    private Map<Class<?>, List<Plugin>> getMultiplePluginTypes() {
 
-        final HashMap<Class<?>, List<Object>> pluginTypes = new HashMap<>();
+        final HashMap<Class<?>, List<Plugin>> pluginTypes = new HashMap<>();
 
-        final List<Object> plugins = asList(new MyNameGeneratablePlugin(), new MyOtherNameGeneratablePlugin());
+        final List<Plugin> plugins = asList(new MyNameGeneratablePlugin(), new MyOtherNameGeneratablePlugin());
         pluginTypes.put(NameGeneratablePlugin.class, plugins);
 
         return pluginTypes;

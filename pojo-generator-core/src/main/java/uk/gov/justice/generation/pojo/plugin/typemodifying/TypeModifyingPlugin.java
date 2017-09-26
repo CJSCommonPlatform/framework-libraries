@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.typemodifying;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.TypeName;
@@ -15,7 +16,7 @@ import com.squareup.javapoet.TypeName;
  * {@link SupportJavaOptionalsPlugin}
  * {@link CustomReturnTypePlugin}
  */
-public interface TypeModifyingPlugin {
+public interface TypeModifyingPlugin extends Plugin {
 
     /**
      * Modifies the TypeName (used as constructor parameters and getter return types) of

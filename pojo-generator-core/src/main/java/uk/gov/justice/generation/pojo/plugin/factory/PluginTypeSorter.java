@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.groupingBy;
 
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderException;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
@@ -20,7 +21,7 @@ public class PluginTypeSorter {
 
     private static final String INCORRECT_CLASS_TYPE_MESSAGE = "Incorrect Class Type, Class name: %s, does not implement ClassModifyingPlugin or TypeModifyingPlugin or NameGeneratablePlugin.";
 
-    public Map<Class<?>, List<Object>> sortByType(final List<Object> plugins) {
+    public Map<Class<?>, List<Plugin>> sortByType(final List<Plugin> plugins) {
 
         return plugins
                 .stream()

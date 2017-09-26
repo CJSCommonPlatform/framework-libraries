@@ -58,6 +58,21 @@ public class PluginInstantiatorTest {
     }
 
     @Test
+    public void shouldFailInstantiationIfThePluginDoesNotImplementThePluginInterface() throws Exception {
+
+        final Class notAPluginClass = String.class;
+
+        when(instantiator.classForName(notAPluginClass.getName())).thenReturn(notAPluginClass);
+
+        try {
+            pluginInstantiator.instantiate(notAPluginClass.getName());
+            fail();
+        } catch (final PluginProviderException expected) {
+            assertThat(expected.getMessage(), is("Cannot instantiate plugin 'java.lang.String'. Class does not implement 'uk.gov.justice.generation.pojo.plugin.Plugin'"));
+        }
+    }
+
+    @Test
     public void shouldFailIfThePluginHasMoreThanOneFactoryMethod() throws Exception {
 
         final Class pluginWithTwoFactoryMethodsClass = PluginWithTwoFactoryMethods.class;

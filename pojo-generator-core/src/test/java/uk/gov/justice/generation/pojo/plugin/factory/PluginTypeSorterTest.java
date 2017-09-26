@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderException;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
@@ -42,7 +43,7 @@ public class PluginTypeSorterTest {
         final NameGeneratablePlugin nameGeneratablePlugin_2 = mock(NameGeneratablePlugin.class);
         final NameGeneratablePlugin nameGeneratablePlugin_3 = mock(NameGeneratablePlugin.class);
 
-        final List<Object> plugins = asList(
+        final List<Plugin> plugins = asList(
                 classModifyingPlugin_1,
                 typeModifyingPlugin_1,
                 nameGeneratablePlugin_1,
@@ -54,7 +55,7 @@ public class PluginTypeSorterTest {
                 nameGeneratablePlugin_3
         );
 
-        final Map<Class<?>, List<Object>> pluginsByType = pluginTypeSorter.sortByType(plugins);
+        final Map<Class<?>, List<Plugin>> pluginsByType = pluginTypeSorter.sortByType(plugins);
 
         assertThat(pluginsByType.size(), is(3));
         
@@ -62,9 +63,9 @@ public class PluginTypeSorterTest {
         assertThat(pluginsByType.containsKey(TypeModifyingPlugin.class), is(true));
         assertThat(pluginsByType.containsKey(NameGeneratablePlugin.class), is(true));
 
-        final List<Object> classModifyingPlugins = pluginsByType.get(ClassModifyingPlugin.class);
-        final List<Object> typeModifyingPlugins = pluginsByType.get(TypeModifyingPlugin.class);
-        final List<Object> nameGeneratablePlugins = pluginsByType.get(NameGeneratablePlugin.class);
+        final List<Plugin> classModifyingPlugins = pluginsByType.get(ClassModifyingPlugin.class);
+        final List<Plugin> typeModifyingPlugins = pluginsByType.get(TypeModifyingPlugin.class);
+        final List<Plugin> nameGeneratablePlugins = pluginsByType.get(NameGeneratablePlugin.class);
 
         assertThat(classModifyingPlugins, hasItem(classModifyingPlugin_1));
         assertThat(classModifyingPlugins, hasItem(classModifyingPlugin_2));
@@ -83,11 +84,16 @@ public class PluginTypeSorterTest {
     public void shouldFailIfTheClassIsNotAPluginClass() throws Exception {
 
         try {
-            final String plugin = "This is not a plugin";
+            final Plugin plugin = new MyDodgyPlugin();
+            
             pluginTypeSorter.sortByType(singletonList(plugin));
             fail();
         } catch (final PluginProviderException expected) {
-            assertThat(expected.getMessage(), is("Incorrect Class Type, Class name: java.lang.String, does not implement ClassModifyingPlugin or TypeModifyingPlugin or NameGeneratablePlugin."));
+            assertThat(expected.getMessage(), is("Incorrect Class Type, Class name: uk.gov.justice.generation.pojo.plugin.factory.MyDodgyPlugin, does not implement ClassModifyingPlugin or TypeModifyingPlugin or NameGeneratablePlugin."));
         }
     }
+}
+
+class MyDodgyPlugin implements  Plugin  {
+
 }

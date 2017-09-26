@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 
 import com.squareup.javapoet.TypeSpec;
 
@@ -13,7 +14,7 @@ import com.squareup.javapoet.TypeSpec;
  * {@link AddAdditionalPropertiesToClassPlugin}
  * {@link MakeClassSerializablePlugin}
  */
-public interface ClassModifyingPlugin {
+public interface ClassModifyingPlugin extends Plugin {
 
     /**
      * Modifies the generation of a class.

@@ -101,9 +101,9 @@ public class PluginProviderFactory {
 
         final PojoGeneratorProperties generatorProperties = (PojoGeneratorProperties) generatorConfig.getGeneratorProperties();
         final List<String> pluginNames = parsePluginNames.parsePluginNames(generatorProperties);
-        final List<Object> plugins = allPluginsInstantiator.instantiate(pluginNames);
+        final List<Plugin> plugins = allPluginsInstantiator.instantiate(pluginNames);
 
-        final Map<Class<?>, List<Object>> pluginTypes = pluginTypeSorter.sortByType(plugins);
+        final Map<Class<?>, List<Plugin>> pluginTypes = pluginTypeSorter.sortByType(plugins);
 
         return new ModifyingPluginProvider(
                 classModifyingPluginsSelector.selectFrom(pluginTypes, generatorProperties),

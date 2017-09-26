@@ -7,6 +7,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderException;
 
 import java.lang.reflect.Method;
@@ -20,16 +21,20 @@ public class PluginInstantiator {
         this.instantiator = instantiator;
     }
 
-    public Object instantiate(final String className) {
+    public Plugin instantiate(final String className) {
 
         final Class<?> aClass = instantiator.classForName(className);
+
+        if(! Plugin.class.isAssignableFrom(aClass)) {
+            throw new PluginProviderException(format("Cannot instantiate plugin '%s'. Class does not implement '%s'", className, Plugin.class.getName()));
+        }
 
         final List<Method> methods = stream(aClass.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(FactoryMethod.class))
                 .collect(toList());
 
         if (methods.isEmpty()) {
-            return instantiator.instantiate(aClass);
+            return (Plugin) instantiator.instantiate(aClass);
         }
 
         if (methods.size() > 1) {
@@ -50,7 +55,7 @@ public class PluginInstantiator {
             throw new PluginProviderException(format("Failed to instantiate Plugin '%s': Factory method '%s' should have no parameters", aClass.getSimpleName(), method.getName()));
         }
 
-        return instantiator.invokeStaticMethod(method, aClass);
+        return (Plugin) instantiator.invokeStaticMethod(method, aClass);
     }
 
     private boolean notPublic(final Method method) {

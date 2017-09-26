@@ -56,8 +56,8 @@ public class PluginProviderFactoryTest {
 
         final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
         final List<String> pluginNames = mock(List.class);
-        final List<Object> plugins = mock(List.class);
-        final Map<Class<?>, List<Object>> pluginTypes = mock(Map.class);
+        final List<Plugin> plugins = mock(List.class);
+        final Map<Class<?>, List<Plugin>> pluginTypes = mock(Map.class);
         final List<ClassModifyingPlugin> classModifyingPlugins = mock(List.class);
         final List<TypeModifyingPlugin> typeModifyingPlugins = mock(List.class);
         final NameGeneratablePlugin nameGeneratablePlugin = mock(NameGeneratablePlugin.class);

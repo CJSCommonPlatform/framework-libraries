@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
@@ -41,7 +42,7 @@ public class ClassModifyingPluginsSelectorTest {
     public void shouldGetTheListOfClassModifyingPluginsWithDefaultPluginsIfExcludeDefaultPluginsIsFalse() throws Exception {
 
         final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
-        final Map<Class<?>, List<Object>> pluginTypes = new HashMap<>();
+        final Map<Class<?>, List<Plugin>> pluginTypes = new HashMap<>();
 
         pluginTypes.put(ClassModifyingPlugin.class, classModifyingPlugins());
         pluginTypes.put(TypeModifyingPlugin.class, typeModifyingPlugins());
@@ -64,7 +65,7 @@ public class ClassModifyingPluginsSelectorTest {
     public void shouldGetTheListOfClassModifyingPluginsWithoutDefaultPluginsIfExcludeDefaultPluginsIsTrue() throws Exception {
 
         final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
-        final Map<Class<?>, List<Object>> pluginTypes = new HashMap<>();
+        final Map<Class<?>, List<Plugin>> pluginTypes = new HashMap<>();
 
         pluginTypes.put(ClassModifyingPlugin.class, classModifyingPlugins());
         pluginTypes.put(TypeModifyingPlugin.class, typeModifyingPlugins());
@@ -82,15 +83,15 @@ public class ClassModifyingPluginsSelectorTest {
         verifyZeroInteractions(defaultPluginsProvider);
     }
 
-    private List<Object> classModifyingPlugins() {
-        final Object addAdditionalPropertiesToClassPlugin = mock(AddAdditionalPropertiesToClassPlugin.class);
-        final Object addHashcodeAndEqualsPlugin = mock(AddHashcodeAndEqualsPlugin.class);
+    private List<Plugin> classModifyingPlugins() {
+        final Plugin addAdditionalPropertiesToClassPlugin = mock(AddAdditionalPropertiesToClassPlugin.class);
+        final Plugin addHashcodeAndEqualsPlugin = mock(AddHashcodeAndEqualsPlugin.class);
         return asList(addAdditionalPropertiesToClassPlugin, addHashcodeAndEqualsPlugin);
     }
 
-    private List<Object> typeModifyingPlugins() {
-        final Object customReturnTypePlugin = mock(CustomReturnTypePlugin.class);
-        final Object supportJavaOptionalsPlugin = mock(SupportJavaOptionalsPlugin.class);
+    private List<Plugin> typeModifyingPlugins() {
+        final Plugin customReturnTypePlugin = mock(CustomReturnTypePlugin.class);
+        final Plugin supportJavaOptionalsPlugin = mock(SupportJavaOptionalsPlugin.class);
         return asList(customReturnTypePlugin, supportJavaOptionalsPlugin);
     }
 

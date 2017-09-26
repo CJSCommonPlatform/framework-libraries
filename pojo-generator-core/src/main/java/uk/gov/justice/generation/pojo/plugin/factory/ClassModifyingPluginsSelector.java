@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 
 import java.util.List;
@@ -20,14 +21,14 @@ public class ClassModifyingPluginsSelector {
         this.defaultPluginsProvider = defaultPluginsProvider;
     }
 
-    public List<ClassModifyingPlugin> selectFrom(final Map<Class<?>, List<Object>> pluginTypes, final PojoGeneratorProperties generatorProperties) {
+    public List<ClassModifyingPlugin> selectFrom(final Map<Class<?>, List<Plugin>> pluginTypes, final PojoGeneratorProperties generatorProperties) {
         return concat(
                 defaultClassModifyingPlugins(generatorProperties),
                 userDefinedClassModifyingPlugins(pluginTypes)
         ).collect(toList());
     }
 
-    private Stream<ClassModifyingPlugin> userDefinedClassModifyingPlugins(final Map<Class<?>, List<Object>> pluginTypes) {
+    private Stream<ClassModifyingPlugin> userDefinedClassModifyingPlugins(final Map<Class<?>, List<Plugin>> pluginTypes) {
         if (pluginTypes.containsKey(CLASS_MODIFYING_PLUGIN)) {
             return pluginTypes.get(CLASS_MODIFYING_PLUGIN)
                     .stream()

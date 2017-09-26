@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.namegeneratable;
 
 
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import org.everit.json.schema.Schema;
@@ -11,7 +12,7 @@ import org.everit.json.schema.Schema;
  * create an appropriate name for the schema.  Note: the field name is converted to produce the
  * Class name at generation time, by uppercasing the first character of the field name.
  */
-public interface NameGeneratablePlugin {
+public interface NameGeneratablePlugin extends Plugin {
 
     /**
      * Generates a schema field name for the root schema from the {@link Schema} and schema

@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
+import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 
@@ -31,7 +32,7 @@ public class TypeModifyingPluginsSelectorTest {
         final TypeModifyingPlugin typeModifyingPlugin_2 = mock(TypeModifyingPlugin.class);
         final TypeModifyingPlugin typeModifyingPlugin_3 = mock(TypeModifyingPlugin.class);
 
-        final List<Object> typeModifyingPlugins = asList(
+        final List<Plugin> typeModifyingPlugins = asList(
                 typeModifyingPlugin_1,
                 typeModifyingPlugin_2,
                 typeModifyingPlugin_3);
@@ -40,13 +41,13 @@ public class TypeModifyingPluginsSelectorTest {
         final ClassModifyingPlugin classModifyingPlugin_2 = mock(ClassModifyingPlugin.class);
         final ClassModifyingPlugin classModifyingPlugin_3 = mock(ClassModifyingPlugin.class);
 
-        final List<Object> classModifyingPlugins = asList(
+        final List<Plugin> classModifyingPlugins = asList(
                 classModifyingPlugin_1,
                 classModifyingPlugin_2,
                 classModifyingPlugin_3
         );
 
-        final ImmutableMap<Class<?>, List<Object>> pluginTypes = of(
+        final ImmutableMap<Class<?>, List<Plugin>> pluginTypes = of(
                 TypeModifyingPlugin.class, typeModifyingPlugins,
                 ClassModifyingPlugin.class, classModifyingPlugins);
 

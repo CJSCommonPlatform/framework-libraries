@@ -45,7 +45,7 @@ public class BigIntegerIT {
         final File jsonSchemaFile = new File("src/test/resources/schemas/custom-return-type.json");
 
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
-                .withTypeMappings(of("reference.bigInteger", "java.math.BigInteger"))
+                .withTypeMappings(of("bigInteger", "java.math.BigInteger"))
                 .build();
 
         final List<Class<?>> classes = generatorUtil

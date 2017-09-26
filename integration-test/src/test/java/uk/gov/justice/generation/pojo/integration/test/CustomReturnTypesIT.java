@@ -47,9 +47,9 @@ public class CustomReturnTypesIT {
 
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
                 .withTypeMappings(of(
-                        "reference.uuid", "java.util.UUID",
-                        "reference.bigInteger", "java.math.BigInteger",
-                        "reference.date", "java.time.ZonedDateTime"
+                        "uuid", "java.util.UUID",
+                        "bigInteger", "java.math.BigInteger",
+                        "date", "java.time.ZonedDateTime"
                 ))
                 .build();
 
@@ -77,8 +77,6 @@ public class CustomReturnTypesIT {
                 startDate);
 
         final String employeeJson = objectMapper.writeValueAsString(employee);
-
-        System.out.println(employeeJson);
 
         with(employeeJson)
                 .assertThat("$.employeeId", is(employeeId.toString()))

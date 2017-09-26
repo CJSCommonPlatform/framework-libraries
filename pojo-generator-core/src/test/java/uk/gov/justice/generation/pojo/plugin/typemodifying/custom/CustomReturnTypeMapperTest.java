@@ -1,6 +1,5 @@
 package uk.gov.justice.generation.pojo.plugin.typemodifying.custom;
 
-import static com.google.common.collect.Sets.newHashSet;
 import static com.squareup.javapoet.ClassName.get;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -11,12 +10,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.plugin.PluginConfigurationException;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import com.squareup.javapoet.ClassName;
@@ -38,20 +35,13 @@ public class CustomReturnTypeMapperTest {
     @Test
     public void shouldGetTheCustomTypeMappingFromGeneratorPropertiesAndConvertToAClassName() throws Exception {
 
-        final String mappingPropertyName = "reference.uuid";
-        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "uuid");
+        final String mappingPropertyName = "uuid";
+        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", mappingPropertyName);
         final Optional<String> mappingPropertyValue = of("java.util.UUID");
         final ClassName uuidClassName = get(UUID.class);
 
         final PluginContext pluginContext = mock(PluginContext.class);
 
-        final Set<String> propertyNames = newHashSet(
-                "some.property",
-                "reference.custom-date-time",
-                mappingPropertyName,
-                "some.other.property");
-
-        when(pluginContext.getPropertyNames()).thenReturn(propertyNames);
         when(pluginContext.typeMappingOf(mappingPropertyName)).thenReturn(mappingPropertyValue);
         when(fullyQualifiedNameToClassNameConverter.convert(mappingPropertyValue.get())).thenReturn(uuidClassName);
 
@@ -67,48 +57,18 @@ public class CustomReturnTypeMapperTest {
     @Test
     public void shouldReturnEmptyIfNoCustomMappingExistsForTheReferenceValueName() throws Exception {
 
-        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "uuid");
-
+        final String mappingPropertyName = "uuid";
+        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", mappingPropertyName);
+        final Optional<String> mappingPropertyValue = empty();
+        
         final PluginContext pluginContext = mock(PluginContext.class);
 
-        final Set<String> propertyNames = newHashSet(
-                "some.property",
-                "reference.custom-date-time",
-                "some.other.property");
 
-        when(pluginContext.getPropertyNames()).thenReturn(propertyNames);
+        when(pluginContext.typeMappingOf(mappingPropertyName)).thenReturn(mappingPropertyValue);
 
         final Optional<ClassName> className = customReturnTypeMapper.customType(referenceValue, pluginContext);
 
         assertThat(className.isPresent(), is(false));
-
-        verifyZeroInteractions(fullyQualifiedNameToClassNameConverter);
-    }
-
-    @Test
-    public void shouldFailIfNoPropertyValueFoundInThePluginContext() throws Exception {
-
-        final String mappingPropertyName = "reference.uuid";
-        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "uuid");
-        final Optional<String> missingPropertyValue = empty();
-
-        final PluginContext pluginContext = mock(PluginContext.class);
-
-        final Set<String> propertyNames = newHashSet(
-                "some.property",
-                "reference.custom-date-time",
-                mappingPropertyName,
-                "some.other.property");
-
-        when(pluginContext.getPropertyNames()).thenReturn(propertyNames);
-        when(pluginContext.typeMappingOf(mappingPropertyName)).thenReturn(missingPropertyValue);
-
-        try {
-            customReturnTypeMapper.customType(referenceValue, pluginContext);
-            fail();
-        } catch (final PluginConfigurationException expected) {
-            assertThat(expected.getMessage(), is("Failed to get generator property 'reference.uuid'"));
-        }
 
         verifyZeroInteractions(fullyQualifiedNameToClassNameConverter);
     }

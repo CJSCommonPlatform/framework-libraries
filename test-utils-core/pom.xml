@@ -88,13 +88,12 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
         </dependency>
-
-        <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
+
+        <!-- Test dependencies -->
         <dependency>
             <groupId>com.btmatthews.hamcrest</groupId>
             <artifactId>hamcrest-matchers</artifactId>

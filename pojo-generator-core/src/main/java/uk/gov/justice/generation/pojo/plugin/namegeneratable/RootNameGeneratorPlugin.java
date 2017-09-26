@@ -46,11 +46,9 @@ import org.everit.json.schema.Schema;
  */
 public class RootNameGeneratorPlugin implements NameGeneratablePlugin {
 
-    private static final String ROOT_CLASS_NAME_PROPERTY = "rootClassName";
-
     @Override
     public String rootFieldNameFrom(final Schema schema, final String schemaFilename, final PluginContext pluginContext) {
-        final Optional<String> rootClassName = pluginContext.generatorPropertyValueOf(ROOT_CLASS_NAME_PROPERTY);
+        final Optional<String> rootClassName = pluginContext.getRootClassName();
 
         return uncapitalize(rootClassName.orElseGet(() -> parseClassNameFromFilename(schemaFilename)));
     }

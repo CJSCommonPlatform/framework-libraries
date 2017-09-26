@@ -32,7 +32,7 @@ public class RootNameGeneratorPluginTest {
     public void shouldParseTheFileNameIntoAValidJavaClassName() throws Exception {
         final String schemaFilename = "object-property-schema.json";
 
-        when(pluginContext.generatorPropertyValueOf("rootClassName")).thenReturn(Optional.empty());
+        when(pluginContext.getRootClassName()).thenReturn(Optional.empty());
 
         assertThat(nameGenerator.rootFieldNameFrom(schema, schemaFilename, pluginContext), is("objectPropertySchema"));
     }
@@ -41,7 +41,7 @@ public class RootNameGeneratorPluginTest {
     public void shouldRemoveAnyPrependingDotsFromTheFileName() throws Exception {
         final String schemaFilename = "context.command.do-something-or-other.json";
 
-        when(pluginContext.generatorPropertyValueOf("rootClassName")).thenReturn(Optional.empty());
+        when(pluginContext.getRootClassName()).thenReturn(Optional.empty());
 
         assertThat(nameGenerator.rootFieldNameFrom(schema, schemaFilename, pluginContext), is("doSomethingOrOther"));
     }
@@ -50,7 +50,7 @@ public class RootNameGeneratorPluginTest {
     public void shouldFailIfTheFileNameDoesNotHaveTheExtensionJson() throws Exception {
         final String schemaFilename = "object-property-schema";
 
-        when(pluginContext.generatorPropertyValueOf("rootClassName")).thenReturn(Optional.empty());
+        when(pluginContext.getRootClassName()).thenReturn(Optional.empty());
 
         try {
             nameGenerator.rootFieldNameFrom(schema, schemaFilename, pluginContext);
@@ -64,7 +64,7 @@ public class RootNameGeneratorPluginTest {
     public void shouldFailIfTheFileNameIsOnlyTheExtension() throws Exception {
         final String schemaFilename = ".json";
 
-        when(pluginContext.generatorPropertyValueOf("rootClassName")).thenReturn(Optional.empty());
+        when(pluginContext.getRootClassName()).thenReturn(Optional.empty());
 
         try {
             nameGenerator.rootFieldNameFrom(schema, schemaFilename, pluginContext);
@@ -78,7 +78,7 @@ public class RootNameGeneratorPluginTest {
     public void shouldFailIfTheFileNameIsOnlyADot() throws Exception {
         final String schemaFilename = "..json";
 
-        when(pluginContext.generatorPropertyValueOf("rootClassName")).thenReturn(Optional.empty());
+        when(pluginContext.getRootClassName()).thenReturn(Optional.empty());
 
         try {
             nameGenerator.rootFieldNameFrom(schema, schemaFilename, pluginContext);
@@ -92,7 +92,7 @@ public class RootNameGeneratorPluginTest {
     public void shouldSetRootNameFromGeneratorProperties() throws Exception {
         final String schemaFilename = "object-property-schema.json";
 
-        when(pluginContext.generatorPropertyValueOf("rootClassName")).thenReturn(Optional.of("objectGeneratorProperty"));
+        when(pluginContext.getRootClassName()).thenReturn(Optional.of("objectGeneratorProperty"));
 
         assertThat(nameGenerator.rootFieldNameFrom(schema, schemaFilename, pluginContext), is("objectGeneratorProperty"));
     }
@@ -101,7 +101,7 @@ public class RootNameGeneratorPluginTest {
     public void shouldLowercaseFirstCharacterOfRootNameFromGeneratorProperties() throws Exception {
         final String schemaFilename = "object-property-schema.json";
 
-        when(pluginContext.generatorPropertyValueOf("rootClassName")).thenReturn(Optional.of("ObjectGeneratorProperty"));
+        when(pluginContext.getRootClassName()).thenReturn(Optional.of("ObjectGeneratorProperty"));
 
         assertThat(nameGenerator.rootFieldNameFrom(schema, schemaFilename, pluginContext), is("objectGeneratorProperty"));
     }

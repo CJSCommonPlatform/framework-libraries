@@ -1,5 +1,6 @@
 package uk.gov.justice.generation.pojo.plugin;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
@@ -98,7 +99,7 @@ public class PluginProviderFactory {
      */
     public PluginProvider createFor(final GeneratorConfig generatorConfig) {
 
-        final Map<String, String> generatorProperties = generatorConfig.getGeneratorProperties();
+        final PojoGeneratorProperties generatorProperties = (PojoGeneratorProperties) generatorConfig.getGeneratorProperties();
         final List<String> pluginNames = parsePluginNames.parsePluginNames(generatorProperties);
         final List<Object> plugins = allPluginsInstantiator.instantiate(pluginNames);
 

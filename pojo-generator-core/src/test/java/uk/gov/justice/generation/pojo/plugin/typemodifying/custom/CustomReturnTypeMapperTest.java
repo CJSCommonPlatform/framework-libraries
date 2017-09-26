@@ -38,7 +38,7 @@ public class CustomReturnTypeMapperTest {
     @Test
     public void shouldGetTheCustomTypeMappingFromGeneratorPropertiesAndConvertToAClassName() throws Exception {
 
-        final String mappingPropertyName = "typemapping.reference.uuid";
+        final String mappingPropertyName = "reference.uuid";
         final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "uuid");
         final Optional<String> mappingPropertyValue = of("java.util.UUID");
         final ClassName uuidClassName = get(UUID.class);
@@ -47,18 +47,18 @@ public class CustomReturnTypeMapperTest {
 
         final Set<String> propertyNames = newHashSet(
                 "some.property",
-                "typemapping.reference.custom-date-time",
+                "reference.custom-date-time",
                 mappingPropertyName,
                 "some.other.property");
 
         when(pluginContext.getPropertyNames()).thenReturn(propertyNames);
-        when(pluginContext.generatorPropertyValueOf(mappingPropertyName)).thenReturn(mappingPropertyValue);
+        when(pluginContext.typeMappingOf(mappingPropertyName)).thenReturn(mappingPropertyValue);
         when(fullyQualifiedNameToClassNameConverter.convert(mappingPropertyValue.get())).thenReturn(uuidClassName);
 
         final Optional<ClassName> className = customReturnTypeMapper.customType(referenceValue, pluginContext);
 
         if (className.isPresent()) {
-          assertThat(className.get(), is(uuidClassName));
+            assertThat(className.get(), is(uuidClassName));
         } else {
             fail();
         }
@@ -73,7 +73,7 @@ public class CustomReturnTypeMapperTest {
 
         final Set<String> propertyNames = newHashSet(
                 "some.property",
-                "typemapping.reference.custom-date-time",
+                "reference.custom-date-time",
                 "some.other.property");
 
         when(pluginContext.getPropertyNames()).thenReturn(propertyNames);
@@ -88,7 +88,7 @@ public class CustomReturnTypeMapperTest {
     @Test
     public void shouldFailIfNoPropertyValueFoundInThePluginContext() throws Exception {
 
-        final String mappingPropertyName = "typemapping.reference.uuid";
+        final String mappingPropertyName = "reference.uuid";
         final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "uuid");
         final Optional<String> missingPropertyValue = empty();
 
@@ -96,18 +96,18 @@ public class CustomReturnTypeMapperTest {
 
         final Set<String> propertyNames = newHashSet(
                 "some.property",
-                "typemapping.reference.custom-date-time",
+                "reference.custom-date-time",
                 mappingPropertyName,
                 "some.other.property");
 
         when(pluginContext.getPropertyNames()).thenReturn(propertyNames);
-        when(pluginContext.generatorPropertyValueOf(mappingPropertyName)).thenReturn(missingPropertyValue);
+        when(pluginContext.typeMappingOf(mappingPropertyName)).thenReturn(missingPropertyValue);
 
         try {
             customReturnTypeMapper.customType(referenceValue, pluginContext);
             fail();
         } catch (final PluginConfigurationException expected) {
-            assertThat(expected.getMessage(), is("Failed to get generator property 'typemapping.reference.uuid'"));
+            assertThat(expected.getMessage(), is("Failed to get generator property 'reference.uuid'"));
         }
 
         verifyZeroInteractions(fullyQualifiedNameToClassNameConverter);

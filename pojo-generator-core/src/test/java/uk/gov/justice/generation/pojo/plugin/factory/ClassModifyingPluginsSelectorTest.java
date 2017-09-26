@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
@@ -31,9 +32,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ClassModifyingPluginsSelectorTest {
 
     @Mock
-    private ExcludeDefaultPluginsSwitch excludeDefaultPluginsSwitch;
-
-    @Mock
     private DefaultPluginsProvider defaultPluginsProvider;
 
     @InjectMocks
@@ -42,13 +40,13 @@ public class ClassModifyingPluginsSelectorTest {
     @Test
     public void shouldGetTheListOfClassModifyingPluginsWithDefaultPluginsIfExcludeDefaultPluginsIsFalse() throws Exception {
 
-        final Map<String, String> generatorProperties = new HashMap<>();
+        final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
         final Map<Class<?>, List<Object>> pluginTypes = new HashMap<>();
 
         pluginTypes.put(ClassModifyingPlugin.class, classModifyingPlugins());
         pluginTypes.put(TypeModifyingPlugin.class, typeModifyingPlugins());
 
-        when(excludeDefaultPluginsSwitch.shouldExcludeDefaultPlugins(generatorProperties)).thenReturn(false);
+        when(generatorProperties.isExcludeDefaultPlugins()).thenReturn(false);
         when(defaultPluginsProvider.getDefaultPlugins()).thenReturn(defaultPlugins());
 
         final List<ClassModifyingPlugin> classModifyingPlugins = classModifyingPluginsSelector.selectFrom(
@@ -65,13 +63,13 @@ public class ClassModifyingPluginsSelectorTest {
     @Test
     public void shouldGetTheListOfClassModifyingPluginsWithoutDefaultPluginsIfExcludeDefaultPluginsIsTrue() throws Exception {
 
-        final Map<String, String> generatorProperties = new HashMap<>();
+        final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
         final Map<Class<?>, List<Object>> pluginTypes = new HashMap<>();
 
         pluginTypes.put(ClassModifyingPlugin.class, classModifyingPlugins());
         pluginTypes.put(TypeModifyingPlugin.class, typeModifyingPlugins());
 
-        when(excludeDefaultPluginsSwitch.shouldExcludeDefaultPlugins(generatorProperties)).thenReturn(true);
+        when(generatorProperties.isExcludeDefaultPlugins()).thenReturn(true);
 
         final List<ClassModifyingPlugin> classModifyingPlugins = classModifyingPluginsSelector.selectFrom(
                 pluginTypes, generatorProperties

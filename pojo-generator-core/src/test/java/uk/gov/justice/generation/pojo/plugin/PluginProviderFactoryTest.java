@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.factory.AllPluginsInstantiator;
 import uk.gov.justice.generation.pojo.plugin.factory.ClassModifyingPluginsSelector;
@@ -53,7 +54,7 @@ public class PluginProviderFactoryTest {
     @SuppressWarnings("unchecked")
     public void shouldFindAllPluginsTheInstantiateAndReturnThemInThePluginProvider() throws Exception {
 
-        final Map<String, String> generatorProperties = mock(Map.class);
+        final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
         final List<String> pluginNames = mock(List.class);
         final List<Object> plugins = mock(List.class);
         final Map<Class<?>, List<Object>> pluginTypes = mock(Map.class);

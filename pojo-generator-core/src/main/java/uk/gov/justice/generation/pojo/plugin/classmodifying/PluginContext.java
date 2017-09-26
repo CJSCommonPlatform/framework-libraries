@@ -2,11 +2,12 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import static java.util.stream.Collectors.toList;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorProperties;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,18 +21,18 @@ public class PluginContext {
     private final ClassNameFactory classNameFactory;
     private final String sourceFilename;
     private final List<ClassModifyingPlugin> classModifyingPlugins;
-    private final Map<String, String> generatorProperties;
+    private final PojoGeneratorProperties generatorProperties;
 
     public PluginContext(final JavaGeneratorFactory generatorFactory,
                          final ClassNameFactory classNameFactory,
                          final String sourceFilename,
                          final List<ClassModifyingPlugin> classModifyingPlugins,
-                         final Map<String, String> generatorProperties) {
+                         final GeneratorProperties generatorProperties) {
         this.generatorFactory = generatorFactory;
         this.classNameFactory = classNameFactory;
         this.sourceFilename = sourceFilename;
         this.classModifyingPlugins = classModifyingPlugins;
-        this.generatorProperties = generatorProperties;
+        this.generatorProperties = (PojoGeneratorProperties) generatorProperties;
     }
 
     /**
@@ -83,11 +84,15 @@ public class PluginContext {
         return pluginClasses.contains(pluginClass);
     }
 
-    public Optional<String> generatorPropertyValueOf(final String propertyName) {
-        return Optional.ofNullable(generatorProperties.get(propertyName));
+    public Optional<String> getRootClassName() {
+        return generatorProperties.getRootClassName();
     }
 
     public Set<String> getPropertyNames() {
-        return generatorProperties.keySet();
+        return generatorProperties.getTypeMappings().keySet();
+    }
+
+    public Optional<String> typeMappingOf(final String propertyName) {
+        return Optional.ofNullable(generatorProperties.getTypeMappings().get(propertyName));
     }
 }

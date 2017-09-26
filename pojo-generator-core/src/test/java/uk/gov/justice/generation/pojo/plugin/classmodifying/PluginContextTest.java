@@ -7,14 +7,16 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.core.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,7 +29,7 @@ public class PluginContextTest {
     private static final ClassNameFactory UNSPECIFIED_CLASS_NAME_FACTORY = null;
     private static final String BLANK = "";
     private static final List<ClassModifyingPlugin> EMPTY_CLASS_MODIFYING_PLUGINS = emptyList();
-    private static final Map<String, String> EMPTY_GENERATOR_PROPERTIES = new HashMap<>();
+    private static final PojoGeneratorProperties EMPTY_GENERATOR_PROPERTIES = new PojoGeneratorProperties();
 
     @Test
     public void shouldReturnJavaGeneratorFactory() throws Exception {
@@ -92,12 +94,14 @@ public class PluginContextTest {
     }
 
     @Test
-    public void shouldReturnPropertyValueIfRequestedGeneratorPropertyIsPresent() throws Exception {
+    public void shouldReturnPropertyValueIfRequestedTypeMappingsIsPresent() throws Exception {
         final String propertyName = "testProperty";
         final String propertyValue = "test value";
 
-        final HashMap<String, String> generatorProperties = new HashMap<>();
-        generatorProperties.put(propertyName, propertyValue);
+        final ImmutableMap<String, String> typeMappings = of(propertyName, propertyValue);
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withTypeMappings(typeMappings)
+                .build();
 
         final PluginContext pluginContext = new PluginContext(
                 UNSPECIFIED_GENERATOR_FACTORY,
@@ -106,14 +110,16 @@ public class PluginContextTest {
                 EMPTY_CLASS_MODIFYING_PLUGINS,
                 generatorProperties);
 
-        assertThat(pluginContext.generatorPropertyValueOf(propertyName), is(Optional.of(propertyValue)));
+        assertThat(pluginContext.typeMappingOf(propertyName), is(Optional.of(propertyValue)));
     }
 
     @Test
-    public void shouldReturnOptionaEmptyIfRequestedGeneratorPropertyIsNotPresent() throws Exception {
+    public void shouldReturnOptionaEmptyIfRequestedTypeMappingIsNotPresent() throws Exception {
         final String propertyName = "testProperty";
 
-        final HashMap<String, String> generatorProperties = new HashMap<>();
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withTypeMappings(new HashMap<>())
+                .build();
 
         final PluginContext pluginContext = new PluginContext(
                 UNSPECIFIED_GENERATOR_FACTORY,
@@ -122,17 +128,20 @@ public class PluginContextTest {
                 EMPTY_CLASS_MODIFYING_PLUGINS,
                 generatorProperties);
 
-        assertThat(pluginContext.generatorPropertyValueOf(propertyName), is(Optional.empty()));
+        assertThat(pluginContext.typeMappingOf(propertyName), is(Optional.empty()));
     }
 
     @Test
-    public void shouldGetTheSetOfGeneratorPropertyNames() throws Exception {
+    public void shouldGetTheSetOfTypeMappingNames() throws Exception {
 
-        final ImmutableMap<String, String> generatorProperties = of(
+        final ImmutableMap<String, String> typeMappings = of(
                 "key_1", "value_1",
                 "key_2", "value_2",
                 "key_3", "value_3"
         );
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withTypeMappings(typeMappings)
+                .build();
 
         final PluginContext pluginContext = new PluginContext(
                 UNSPECIFIED_GENERATOR_FACTORY,
@@ -148,5 +157,24 @@ public class PluginContextTest {
         assertThat(propertyNames, hasItem("key_1"));
         assertThat(propertyNames, hasItem("key_2"));
         assertThat(propertyNames, hasItem("key_3"));
+    }
+
+    @Test
+    public void shouldReturnRootClassName() throws Exception {
+        final String rootClassName = "rootClassName";
+        final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
+
+        when(generatorProperties.getRootClassName()).thenReturn(Optional.of(rootClassName));
+
+        final PluginContext pluginContext = new PluginContext(
+                UNSPECIFIED_GENERATOR_FACTORY,
+                UNSPECIFIED_CLASS_NAME_FACTORY,
+                BLANK,
+                EMPTY_CLASS_MODIFYING_PLUGINS,
+                generatorProperties);
+
+        final Optional<String> result = pluginContext.getRootClassName();
+
+        assertThat(result, is(Optional.of(rootClassName)));
     }
 }

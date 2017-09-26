@@ -26,13 +26,13 @@ public class CustomReturnTypeMapper {
         final Set<String> propertyNames = pluginContext.getPropertyNames();
         final Optional<String> property = propertyNames
                 .stream()
-                .filter(propertyName -> propertyName.startsWith("typemapping.reference"))
+                .filter(propertyName -> propertyName.startsWith("reference"))
                 .filter(propertyName -> propertyName.endsWith(referenceValue.getName()))
                 .findFirst();
 
         if (property.isPresent()) {
             final String propertyName = property.get();
-            final Optional<String> fullyQualifiedName = pluginContext.generatorPropertyValueOf(propertyName);
+            final Optional<String> fullyQualifiedName = pluginContext.typeMappingOf(propertyName);
 
             if (fullyQualifiedName.isPresent()) {
                 return of(fullyQualifiedNameToClassNameConverter.convert(fullyQualifiedName.get()));

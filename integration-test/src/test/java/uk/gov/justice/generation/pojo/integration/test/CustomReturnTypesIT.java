@@ -4,7 +4,9 @@ import static com.google.common.collect.ImmutableMap.of;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
@@ -15,7 +17,6 @@ import java.io.File;
 import java.math.BigInteger;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,11 +45,13 @@ public class CustomReturnTypesIT {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/custom-return-types.json");
 
-        final Map<String, String> generatorProperties = of(
-                "typemapping.reference.uuid", "java.util.UUID",
-                "typemapping.reference.bigInteger", "java.math.BigInteger",
-                "typemapping.reference.date", "java.time.ZonedDateTime"
-        );
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withTypeMappings(of(
+                        "reference.uuid", "java.util.UUID",
+                        "reference.bigInteger", "java.math.BigInteger",
+                        "reference.date", "java.time.ZonedDateTime"
+                ))
+                .build();
 
         final List<Class<?>> classes = generatorUtil
                 .withGeneratorProperties(generatorProperties)

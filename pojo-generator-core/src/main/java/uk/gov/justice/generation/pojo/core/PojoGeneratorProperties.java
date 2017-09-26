@@ -21,7 +21,7 @@ public class PojoGeneratorProperties implements GeneratorProperties {
     private String rootClassName;
 
     @Parameter
-    private Map<String, String> typeMappings;
+    private Map<String, String> typeMappings = new HashMap<>();
 
     public boolean isExcludeDefaultPlugins() {
         return excludeDefaultPlugins;
@@ -36,10 +36,6 @@ public class PojoGeneratorProperties implements GeneratorProperties {
     }
 
     public Map<String, String> getTypeMappings() {
-        if (null == typeMappings) {
-            typeMappings = new HashMap<>();
-        }
-
         return typeMappings;
     }
 }

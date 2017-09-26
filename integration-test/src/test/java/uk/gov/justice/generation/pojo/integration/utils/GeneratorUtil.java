@@ -2,7 +2,6 @@ package uk.gov.justice.generation.pojo.integration.utils;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
@@ -41,7 +40,6 @@ import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 import org.everit.json.schema.Schema;
 import org.json.JSONObject;

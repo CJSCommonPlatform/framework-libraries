@@ -44,7 +44,7 @@ public class ZoneDateTimeIT {
         final File jsonSchemaFile = new File("src/test/resources/schemas/employee-with-date.json");
 
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
-                .withTypeMappings(of("reference.date", "java.time.ZonedDateTime"))
+                .withTypeMappings(of("date", "java.time.ZonedDateTime"))
                 .build();
 
         final List<Class<?>> classes = generatorUtil

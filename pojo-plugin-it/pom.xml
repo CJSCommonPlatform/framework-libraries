@@ -84,8 +84,8 @@
                                     <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin</plugin>
                                 </plugins>
                                 <typeMappings>
-                                    <reference.uuid>java.util.UUID</reference.uuid>
-                                    <format.custom-date-time>java.time.ZonedDateTime</format.custom-date-time>
+                                    <uuid>java.util.UUID</uuid>
+                                    <date>java.time.ZonedDateTime</date>
                                 </typeMappings>
                             </generatorProperties>
                         </configuration>

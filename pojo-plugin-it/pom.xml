@@ -80,7 +80,6 @@
                                     <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin</plugin>
-                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin</plugin>
                                 </plugins>
                                 <typeMappings>

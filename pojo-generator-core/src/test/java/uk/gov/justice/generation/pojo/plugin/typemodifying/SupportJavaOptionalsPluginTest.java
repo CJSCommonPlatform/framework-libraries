@@ -2,14 +2,19 @@ package uk.gov.justice.generation.pojo.plugin.typemodifying;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.squareup.javapoet.ClassName;
@@ -100,5 +105,29 @@ public class SupportJavaOptionalsPluginTest {
                 pluginContext);
 
         assertThat(typeName.toString(), is("java.util.List"));
+    }
+
+    @Test
+    public void shouldBeIncompatibleWithSerializablePlugin() throws Exception {
+
+        final List<String> allPluginNames = new ArrayList<>();
+
+        allPluginNames.add(AddHashcodeAndEqualsPlugin.class.getName());
+        allPluginNames.add(CustomReturnTypePlugin.class.getName());
+
+        optionalTypeNamePlugin.checkCompatibilityWith(allPluginNames);
+
+        allPluginNames.add(MakeClassSerializablePlugin.class.getName());
+
+        try {
+            optionalTypeNamePlugin.checkCompatibilityWith(allPluginNames);
+            fail();
+        } catch (final IncompatiblePluginException expected) {
+            assertThat(expected.getMessage(), is(
+                    "Plugin 'uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin' " +
+                    "is incompatible with plugin " +
+                    "'uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin' " +
+                    "and should not be run together"));
+        }
     }
 }

@@ -1,11 +1,15 @@
 package uk.gov.justice.generation.pojo.plugin.typemodifying;
 
 import static com.squareup.javapoet.ClassName.get;
+import static java.lang.String.format;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -47,6 +51,19 @@ public class SupportJavaOptionalsPlugin implements TypeModifyingPlugin {
         }
 
         return originalTypeName;
+    }
+
+    @Override
+    public void checkCompatibilityWith(final List<String> pluginNames) {
+
+        final String incompatiblePluginClassName = MakeClassSerializablePlugin.class.getName();
+
+        if (pluginNames.contains(incompatiblePluginClassName)) {
+            throw new IncompatiblePluginException(format(
+                    "Plugin '%s' is incompatible with plugin '%s' and should not be run together",
+                    getClass().getName(),
+                    incompatiblePluginClassName));
+        }
     }
 
     private boolean shouldAddOptional(final Definition definition) {

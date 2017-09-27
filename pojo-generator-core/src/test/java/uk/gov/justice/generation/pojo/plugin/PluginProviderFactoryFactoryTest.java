@@ -35,6 +35,7 @@ public class PluginProviderFactoryFactoryTest {
         assertThat(getFieldFrom(pluginProviderFactory, "pluginTypeSorter"), is(instanceOf(PluginTypeSorter.class)));
         assertThat(getFieldFrom(pluginProviderFactory, "allPluginsInstantiator"), is(instanceOf(AllPluginsInstantiator.class)));
         assertThat(getFieldFrom(pluginProviderFactory, "parsePluginNames"), is(instanceOf(PluginsFromClassnameListFactory.class)));
+        assertThat(getFieldFrom(pluginProviderFactory, "pluginVerifier"), is(instanceOf(PluginVerifier.class)));
     }
 
     private Object getFieldFrom(final PluginProviderFactory pluginProviderFactory, final String fieldName) throws Exception {

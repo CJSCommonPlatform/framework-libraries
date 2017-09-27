@@ -22,7 +22,8 @@ public class PluginProviderFactoryFactory {
                 new TypeModifyingPluginsSelector(),
                 new PluginTypeSorter(),
                 new AllPluginsInstantiator(new PluginInstantiator(new Instantiator())),
-                new PluginsFromClassnameListFactory()
+                new PluginsFromClassnameListFactory(),
+                new PluginVerifier()
         );
     }
 }

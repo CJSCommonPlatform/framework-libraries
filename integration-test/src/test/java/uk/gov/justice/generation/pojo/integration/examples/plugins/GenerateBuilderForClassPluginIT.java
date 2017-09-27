@@ -1,9 +1,12 @@
-package uk.gov.justice.generation.pojo.integration.test;
+package uk.gov.justice.generation.pojo.integration.examples.plugins;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
+import static uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin.newGenerateBuilderForClassPlugin;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -15,34 +18,43 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BuilderIT {
+public class GenerateBuilderForClassPluginIT {
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final OutputDirectories outputDirectories = new OutputDirectories();
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
+    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/examples/plugins/generate-builder-for-class-plugin.json");
+
     @Before
     public void setup() throws Exception {
-        outputDirectories.makeDirectories("./target/test-generation/builder");
+        outputDirectories.makeDirectories("./target/test-generation/examples/plugins/generate-builder-for-class-plugin");
     }
 
     @Test
     public void shouldGenerateAClassWithAMapForAdditionalPropertiesIfAdditionalPropertiesIsTrue() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/student.json");
-        final String packageName = "uk.gov.justice.pojo.builder.student";
+        final String packageName = "uk.gov.justice.pojo.builder";
 
-        final List<Class<?>> newClasses = generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories);
+
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withRootClassName("StudentPojoWithBuilder")
+                .build();
+
+        final List<Class<?>> newClasses = generatorUtil
+                .withGeneratorProperties(generatorProperties)
+                .withClassModifyingPlugin(newGenerateBuilderForClassPlugin())
+                .generateAndCompileJavaSource(
+                        JSON_SCHEMA_FILE,
+                        packageName,
+                        outputDirectories);
 
         assertThat(newClasses.size(), is(1));
 
         final Class<?> studentClass = newClasses.get(0);
 
-        final Object studentBuilder = studentClass.getMethod("student").invoke(null);
+        final Object studentBuilder = studentClass.getMethod("studentPojoWithBuilder").invoke(null);
 
-        assertThat(studentBuilder.getClass().getName(), is("uk.gov.justice.pojo.builder.student.Student$Builder"));
+        assertThat(studentBuilder.getClass().getName(), is("uk.gov.justice.pojo.builder.StudentPojoWithBuilder$Builder"));
 
         final String firstName = "Molly";
         final String lastName = "O'Golly";
@@ -65,6 +77,6 @@ public class BuilderIT {
                 .assertThat("$.haircut", is(haircut))
         ;
 
-        generatorUtil.validate(jsonSchemaFile, json);
+        generatorUtil.validate(JSON_SCHEMA_FILE, json);
     }
 }

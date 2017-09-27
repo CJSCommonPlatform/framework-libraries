@@ -1,15 +1,22 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
+import static java.util.Arrays.stream;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
+
+import java.lang.reflect.Method;
+import java.util.Optional;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -66,5 +73,22 @@ public class GenerateBuilderForClassPluginTest {
 
         assertThat(typeSpec.methodSpecs.size(), is(1));
         assertThat(typeSpec.methodSpecs, hasItem(staticGetBuilderMethod));
+    }
+
+    @Test
+    public void shouldBeInstantiableUsingItsFactoryMethod() throws Exception {
+
+        final Class<GenerateBuilderForClassPlugin> pluginClass = GenerateBuilderForClassPlugin.class;
+
+        final Optional<Method> methodOptional = stream(pluginClass.getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(FactoryMethod.class))
+                .findFirst();
+
+        if (methodOptional.isPresent()) {
+            final Object plugin = methodOptional.get().invoke(null);
+            assertThat(plugin, is(instanceOf(pluginClass)));
+        } else {
+            fail();
+        }
     }
 }

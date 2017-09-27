@@ -86,6 +86,7 @@
                                     <uuid>java.util.UUID</uuid>
                                     <date>java.time.ZonedDateTime</date>
                                 </typeMappings>
+                                <rootClassName>Person</rootClassName>
                             </generatorProperties>
                         </configuration>
                         <goals>

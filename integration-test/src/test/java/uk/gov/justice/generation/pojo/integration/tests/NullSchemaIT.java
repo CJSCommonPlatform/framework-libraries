@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.integration.test;
+package uk.gov.justice.generation.pojo.integration.tests;
 
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
@@ -16,12 +16,12 @@ public class NullSchemaIT {
 
     @Before
     public void setup() throws Exception {
-        outputDirectories.makeDirectories("./target/test-generation/null-schema");
+        outputDirectories.makeDirectories("./target/test-generation/tests/null-schema");
     }
 
     @Test
     public void shouldGeneratePojosFromANullSchema() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/null-schema.json");
+        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/null-schema.json");
         final String packageName = "uk.gov.justice.pojo.nullable.schema";
 
         generatorUtil.generateAndCompileJavaSource(

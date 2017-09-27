@@ -78,7 +78,7 @@ public class CustomReturnTypePlugin implements TypeModifyingPlugin {
     }
 
     @FactoryMethod
-    public static CustomReturnTypePlugin create() {
+    public static CustomReturnTypePlugin newCustomReturnTypePlugin() {
 
         final FullyQualifiedNameToClassNameConverter fullyQualifiedNameToClassNameConverter =
                 new FullyQualifiedNameToClassNameConverter();

@@ -1,6 +1,5 @@
 package uk.gov.justice.generation.pojo.integration.utils;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
@@ -15,18 +14,9 @@ import uk.gov.justice.generation.pojo.plugin.ModifyingPluginProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddToStringMethodToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootNameGeneratorPlugin;
-import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
-import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
@@ -39,6 +29,7 @@ import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.everit.json.schema.Schema;
@@ -55,30 +46,21 @@ public class GeneratorUtil {
     private List<String> ignoredClassNames = emptyList();
     private PojoGeneratorProperties generatorProperties = new PojoGeneratorProperties();
 
-    private List<ClassModifyingPlugin> classModifyingPlugins = asList(
-            new MakeClassSerializablePlugin(),
-            new AddFieldsAndMethodsToClassPlugin(),
-            new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
-            new AddAdditionalPropertiesToClassPlugin(),
-            new AddHashcodeAndEqualsPlugin(new AdditionalPropertiesDeterminer()),
-            new AddToStringMethodToClassPlugin(new AdditionalPropertiesDeterminer())
-    );
-    private List<TypeModifyingPlugin> typeModifyingPlugins = asList(
-            new SupportJavaOptionalsPlugin(),
-            CustomReturnTypePlugin.create());
+    private List<ClassModifyingPlugin> classModifyingPlugins = new ArrayList<>();
+    private List<TypeModifyingPlugin> typeModifyingPlugins = new ArrayList<>();
 
     public GeneratorUtil withIgnoredClassNames(final List<String> ignoredClassNames) {
         this.ignoredClassNames = ignoredClassNames;
         return this;
     }
 
-    public GeneratorUtil withClassModifyingPlugins(final List<ClassModifyingPlugin> classModifyingPlugins) {
-        this.classModifyingPlugins = classModifyingPlugins;
+    public GeneratorUtil withClassModifyingPlugin(final ClassModifyingPlugin classModifyingPlugin) {
+        this.classModifyingPlugins.add(classModifyingPlugin);
         return this;
     }
 
-    public GeneratorUtil withTypeModifyingPlugins(final List<TypeModifyingPlugin> typeModifyingPlugins) {
-        this.typeModifyingPlugins = typeModifyingPlugins;
+    public GeneratorUtil withTypeModifyingPlugin(final TypeModifyingPlugin typeModifyingPlugin) {
+        this.typeModifyingPlugins.add(typeModifyingPlugin);
         return this;
     }
 
@@ -98,6 +80,8 @@ public class GeneratorUtil {
                 ignoredClassNames);
 
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
+
+        classModifyingPlugins.add(new AddFieldsAndMethodsToClassPlugin());
 
         final PluginProvider pluginProvider = new ModifyingPluginProvider(
                 classModifyingPlugins,

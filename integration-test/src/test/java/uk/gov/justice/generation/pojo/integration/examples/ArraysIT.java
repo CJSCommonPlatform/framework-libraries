@@ -1,10 +1,12 @@
-package uk.gov.justice.generation.pojo.integration.test;
+package uk.gov.justice.generation.pojo.integration.examples;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
@@ -17,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ArrayIT {
+public class ArraysIT {
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
@@ -26,45 +28,47 @@ public class ArrayIT {
 
     @Before
     public void setup() throws Exception {
-        outputDirectories.makeDirectories("./target/test-generation/arrays");
+        outputDirectories.makeDirectories("./target/test-generation/examples/arrays");
     }
 
     @Test
-    public void shouldAnArraySchemaDocumentWithAnArrayOfItemSchemas() throws Exception {
+    public void shouldGenerateAnPojoFromAnSchemaDocumentWithAnArrayOfItems() throws Exception {
 
-        final File jsonSchemaFile = new File("src/test/resources/schemas/example.recipe-added.json");
+        final File jsonSchemaFile = new File("src/test/resources/schemas/examples/array.json");
         final String packageName = "uk.gov.justice.pojo.arrays";
 
-        final List<Class<?>> newClasses = generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories);
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withRootClassName("RecipeWithArray")
+                .build();
+
+        final List<Class<?>> newClasses = generatorUtil
+                .withGeneratorProperties(generatorProperties)
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         assertThat(newClasses.size(), is(2));
 
         final Class<?> ingredientsClass = newClasses.get(0);
         final Class<?> recipeAddedClass = newClasses.get(1);
 
+        assertThat(recipeAddedClass.getSimpleName(), is("RecipeWithArray"));
         assertThat(ingredientsClass.getSimpleName(), is("Ingredients"));
-        assertThat(recipeAddedClass.getSimpleName(), is("RecipeAdded"));
 
         final Object ingredient_1 = classInstantiator.newInstance(ingredientsClass, "Eye of Newt", 1);
         final Object ingredient_2 = classInstantiator.newInstance(ingredientsClass, "Toe of Frog", 3);
 
         final Object regicidePie = classInstantiator.newInstance(
                 recipeAddedClass,
-                false,
                 asList(ingredient_1, ingredient_2),
-                "Regicide Pie",
-                "13"
+                "Regicide Pie"
         );
 
         final String json = objectMapper.writeValueAsString(regicidePie);
 
         with(json)
                 .assertThat("$.name", is("Regicide Pie"))
-                .assertThat("$.recipeId", is("13"))
-                .assertThat("$.glutenFree", is(false))
                 .assertThat("$.ingredients[0].name", is("Eye of Newt"))
                 .assertThat("$.ingredients[0].quantity", is(1))
                 .assertThat("$.ingredients[1].name", is("Toe of Frog"))

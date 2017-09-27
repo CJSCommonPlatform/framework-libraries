@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
 import static com.squareup.javapoet.ClassName.get;
+import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
@@ -98,5 +99,27 @@ public class BuilderGeneratorTest {
     public void shouldGetTheCorrectSimpleNameForTheBuilder() throws Exception {
 
         assertThat(builderGenerator.getSimpleClassName(), is("Builder"));
+    }
+
+    @Test
+    public void shouldGenerateStaticGetBuilderMethod() throws Exception {
+
+        final String fieldName = "alcubierreDrive";
+        final String packageName = "org.bloggs.fred";
+        final String pojoSimpleName = capitalize(fieldName);
+        final ClassName pojoClassName = get(packageName, pojoSimpleName);
+        final ClassName pojoBuilder = pojoClassName.nestedClass("Builder");
+
+        when(classDefinition.getFieldName()).thenReturn(fieldName);
+        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(pojoClassName);
+
+        final MethodSpec methodSpec = builderGenerator.generateStaticGetBuilderMethod();
+
+        assertThat(methodSpec.modifiers.size(), is(2));
+        assertThat(methodSpec.modifiers, hasItem(PUBLIC));
+        assertThat(methodSpec.modifiers, hasItem(STATIC));
+
+        assertThat(methodSpec.returnType, is(pojoBuilder));
+        assertThat(methodSpec.code.toString().trim(), is(format("return new %s();", pojoBuilder)));
     }
 }

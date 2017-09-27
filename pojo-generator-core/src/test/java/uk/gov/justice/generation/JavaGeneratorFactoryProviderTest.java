@@ -16,7 +16,7 @@ public class JavaGeneratorFactoryProviderTest {
     public void shouldProvideJavaGeneratorFactory() throws Exception {
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactoryProvider().getJavaGeneratorFactory(classNameFactory);
+        final JavaGeneratorFactory javaGeneratorFactory = new JavaGeneratorFactoryProvider().create(classNameFactory);
 
         assertThat(fieldValue(javaGeneratorFactory, "classNameFactory"), is(classNameFactory));
     }

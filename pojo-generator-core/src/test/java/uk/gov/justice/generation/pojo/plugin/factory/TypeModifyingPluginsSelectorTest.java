@@ -58,4 +58,25 @@ public class TypeModifyingPluginsSelectorTest {
         assertThat(plugins, hasItem(typeModifyingPlugin_2));
         assertThat(plugins, hasItem(typeModifyingPlugin_3));
     }
+
+    @Test
+    public void shouldSelectTheTypeModifyingPluginsAndReturnEmptyListIfNoKeySet() throws Exception {
+
+        final ClassModifyingPlugin classModifyingPlugin_1 = mock(ClassModifyingPlugin.class);
+        final ClassModifyingPlugin classModifyingPlugin_2 = mock(ClassModifyingPlugin.class);
+        final ClassModifyingPlugin classModifyingPlugin_3 = mock(ClassModifyingPlugin.class);
+
+        final List<Plugin> classModifyingPlugins = asList(
+                classModifyingPlugin_1,
+                classModifyingPlugin_2,
+                classModifyingPlugin_3
+        );
+
+        final ImmutableMap<Class<?>, List<Plugin>> pluginTypes = of(
+                ClassModifyingPlugin.class, classModifyingPlugins);
+
+        final List<TypeModifyingPlugin> plugins = typeModifyingPluginsSelector.selectFrom(pluginTypes);
+
+        assertThat(plugins.isEmpty(), is(true));
+    }
 }

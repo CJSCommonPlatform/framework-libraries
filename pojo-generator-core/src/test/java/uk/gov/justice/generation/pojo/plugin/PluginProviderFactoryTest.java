@@ -15,7 +15,6 @@ import uk.gov.justice.generation.pojo.plugin.factory.PluginsFromClassnameListFac
 import uk.gov.justice.generation.pojo.plugin.factory.TypeModifyingPluginsSelector;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
-import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -65,9 +64,6 @@ public class PluginProviderFactoryTest {
         final List<TypeModifyingPlugin> typeModifyingPlugins = mock(List.class);
         final NameGeneratablePlugin nameGeneratablePlugin = mock(NameGeneratablePlugin.class);
 
-        final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
-
-        when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
         when(parsePluginNames.parsePluginNames(generatorProperties)).thenReturn(pluginNames);
         when(allPluginsInstantiator.instantiate(pluginNames)).thenReturn(allPlugins);
         when(pluginTypeSorter.sortByType(allPlugins)).thenReturn(pluginTypes);
@@ -76,7 +72,7 @@ public class PluginProviderFactoryTest {
         when(typeModifyingPluginsSelector.selectFrom(pluginTypes)).thenReturn(typeModifyingPlugins);
         when(nameGeneratingPluginFactory.create(pluginTypes)).thenReturn(nameGeneratablePlugin);
 
-        final PluginProvider pluginProvider = pluginProviderFactory.createFor(generatorConfig);
+        final PluginProvider pluginProvider = pluginProviderFactory.createFor(generatorProperties);
 
         assertThat(pluginProvider.classModifyingPlugins(), is(classModifyingPlugins));
         assertThat(pluginProvider.typeModifyingPlugins(), is(typeModifyingPlugins));

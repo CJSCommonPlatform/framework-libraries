@@ -8,7 +8,7 @@ import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 
 public class ClassNameFactoryProvider {
 
-    public ClassNameFactory getClassNameFactory(final GenerationContext generationContext, final PluginProvider pluginProvider) {
+    public ClassNameFactory create(final GenerationContext generationContext, final PluginProvider pluginProvider) {
         final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
 

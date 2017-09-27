@@ -37,6 +37,7 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
                 new GeneratorContextProvider(javaFileSimpleNameLister),
                 new ClassNameFactoryProvider(),
                 new JavaGeneratorFactoryProvider(),
-                new JavaClassFileWriter(writer));
+                new JavaClassFileWriter(writer),
+                new PluginContextProvider());
     }
 }

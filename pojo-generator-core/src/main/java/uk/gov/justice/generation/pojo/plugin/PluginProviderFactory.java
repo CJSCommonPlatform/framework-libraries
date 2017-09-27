@@ -75,6 +75,7 @@ public class PluginProviderFactory {
     private final PluginTypeSorter pluginTypeSorter;
     private final AllPluginsInstantiator allPluginsInstantiator;
     private final PluginsFromClassnameListFactory parsePluginNames;
+    private final PluginVerifier pluginVerifier;
 
     public PluginProviderFactory(
             final NameGeneratingPluginFactory nameGeneratingPluginFactory,
@@ -82,13 +83,15 @@ public class PluginProviderFactory {
             final TypeModifyingPluginsSelector typeModifyingPluginsSelector,
             final PluginTypeSorter pluginTypeSorter,
             final AllPluginsInstantiator allPluginsInstantiator,
-            final PluginsFromClassnameListFactory parsePluginNames) {
+            final PluginsFromClassnameListFactory parsePluginNames,
+            final PluginVerifier pluginVerifier) {
         this.nameGeneratingPluginFactory = nameGeneratingPluginFactory;
         this.classModifyingPluginsSelector = classModifyingPluginsSelector;
         this.typeModifyingPluginsSelector = typeModifyingPluginsSelector;
         this.pluginTypeSorter = pluginTypeSorter;
         this.allPluginsInstantiator = allPluginsInstantiator;
         this.parsePluginNames = parsePluginNames;
+        this.pluginVerifier = pluginVerifier;
     }
 
     /**
@@ -101,9 +104,11 @@ public class PluginProviderFactory {
 
         final PojoGeneratorProperties generatorProperties = (PojoGeneratorProperties) generatorConfig.getGeneratorProperties();
         final List<String> pluginNames = parsePluginNames.parsePluginNames(generatorProperties);
-        final List<Plugin> plugins = allPluginsInstantiator.instantiate(pluginNames);
+        final List<Plugin> allPlugins = allPluginsInstantiator.instantiate(pluginNames);
 
-        final Map<Class<?>, List<Plugin>> pluginTypes = pluginTypeSorter.sortByType(plugins);
+        pluginVerifier.verifyCompatibility(allPlugins, pluginNames);
+
+        final Map<Class<?>, List<Plugin>> pluginTypes = pluginTypeSorter.sortByType(allPlugins);
 
         return new ModifyingPluginProvider(
                 classModifyingPluginsSelector.selectFrom(pluginTypes, generatorProperties),

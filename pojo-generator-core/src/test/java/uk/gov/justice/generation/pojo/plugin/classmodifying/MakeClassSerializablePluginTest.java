@@ -7,12 +7,18 @@ import static javax.lang.model.element.Modifier.STATIC;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeName;
@@ -45,5 +51,32 @@ public class MakeClassSerializablePluginTest {
                 .initializer("1L").build()));
 
         verifyZeroInteractions(pluginContext);
+    }
+
+    @Test
+    public void shouldBeIncompatibleWithSerializablePlugin() throws Exception {
+
+        final MakeClassSerializablePlugin makeClassSerializablePlugin = new MakeClassSerializablePlugin();
+
+        final List<String> allPluginNames = new ArrayList<>();
+
+        allPluginNames.add(AddHashcodeAndEqualsPlugin.class.getName());
+        allPluginNames.add(CustomReturnTypePlugin.class.getName());
+
+        makeClassSerializablePlugin.checkCompatibilityWith(allPluginNames);
+
+        allPluginNames.add(SupportJavaOptionalsPlugin.class.getName());
+
+        try {
+            makeClassSerializablePlugin.checkCompatibilityWith(allPluginNames);
+            fail();
+        } catch (final IncompatiblePluginException expected) {
+            assertThat(expected.getMessage(), is(
+                    "Plugin " +
+                            "'uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin' " +
+                            "is incompatible with plugin " +
+                            "'uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin' " +
+                            "and should not be run together"));
+        }
     }
 }

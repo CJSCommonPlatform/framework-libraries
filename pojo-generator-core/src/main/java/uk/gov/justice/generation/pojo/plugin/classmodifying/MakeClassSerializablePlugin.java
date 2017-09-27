@@ -1,13 +1,17 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import static com.squareup.javapoet.TypeName.LONG;
+import static java.lang.String.format;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -54,5 +58,18 @@ public class MakeClassSerializablePlugin implements ClassModifyingPlugin {
                         .build());
 
         return classBuilder;
+    }
+
+    @Override
+    public void checkCompatibilityWith(final List<String> pluginNames) {
+
+        final String incompatiblePluginClassName = SupportJavaOptionalsPlugin.class.getName();
+
+        if (pluginNames.contains(incompatiblePluginClassName)) {
+            throw new IncompatiblePluginException(format(
+                    "Plugin '%s' is incompatible with plugin '%s' and should not be run together",
+                    getClass().getName(),
+                    incompatiblePluginClassName));
+        }
     }
 }

@@ -47,6 +47,9 @@ public class PluginProviderFactoryTest {
     @Mock
     private PluginsFromClassnameListFactory parsePluginNames;
 
+    @Mock
+    private PluginVerifier pluginVerifier;
+
     @InjectMocks
     private PluginProviderFactory pluginProviderFactory;
 
@@ -56,7 +59,7 @@ public class PluginProviderFactoryTest {
 
         final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
         final List<String> pluginNames = mock(List.class);
-        final List<Plugin> plugins = mock(List.class);
+        final List<Plugin> allPlugins = mock(List.class);
         final Map<Class<?>, List<Plugin>> pluginTypes = mock(Map.class);
         final List<ClassModifyingPlugin> classModifyingPlugins = mock(List.class);
         final List<TypeModifyingPlugin> typeModifyingPlugins = mock(List.class);
@@ -66,8 +69,8 @@ public class PluginProviderFactoryTest {
 
         when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
         when(parsePluginNames.parsePluginNames(generatorProperties)).thenReturn(pluginNames);
-        when(allPluginsInstantiator.instantiate(pluginNames)).thenReturn(plugins);
-        when(pluginTypeSorter.sortByType(plugins)).thenReturn(pluginTypes);
+        when(allPluginsInstantiator.instantiate(pluginNames)).thenReturn(allPlugins);
+        when(pluginTypeSorter.sortByType(allPlugins)).thenReturn(pluginTypes);
 
         when(classModifyingPluginsSelector.selectFrom(pluginTypes, generatorProperties)).thenReturn(classModifyingPlugins);
         when(typeModifyingPluginsSelector.selectFrom(pluginTypes)).thenReturn(typeModifyingPlugins);
@@ -78,5 +81,7 @@ public class PluginProviderFactoryTest {
         assertThat(pluginProvider.classModifyingPlugins(), is(classModifyingPlugins));
         assertThat(pluginProvider.typeModifyingPlugins(), is(typeModifyingPlugins));
         assertThat(pluginProvider.nameGeneratablePlugin(), is(nameGeneratablePlugin));
+
+        pluginVerifier.verifyCompatibility(allPlugins, pluginNames);
     }
 }

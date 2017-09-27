@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Plugin {
 
-    default void checkCompatibilityWith(final List<Plugin> plugins)  {}
+    default void checkCompatibilityWith(@SuppressWarnings("unused") final List<String> pluginNames)  {}
 }

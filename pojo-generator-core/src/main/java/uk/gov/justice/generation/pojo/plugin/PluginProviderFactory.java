@@ -97,12 +97,11 @@ public class PluginProviderFactory {
     /**
      * Create a {@link PluginProvider} using the settings from the {@link GeneratorConfig}
      *
-     * @param generatorConfig the generatorConfig supplying the generatorProperties
+     * @param generatorProperties the generatorProperties1 supplying the generatorProperties
      * @return a {@link PluginProvider} instance
      */
-    public PluginProvider createFor(final GeneratorConfig generatorConfig) {
+    public PluginProvider createFor(final PojoGeneratorProperties generatorProperties) {
 
-        final PojoGeneratorProperties generatorProperties = (PojoGeneratorProperties) generatorConfig.getGeneratorProperties();
         final List<String> pluginNames = parsePluginNames.parsePluginNames(generatorProperties);
         final List<Plugin> allPlugins = allPluginsInstantiator.instantiate(pluginNames);
 

@@ -1,84 +1,108 @@
 package uk.gov.justice.generation;
 
-import static java.nio.file.Paths.get;
-import static org.apache.commons.io.FileUtils.cleanDirectory;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
-import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
+import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
+import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.io.File;
-import java.nio.file.Paths;
+import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SchemaPojoGeneratorTest {
 
-    private File sourceOutputDirectory;
+    @Mock
+    private GeneratorContextProvider generatorContextProvider;
 
-    @Before
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void setup() throws Exception {
-        sourceOutputDirectory = new File("target/test-generation");
-        sourceOutputDirectory.mkdirs();
+    @Mock
+    private JavaGeneratorFactoryProvider javaGeneratorFactoryProvider;
 
-        if (sourceOutputDirectory.exists()) {
-            cleanDirectory(sourceOutputDirectory);
-        }
-    }
+    @Mock
+    private ClassNameFactoryProvider classNameFactoryProvider;
 
-    @Test
-    public void shouldConvertSchemaFileToJavaPojo() throws Exception {
-        final File schemaFile = get("src/test/resources/schemas/person-schema.json").toFile();
-        final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
-        final PojoGeneratorProperties properties = pojoGeneratorPropertiesBuilder().build();
+    @Mock
+    private JavaClassFileWriter javaClassFileWriter;
 
-        when(generatorConfig.getOutputDirectory()).thenReturn(sourceOutputDirectory.toPath());
-        when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.pojo");
-        when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
+    @Mock
+    private PluginProviderFactory pluginProviderFactory;
 
-        final Generator<File> schemaPojoGenerator = new SchemaPojoGeneratorFactory().create();
+    @Mock
+    private DefinitionProvider definitionProvider;
 
-        schemaPojoGenerator.run(schemaFile, generatorConfig);
+    @Mock
+    private PluginContextProvider pluginContextProvider;
 
-        final File directory = Paths.get("target/test-generation/uk/gov/justice/generation/pojo").toFile();
-        assertThat(directory.exists(), is(true));
-
-        final File[] files = directory.listFiles();
-        assertThat(files, notNullValue());
-        assertThat(files.length, is(1));
-        assertThat(files[0].toPath().toString(), is("target/test-generation/uk/gov/justice/generation/pojo/PersonSchema.java"));
-    }
+    @InjectMocks
+    private SchemaPojoGenerator schemaPojoGenerator;
 
     @Test
-    public void shouldUseRooClassNameSettingInGeneratorProperties() throws Exception {
-        final File schemaFile = get("src/test/resources/schemas/person-schema.json").toFile();
+    @SuppressWarnings("unchecked")
+    public void shouldGeneratePojoFromSchema() throws Exception {
+        final File jsonSchemaFile = mock(File.class);
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
-        final PojoGeneratorProperties properties = pojoGeneratorPropertiesBuilder()
-                .withRootClassName("TestClassName")
-                .build();
 
-        when(generatorConfig.getOutputDirectory()).thenReturn(sourceOutputDirectory.toPath());
-        when(generatorConfig.getBasePackageName()).thenReturn("uk.gov.justice.generation.pojo");
-        when(generatorConfig.getGeneratorProperties()).thenReturn(properties);
+        final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
+        final GenerationContext generationContext = mock(GenerationContext.class);
 
-        final Generator<File> schemaPojoGenerator = new SchemaPojoGeneratorFactory().create();
+        final PluginProvider pluginProvider = mock(PluginProvider.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
-        schemaPojoGenerator.run(schemaFile, generatorConfig);
+        final JavaGeneratorFactory javaGeneratorFactory = mock(JavaGeneratorFactory.class);
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        final File directory = Paths.get("target/test-generation/uk/gov/justice/generation/pojo").toFile();
-        assertThat(directory.exists(), is(true));
+        final List<Definition> definitions = mock(List.class);
+        final List<ClassGeneratable> classGenerators = mock(List.class);
 
-        final File[] files = directory.listFiles();
-        assertThat(files, notNullValue());
-        assertThat(files.length, is(1));
-        assertThat(files[0].toPath().toString(), is("target/test-generation/uk/gov/justice/generation/pojo/TestClassName.java"));
+        when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
+        when(generatorContextProvider.create(jsonSchemaFile, generatorConfig)).thenReturn(generationContext);
+
+        when(pluginProviderFactory.createFor(generatorProperties)).thenReturn(pluginProvider);
+        when(generationContext.getLoggerFor(SchemaPojoGenerator.class)).thenReturn(mock(Logger.class));
+
+        when(classNameFactoryProvider.create(generationContext, pluginProvider)).thenReturn(classNameFactory);
+        when(javaGeneratorFactoryProvider.create(classNameFactory)).thenReturn(javaGeneratorFactory);
+
+        when(pluginContextProvider.create(
+                javaGeneratorFactory,
+                classNameFactory,
+                generationContext.getSourceFilename(),
+                pluginProvider.classModifyingPlugins(),
+                generatorProperties
+        )).thenReturn(pluginContext);
+
+        when(definitionProvider.createDefinitions(
+                jsonSchemaFile,
+                pluginProvider,
+                pluginContext
+        )).thenReturn(definitions);
+
+        when(javaGeneratorFactory.createClassGeneratorsFor(
+                definitions,
+                pluginProvider,
+                pluginContext,
+                generationContext
+        )).thenReturn(classGenerators);
+
+        schemaPojoGenerator.run(jsonSchemaFile, generatorConfig);
+
+        verify(javaClassFileWriter, times(1)).writeJavaClassesToFile(generationContext, classGenerators);
     }
 }

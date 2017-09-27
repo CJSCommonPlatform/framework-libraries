@@ -83,6 +83,26 @@ public class ClassModifyingPluginsSelectorTest {
         verifyZeroInteractions(defaultPluginsProvider);
     }
 
+    @Test
+    public void shouldGetDefaultPluginsIfThereAreNoUserDefinedClassModifyingPlugins() throws Exception {
+
+        final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
+        final Map<Class<?>, List<Plugin>> pluginTypes = new HashMap<>();
+
+        pluginTypes.put(TypeModifyingPlugin.class, typeModifyingPlugins());
+
+        when(generatorProperties.isExcludeDefaultPlugins()).thenReturn(false);
+        when(defaultPluginsProvider.getDefaultPlugins()).thenReturn(defaultPlugins());
+
+        final List<ClassModifyingPlugin> classModifyingPlugins = classModifyingPluginsSelector.selectFrom(
+                pluginTypes, generatorProperties
+        );
+
+        assertThat(classModifyingPlugins.size(), is(2));
+        assertThat(classModifyingPlugins.get(0), is(instanceOf(AddFieldsAndMethodsToClassPlugin.class)));
+        assertThat(classModifyingPlugins.get(1), is(instanceOf(GenerateBuilderForClassPlugin.class)));
+    }
+
     private List<Plugin> classModifyingPlugins() {
         final Plugin addAdditionalPropertiesToClassPlugin = mock(AddAdditionalPropertiesToClassPlugin.class);
         final Plugin addHashcodeAndEqualsPlugin = mock(AddHashcodeAndEqualsPlugin.class);

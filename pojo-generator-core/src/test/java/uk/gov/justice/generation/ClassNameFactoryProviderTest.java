@@ -19,7 +19,7 @@ public class ClassNameFactoryProviderTest {
         final GenerationContext generationContext = mock(GenerationContext.class);
         final PluginProvider pluginProvider = mock(PluginProvider.class);
 
-        final ClassNameFactory classNameFactory = new ClassNameFactoryProvider().getClassNameFactory(generationContext, pluginProvider);
+        final ClassNameFactory classNameFactory = new ClassNameFactoryProvider().create(generationContext, pluginProvider);
 
         assertThat(classNameFactory, notNullValue());
 

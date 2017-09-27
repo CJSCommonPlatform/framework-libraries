@@ -47,7 +47,7 @@ public class GeneratorContextProviderTest {
 
         when(schemaFile.getName()).thenReturn(schemaFilename);
 
-        final GenerationContext generationContext = generatorContextProvider.getGenerationContext(schemaFile, generatorConfig);
+        final GenerationContext generationContext = generatorContextProvider.create(schemaFile, generatorConfig);
 
         assertThat(generationContext.getPackageName(), is(packageName));
         assertThat(generationContext.getOutputDirectoryPath(), is(outputDirectory));

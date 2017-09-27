@@ -16,7 +16,7 @@ public class GeneratorContextProvider {
         this.javaFileSimpleNameLister = javaFileSimpleNameLister;
     }
 
-    public GenerationContext getGenerationContext(final File jsonSchemaFile, final GeneratorConfig generatorConfig) {
+    public GenerationContext create(final File jsonSchemaFile, final GeneratorConfig generatorConfig) {
         final List<Path> sourcePaths = generatorConfig.getSourcePaths();
         final Path outputDirectory = generatorConfig.getOutputDirectory();
         final String basePackageName = generatorConfig.getBasePackageName();

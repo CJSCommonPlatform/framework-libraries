@@ -12,6 +12,7 @@ import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.plugin.ModifyingPluginProvider;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
@@ -21,7 +22,6 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.AddToStringMethodToC
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootNameGeneratorPlugin;

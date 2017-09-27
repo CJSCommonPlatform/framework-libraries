@@ -6,8 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

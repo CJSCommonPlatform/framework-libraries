@@ -1,8 +1,8 @@
 package uk.gov.justice.generation.pojo.plugin.testplugins;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.TypeSpec;
 

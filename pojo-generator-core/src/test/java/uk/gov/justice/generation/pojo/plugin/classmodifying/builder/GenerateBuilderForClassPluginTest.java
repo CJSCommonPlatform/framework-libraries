@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;

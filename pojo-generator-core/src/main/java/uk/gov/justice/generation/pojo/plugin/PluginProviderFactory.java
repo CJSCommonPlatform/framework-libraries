@@ -50,7 +50,7 @@ import java.util.Map;
  * If the default ClassModifyingPlugins are not required and other plugins can be used instead, the
  * then the excludeDefaultPlugins tag can be set to true, for example:
  *
- * <pre><blockquote>
+ * <pre>
  *     {@code
  *
  *      <configuration>
@@ -65,7 +65,7 @@ import java.util.Map;
  *      </configuration>
  *
  *     }
- * </blockquote></pre>
+ * </pre>
  */
 public class PluginProviderFactory {
 

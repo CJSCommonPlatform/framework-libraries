@@ -4,7 +4,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.Optional;
 import java.util.stream.Stream;

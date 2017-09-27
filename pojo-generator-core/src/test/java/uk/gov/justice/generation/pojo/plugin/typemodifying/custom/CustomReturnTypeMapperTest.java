@@ -10,7 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
 import java.util.Optional;

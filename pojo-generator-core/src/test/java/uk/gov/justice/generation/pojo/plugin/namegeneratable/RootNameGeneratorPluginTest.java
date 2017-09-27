@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.Optional;
 

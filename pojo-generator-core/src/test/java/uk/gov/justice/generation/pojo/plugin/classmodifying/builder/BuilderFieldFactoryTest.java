@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.List;
 

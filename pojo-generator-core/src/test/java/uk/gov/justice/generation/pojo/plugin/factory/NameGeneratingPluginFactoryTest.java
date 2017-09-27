@@ -9,8 +9,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import uk.gov.justice.generation.pojo.plugin.Plugin;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderException;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootNameGeneratorPlugin;
 

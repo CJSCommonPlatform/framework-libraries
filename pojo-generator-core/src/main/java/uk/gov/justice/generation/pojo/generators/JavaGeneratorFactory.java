@@ -8,8 +8,8 @@ import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 

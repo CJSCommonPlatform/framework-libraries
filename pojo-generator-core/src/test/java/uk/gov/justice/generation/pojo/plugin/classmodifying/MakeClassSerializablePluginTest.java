@@ -13,6 +13,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 

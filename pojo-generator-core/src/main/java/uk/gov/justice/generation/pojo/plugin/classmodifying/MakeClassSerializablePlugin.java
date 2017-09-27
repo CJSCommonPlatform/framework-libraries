@@ -8,6 +8,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 
 import java.io.Serializable;
@@ -17,14 +18,16 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeSpec;
 
 /**
- * A class plugin that adds {@link Serializable} interface and
- * {@code serialVersionUID} to the generated class.
+ * A class plugin that adds {@link Serializable} interface and {@code serialVersionUID} to the
+ * generated class.
  *
  * Note: the serialVersionUID is always set to 1.
  *
  * <p>For example:</p>
- * <pre><blockquote>
- *     {@code public class MyClass implements Serializable {
+ * <pre>
+ *     {@code
+ *
+ *     public class MyClass implements Serializable {
  *
  *          private static final long serialVersionUID = 1L;
  *
@@ -39,7 +42,7 @@ import com.squareup.javapoet.TypeSpec;
  *          }
  *      }
  *     }
- * </blockquote></pre>
+ * </pre>
  */
 public class MakeClassSerializablePlugin implements ClassModifyingPlugin {
 

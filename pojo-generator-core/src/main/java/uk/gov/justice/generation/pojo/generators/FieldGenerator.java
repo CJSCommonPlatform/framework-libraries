@@ -8,7 +8,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.stream.Stream;
 

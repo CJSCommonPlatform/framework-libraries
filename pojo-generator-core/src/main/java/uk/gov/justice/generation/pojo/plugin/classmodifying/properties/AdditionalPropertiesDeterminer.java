@@ -1,8 +1,8 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.properties;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 /**
  * Class for determining whether additional properties. Should return true if both

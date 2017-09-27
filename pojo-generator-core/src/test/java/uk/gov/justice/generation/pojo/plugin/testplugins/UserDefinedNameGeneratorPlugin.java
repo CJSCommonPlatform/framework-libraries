@@ -1,6 +1,6 @@
 package uk.gov.justice.generation.pojo.plugin.testplugins;
 
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
 
 import org.everit.json.schema.Schema;

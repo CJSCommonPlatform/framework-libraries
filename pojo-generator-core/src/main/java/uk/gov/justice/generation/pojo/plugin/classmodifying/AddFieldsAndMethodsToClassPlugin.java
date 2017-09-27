@@ -10,6 +10,7 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.ElementGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.List;
 

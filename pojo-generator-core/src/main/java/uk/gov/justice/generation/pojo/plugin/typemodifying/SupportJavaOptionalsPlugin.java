@@ -6,8 +6,8 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +16,15 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 /**
- * A type modifying plugin for setting all properties which are not marked as <i>required</i>
- * in the json schema document to be wrapped in a java {@link Optional}.
+ * A type modifying plugin for setting all properties which are not marked as <i>required</i> in the
+ * json schema document to be wrapped in a java {@link Optional}.
  *
  * For example:
  *
- * <pre><blockquote>
- *     {@code public class MyClass {
+ * <pre>
+ *     {@code
+ *
+ *      public class MyClass {
  *
  *          private final Optional<String> myProperty;
  *
@@ -36,7 +38,7 @@ import com.squareup.javapoet.TypeName;
  *      }
  *
  * }
- * </blockquote></pre>
+ * </pre>
  */
 public class SupportJavaOptionalsPlugin implements TypeModifyingPlugin {
 

@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.List;
 

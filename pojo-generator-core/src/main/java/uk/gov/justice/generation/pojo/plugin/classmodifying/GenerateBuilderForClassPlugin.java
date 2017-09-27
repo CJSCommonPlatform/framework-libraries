@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGenerator;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
 
@@ -8,12 +9,14 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 /**
- * Adds a builder for the class as an static inner class and a static
- * method for accessing the builder. For example, a class <i>MyClass</i> specified
- * with one property <i>myProperty</i> would be generated thusly:
+ * Adds a builder for the class as an static inner class and a static method for accessing the
+ * builder. For example, a class <i>MyClass</i> specified with one property <i>myProperty</i> would
+ * be generated thusly:
  *
- * <pre><blockquote>
- *     {@code public class MyClass {
+ * <pre>
+ *     {@code
+ *
+ *     public class MyClass {
  *
  *          private final String myProperty;
  *
@@ -43,7 +46,7 @@ import com.squareup.javapoet.TypeSpec;
  *              }
  *          }
  *      }
- * }</blockquote></pre>
+ * }</pre>
  */
 public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 

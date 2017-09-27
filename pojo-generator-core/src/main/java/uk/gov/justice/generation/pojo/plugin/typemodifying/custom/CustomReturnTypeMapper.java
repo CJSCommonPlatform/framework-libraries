@@ -1,9 +1,6 @@
 package uk.gov.justice.generation.pojo.plugin.typemodifying.custom;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
 import java.util.Optional;
@@ -24,10 +21,7 @@ public class CustomReturnTypeMapper {
 
         final Optional<String> fullyQualifiedName = pluginContext.typeMappingOf(referenceValueName);
 
-        if (fullyQualifiedName.isPresent()) {
-            return of(fullyQualifiedNameToClassNameConverter.convert(fullyQualifiedName.get()));
-        }
+        return fullyQualifiedName.map(fullyQualifiedNameToClassNameConverter::convert);
 
-        return empty();
     }
 }

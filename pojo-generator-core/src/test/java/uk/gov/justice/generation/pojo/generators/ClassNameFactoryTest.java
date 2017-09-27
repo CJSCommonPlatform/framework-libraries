@@ -20,8 +20,8 @@ import uk.gov.justice.generation.pojo.dom.CombinedDefinition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.math.BigDecimal;
 

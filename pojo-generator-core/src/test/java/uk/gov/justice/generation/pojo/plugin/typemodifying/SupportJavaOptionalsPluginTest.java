@@ -10,9 +10,9 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.PluginContext;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,16 +8,20 @@ import java.util.List;
  * Defines an enum as specified in the json schema.
  *
  * For example the following definition in the schema
- *
+ * <pre>
  * {@code
+ *
  *  {
  *      "enum": ["Red", "Blue", "Green"]
  *  }
  * }
+ * </pre>
  *
  * would be rendered as
  *
+ * <pre>
  * {@code
+ *
  *  public enum FavouriteColour {
  *
  *      RED("Red"),
@@ -31,6 +35,7 @@ import java.util.List;
  *      }
  *  }
  * }
+ * </pre>
  *
  * Please note: an enum in json can support divers data types (mixing numbers with strings or
  * booleans for example) whereas a java enum the members must be of the same type. For this

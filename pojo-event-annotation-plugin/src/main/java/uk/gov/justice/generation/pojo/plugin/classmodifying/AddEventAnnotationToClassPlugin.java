@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;

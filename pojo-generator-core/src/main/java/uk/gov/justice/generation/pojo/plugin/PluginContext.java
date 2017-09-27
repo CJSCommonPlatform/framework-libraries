@@ -1,10 +1,13 @@
-package uk.gov.justice.generation.pojo.plugin.classmodifying;
+package uk.gov.justice.generation.pojo.plugin;
 
 import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddToStringMethodToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorProperties;
 
 import java.util.List;

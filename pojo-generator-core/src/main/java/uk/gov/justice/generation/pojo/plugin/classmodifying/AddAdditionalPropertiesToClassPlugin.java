@@ -8,6 +8,7 @@ import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,32 +25,31 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 /**
- * Plugin which creates an 'additionalProperties' Map to allow extra properties
- * not defined in the schema to be added to the class. This is when
- * {@code "additionalProperties": true} is specified in the json schema for an object.
+ * Plugin which creates an 'additionalProperties' Map to allow extra properties not defined in the
+ * schema to be added to the class. This is when {@code "additionalProperties": true} is specified
+ * in the json schema for an object.
  *
- * Without this, it would be possible to have a json document which abides by the json
- * schema fail to be parsed into the POJO.
+ * Without this, it would be possible to have a json document which abides by the json schema fail
+ * to be parsed into the POJO.
  *
- * NB: This is the only part of this application which is tied to Jackson as
- * the Jackson {@link JsonAnyGetter} and {@link JsonAnySetter} annotations
- * are used.
+ * NB: This is the only part of this application which is tied to Jackson as the Jackson {@link
+ * JsonAnyGetter} and {@link JsonAnySetter} annotations are used.
  *
- * <blockquote><pre>
- * {@code
- *        private final Map<String, Object> additionalProperties = new HashMap<>();
+ * <pre>
  *
- *        {@literal @}JsonAnyGetter
- *        public Map<String, Object> getAdditionalProperties() {
+ *       {@code private final Map<String, Object> additionalProperties = new HashMap<>();}
+ *
+ *       {@code @JsonAnyGetter}
+ *       {@code public Map<String, Object> getAdditionalProperties() {
  *          return additionalProperties;
- *        }
+ *        }}
  *
- *        {@literal @}JsonAnySetter
- *        public void setAdditionalProperty(final String name, final Object value) {
+ *       {@code @JsonAnySetter}
+ *       {@code public void setAdditionalProperty(final String name, final Object value) {
  *          additionalProperties.put(name, value);
- *        }
- * }
- * </pre></blockquote>
+ *        }}
+ *
+ * </pre>
  */
 public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugin {
 

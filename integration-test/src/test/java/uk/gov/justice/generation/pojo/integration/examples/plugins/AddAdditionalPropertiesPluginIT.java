@@ -35,7 +35,7 @@ public class AddAdditionalPropertiesPluginIT {
     }
 
     @Test
-    public void shouldGenerateAClassWithAMapForAdditionalPropertiesIfAdditionalPropertiesIsTrue() throws Exception {
+    public void shouldGenerateClassWithMapForAdditionalPropertiesIfAdditionalPropertiesIsTrue() throws Exception {
 
         final String packageName = "uk.gov.justice.pojo.additional.properties";
 

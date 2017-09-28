@@ -1,11 +1,14 @@
 package uk.gov.justice.generation.pojo.core;
 
+import static java.util.stream.Collectors.toMap;
+
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorProperties;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -21,7 +24,7 @@ public class PojoGeneratorProperties implements GeneratorProperties {
     private String rootClassName;
 
     @Parameter
-    private Map<String, String> typeMappings = new HashMap<>();
+    private List<TypeMapping> typeMappings = new ArrayList<>();
 
     public boolean isExcludeDefaultPlugins() {
         return excludeDefaultPlugins;
@@ -35,7 +38,9 @@ public class PojoGeneratorProperties implements GeneratorProperties {
         return Optional.ofNullable(rootClassName);
     }
 
-    public Map<String, String> getTypeMappings() {
-        return typeMappings;
+    public Map<String, String> typeMappingsFilteredBy(final Predicate<TypeMapping> mappingType) {
+        return typeMappings.stream()
+                .filter(mappingType)
+                .collect(toMap(TypeMapping::getName, TypeMapping::getImplementation));
     }
 }

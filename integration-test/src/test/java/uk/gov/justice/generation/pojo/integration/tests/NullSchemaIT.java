@@ -20,7 +20,7 @@ public class NullSchemaIT {
     }
 
     @Test
-    public void shouldGeneratePojosFromANullSchema() throws Exception {
+    public void shouldGeneratePojosFromNullSchema() throws Exception {
         final File jsonSchemaFile = new File("src/test/resources/schemas/tests/null-schema.json");
         final String packageName = "uk.gov.justice.pojo.nullable.schema";
 

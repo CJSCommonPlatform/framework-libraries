@@ -113,7 +113,7 @@ public class SupportJavaOptionalsPluginTest {
         final List<String> allPluginNames = new ArrayList<>();
 
         allPluginNames.add(AddHashcodeAndEqualsPlugin.class.getName());
-        allPluginNames.add(CustomReturnTypePlugin.class.getName());
+        allPluginNames.add(ReferenceCustomReturnTypePlugin.class.getName());
 
         optionalTypeNamePlugin.checkCompatibilityWith(allPluginNames);
 

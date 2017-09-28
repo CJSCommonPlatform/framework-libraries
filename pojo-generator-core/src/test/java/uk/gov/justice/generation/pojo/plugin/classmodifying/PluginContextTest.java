@@ -1,13 +1,13 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
-import static com.google.common.collect.ImmutableMap.of;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.plugin.typemodifying.TypeMappingPredicate.FORMAT_TYPE;
+import static uk.gov.justice.generation.pojo.plugin.typemodifying.TypeMappingPredicate.REFERENCE_TYPE;
 import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
@@ -16,12 +16,9 @@ import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 public class PluginContextTest {
@@ -95,13 +92,12 @@ public class PluginContextTest {
     }
 
     @Test
-    public void shouldReturnPropertyValueIfRequestedTypeMappingsIsPresent() throws Exception {
+    public void shouldReturnPropertyValueIfRequestedReferenceTypeMappingsIsPresent() throws Exception {
         final String propertyName = "testProperty";
         final String propertyValue = "test value";
 
-        final ImmutableMap<String, String> typeMappings = of(propertyName, propertyValue);
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
-                .withTypeMappings(typeMappings)
+                .addReferenceTypeMappingOf(propertyName, propertyValue)
                 .build();
 
         final PluginContext pluginContext = new PluginContext(
@@ -111,7 +107,26 @@ public class PluginContextTest {
                 EMPTY_CLASS_MODIFYING_PLUGINS,
                 generatorProperties);
 
-        assertThat(pluginContext.typeMappingOf(propertyName), is(Optional.of(propertyValue)));
+        assertThat(pluginContext.typeMappingsFilteredBy(REFERENCE_TYPE, propertyName), is(Optional.of(propertyValue)));
+    }
+
+    @Test
+    public void shouldReturnPropertyValueIfRequestedFormatTypeMappingsIsPresent() throws Exception {
+        final String propertyName = "testProperty";
+        final String propertyValue = "test value";
+
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .addFormatTypeMappingOf(propertyName, propertyValue)
+                .build();
+
+        final PluginContext pluginContext = new PluginContext(
+                UNSPECIFIED_GENERATOR_FACTORY,
+                UNSPECIFIED_CLASS_NAME_FACTORY,
+                BLANK,
+                EMPTY_CLASS_MODIFYING_PLUGINS,
+                generatorProperties);
+
+        assertThat(pluginContext.typeMappingsFilteredBy(FORMAT_TYPE, propertyName), is(Optional.of(propertyValue)));
     }
 
     @Test
@@ -119,7 +134,6 @@ public class PluginContextTest {
         final String propertyName = "testProperty";
 
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
-                .withTypeMappings(new HashMap<>())
                 .build();
 
         final PluginContext pluginContext = new PluginContext(
@@ -129,35 +143,7 @@ public class PluginContextTest {
                 EMPTY_CLASS_MODIFYING_PLUGINS,
                 generatorProperties);
 
-        assertThat(pluginContext.typeMappingOf(propertyName), is(Optional.empty()));
-    }
-
-    @Test
-    public void shouldGetTheSetOfTypeMappingNames() throws Exception {
-
-        final ImmutableMap<String, String> typeMappings = of(
-                "key_1", "value_1",
-                "key_2", "value_2",
-                "key_3", "value_3"
-        );
-        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
-                .withTypeMappings(typeMappings)
-                .build();
-
-        final PluginContext pluginContext = new PluginContext(
-                UNSPECIFIED_GENERATOR_FACTORY,
-                UNSPECIFIED_CLASS_NAME_FACTORY,
-                BLANK,
-                EMPTY_CLASS_MODIFYING_PLUGINS,
-                generatorProperties);
-
-        final Set<String> propertyNames = pluginContext.getPropertyNames();
-
-        assertThat(propertyNames.size(), is(3));
-
-        assertThat(propertyNames, hasItem("key_1"));
-        assertThat(propertyNames, hasItem("key_2"));
-        assertThat(propertyNames, hasItem("key_3"));
+        assertThat(pluginContext.typeMappingsFilteredBy(REFERENCE_TYPE, propertyName), is(Optional.empty()));
     }
 
     @Test

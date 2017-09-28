@@ -3,6 +3,7 @@ package uk.gov.justice.generation.pojo.plugin;
 import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
+import uk.gov.justice.generation.pojo.core.TypeMapping;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
@@ -12,7 +13,7 @@ import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorProperties;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Placeholder for all resources required by any {@link ClassModifyingPlugin} or {@link
@@ -91,11 +92,7 @@ public class PluginContext {
         return generatorProperties.getRootClassName();
     }
 
-    public Set<String> getPropertyNames() {
-        return generatorProperties.getTypeMappings().keySet();
-    }
-
-    public Optional<String> typeMappingOf(final String propertyName) {
-        return Optional.ofNullable(generatorProperties.getTypeMappings().get(propertyName));
+    public Optional<String> typeMappingsFilteredBy(final Predicate<TypeMapping> mappingType, final String propertyName) {
+        return Optional.ofNullable(generatorProperties.typeMappingsFilteredBy(mappingType).get(propertyName));
     }
 }

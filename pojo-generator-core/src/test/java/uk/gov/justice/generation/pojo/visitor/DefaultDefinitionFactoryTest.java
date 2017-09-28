@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.visitor;
 
 import static org.everit.json.schema.CombinedSchema.ANY_CRITERION;
+import static org.everit.json.schema.FormatValidator.forFormat;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -26,8 +27,10 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
+import uk.gov.justice.generation.pojo.dom.StringDefinition;
 
 import java.io.Reader;
+import java.util.Optional;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.BooleanSchema;
@@ -55,6 +58,9 @@ public class DefaultDefinitionFactoryTest {
 
     @Mock
     private ReferenceValueParser referenceValueParser;
+
+    @Mock
+    private StringFormatValueParser stringFormatValueParser;
 
     @InjectMocks
     private DefaultDefinitionFactory defaultDefinitionFactory;
@@ -139,15 +145,39 @@ public class DefaultDefinitionFactoryTest {
     }
 
     @Test
-    public void shouldConstructFieldDefinitionForStringSchemaWithDescriptionOfTheClassName() throws Exception {
+    public void shouldConstructStringDefinitionWithFormat() throws Exception {
         final String fieldName = "fieldName";
-        final StringSchema stringSchema = StringSchema.builder().description("UUID").build();
+        final String format = "date-time";
+        final StringSchema stringSchema = StringSchema.builder()
+                .formatValidator(forFormat(format))
+                .description("UUID")
+                .build();
 
-        final Definition definition = defaultDefinitionFactory.constructDefinitionFor(fieldName, stringSchema);
+        when(stringFormatValueParser.parseFrom(any(Reader.class), eq(fieldName))).thenReturn(Optional.of(format));
 
-        assertThat(definition, is(instanceOf(FieldDefinition.class)));
+        final StringDefinition definition = (StringDefinition) defaultDefinitionFactory.constructDefinitionFor(fieldName, stringSchema);
+
+        assertThat(definition, is(instanceOf(StringDefinition.class)));
         assertThat(definition.type(), is(STRING));
         assertThat(definition.getFieldName(), is(fieldName));
+        assertThat(definition.getFormat(), is(Optional.of(format)));
+    }
+
+    @Test
+    public void shouldConstructStringDefinitionWithNoFormat() throws Exception {
+        final String fieldName = "fieldName";
+        final StringSchema stringSchema = StringSchema.builder()
+                .description("UUID")
+                .build();
+
+        when(stringFormatValueParser.parseFrom(any(Reader.class), eq(fieldName))).thenReturn(Optional.empty());
+
+        final StringDefinition definition = (StringDefinition) defaultDefinitionFactory.constructDefinitionFor(fieldName, stringSchema);
+
+        assertThat(definition, is(instanceOf(StringDefinition.class)));
+        assertThat(definition.type(), is(STRING));
+        assertThat(definition.getFieldName(), is(fieldName));
+        assertThat(definition.getFormat(), is(Optional.empty()));
     }
 
     @Test

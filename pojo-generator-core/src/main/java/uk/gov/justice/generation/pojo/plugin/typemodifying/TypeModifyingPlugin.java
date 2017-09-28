@@ -14,7 +14,8 @@ import com.squareup.javapoet.TypeName;
  * parameters
  *
  * {@link SupportJavaOptionalsPlugin}
- * {@link CustomReturnTypePlugin}
+ * {@link ReferenceCustomReturnTypePlugin}
+ * {@link FormatCustomReturnTypePlugin}
  */
 public interface TypeModifyingPlugin extends Plugin {
 

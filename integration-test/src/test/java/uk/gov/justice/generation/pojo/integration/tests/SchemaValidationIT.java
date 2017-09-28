@@ -23,7 +23,7 @@ public class SchemaValidationIT {
     private final SchemaValidatorVisitor schemaValidatorVisitor = new SchemaValidatorVisitor(new Validator());
 
     @Test
-    public void shouldFailValidationIfAnEnumContainsDiversTypesOfValues() throws Exception {
+    public void shouldFailValidationIfEnumContainsDifferentTypesOfValues() throws Exception {
         final File jsonSchemaFile = new File("src/test/resources/invalid-schemas/invalid-enum.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 
@@ -38,7 +38,7 @@ public class SchemaValidationIT {
     }
 
     @Test
-    public void shouldFailValidationIfAnArrayContainsDiversTypesOfValues() throws Exception {
+    public void shouldFailValidationIfArrayContainsDifferentTypesOfValues() throws Exception {
         final File jsonSchemaFile = new File("src/test/resources/invalid-schemas/invalid-array.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 

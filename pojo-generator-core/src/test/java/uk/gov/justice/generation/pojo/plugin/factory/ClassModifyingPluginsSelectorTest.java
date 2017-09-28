@@ -15,7 +15,7 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsT
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.ReferenceCustomReturnTypePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 
@@ -110,7 +110,7 @@ public class ClassModifyingPluginsSelectorTest {
     }
 
     private List<Plugin> typeModifyingPlugins() {
-        final Plugin customReturnTypePlugin = mock(CustomReturnTypePlugin.class);
+        final Plugin customReturnTypePlugin = mock(ReferenceCustomReturnTypePlugin.class);
         final Plugin supportJavaOptionalsPlugin = mock(SupportJavaOptionalsPlugin.class);
         return asList(customReturnTypePlugin, supportJavaOptionalsPlugin);
     }

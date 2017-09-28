@@ -32,7 +32,7 @@ public class ArraysIT {
     }
 
     @Test
-    public void shouldGenerateAnPojoFromAnSchemaDocumentWithAnArrayOfItems() throws Exception {
+    public void shouldGeneratePojoFromSchemaDocumentWithArrayOfItems() throws Exception {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/examples/array.json");
         final String packageName = "uk.gov.justice.pojo.arrays";

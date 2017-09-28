@@ -156,15 +156,16 @@ public class AddHashcodeAndEqualsPluginTest {
     @Test
     public void shouldBeInstantiableUsingItsFactoryMethod() throws Exception {
 
-        final Method[] declaredMethods = AddHashcodeAndEqualsPlugin.class.getDeclaredMethods();
+        final Class<AddHashcodeAndEqualsPlugin> pluginClass = AddHashcodeAndEqualsPlugin.class;
 
+        final Method[] declaredMethods = pluginClass.getDeclaredMethods();
         final Optional<Method> methodOptional = stream(declaredMethods)
                 .filter(method -> method.isAnnotationPresent(FactoryMethod.class))
                 .findFirst();
 
         if (methodOptional.isPresent()) {
             final Object plugin = methodOptional.get().invoke(null);
-            assertThat(plugin, is(instanceOf(AddHashcodeAndEqualsPlugin.class)));
+            assertThat(plugin, is(instanceOf(pluginClass)));
         } else {
             fail();
         }

@@ -1,12 +1,15 @@
-package uk.gov.justice.generation.pojo.integration.test;
+package uk.gov.justice.generation.pojo.integration.examples.plugins;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
@@ -17,28 +20,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AdditionalPropertiesIT {
+public class AddAdditionalPropertiesPluginIT {
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
     private final ClassInstantiator classInstantiator = new ClassInstantiator();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
+    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/examples/plugins/add-additional-properties-plugin.json");
 
     @Before
     public void setup() throws Exception {
-        outputDirectories.makeDirectories("./target/test-generation/additional-properties");
+        outputDirectories.makeDirectories("./target/test-generation/examples/plugins/add-additional-properties-plugin");
     }
 
     @Test
     public void shouldGenerateAClassWithAMapForAdditionalPropertiesIfAdditionalPropertiesIsTrue() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/additional-properties.json");
+
         final String packageName = "uk.gov.justice.pojo.additional.properties";
 
-        final List<Class<?>> newClasses = generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories);
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withRootClassName("PersonWithAdditionalProperties")
+                .build();
+
+        final List<Class<?>> newClasses = generatorUtil
+                .withGeneratorProperties(generatorProperties)
+                .withClassModifyingPlugin(new AddAdditionalPropertiesToClassPlugin())
+                .generateAndCompileJavaSource(
+                        JSON_SCHEMA_FILE,
+                        packageName,
+                        outputDirectories);
 
         assertThat(newClasses.size(), is(1));
 
@@ -59,6 +70,6 @@ public class AdditionalPropertiesIT {
                 .assertThat("$.additionalPropertyName", is("additionalPropertyValue"))
         ;
 
-        generatorUtil.validate(jsonSchemaFile, json);
+        generatorUtil.validate(JSON_SCHEMA_FILE, json);
     }
 }

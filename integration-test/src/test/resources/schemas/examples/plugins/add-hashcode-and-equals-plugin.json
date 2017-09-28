@@ -1,30 +1,17 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "id": "person",
   "properties": {
     "firstName": {
       "type": "string"
     },
     "lastName": {
       "type": "string"
-    },
-    "required": {
-      "type": "boolean"
-    },
-    "signedInCount": {
-      "type": "integer"
-    },
-    "ratio": {
-      "type": "number"
     }
   },
   "additionalProperties": false,
   "required": [
     "firstName",
-    "lastName",
-    "required",
-    "signedInCount",
-    "ratio"
+    "lastName"
   ]
 }

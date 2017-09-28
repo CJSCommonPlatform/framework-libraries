@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.events.pojo.Alias;
-import uk.gov.justice.events.pojo.PersonUpdated;
+import uk.gov.justice.events.pojo.Person;
 import uk.gov.justice.events.pojo.Title;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -44,7 +44,7 @@ public class SchemaToJavaGeneratorPluginTest {
         final UUID personId = randomUUID();
         final ZonedDateTime startDate = of(2017, 9, 28, 17, 0, 0, 0, UTC);
 
-        final PersonUpdated person = new PersonUpdated(
+        final Person person = new Person(
                 aliases,
                 firstName,
                 lastName,
@@ -90,7 +90,7 @@ public class SchemaToJavaGeneratorPluginTest {
         final UUID personId = randomUUID();
         final ZonedDateTime startDate = of(2017, 9, 28, 17, 0, 0, 0, UTC);
 
-        final PersonUpdated person = new PersonUpdated(
+        final Person person = new Person(
                 aliases,
                 firstName,
                 lastName,
@@ -107,7 +107,7 @@ public class SchemaToJavaGeneratorPluginTest {
         objectOutputStream.writeObject(person);
 
         final ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-        final PersonUpdated resultObject = (PersonUpdated) objectInputStream.readObject();
+        final Person resultObject = (Person) objectInputStream.readObject();
 
         assertThat(resultObject.getTitle(), is(Title.MR));
         assertThat(resultObject.getFirstName(), is(firstName));

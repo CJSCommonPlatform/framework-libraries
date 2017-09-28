@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.integration.test;
+package uk.gov.justice.generation.pojo.integration.tests;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

@@ -1,26 +1,18 @@
-package uk.gov.justice.generation.pojo.integration.test;
+package uk.gov.justice.generation.pojo.integration.examples;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import uk.gov.justice.domain.annotation.Event;
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.NullParameter;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddToStringMethodToClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.GenerateBuilderForClassPlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.File;
@@ -37,31 +29,27 @@ public class CombinedSchemaIT {
     private final ClassInstantiator classInstantiator = new ClassInstantiator();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
+    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/examples/combined-schema.json");
+
     @Before
     public void setup() throws Exception {
-        outputDirectories.makeDirectories("./target/test-generation/combined-schema");
+        outputDirectories.makeDirectories("./target/test-generation/examples/combined-schema");
     }
 
     @Test
-    public void shouldParseAVeryComplexSchemaDocument() throws Exception {
+    public void shouldGenerateAnPojoFromAnSchemaDocumentWithACombinedSchema() throws Exception {
 
-        final File jsonSchemaFile = new File("src/test/resources/schemas/address.json");
         final String packageName = "uk.gov.justice.pojo.combined.schema";
 
-        final List<ClassModifyingPlugin> classModifyingPlugins = asList(
-                new AddAdditionalPropertiesToClassPlugin(),
-                new AddEventAnnotationToClassPlugin(),
-                new AddFieldsAndMethodsToClassPlugin(),
-                new AddHashcodeAndEqualsPlugin(new AdditionalPropertiesDeterminer()),
-                new AddToStringMethodToClassPlugin(new AdditionalPropertiesDeterminer()),
-                new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory()),
-                new MakeClassSerializablePlugin()
-        );
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withRootClassName("AddressFromCombinedSchema")
+                .build();
 
         final List<Class<?>> newClasses = generatorUtil
-                .withClassModifyingPlugins(classModifyingPlugins)
+                .withClassModifyingPlugin(new AddEventAnnotationToClassPlugin())
+                .withGeneratorProperties(generatorProperties)
                 .generateAndCompileJavaSource(
-                        jsonSchemaFile,
+                        JSON_SCHEMA_FILE,
                         packageName,
                         outputDirectories);
 
@@ -74,7 +62,7 @@ public class CombinedSchemaIT {
         assertThat(ukCommsClass.getSimpleName(), is("UkComms"));
         assertThat(usCommsClass.getSimpleName(), is("UsComms"));
         assertThat(communicationClass.getSimpleName(), is("Communication"));
-        assertThat(addressClass.getSimpleName(), is("Address"));
+        assertThat(addressClass.getSimpleName(), is("AddressFromCombinedSchema"));
 
         assertThat(addressClass.getAnnotation(Event.class), is(notNullValue()));
 
@@ -120,6 +108,6 @@ public class CombinedSchemaIT {
                 .assertThat("$.ukComms.telephone", is(true))
         ;
 
-        generatorUtil.validate(jsonSchemaFile, json);
+        generatorUtil.validate(JSON_SCHEMA_FILE, json);
     }
 }

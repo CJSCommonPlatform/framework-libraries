@@ -45,7 +45,7 @@ public class AddHashcodeAndEqualsPlugin implements ClassModifyingPlugin {
     }
 
     @FactoryMethod
-    public static AddHashcodeAndEqualsPlugin newInstance() {
+    public static AddHashcodeAndEqualsPlugin newAddHashcodeAndEqualsPlugin() {
         return new AddHashcodeAndEqualsPlugin(new AdditionalPropertiesDeterminer());
     }
 

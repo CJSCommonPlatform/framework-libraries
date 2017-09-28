@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.pojo.integration.test;
+package uk.gov.justice.generation.pojo.integration.tests;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 
 import java.io.File;
 import java.util.List;
@@ -21,13 +22,22 @@ public class EmptySchemaIT {
 
     @Before
     public void setup() throws Exception {
-        outputDirectories.makeDirectories("./target/test-generation/empty-schemas");
+        outputDirectories.makeDirectories("./target/test-generation/tests/empty-schemas");
     }
 
     @Test
     public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfNoAdditionalPropertiesSpecified() throws Exception {
 
-        final List<Class<?>> classes = setupAndGenerate("empty-schema.json");
+        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema.json");
+
+        final String packageName = "uk.gov.justice.pojo.empty.schemas";
+
+        final List<Class<?>> classes = generatorUtil
+                .withClassModifyingPlugin(new AddAdditionalPropertiesToClassPlugin())
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         assertThat(classes.size(), is(1));
 
@@ -43,7 +53,16 @@ public class EmptySchemaIT {
     @Test
     public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfoAdditionalPropertiesIsSetToTrue() throws Exception {
 
-        final List<Class<?>> classes = setupAndGenerate("empty-schema-with-additional-properties-true.json");
+        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema-with-additional-properties-true.json");
+
+        final String packageName = "uk.gov.justice.pojo.empty.schemas";
+
+        final List<Class<?>> classes = generatorUtil
+                .withClassModifyingPlugin(new AddAdditionalPropertiesToClassPlugin())
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         assertThat(classes.size(), is(1));
 
@@ -58,7 +77,15 @@ public class EmptySchemaIT {
     @Test
     public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfoAdditionalPropertiesIsSetToFalse() throws Exception {
 
-        final List<Class<?>> classes = setupAndGenerate("empty-schema-with-additional-properties-false.json");
+        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema-with-additional-properties-false.json");
+        final String packageName = "uk.gov.justice.pojo.empty.schemas";
+
+        final List<Class<?>> classes = generatorUtil
+                .withClassModifyingPlugin(new AddAdditionalPropertiesToClassPlugin())
+                .generateAndCompileJavaSource(
+                        jsonSchemaFile,
+                        packageName,
+                        outputDirectories);
 
         assertThat(classes.size(), is(1));
 
@@ -86,13 +113,4 @@ public class EmptySchemaIT {
         }
     }
 
-    private List<Class<?>> setupAndGenerate(final String fileName) {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/" + fileName);
-        final String packageName = "uk.gov.justice.pojo.empty.schemas";
-
-        return generatorUtil.generateAndCompileJavaSource(
-                jsonSchemaFile,
-                packageName,
-                outputDirectories);
-    }
 }

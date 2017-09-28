@@ -1,6 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
+import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGenerator;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
@@ -54,6 +55,11 @@ public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 
     public GenerateBuilderForClassPlugin(final BuilderGeneratorFactory builderGeneratorFactory) {
         this.builderGeneratorFactory = builderGeneratorFactory;
+    }
+
+    @FactoryMethod
+    public static GenerateBuilderForClassPlugin newGenerateBuilderForClassPlugin() {
+        return new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory());
     }
 
     @Override

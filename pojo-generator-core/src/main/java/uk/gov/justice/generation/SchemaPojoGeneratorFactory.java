@@ -6,14 +6,16 @@ import uk.gov.justice.generation.pojo.plugin.PluginProviderFactoryFactory;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
-import uk.gov.justice.generation.pojo.visitor.DefaultDefinitionFactory;
-import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
-import uk.gov.justice.generation.pojo.visitor.DefinitionFactory;
-import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
-import uk.gov.justice.generation.pojo.visitor.StringFormatValueParser;
+import uk.gov.justice.generation.pojo.write.JavaClassFileWriter;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
 import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
+import uk.gov.justice.generation.provider.ClassNameFactoryProvider;
+import uk.gov.justice.generation.provider.DefinitionBuilderVisitorProvider;
+import uk.gov.justice.generation.provider.DefinitionProvider;
+import uk.gov.justice.generation.provider.GeneratorContextProvider;
+import uk.gov.justice.generation.provider.JavaGeneratorFactoryProvider;
+import uk.gov.justice.generation.provider.PluginContextProvider;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorFactory;
 
@@ -23,8 +25,7 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
 
     private final SchemaLoader schemaLoader = new SchemaLoader();
     private final VisitableFactory visitableFactory = new VisitableFactory();
-    private final DefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ReferenceValueParser(), new StringFormatValueParser());
-    private final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
+    private final DefinitionBuilderVisitorProvider definitionBuilderVisitorProvider = new DefinitionBuilderVisitorProvider();
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
     private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
@@ -36,7 +37,7 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
     public Generator<File> create() {
         return new SchemaPojoGenerator(
                 new PluginProviderFactoryFactory().create(),
-                new DefinitionProvider(schemaLoader, visitableFactory, definitionBuilderVisitor, acceptorService),
+                new DefinitionProvider(schemaLoader, visitableFactory, definitionBuilderVisitorProvider, acceptorService),
                 new GeneratorContextProvider(javaFileSimpleNameLister),
                 new ClassNameFactoryProvider(),
                 new JavaGeneratorFactoryProvider(),

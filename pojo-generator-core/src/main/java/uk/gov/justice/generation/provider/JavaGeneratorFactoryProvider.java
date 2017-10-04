@@ -1,4 +1,4 @@
-package uk.gov.justice.generation;
+package uk.gov.justice.generation.provider;
 
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;

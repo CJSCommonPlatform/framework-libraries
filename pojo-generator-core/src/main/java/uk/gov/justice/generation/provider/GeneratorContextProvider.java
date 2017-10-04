@@ -1,4 +1,4 @@
-package uk.gov.justice.generation;
+package uk.gov.justice.generation.provider;
 
 import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
 import uk.gov.justice.generation.pojo.core.GenerationContext;

@@ -1,4 +1,4 @@
-package uk.gov.justice.generation;
+package uk.gov.justice.generation.provider;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

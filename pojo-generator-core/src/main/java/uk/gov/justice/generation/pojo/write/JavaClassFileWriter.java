@@ -1,8 +1,7 @@
-package uk.gov.justice.generation;
+package uk.gov.justice.generation.pojo.write;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
-import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 
 import java.util.List;
 

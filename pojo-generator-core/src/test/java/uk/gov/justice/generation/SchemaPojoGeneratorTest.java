@@ -14,6 +14,12 @@ import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
+import uk.gov.justice.generation.pojo.write.JavaClassFileWriter;
+import uk.gov.justice.generation.provider.ClassNameFactoryProvider;
+import uk.gov.justice.generation.provider.DefinitionProvider;
+import uk.gov.justice.generation.provider.GeneratorContextProvider;
+import uk.gov.justice.generation.provider.JavaGeneratorFactoryProvider;
+import uk.gov.justice.generation.provider.PluginContextProvider;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.io.File;

@@ -103,6 +103,7 @@ public class ClassDefinition extends FieldDefinition {
                 ", type=" + type() +
                 ", required=" + isRequired() +
                 ", allowAdditionalProperties=" + allowAdditionalProperties +
+                ", root=" + isRoot() +
                 '}';
     }
 

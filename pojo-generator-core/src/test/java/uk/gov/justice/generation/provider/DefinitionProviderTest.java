@@ -1,4 +1,4 @@
-package uk.gov.justice.generation;
+package uk.gov.justice.generation.provider;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -35,7 +35,7 @@ public class DefinitionProviderTest {
     private VisitableFactory visitableFactory;
 
     @Mock
-    private DefinitionBuilderVisitor definitionBuilderVisitor;
+    private DefinitionBuilderVisitorProvider definitionBuilderVisitorProvider;
 
     @Mock
     private AcceptorService acceptorService;
@@ -56,6 +56,7 @@ public class DefinitionProviderTest {
         final PluginProvider pluginProvider = mock(PluginProvider.class);
         final PluginContext pluginContext = mock(PluginContext.class);
         final NameGeneratablePlugin nameGeneratablePlugin = mock(NameGeneratablePlugin.class);
+        final DefinitionBuilderVisitor definitionBuilderVisitor = mock(DefinitionBuilderVisitor.class);
 
         when(schemaLoader.loadFrom(schemaFile)).thenReturn(schema);
         when(pluginProvider.nameGeneratablePlugin()).thenReturn(nameGeneratablePlugin);
@@ -63,8 +64,10 @@ public class DefinitionProviderTest {
         when(schemaFile.getName()).thenReturn(schemaFilename);
         when(nameGeneratablePlugin.rootFieldNameFrom(schema, schemaFilename, pluginContext)).thenReturn(fieldName);
 
-        when(visitableFactory.createWith(fieldName, schema, acceptorService)).thenReturn(mock(Visitable.class));
+        when(definitionBuilderVisitorProvider.create()).thenReturn(definitionBuilderVisitor);
         when(definitionBuilderVisitor.getDefinitions()).thenReturn(definitions);
+
+        when(visitableFactory.createWith(fieldName, schema, acceptorService)).thenReturn(mock(Visitable.class));
 
         final List<Definition> result = definitionProvider.createDefinitions(schemaFile, pluginProvider, pluginContext);
 

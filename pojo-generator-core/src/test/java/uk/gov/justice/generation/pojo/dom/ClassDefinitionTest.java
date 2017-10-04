@@ -117,6 +117,6 @@ public class ClassDefinitionTest {
         final String fieldName = "test";
         final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName);
 
-        assertThat(classDefinition.toString(), is("ClassDefinition{fieldName=test, type=CLASS, required=true, allowAdditionalProperties=false}"));
+        assertThat(classDefinition.toString(), is("ClassDefinition{fieldName=test, type=CLASS, required=true, allowAdditionalProperties=false, root=false}"));
     }
 }

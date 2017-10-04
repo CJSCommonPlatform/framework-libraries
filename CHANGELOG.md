@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- ReflectionUtil for Class methods and fields
 
 ## [1.7.0] - 2017-08-21
 

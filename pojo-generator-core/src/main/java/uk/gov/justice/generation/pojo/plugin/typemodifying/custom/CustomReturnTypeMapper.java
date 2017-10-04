@@ -1,9 +1,10 @@
 package uk.gov.justice.generation.pojo.plugin.typemodifying.custom;
 
+import uk.gov.justice.generation.pojo.core.TypeMapping;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
-import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import com.squareup.javapoet.ClassName;
 
@@ -15,13 +16,12 @@ public class CustomReturnTypeMapper {
         this.fullyQualifiedNameToClassNameConverter = fullyQualifiedNameToClassNameConverter;
     }
 
-    public Optional<ClassName> customType(final ReferenceValue referenceValue, final PluginContext pluginContext) {
+    public Optional<ClassName> customTypeFor(final Predicate<TypeMapping> mappingType,
+                                             final String propertyName,
+                                             final PluginContext pluginContext) {
 
-        final String referenceValueName = referenceValue.getName();
-
-        final Optional<String> fullyQualifiedName = pluginContext.typeMappingOf(referenceValueName);
+        final Optional<String> fullyQualifiedName = pluginContext.typeMappingsFilteredBy(mappingType, propertyName);
 
         return fullyQualifiedName.map(fullyQualifiedNameToClassNameConverter::convert);
-
     }
 }

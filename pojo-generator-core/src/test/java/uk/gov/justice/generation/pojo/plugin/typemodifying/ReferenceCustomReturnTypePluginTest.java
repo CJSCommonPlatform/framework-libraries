@@ -1,18 +1,20 @@
 package uk.gov.justice.generation.pojo.plugin.typemodifying;
 
-import static java.util.Arrays.asList;
+import static java.lang.reflect.Modifier.isStatic;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.REFERENCE;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
+import static uk.gov.justice.generation.utils.ReflectionUtil.annotatedMethod;
+import static uk.gov.justice.generation.utils.ReflectionUtil.fieldValue;
 
+import uk.gov.justice.generation.pojo.core.TypeMapping;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
@@ -20,11 +22,10 @@ import uk.gov.justice.generation.pojo.plugin.typemodifying.custom.CustomReturnTy
 import uk.gov.justice.generation.pojo.plugin.typemodifying.custom.FullyQualifiedNameToClassNameConverter;
 import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -35,18 +36,24 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CustomReturnTypePluginTest {
+public class ReferenceCustomReturnTypePluginTest {
+
+    private static final Object IGNORED = null;
 
     @Mock
     private CustomReturnTypeMapper customReturnTypeMapper;
 
+    @Mock
+    private Predicate<TypeMapping> typeMappingPredicate;
+
     @InjectMocks
-    private CustomReturnTypePlugin customReturnTypePlugin;
+    private ReferenceCustomReturnTypePlugin referenceCustomReturnTypePlugin;
 
     @Test
     public void shouldUseTheClassNameInTheJsonSchemaReferenceValueAsTheTypeName() throws Exception {
 
-        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "date-time");
+        final String referenceValueName = "date-time";
+        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", referenceValueName);
 
         final ClassName originalTypeName = ClassName.get(String.class);
         final ClassName modifiedTypeName = ClassName.get(ZonedDateTime.class);
@@ -55,9 +62,9 @@ public class CustomReturnTypePluginTest {
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
         when(referenceDefinition.type()).thenReturn(REFERENCE);
         when(referenceDefinition.getReferenceValue()).thenReturn(referenceValue);
-        when(customReturnTypeMapper.customType(referenceValue, pluginContext)).thenReturn(of(modifiedTypeName));
+        when(customReturnTypeMapper.customTypeFor(typeMappingPredicate, referenceValueName, pluginContext)).thenReturn(of(modifiedTypeName));
 
-        final TypeName typeName = customReturnTypePlugin.modifyTypeName(
+        final TypeName typeName = referenceCustomReturnTypePlugin.modifyTypeName(
                 originalTypeName,
                 referenceDefinition,
                 pluginContext);
@@ -75,7 +82,7 @@ public class CustomReturnTypePluginTest {
 
         when(referenceDefinition.type()).thenReturn(STRING);
 
-        final TypeName typeName = customReturnTypePlugin.modifyTypeName(
+        final TypeName typeName = referenceCustomReturnTypePlugin.modifyTypeName(
                 originalTypeName,
                 referenceDefinition,
                 pluginContext);
@@ -86,7 +93,8 @@ public class CustomReturnTypePluginTest {
     @Test
     public void shouldReturnTheOriginalTypeNameIfTheCustomReturnTypeMapperReturnsEmpty() throws Exception {
 
-        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", "date-time");
+        final String referenceValueName = "date-time";
+        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", referenceValueName);
 
         final ClassName originalTypeName = ClassName.get(String.class);
         final PluginContext pluginContext = mock(PluginContext.class);
@@ -94,9 +102,9 @@ public class CustomReturnTypePluginTest {
         final ReferenceDefinition referenceDefinition = mock(ReferenceDefinition.class);
         when(referenceDefinition.type()).thenReturn(REFERENCE);
         when(referenceDefinition.getReferenceValue()).thenReturn(referenceValue);
-        when(customReturnTypeMapper.customType(referenceValue, pluginContext)).thenReturn(empty());
+        when(customReturnTypeMapper.customTypeFor(typeMappingPredicate, referenceValueName, pluginContext)).thenReturn(empty());
 
-        final TypeName typeName = customReturnTypePlugin.modifyTypeName(
+        final TypeName typeName = referenceCustomReturnTypePlugin.modifyTypeName(
                 originalTypeName,
                 referenceDefinition,
                 pluginContext);
@@ -106,54 +114,31 @@ public class CustomReturnTypePluginTest {
 
     @SuppressWarnings("ConstantConditions")
     @Test
-    public void shouldHaveAFactoryMethodForInstantiation() throws Exception {
+    public void shouldHaveAnnotatedFactoryMethodForInstantiation() throws Exception {
 
-        final List<Method> methods = asList(CustomReturnTypePlugin.class.getDeclaredMethods());
+        final Optional<Method> factoryMethod = annotatedMethod(ReferenceCustomReturnTypePlugin.class, FactoryMethod.class);
 
-        final Method factoryMethod = getFactoryMethod(methods);
-        final Object plugin = factoryMethod.invoke(null);
+        assertThat(factoryMethod.isPresent(), is(true));
 
-        assertThat(plugin, is(instanceOf(CustomReturnTypePlugin.class)));
+        final Method method = factoryMethod.get();
+        assertThat(isStatic(method.getModifiers()), is(true));
 
-        final CustomReturnTypeMapper customReturnTypeMapper = getFieldFrom(
+        final Object plugin = method.invoke(IGNORED);
+
+        assertThat(plugin, is(instanceOf(ReferenceCustomReturnTypePlugin.class)));
+
+        final CustomReturnTypeMapper customReturnTypeMapper = fieldValue(
                 plugin,
                 "customReturnTypeMapper",
                 CustomReturnTypeMapper.class);
 
         assertThat(customReturnTypeMapper, is(notNullValue()));
 
-        final FullyQualifiedNameToClassNameConverter fullyQualifiedNameToClassNameConverter = getFieldFrom(
+        final FullyQualifiedNameToClassNameConverter fullyQualifiedNameToClassNameConverter = fieldValue(
                 customReturnTypeMapper,
                 "fullyQualifiedNameToClassNameConverter",
                 FullyQualifiedNameToClassNameConverter.class);
 
         assertThat(fullyQualifiedNameToClassNameConverter, is(notNullValue()));
-
-    }
-
-    private Method getFactoryMethod(final List<Method> methods) {
-        final Optional<Method> factoryMethod = methods.stream()
-                .filter(method -> method.isAnnotationPresent(FactoryMethod.class))
-                .findFirst();
-
-        if (factoryMethod.isPresent()) {
-            return factoryMethod.get();
-        }
-
-        fail();
-
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T getFieldFrom(final Object object, final String fieldName, final Class<T> clazz) throws Exception {
-
-        final Field declaredField = object.getClass().getDeclaredField(fieldName);
-
-        assertThat(declaredField, is(notNullValue()));
-
-        declaredField.setAccessible(true);
-
-        return (T) declaredField.get(object);
     }
 }

@@ -35,7 +35,7 @@ public class VanillaPojoIT {
 
     @SuppressWarnings("ConstantConditions")
     @Test
-    public void shouldGenerateAnPojoFromAnSchemaDocumentWithAnArrayOfItems() throws Exception {
+    public void shouldGeneratePojoFromSchemaDocumentWithArrayOfItems() throws Exception {
 
         final String packageName = "uk.gov.justice.pojo.vanilla";
 

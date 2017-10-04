@@ -37,7 +37,7 @@ public class CombinedSchemaIT {
     }
 
     @Test
-    public void shouldGenerateAnPojoFromAnSchemaDocumentWithACombinedSchema() throws Exception {
+    public void shouldGeneratePojoFromSchemaDocumentWithCombinedSchema() throws Exception {
 
         final String packageName = "uk.gov.justice.pojo.combined.schema";
 

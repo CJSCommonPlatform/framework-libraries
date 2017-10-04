@@ -1,13 +1,15 @@
 package uk.gov.justice.generation.pojo.integration.utils;
 
 import static org.junit.Assert.assertTrue;
+import static uk.gov.justice.generation.pojo.integration.utils.TypeMappingFactory.typeMappingOf;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
+import uk.gov.justice.generation.pojo.core.TypeMapping;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class PojoGeneratorPropertiesBuilder {
@@ -15,7 +17,7 @@ public class PojoGeneratorPropertiesBuilder {
     private boolean excludeDefaultPlugins;
     private List<String> plugins;
     private String rootClassName;
-    private Map<String, String> typeMappings;
+    private List<TypeMapping> typeMappings = new ArrayList<>();
 
     public static PojoGeneratorPropertiesBuilder pojoGeneratorPropertiesBuilder() {
         return new PojoGeneratorPropertiesBuilder();
@@ -36,8 +38,13 @@ public class PojoGeneratorPropertiesBuilder {
         return this;
     }
 
-    public PojoGeneratorPropertiesBuilder withTypeMappings(final Map<String, String> typeMappings) {
-        this.typeMappings = typeMappings;
+    public PojoGeneratorPropertiesBuilder addReferenceTypeMappingOf(final String name, final String implementation) throws IllegalAccessException {
+        typeMappings.add(typeMappingOf("reference", name, implementation));
+        return this;
+    }
+
+    public PojoGeneratorPropertiesBuilder addFormatTypeMappingOf(final String name, final String implementation) throws IllegalAccessException {
+        typeMappings.add(typeMappingOf("format", name, implementation));
         return this;
     }
 

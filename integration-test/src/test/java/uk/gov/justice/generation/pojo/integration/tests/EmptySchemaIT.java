@@ -26,7 +26,7 @@ public class EmptySchemaIT {
     }
 
     @Test
-    public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfNoAdditionalPropertiesSpecified() throws Exception {
+    public void shouldGenerateEmptyClassWithAdditionalPropertiesIfNoAdditionalPropertiesSpecified() throws Exception {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema.json");
 
@@ -51,7 +51,7 @@ public class EmptySchemaIT {
     }
 
     @Test
-    public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfoAdditionalPropertiesIsSetToTrue() throws Exception {
+    public void shouldGenerateEmptyClassWithAdditionalPropertiesIfAdditionalPropertiesIsSetToTrue() throws Exception {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema-with-additional-properties-true.json");
 
@@ -75,7 +75,7 @@ public class EmptySchemaIT {
     }
 
     @Test
-    public void shouldGenerateAnEmptyClassWithAdditionalPropertiesIfoAdditionalPropertiesIsSetToFalse() throws Exception {
+    public void shouldGenerateEmptyClassWithAdditionalPropertiesIfAdditionalPropertiesIsSetToFalse() throws Exception {
 
         final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema-with-additional-properties-false.json");
         final String packageName = "uk.gov.justice.pojo.empty.schemas";

@@ -80,11 +80,20 @@
                                     <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin</plugin>
-                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin</plugin>
+                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.ReferenceCustomReturnTypePlugin</plugin>
+                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.FormatCustomReturnTypePlugin</plugin>
                                 </plugins>
                                 <typeMappings>
-                                    <uuid>java.util.UUID</uuid>
-                                    <date>java.time.ZonedDateTime</date>
+                                    <typeMapping>
+                                        <name>uuid</name>
+                                        <type>reference</type>
+                                        <implementation>java.util.UUID</implementation>
+                                    </typeMapping>
+                                    <typeMapping>
+                                        <name>date-time</name>
+                                        <type>format</type>
+                                        <implementation>java.time.ZonedDateTime</implementation>
+                                    </typeMapping>
                                 </typeMappings>
                                 <rootClassName>Person</rootClassName>
                             </generatorProperties>

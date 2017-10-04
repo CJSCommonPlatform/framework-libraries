@@ -14,7 +14,7 @@ import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
-import uk.gov.justice.generation.pojo.plugin.typemodifying.CustomReturnTypePlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.ReferenceCustomReturnTypePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 
 import java.io.Serializable;
@@ -62,7 +62,7 @@ public class MakeClassSerializablePluginTest {
         final List<String> allPluginNames = new ArrayList<>();
 
         allPluginNames.add(AddHashcodeAndEqualsPlugin.class.getName());
-        allPluginNames.add(CustomReturnTypePlugin.class.getName());
+        allPluginNames.add(ReferenceCustomReturnTypePlugin.class.getName());
 
         makeClassSerializablePlugin.checkCompatibilityWith(allPluginNames);
 

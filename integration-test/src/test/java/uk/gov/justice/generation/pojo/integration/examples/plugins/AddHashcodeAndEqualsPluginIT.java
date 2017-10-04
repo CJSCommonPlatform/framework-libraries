@@ -31,7 +31,7 @@ public class AddHashcodeAndEqualsPluginIT {
     }
 
     @Test
-    public void shouldCreateAnObjectWithHashcodeAndEqualsMethods() throws Exception {
+    public void shouldCreateObjectWithHashcodeAndEqualsMethods() throws Exception {
 
         final String packageName = "uk.gov.justice.pojo.equals";
 

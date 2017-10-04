@@ -3,7 +3,6 @@ package uk.gov.justice.generation.pojo.core;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import java.util.List;
@@ -75,19 +74,49 @@ public class PojoGeneratorPropertiesTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void shouldReturnTypeMappingsIfSet() throws Exception {
-        final Map<String, String> typemappings = mock(Map.class);
+    public void shouldReturnReferenceTypeMappingsAsMapIfSet() throws Exception {
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
-                .withTypeMappings(typemappings)
+                .addReferenceTypeMappingOf("key_1", "value_1")
+                .addReferenceTypeMappingOf("key_2", "value_2")
+                .addFormatTypeMappingOf("key_3", "value_3")
+                .addReferenceTypeMappingOf("key_4", "value_4")
                 .build();
 
-        assertThat(generatorProperties.getTypeMappings(), is(typemappings));
+        final Map<String, String> referenceTypeMappings = generatorProperties
+                .typeMappingsFilteredBy(typeMapping -> "reference".equals(typeMapping.getType()));
+
+        assertThat(referenceTypeMappings.size(), is(3));
+        assertThat(referenceTypeMappings.get("key_1"), is("value_1"));
+        assertThat(referenceTypeMappings.get("key_2"), is("value_2"));
+        assertThat(referenceTypeMappings.get("key_4"), is("value_4"));
     }
 
     @Test
-    public void shouldReturnOptionalOfEmptyForTypeMappingsIfNotSet() throws Exception {
+    public void shouldReturnEmptyMapIfTypeMappingsAreNotSet() throws Exception {
         final PojoGeneratorProperties generatorProperties = new PojoGeneratorProperties();
 
-        assertThat(generatorProperties.getTypeMappings().isEmpty(), is(true));
+        final Map<String, String> referenceTypeMappings = generatorProperties
+                .typeMappingsFilteredBy(typeMapping -> "reference".equals(typeMapping.getType()));
+
+        assertThat(referenceTypeMappings.isEmpty(), is(true));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shouldReturnFormatTypeMappingsAsMapIfSet() throws Exception {
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .addFormatTypeMappingOf("key_1", "value_1")
+                .addFormatTypeMappingOf("key_2", "value_2")
+                .addReferenceTypeMappingOf("key_3", "value_3")
+                .addFormatTypeMappingOf("key_4", "value_4")
+                .build();
+
+        final Map<String, String> formatTypeMappings = generatorProperties
+                .typeMappingsFilteredBy(typeMapping -> "format".equals(typeMapping.getType()));
+
+        assertThat(formatTypeMappings.size(), is(3));
+        assertThat(formatTypeMappings.get("key_1"), is("value_1"));
+        assertThat(formatTypeMappings.get("key_2"), is("value_2"));
+        assertThat(formatTypeMappings.get("key_4"), is("value_4"));
     }
 }

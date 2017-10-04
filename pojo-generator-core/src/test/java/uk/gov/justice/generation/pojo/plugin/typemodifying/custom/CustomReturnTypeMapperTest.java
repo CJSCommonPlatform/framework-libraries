@@ -10,11 +10,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.generation.pojo.core.TypeMapping;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
-import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import com.squareup.javapoet.ClassName;
 import org.junit.Test;
@@ -33,19 +34,20 @@ public class CustomReturnTypeMapperTest {
     private CustomReturnTypeMapper customReturnTypeMapper;
 
     @Test
-    public void shouldGetTheCustomTypeMappingFromGeneratorPropertiesAndConvertToAClassName() throws Exception {
+    @SuppressWarnings("unchecked")
+    public void shouldGetCustomTypeMappingFromGeneratorPropertiesAndConvertToClassName() throws Exception {
 
         final String mappingPropertyName = "uuid";
-        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", mappingPropertyName);
         final Optional<String> mappingPropertyValue = of("java.util.UUID");
         final ClassName uuidClassName = get(UUID.class);
 
+        final Predicate<TypeMapping> mappingType = mock(Predicate.class);
         final PluginContext pluginContext = mock(PluginContext.class);
 
-        when(pluginContext.typeMappingOf(mappingPropertyName)).thenReturn(mappingPropertyValue);
+        when(pluginContext.typeMappingsFilteredBy(mappingType, mappingPropertyName)).thenReturn(mappingPropertyValue);
         when(fullyQualifiedNameToClassNameConverter.convert(mappingPropertyValue.get())).thenReturn(uuidClassName);
 
-        final Optional<ClassName> className = customReturnTypeMapper.customType(referenceValue, pluginContext);
+        final Optional<ClassName> className = customReturnTypeMapper.customTypeFor(mappingType, mappingPropertyName, pluginContext);
 
         if (className.isPresent()) {
             assertThat(className.get(), is(uuidClassName));
@@ -55,18 +57,17 @@ public class CustomReturnTypeMapperTest {
     }
 
     @Test
-    public void shouldReturnEmptyIfNoCustomMappingExistsForTheReferenceValueName() throws Exception {
+    @SuppressWarnings("unchecked")
+    public void shouldReturnEmptyIfNoMappingExistsForThePropertyName() throws Exception {
 
         final String mappingPropertyName = "uuid";
-        final ReferenceValue referenceValue = new ReferenceValue("#/definitions", mappingPropertyName);
         final Optional<String> mappingPropertyValue = empty();
-        
+        final Predicate<TypeMapping> mappingType = mock(Predicate.class);
         final PluginContext pluginContext = mock(PluginContext.class);
 
+        when(pluginContext.typeMappingsFilteredBy(mappingType, mappingPropertyName)).thenReturn(mappingPropertyValue);
 
-        when(pluginContext.typeMappingOf(mappingPropertyName)).thenReturn(mappingPropertyValue);
-
-        final Optional<ClassName> className = customReturnTypeMapper.customType(referenceValue, pluginContext);
+        final Optional<ClassName> className = customReturnTypeMapper.customTypeFor(mappingType, mappingPropertyName, pluginContext);
 
         assertThat(className.isPresent(), is(false));
 

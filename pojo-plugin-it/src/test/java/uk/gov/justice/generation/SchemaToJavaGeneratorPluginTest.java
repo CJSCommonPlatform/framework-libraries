@@ -7,8 +7,10 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.events.pojo.Alias;
-import uk.gov.justice.events.pojo.Person;
+import uk.gov.justice.events.pojo.PersonRemoved;
+import uk.gov.justice.events.pojo.PersonUpdated;
 import uk.gov.justice.events.pojo.Title;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -44,7 +46,7 @@ public class SchemaToJavaGeneratorPluginTest {
         final UUID personId = randomUUID();
         final ZonedDateTime startDate = of(2017, 9, 28, 17, 0, 0, 0, UTC);
 
-        final Person person = new Person(
+        final PersonUpdated personUpdated = new PersonUpdated(
                 aliases,
                 firstName,
                 lastName,
@@ -55,9 +57,12 @@ public class SchemaToJavaGeneratorPluginTest {
                 startDate,
                 title);
 
-        final String personJson = objectMapper.writeValueAsString(person);
+        final PersonRemoved personRemoved = new PersonRemoved(personId);
 
-        with(personJson)
+        final String personUpdatedJson = objectMapper.writeValueAsString(personUpdated);
+        final String personRemovedJson = objectMapper.writeValueAsString(personRemoved);
+
+        with(personUpdatedJson)
                 .assertThat("$.firstName", is(firstName))
                 .assertThat("$.lastName", is(lastName))
                 .assertThat("$.personId", is(personId.toString()))
@@ -72,6 +77,10 @@ public class SchemaToJavaGeneratorPluginTest {
                 .assertThat("$.alias[1].aliasInitials", is("2"))
                 .assertThat("$.alias[1].aliasForenames", is("forename_2"))
                 .assertThat("$.alias[1].aliasSurname", is("surname_2"))
+        ;
+
+        with(personRemovedJson)
+                .assertThat("$.personId", is(personId.toString()))
         ;
     }
 
@@ -90,7 +99,7 @@ public class SchemaToJavaGeneratorPluginTest {
         final UUID personId = randomUUID();
         final ZonedDateTime startDate = of(2017, 9, 28, 17, 0, 0, 0, UTC);
 
-        final Person person = new Person(
+        final PersonUpdated person = new PersonUpdated(
                 aliases,
                 firstName,
                 lastName,
@@ -107,7 +116,7 @@ public class SchemaToJavaGeneratorPluginTest {
         objectOutputStream.writeObject(person);
 
         final ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-        final Person resultObject = (Person) objectInputStream.readObject();
+        final PersonUpdated resultObject = (PersonUpdated) objectInputStream.readObject();
 
         assertThat(resultObject.getTitle(), is(Title.MR));
         assertThat(resultObject.getFirstName(), is(firstName));
@@ -124,5 +133,14 @@ public class SchemaToJavaGeneratorPluginTest {
         assertThat(resultObject.getAlias().get(1).getAliasInitials(), is("2"));
         assertThat(resultObject.getAlias().get(1).getAliasForenames(), is("forename_2"));
         assertThat(resultObject.getAlias().get(1).getAliasSurname(), is("surname_2"));
+    }
+
+    @Test
+    public void shouldCreateEventAnnotatedJavaPojosFromSchema() throws Exception {
+        assertThat(PersonUpdated.class.isAnnotationPresent(Event.class), is(true));
+        assertThat(PersonUpdated.class.getAnnotation(Event.class).value(), is("example.events.person-updated"));
+
+        assertThat(PersonRemoved.class.isAnnotationPresent(Event.class), is(true));
+        assertThat(PersonRemoved.class.getAnnotation(Event.class).value(), is("example.events.person-removed"));
     }
 }

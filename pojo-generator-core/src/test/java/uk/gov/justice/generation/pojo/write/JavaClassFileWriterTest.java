@@ -1,4 +1,4 @@
-package uk.gov.justice.generation;
+package uk.gov.justice.generation.pojo.write;
 
 import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.mock;
@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
-import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 
 import java.util.List;
 

@@ -95,7 +95,6 @@
                                         <implementation>java.time.ZonedDateTime</implementation>
                                     </typeMapping>
                                 </typeMappings>
-                                <rootClassName>Person</rootClassName>
                             </generatorProperties>
                         </configuration>
                         <goals>

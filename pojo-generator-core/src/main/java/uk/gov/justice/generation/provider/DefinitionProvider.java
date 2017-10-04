@@ -1,4 +1,4 @@
-package uk.gov.justice.generation;
+package uk.gov.justice.generation.provider;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -17,16 +17,16 @@ public class DefinitionProvider {
 
     private final SchemaLoader schemaLoader;
     private final VisitableFactory visitableFactory;
-    private final DefinitionBuilderVisitor definitionBuilderVisitor;
+    private final DefinitionBuilderVisitorProvider definitionBuilderVisitorProvider;
     private final AcceptorService acceptorService;
 
     public DefinitionProvider(final SchemaLoader schemaLoader,
                               final VisitableFactory visitableFactory,
-                              final DefinitionBuilderVisitor definitionBuilderVisitor,
+                              final DefinitionBuilderVisitorProvider definitionBuilderVisitorProvider,
                               final AcceptorService acceptorService) {
         this.schemaLoader = schemaLoader;
         this.visitableFactory = visitableFactory;
-        this.definitionBuilderVisitor = definitionBuilderVisitor;
+        this.definitionBuilderVisitorProvider = definitionBuilderVisitorProvider;
         this.acceptorService = acceptorService;
     }
 
@@ -37,6 +37,8 @@ public class DefinitionProvider {
         final String fieldName = pluginProvider
                 .nameGeneratablePlugin()
                 .rootFieldNameFrom(schema, source.getName(), pluginContext);
+
+        final DefinitionBuilderVisitor definitionBuilderVisitor = definitionBuilderVisitorProvider.create();
 
         visitableFactory
                 .createWith(fieldName, schema, acceptorService)

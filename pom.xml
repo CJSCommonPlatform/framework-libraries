@@ -30,6 +30,8 @@
         <utilities.version>1.8.0</utilities.version>
         <test-utils.version>1.7.0</test-utils.version>
         <generator-maven-plugin.version>2.0.0</generator-maven-plugin.version>
+
+        <cpp.repo.name>jsonschema-pojo-generator</cpp.repo.name>
     </properties>
 
     <dependencyManagement>

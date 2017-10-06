@@ -2,7 +2,7 @@ package uk.gov.justice;
 
 import java.util.Map;
 
-import org.junit.Assert;
+
 import org.junit.Test;
 import org.raml.model.MimeType;
 import org.raml.model.Raml;

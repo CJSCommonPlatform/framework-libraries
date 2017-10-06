@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "personalInfo": {
+      "type": "string"
+    },
+    "currentAddress": {
+      "type": "string"
+    },
+    "correspondenceAddress": {
+      "type": "string"
+    },
+    "courtCentreId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "personalInfo",
+    "currentAddress"
+  ]
+}

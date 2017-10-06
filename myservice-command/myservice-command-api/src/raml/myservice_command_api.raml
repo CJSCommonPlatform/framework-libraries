@@ -1,0 +1,146 @@
+#%RAML 0.8
+title: Progression Command API
+version: 1.0
+baseUri:  http://localhost:8080/progression-command-api/command/api/rest/progression
+
+
+
+/cases/{caseId} :
+  post:
+      description: |
+        Add sentence hearing date.
+        Case is sent to a Crown Court for Hearing by a Magistrates Court.
+        The Case is identified on the Common Platform  and added to appropriate Crown Court.
+        Sending committal hearing information to be added to the case
+        Assign the status Ready for Review which signifies that a case is ready to be assigned to a Judge for Sentencing Hearing Review.
+        Moves a case with a  to status "Assigned for Review " once the case is referred to a named Judge/Judicial Officer
+        Marks a  case as Ready for Sentencing when a Judge/Judicial Officer following a SHR, confirms the decision
+        ...
+        (mapping):
+            requestType: application/vnd.progression.command.sentence-hearing-date+json
+            name: progression.command.sentence-hearing-date
+        (mapping):
+            requestType: application/vnd.progression.command.add-case-to-crown-court+json
+            name: progression.command.add-case-to-crown-court
+        (mapping):
+            requestType: application/vnd.progression.command.sending-committal-hearing-information+json
+            name: progression.command.sending-committal-hearing-information
+        (mapping):
+            requestType: application/vnd.progression.command.case-to-be-assigned+json
+            name: progression.command.case-to-be-assigned
+        (mapping):
+            requestType: application/vnd.progression.command.case-assigned-for-review+json
+            name: progression.command.case-assigned-for-review
+        (mapping):
+            requestType: application/vnd.progression.command.prepare-for-sentence-hearing+json
+            name: progression.command.prepare-for-sentence-hearing
+        (mapping):
+            requestType: application/vnd.progression.command.add-sentence-hearing+json
+            name: progression.command.add-sentence-hearing
+        ...
+      body:
+        application/vnd.progression.command.sentence-hearing-date+json:
+
+           schema:
+            !include json/schema/person.json
+
+  
+        application/vnd.progression.command.add-case-to-crown-court+json:
+            example: 
+             !include json/examples/progression.command.add-case-to-crown-court.json
+             
+            schema: 
+             !include json/schema/progression.command.add-case-to-crown-court.json
+        application/vnd.progression.command.sending-committal-hearing-information+json:
+            example:
+             !include json/examples/progression.command.sending-committal-hearing-information.json
+
+            schema:
+             !include json/schema/progression.command.sending-committal-hearing-information.json
+        application/vnd.progression.command.case-to-be-assigned+json:
+            example:
+             !include json/examples/progression.command.case-to-be-assigned.json
+
+            schema:
+             !include json/schema/progression.command.case-to-be-assigned.json
+        application/vnd.progression.command.case-assigned-for-review+json:
+            example:
+             !include json/examples/progression.command.case-assigned-for-review.json
+
+            schema:
+             !include json/schema/progression.command.case-assigned-for-review.json
+        application/vnd.progression.command.prepare-for-sentence-hearing+json:
+            example:
+             !include json/examples/progression.command.prepare-for-sentence-hearing.json
+
+            schema:
+             !include json/schema/progression.command.prepare-for-sentence-hearing.json
+
+        application/vnd.progression.command.add-sentence-hearing+json:
+            example:
+             !include json/examples/progression.command.add-sentence-hearing.json
+
+            schema:
+             !include json/schema/progression.command.add-sentence-hearing.json
+  
+      responses:
+            202:
+                description: OK
+
+
+/cases/{caseId}/defendants/{defendantId}:
+  uriParameters:
+    caseId:
+      description: The ID of the case
+      type: string
+    defendantId:
+      description: The ID of the defendant
+      type: string
+  post:
+      description:  |
+        the defendant progression details
+        ...
+        (mapping):
+            requestType: application/vnd.progression.command.add-defendant-additional-information+json
+            name: progression.command.add-defendant-additional-information
+        (mapping):
+            requestType: application/vnd.progression.command.no-more-information-required+json
+            name: progression.command.no-more-information-required
+        ...
+      body:
+        application/vnd.progression.command.add-defendant-additional-information+json:
+            example:
+             !include json/examples/progression.command.add-defendant-additional-information.json
+            schema:
+             !include json/schema/progression.command.add-defendant-additional-information.json
+
+        application/vnd.progression.command.no-more-information-required+json:
+            example:
+             !include json/examples/progression.command.no-more-information-required.json
+            schema:
+             !include json/schema/progression.command.no-more-information-required.json
+
+      responses:
+            202:
+                description: OK
+                
+/cases/{caseId}/defendants/requestpsr:
+  post:
+      description:  |
+        Request PSR - Multiple Defendants
+        ...
+        (mapping):
+            requestType: application/vnd.progression.command.request-psr-for-defendants+json
+            name: progression.command.request-psr-for-defendants
+        ...
+      body:
+        application/vnd.progression.command.request-psr-for-defendants+json:
+            example: 
+             !include json/examples/progression.command.request-psr-for-defendants.json
+             
+            schema: 
+             !include json/schema/progression.command.request-psr-for-defendants.json
+              
+      responses:
+            202:
+                description: OK

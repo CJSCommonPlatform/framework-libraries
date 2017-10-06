@@ -1,0 +1,108 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="myservice-command-api:war exploded">
+    <output-path>$PROJECT_DIR$/myservice-command/myservice-command-api/target/myservice-command-api-1.0-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="myservice-command-api" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:command-api:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:components-common:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:metrics-interceptor:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: io.dropwizard.metrics:metrics-core:3.1.2" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:common:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:metrics-servlet:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: io.dropwizard.metrics:metrics-servlets:3.1.2" />
+          <element id="library" level="project" name="Maven: io.dropwizard.metrics:metrics-healthchecks:3.1.2" />
+          <element id="library" level="project" name="Maven: io.dropwizard.metrics:metrics-json:3.1.2" />
+          <element id="library" level="project" name="Maven: io.dropwizard.metrics:metrics-jvm:3.1.2" />
+          <element id="library" level="project" name="Maven: uk.gov.moj.cpp.access-control:access-control-drools:3.1.1" />
+          <element id="library" level="project" name="Maven: org.kie:kie-api:6.4.0.Final" />
+          <element id="library" level="project" name="Maven: org.drools:drools-compiler:6.4.0.Final" />
+          <element id="library" level="project" name="Maven: org.kie:kie-internal:6.4.0.Final" />
+          <element id="library" level="project" name="Maven: org.antlr:antlr-runtime:3.5" />
+          <element id="library" level="project" name="Maven: org.eclipse.jdt.core.compiler:ecj:4.4.2" />
+          <element id="library" level="project" name="Maven: org.mvel:mvel2:2.2.8.Final" />
+          <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.4.7" />
+          <element id="library" level="project" name="Maven: xmlpull:xmlpull:1.1.3.1" />
+          <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.4c" />
+          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:2.6.0" />
+          <element id="library" level="project" name="Maven: org.drools:drools-core:6.4.0.Final" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.6" />
+          <element id="library" level="project" name="Maven: uk.gov.moj.cpp.access-control:access-control-common-providers:3.1.1" />
+          <element id="library" level="project" name="Maven: uk.gov.moj.cpp.audit:audit-client:2.0.0" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:wildfly-vfs:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:core:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-direct-adapter:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:messaging-jms:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-messaging-jms:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: com.github.everit-org.json-schema:org.everit.json.schema:1.6.0" />
+          <element id="library" level="project" name="Maven: commons-validator:commons-validator:1.5.1" />
+          <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.9.2" />
+          <element id="library" level="project" name="Maven: commons-digester:commons-digester:1.8.1" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
+          <element id="library" level="project" name="Maven: com.damnhandy:handy-uri-templates:2.1.6" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:file-alfresco:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:file-api:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-common:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.utils:utilities-core:1.7.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.6.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr353:2.6.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.4" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:19.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.10" />
+          <element id="library" level="project" name="Maven: com.jayway.jsonpath:json-path:2.2.0" />
+          <element id="library" level="project" name="Maven: net.minidev:json-smart:2.2.1" />
+          <element id="library" level="project" name="Maven: net.minidev:accessors-smart:1.1" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm:5.0.3" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.4" />
+          <element id="library" level="project" name="Maven: org.jboss.resteasy:resteasy-multipart-provider:3.0.7.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.resteasy:resteasy-jaxrs:3.0.14.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:1.0.0.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:1.0.0.Final" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.1" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.3" />
+          <element id="library" level="project" name="Maven: net.jcip:jcip-annotations:1.0" />
+          <element id="library" level="project" name="Maven: org.jboss.resteasy:resteasy-client:3.0.14.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.1.0.GA" />
+          <element id="library" level="project" name="Maven: org.jboss.resteasy:resteasy-jaxb-provider:3.0.7.Final" />
+          <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.7" />
+          <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-core:2.2.7" />
+          <element id="library" level="project" name="Maven: javax.xml.bind:jaxb-api:2.2.7" />
+          <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:2.16" />
+          <element id="library" level="project" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.12" />
+          <element id="library" level="project" name="Maven: javax.xml.bind:jsr173_api:1.0" />
+          <element id="library" level="project" name="Maven: javax.mail:mail:1.5.0-b01" />
+          <element id="library" level="project" name="Maven: org.apache.james:apache-mime4j:0.6" />
+          <element id="library" level="project" name="Maven: uk.gov.moj.cpp.common:system-users-library:2.0.6" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:rest-client-core:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-core:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-domain:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-messaging:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-rest-adapter:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-rest-core:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:framework-api-rest-client:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:messaging-core:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: javax.json:javax.json-api:1.0" />
+          <element id="library" level="project" name="Maven: org.json:json:20160810" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:rest-adapter-file-service:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:rest-adapter-core:2.3.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:file-service-persistence:1.10.0" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.services:file-service-api:1.10.0" />
+          <element id="library" level="project" name="Maven: uk.gov.justice.utils:utilities-file:1.7.0" />
+          <element id="library" level="project" name="Maven: org.apache.tika:tika-core:1.14" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/myservice-command/myservice-command-api/target/myservice-command-api-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="myservice-command-api/web/Web" />
+    </root>
+  </artifact>
+</component>

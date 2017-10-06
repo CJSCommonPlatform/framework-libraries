@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="myservice-command-api:war">
-    <output-path>$PROJECT_DIR$/myservice-command/myservice-command-api/target</output-path>
-    <root id="archive" name="myservice-command-api-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="myservice-command-api:war exploded" />
-    </root>
-  </artifact>
-</component>

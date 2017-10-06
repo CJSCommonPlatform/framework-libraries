@@ -2,10 +2,7 @@ package uk.gov.justice;
 
 import static junit.framework.TestCase.fail;
 
-import uk.gov.justice.services.core.json.DefaultJsonSchemaValidatorFactoryPI;
-import uk.gov.justice.services.core.json.JsonSchemaValidator;
-
-import java.io.File;
+import uk.gov.justice.services.core.json.AbstractTestHelper;
 
 import org.everit.json.schema.ValidationException;
 import org.json.JSONException;

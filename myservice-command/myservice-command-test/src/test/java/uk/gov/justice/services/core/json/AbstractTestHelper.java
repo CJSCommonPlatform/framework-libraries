@@ -1,11 +1,9 @@
-package uk.gov.justice;
+package uk.gov.justice.services.core.json;
 
 import static java.lang.String.format;
 import static java.nio.file.Paths.get;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 

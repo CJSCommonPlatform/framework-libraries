@@ -2,12 +2,12 @@ package uk.gov.justice;
 
 import static junit.framework.TestCase.fail;
 
+import uk.gov.justice.services.core.json.AbstractTestHelper;
 import uk.gov.justice.services.core.json.DefaultJsonSchemaValidatorFactoryPI;
 import uk.gov.justice.services.core.json.JsonSchemaValidator;
 
 import org.everit.json.schema.ValidationException;
 import org.json.JSONException;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class FrameworkJSONSchemaValidatorTest {

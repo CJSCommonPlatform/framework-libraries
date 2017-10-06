@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6f7b2af7-521e-45ae-90fd-c6b7281ce97b" name="Default" comment="" />
+    <list default="true" id="6f7b2af7-521e-45ae-90fd-c6b7281ce97b" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/java/uk/gov/justice/ServiceDefinition.java" afterPath="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/ServiceDefinitionTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/myservicecommand/target/" />
@@ -21,7 +24,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-api/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="825">
+            <state relative-caret-position="0">
               <caret line="55" column="29" lean-forward="false" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="29" />
               <folding />
             </state>
@@ -51,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServiceDefinition.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/java/uk/gov/justice/ServiceDefinition.java">
+      <file leaf-file-name="ServiceDefinitionTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/ServiceDefinitionTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="15" column="116" lean-forward="true" selection-start-line="15" selection-start-column="105" selection-end-line="15" selection-end-column="116" />
+            <state relative-caret-position="60">
+              <caret line="17" column="54" lean-forward="false" selection-start-line="17" selection-start-column="54" selection-end-line="17" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -63,41 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MimeType.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/raml/raml-parser/0.8.18/raml-parser-0.8.18-sources.jar!/org/raml/model/MimeType.java">
+      <file leaf-file-name="FrameworkJSONSchemaValidatorTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/FrameworkJSONSchemaValidatorTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="75" column="24" lean-forward="false" selection-start-line="75" selection-start-column="18" selection-end-line="75" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="myservice_command_api.raml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/target/classes/raml/myservice_command_api.raml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-263">
-              <caret line="7" column="15" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="person.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/target/classes/raml/json/schema/person.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="myservice_command_api.raml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/raml/myservice_command_api.raml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="46" column="45" lean-forward="false" selection-start-line="44" selection-start-column="7" selection-end-line="46" selection-end-column="45" />
+            <state relative-caret-position="240">
+              <caret line="24" column="5" lean-forward="true" selection-start-line="19" selection-start-column="4" selection-end-line="24" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -140,6 +113,9 @@
       <replace />
       <replace>testValidationAddress</replace>
     </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -191,6 +167,7 @@
         <option value="$PROJECT_DIR$/myservice-command/myservice-command-test/pom.xml" />
         <option value="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/FrameworkJSONSchemaValidatorTest.java" />
         <option value="$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/java/uk/gov/justice/ServiceDefinition.java" />
+        <option value="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/ServiceDefinitionTest.java" />
       </list>
     </option>
   </component>
@@ -210,15 +187,6 @@
   <component name="MavenProjectNavigator">
     <treeState>
       <expand>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="myservice-command-api" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="myservice-command-api" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
-        </path>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
           <item name="myservice-command-test" type="9519ce18:MavenProjectsStructure$ProjectNode" />
@@ -301,6 +269,7 @@
       </profile-state>
     </entry>
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -331,6 +300,130 @@
               <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
               <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="justice" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="raml" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="justice" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="generated-sources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="generated-test-sources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myserviceparent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myserviceparent" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command" type="462c0819:PsiDirectoryNode" />
+              <item name="myservice-command-test" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="test-classes" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -354,13 +447,14 @@
       <recent name="uk.gov.justice.FrameworkJSONSchemaValidatorTest" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources" />
       <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/target/classes" />
       <recent name="$PROJECT_DIR$/myservice-command/myservice-command-api/src/raml/json/schema" />
       <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/raml/json" />
       <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources/json" />
-      <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources/json/examples" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="uk.gov.justice" />
       <recent name="uk.gov.justice.services.core.json" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -369,6 +463,7 @@
       <recent name="" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources/" />
       <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources/json/examples" />
       <recent name="$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources" />
       <recent name="$PROJECT_DIR$/myservice-command/myservice-command-api/src/raml/json/examples" />
@@ -387,7 +482,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.ServiceDefinition">
+  <component name="RunManager" selected="JUnit.ServiceDefinitionTest">
     <configuration name="FrameworkJSONSchemaValidatorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -438,10 +533,10 @@
       <envs />
       <patterns />
     </configuration>
-    <configuration name="FrameworkJSONSchemaValidatorTest.testValidationPerson_normal_case" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ServiceDefinitionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
-          <option name="PATTERN" value="uk.gov.justice.services.core.json.*" />
+          <option name="PATTERN" value="uk.gov.justice.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -449,9 +544,9 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="uk.gov.justice" />
-      <option name="MAIN_CLASS_NAME" value="uk.gov.justice.FrameworkJSONSchemaValidatorTest" />
-      <option name="METHOD_NAME" value="testValidationPerson_normal_case" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="uk.gov.justice.ServiceDefinitionTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -462,25 +557,6 @@
       </option>
       <envs />
       <patterns />
-    </configuration>
-    <configuration name="ServiceDefinition" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="uk.gov.justice.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="uk.gov.justice.ServiceDefinition" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="myservice-command-test" />
-      <envs />
     </configuration>
     <configuration name="Vagrant Debug" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
@@ -601,18 +677,18 @@
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Remote.Vagrant Debug" />
       <item index="1" class="java.lang.String" itemvalue="JUnit.ValidateServiceTest" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest.testValidationPerson_normal_case" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest.testValidationPerson_failsvalidation_case" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest" />
-      <item index="5" class="java.lang.String" itemvalue="Application.ServiceDefinition" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest.testValidationPerson_failsvalidation_case" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest" />
+      <item index="4" class="java.lang.String" itemvalue="Application.ServiceDefinitionTest" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.ServiceDefinitionTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.ServiceDefinition" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.ValidateServiceTest" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.ServiceDefinitionTest" />
+        <item index="1" class="java.lang.String" itemvalue="Application.ServiceDefinitionTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.ValidateServiceTest" />
         <item index="3" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest.testValidationPerson_failsvalidation_case" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.FrameworkJSONSchemaValidatorTest" />
       </list>
     </recent_temporary>
   </component>
@@ -633,47 +709,48 @@
       <updated>1507033375498</updated>
       <workItem from="1507033379261" duration="1710000" />
       <workItem from="1507035104665" duration="47540000" />
-      <workItem from="1507284286994" duration="3171000" />
+      <workItem from="1507284286994" duration="4589000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FrameworkJSONSchemaValidatorTest - 2017.10.05 at 16h 56m 30s.xml">
-      <configuration name="FrameworkJSONSchemaValidatorTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FrameworkJSONSchemaValidatorTest - 2017.10.05 at 16h 58m 43s.xml">
-      <configuration name="FrameworkJSONSchemaValidatorTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FrameworkJSONSchemaValidatorTest - 2017.10.05 at 16h 59m 09s.xml">
-      <configuration name="FrameworkJSONSchemaValidatorTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="FrameworkJSONSchemaValidatorTest - 2017.10.06 at 14h 49m 16s.xml">
       <configuration name="FrameworkJSONSchemaValidatorTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="FrameworkJSONSchemaValidatorTest - 2017.10.06 at 14h 49m 33s.xml">
       <configuration name="FrameworkJSONSchemaValidatorTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ValidateServiceTest - 2017.10.05 at 16h 53m 23s.xml">
-      <configuration name="ValidateServiceTest" configurationId="JUnit" />
+    <history-entry file="ServiceDefinitionTest - 2017.10.06 at 16h 21m 02s.xml">
+      <configuration name="ServiceDefinitionTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ValidateServiceTest - 2017.10.05 at 16h 59m 27s.xml">
-      <configuration name="ValidateServiceTest" configurationId="JUnit" />
+    <history-entry file="ServiceDefinitionTest - 2017.10.06 at 16h 21m 20s.xml">
+      <configuration name="ServiceDefinitionTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ValidateServiceTest - 2017.10.05 at 17h 06m 25s.xml">
-      <configuration name="ValidateServiceTest" configurationId="JUnit" />
+    <history-entry file="ServiceDefinitionTest - 2017.10.06 at 16h 21m 28s.xml">
+      <configuration name="ServiceDefinitionTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ValidateServiceTest - 2017.10.05 at 17h 07m 58s.xml">
-      <configuration name="ValidateServiceTest" configurationId="JUnit" />
+    <history-entry file="ServiceDefinitionTest - 2017.10.06 at 16h 21m 45s.xml">
+      <configuration name="ServiceDefinitionTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ServiceDefinitionTest - 2017.10.06 at 16h 23m 02s.xml">
+      <configuration name="ServiceDefinitionTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ServiceDefinitionTest - 2017.10.06 at 16h 23m 13s.xml">
+      <configuration name="ServiceDefinitionTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ServiceDefinitionTest - 2017.10.06 at 16h 23m 19s.xml">
+      <configuration name="ServiceDefinitionTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="ValidateServiceTest - 2017.10.06 at 14h 49m 41s.xml">
       <configuration name="ValidateServiceTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52421000" />
+    <option name="totallyTimeSpent" value="53839000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.64513886" order="7" side_tool="true" content_ui="tabs" />
@@ -694,9 +771,9 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38" sideWeight="0.46944445" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23402777" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -748,13 +825,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources/json/examples-framework/invalidPerson.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources/json/examples-framework/invalidAddress.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -1052,7 +1122,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-api/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
+        <state relative-caret-position="0">
           <caret line="55" column="29" lean-forward="false" selection-start-line="55" selection-start-column="29" selection-end-line="55" selection-end-column="29" />
           <folding />
         </state>
@@ -1077,26 +1147,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/FrameworkJSONSchemaValidatorTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="86" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/target/classes/raml/json/schema/person.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/raml/myservice_command_api.raml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="46" column="45" lean-forward="false" selection-start-line="44" selection-start-column="7" selection-end-line="46" selection-end-column="45" />
           <folding />
         </state>
       </provider>
@@ -1117,6 +1171,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/raml/myservice_command_api.raml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="46" column="45" lean-forward="false" selection-start-line="44" selection-start-column="7" selection-end-line="46" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/resources/myservice_command_api.raml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/raml/raml-parser/0.8.18/raml-parser-0.8.18-sources.jar!/org/raml/model/MimeType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="505">
@@ -1125,10 +1195,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/main/java/uk/gov/justice/ServiceDefinition.java">
+    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/FrameworkJSONSchemaValidatorTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="15" column="116" lean-forward="true" selection-start-line="15" selection-start-column="105" selection-end-line="15" selection-end-column="116" />
+        <state relative-caret-position="240">
+          <caret line="24" column="5" lean-forward="true" selection-start-line="19" selection-start-column="4" selection-end-line="24" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/myservice-command/myservice-command-test/src/test/java/uk/gov/justice/ServiceDefinitionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="17" column="54" lean-forward="false" selection-start-line="17" selection-start-column="54" selection-end-line="17" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

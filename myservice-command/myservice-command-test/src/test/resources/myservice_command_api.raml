@@ -1,0 +1,52 @@
+#%RAML 0.8
+title: Progression Command API
+version: 1.0
+baseUri:  http://localhost:8080/myservice-command-test/command/api/rest/myservice
+
+
+
+/cases/{caseId} :
+  post:
+      description: |
+        Add sentence hearing date.
+        Case is sent to a Crown Court for Hearing by a Magistrates Court.
+        The Case is identified on the Common Platform  and added to appropriate Crown Court.
+        Sending committal hearing information to be added to the case
+        Assign the status Ready for Review which signifies that a case is ready to be assigned to a Judge for Sentencing Hearing Review.
+        Moves a case with a  to status "Assigned for Review " once the case is referred to a named Judge/Judicial Officer
+        Marks a  case as Ready for Sentencing when a Judge/Judicial Officer following a SHR, confirms the decision
+        ...
+        (mapping):
+            requestType: application/vnd.progression.command.sentence-hearing-date+json
+            name: progression.command.sentence-hearing-date
+        (mapping):
+            requestType: application/vnd.progression.command.add-case-to-crown-court+json
+            name: progression.command.add-case-to-crown-court
+        (mapping):
+            requestType: application/vnd.progression.command.sending-committal-hearing-information+json
+            name: progression.command.sending-committal-hearing-information
+        (mapping):
+            requestType: application/vnd.progression.command.case-to-be-assigned+json
+            name: progression.command.case-to-be-assigned
+        (mapping):
+            requestType: application/vnd.progression.command.case-assigned-for-review+json
+            name: progression.command.case-assigned-for-review
+        (mapping):
+            requestType: application/vnd.progression.command.prepare-for-sentence-hearing+json
+            name: progression.command.prepare-for-sentence-hearing
+        (mapping):
+            requestType: application/vnd.progression.command.add-sentence-hearing+json
+            name: progression.command.add-sentence-hearing
+        ...
+      body:
+
+
+
+        application/vnd.progression.command.add-case-to-crown-court+json:
+            schema: 
+             !include json/schema/person.json
+
+  
+      responses:
+            202:
+                description: OK

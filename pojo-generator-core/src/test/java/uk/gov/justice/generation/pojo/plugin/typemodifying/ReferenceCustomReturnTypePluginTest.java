@@ -5,14 +5,13 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.REFERENCE;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
-import static uk.gov.justice.generation.utils.ReflectionUtil.annotatedMethod;
-import static uk.gov.justice.generation.utils.ReflectionUtil.fieldValue;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.annotatedMethod;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.fieldValueAs;
 
 import uk.gov.justice.generation.pojo.core.TypeMapping;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
@@ -127,18 +126,18 @@ public class ReferenceCustomReturnTypePluginTest {
 
         assertThat(plugin, is(instanceOf(ReferenceCustomReturnTypePlugin.class)));
 
-        final CustomReturnTypeMapper customReturnTypeMapper = fieldValue(
+        final Optional<CustomReturnTypeMapper> customReturnTypeMapper = fieldValueAs(
                 plugin,
                 "customReturnTypeMapper",
                 CustomReturnTypeMapper.class);
 
-        assertThat(customReturnTypeMapper, is(notNullValue()));
+        assertThat(customReturnTypeMapper.isPresent(), is(true));
 
-        final FullyQualifiedNameToClassNameConverter fullyQualifiedNameToClassNameConverter = fieldValue(
-                customReturnTypeMapper,
+        final Optional<FullyQualifiedNameToClassNameConverter> fullyQualifiedNameToClassNameConverter = fieldValueAs(
+                customReturnTypeMapper.get(),
                 "fullyQualifiedNameToClassNameConverter",
                 FullyQualifiedNameToClassNameConverter.class);
 
-        assertThat(fullyQualifiedNameToClassNameConverter, is(notNullValue()));
+        assertThat(fullyQualifiedNameToClassNameConverter.isPresent(), is(true));
     }
 }

@@ -4,11 +4,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static uk.gov.justice.generation.utils.ReflectionUtil.fieldValue;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.fieldValue;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -23,10 +25,12 @@ public class ClassNameFactoryProviderTest {
 
         assertThat(classNameFactory, notNullValue());
 
-        final Object typeNameProvider = fieldValue(classNameFactory, "typeNameProvider");
-        assertThat(fieldValue(typeNameProvider, "generationContext"), is(generationContext));
+        final Optional<Object> typeNameProvider = fieldValue(classNameFactory, "typeNameProvider");
+        assertThat(typeNameProvider.isPresent(), is(true));
+        assertThat(fieldValue(typeNameProvider.get(), "generationContext"), is(Optional.of(generationContext)));
 
-        final Object typeNamePluginProcessor = fieldValue(classNameFactory, "typeNamePluginProcessor");
-        assertThat(fieldValue(typeNamePluginProcessor, "pluginProvider"), is(pluginProvider));
+        final Optional<Object> typeNamePluginProcessor = fieldValue(classNameFactory, "typeNamePluginProcessor");
+        assertThat(typeNamePluginProcessor.isPresent(), is(true));
+        assertThat(fieldValue(typeNamePluginProcessor.get(), "pluginProvider"), is(Optional.of(pluginProvider)));
     }
 }

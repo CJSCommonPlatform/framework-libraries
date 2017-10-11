@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -142,5 +143,14 @@ public class SchemaToJavaGeneratorPluginTest {
 
         assertThat(PersonRemoved.class.isAnnotationPresent(Event.class), is(true));
         assertThat(PersonRemoved.class.getAnnotation(Event.class).value(), is("example.events.person-removed"));
+    }
+
+    @Test
+    public void shouldCreateEnumWithValueForMethod() throws Exception {
+        assertThat(Title.valueFor(""), is(Optional.of(Title.BLANK)));
+        assertThat(Title.valueFor("Mr"), is(Optional.of(Title.MR)));
+        assertThat(Title.valueFor("Mrs"), is(Optional.of(Title.MRS)));
+        assertThat(Title.valueFor("Ms"), is(Optional.of(Title.MS)));
+        assertThat(Title.valueFor("unknown"), is(Optional.empty()));
     }
 }

@@ -3,7 +3,7 @@ package uk.gov.justice.generation.provider;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static uk.gov.justice.generation.utils.ReflectionUtil.fieldValue;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.fieldValue;
 
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 

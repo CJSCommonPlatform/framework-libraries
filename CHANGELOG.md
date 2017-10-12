@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.9.0] - 2017-10-12
+
+### Changed
+
+- Removed dependency on org.json and refactored JSONObjectValueObfuscator.
+
 ## [1.8.1] - 2017-09-20
 
 ### Fixed

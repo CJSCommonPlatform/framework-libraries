@@ -10,8 +10,6 @@ import javax.inject.Inject;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 /**
  * Converts JsonObject to the given Pojo type.
@@ -28,18 +26,14 @@ public class JsonObjectToObjectConverter implements TypedConverter<JsonObject, O
 
             if (object == null) {
                 throw new ConverterException(String.format("Failed to convert %s to Object", obfuscated(
-                        jsonObject(source))));
+                        source)));
             }
 
             return object;
         } catch (IOException e) {
             throw new IllegalArgumentException(
                     String.format("Error while converting %s to JsonObject", obfuscated(
-                            jsonObject(source))), e);
+                            source)), e);
         }
-    }
-
-    private JSONObject jsonObject(JsonObject source) {
-        return new JSONObject(new JSONTokener(source.toString()));
     }
 }

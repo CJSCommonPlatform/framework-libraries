@@ -129,11 +129,14 @@ public class JsonObjectToObjectConverterTest {
 
     public static class Pojo {
 
-        private final UUID id;
-        private final String name;
-        private final List<String> attributes;
-        private final InternalPojo internalPojo;
+        private UUID id;
+        private String name;
+        private List<String> attributes;
+        private InternalPojo internalPojo;
 
+        public Pojo () {
+
+        }
 
         public Pojo(final UUID id, final String name, final List<String> attributes,
                     final InternalPojo internalPojo) {
@@ -164,6 +167,10 @@ public class JsonObjectToObjectConverterTest {
 
         private UUID internalId;
         private String internalName;
+
+        public InternalPojo() {
+
+        }
 
         public InternalPojo(final UUID internalId, final String internalName) {
             this.internalId = internalId;

@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 /**
  * Class for handling inserts/updates/selects on the 'metadata' database table. This class is not
@@ -114,6 +115,8 @@ public class MetadataJdbcRepository {
     }
 
     private JsonObject toJsonObject(final String json) {
-        return createReader(new StringReader(json)).readObject();
+        try (final JsonReader reader = createReader(new StringReader(json));) {
+            return reader.readObject();
+        }
     }
 }

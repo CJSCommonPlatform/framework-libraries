@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Json Reader not closed
 
 ## [1.11.1] - 2017-09-20
 

@@ -30,7 +30,7 @@
 
     <properties>
         <common-bom.version>1.17.0</common-bom.version>
-        <cpp.utilities.version>1.8.1</cpp.utilities.version>
+        <cpp.utilities.version>1.9.0</cpp.utilities.version>
         <cpp.test.utilities.version>1.7.0</cpp.test.utilities.version>
 
         <cpp.repo.name>file-service</cpp.repo.name>

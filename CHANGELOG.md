@@ -4,8 +4,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [1.12.0] - 2017-10-17
+
 ### Fixed
 - Json Reader not closed
+
+### Changed
+- Upgraded to utilities version 1.9.0 for Json Obfuscator rework
 
 ## [1.11.1] - 2017-09-20
 

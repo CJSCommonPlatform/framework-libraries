@@ -28,7 +28,7 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.17.0</common-bom.version>
+        <common-bom.version>1.19.0</common-bom.version>
 
         <cpp.repo.name>generator-maven-plugin</cpp.repo.name>
     </properties>

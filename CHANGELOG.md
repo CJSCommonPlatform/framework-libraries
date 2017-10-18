@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [2.1.0] - 2017-10-18
 ### Changed
 - Update common-bom to version 1.19.0 to use latest everit version
 

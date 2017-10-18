@@ -82,7 +82,7 @@
         <openejb.version>7.0.0-M3</openejb.version>
         <org.eclipse.sisu.plexus.version>0.3.2</org.eclipse.sisu.plexus.version>
         <org.everit.json.schema.version>1.6.0</org.everit.json.schema.version>
-        <org.json.version>20160810</org.json.version>
+        <org.json.version>20170516</org.json.version>
         <persistence-api.version>1.0.2</persistence-api.version>
         <plexus-utils.version>3.0.22</plexus-utils.version>
         <raml-parser.version>0.8.18</raml-parser.version>

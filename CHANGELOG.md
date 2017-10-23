@@ -5,10 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.9.0] - 2017-10-23
+## [1.10.0] - 2017-10-23
 
 ### Added
 - Support for HTTP DELETE
+
+### Changed
+- Fix travis build, maven version compatibility
 
 ## [1.8.0] - 2017-10-12
 

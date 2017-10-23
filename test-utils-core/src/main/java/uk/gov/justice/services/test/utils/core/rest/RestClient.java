@@ -2,6 +2,7 @@ package uk.gov.justice.services.test.utils.core.rest;
 
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
+import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static uk.gov.justice.services.test.utils.core.rest.ResteasyClientBuilderFactory.clientBuilder;
 
 import javax.ws.rs.client.Entity;
@@ -135,6 +136,35 @@ public class RestClient {
             LOGGER.info("Received response status '{}' '{}'", statusType.getStatusCode(), statusType.getReasonPhrase());
         }
         
+        return response;
+    }
+
+    /**
+     * Sends a DELETE command to the specified URL.
+     *
+     * @param url            - the URL to post the command to.
+     * @param contentType    - the content type of the command.
+     * @param headers      - headers to be sent in the request.
+     * @return the Response from the command being issued.
+     */
+    public Response deleteCommand(final String url, final String contentType, final MultivaluedMap<String, Object> headers) {
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Making DELETE request to '{}' with Content Type '{}'", url, contentType);
+        }
+
+        final Response response = clientBuilder().build()
+                .target(url)
+                .request()
+                .headers(headers)
+                .header(CONTENT_TYPE, contentType)
+                .delete();
+
+        if (LOGGER.isInfoEnabled()) {
+            final Response.StatusType statusType = response.getStatusInfo();
+            LOGGER.info("Received response status '{}' '{}'", statusType.getStatusCode(), statusType.getReasonPhrase());
+        }
+
         return response;
     }
 }

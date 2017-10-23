@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.9.0] - 2017-10-23
+
 ### Added
 - Support for HTTP DELETE
 

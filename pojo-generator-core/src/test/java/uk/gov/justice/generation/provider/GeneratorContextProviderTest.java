@@ -9,7 +9,6 @@ import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class GeneratorContextProviderTest {
         final List<String> hardCodedClassNames = mock(List.class);
 
         final List<Path> sourcePaths = mock(List.class);
-        final File schemaFile = mock(File.class);
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
 
         when(generatorConfig.getSourcePaths()).thenReturn(sourcePaths);
@@ -45,9 +43,7 @@ public class GeneratorContextProviderTest {
         when(generatorConfig.getBasePackageName()).thenReturn(packageName);
         when(javaFileSimpleNameLister.findSimpleNames(sourcePaths, outputDirectory, packageName)).thenReturn(hardCodedClassNames);
 
-        when(schemaFile.getName()).thenReturn(schemaFilename);
-
-        final GenerationContext generationContext = generatorContextProvider.create(schemaFile, generatorConfig);
+        final GenerationContext generationContext = generatorContextProvider.create(schemaFilename, generatorConfig);
 
         assertThat(generationContext.getPackageName(), is(packageName));
         assertThat(generationContext.getOutputDirectoryPath(), is(outputDirectory));

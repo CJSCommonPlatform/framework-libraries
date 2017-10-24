@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -15,16 +16,16 @@ import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
 import uk.gov.justice.generation.pojo.write.JavaClassFileWriter;
-import uk.gov.justice.generation.provider.ClassNameFactoryProvider;
 import uk.gov.justice.generation.provider.DefinitionProvider;
 import uk.gov.justice.generation.provider.GeneratorContextProvider;
-import uk.gov.justice.generation.provider.JavaGeneratorFactoryProvider;
 import uk.gov.justice.generation.provider.PluginContextProvider;
+import uk.gov.justice.generation.provider.PojoGeneratorFactoriesProvider;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.io.File;
 import java.util.List;
 
+import org.everit.json.schema.Schema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -39,10 +40,7 @@ public class SchemaPojoGeneratorTest {
     private GeneratorContextProvider generatorContextProvider;
 
     @Mock
-    private JavaGeneratorFactoryProvider javaGeneratorFactoryProvider;
-
-    @Mock
-    private ClassNameFactoryProvider classNameFactoryProvider;
+    private PojoGeneratorFactoriesProvider pojoGeneratorFactoriesProvider;
 
     @Mock
     private JavaClassFileWriter javaClassFileWriter;
@@ -56,14 +54,20 @@ public class SchemaPojoGeneratorTest {
     @Mock
     private PluginContextProvider pluginContextProvider;
 
+    @Mock
+    private SchemaLoader schemaLoader;
+
     @InjectMocks
     private SchemaPojoGenerator schemaPojoGenerator;
 
     @Test
     @SuppressWarnings("unchecked")
     public void shouldGeneratePojoFromSchema() throws Exception {
+        final String jsonSchemaFileName = "jsonSchemaFileName";
+
         final File jsonSchemaFile = mock(File.class);
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
+        final Schema jsonSchema = mock(Schema.class);
 
         final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
         final GenerationContext generationContext = mock(GenerationContext.class);
@@ -77,14 +81,16 @@ public class SchemaPojoGeneratorTest {
         final List<Definition> definitions = mock(List.class);
         final List<ClassGeneratable> classGenerators = mock(List.class);
 
+        when(schemaLoader.loadFrom(jsonSchemaFile)).thenReturn(jsonSchema);
+        when(jsonSchemaFile.getName()).thenReturn(jsonSchemaFileName);
         when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
-        when(generatorContextProvider.create(jsonSchemaFile, generatorConfig)).thenReturn(generationContext);
+        when(generatorContextProvider.create(jsonSchemaFileName, generatorConfig)).thenReturn(generationContext);
 
         when(pluginProviderFactory.createFor(generatorProperties)).thenReturn(pluginProvider);
         when(generationContext.getLoggerFor(SchemaPojoGenerator.class)).thenReturn(mock(Logger.class));
 
-        when(classNameFactoryProvider.create(generationContext, pluginProvider)).thenReturn(classNameFactory);
-        when(javaGeneratorFactoryProvider.create(classNameFactory)).thenReturn(javaGeneratorFactory);
+        when(pojoGeneratorFactoriesProvider.create(generationContext, pluginProvider)).thenReturn(classNameFactory);
+        when(pojoGeneratorFactoriesProvider.create(classNameFactory)).thenReturn(javaGeneratorFactory);
 
         when(pluginContextProvider.create(
                 javaGeneratorFactory,
@@ -95,7 +101,8 @@ public class SchemaPojoGeneratorTest {
         )).thenReturn(pluginContext);
 
         when(definitionProvider.createDefinitions(
-                jsonSchemaFile,
+                jsonSchema,
+                jsonSchemaFileName,
                 pluginProvider,
                 pluginContext
         )).thenReturn(definitions);

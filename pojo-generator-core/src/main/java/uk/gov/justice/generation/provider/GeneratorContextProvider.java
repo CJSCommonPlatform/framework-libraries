@@ -4,7 +4,6 @@ import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class GeneratorContextProvider {
         this.javaFileSimpleNameLister = javaFileSimpleNameLister;
     }
 
-    public GenerationContext create(final File jsonSchemaFile, final GeneratorConfig generatorConfig) {
+    public GenerationContext create(final String schemaFileName, final GeneratorConfig generatorConfig) {
         final List<Path> sourcePaths = generatorConfig.getSourcePaths();
         final Path outputDirectory = generatorConfig.getOutputDirectory();
         final String basePackageName = generatorConfig.getBasePackageName();
@@ -29,7 +28,7 @@ public class GeneratorContextProvider {
         return new GenerationContext(
                 outputDirectory,
                 basePackageName,
-                jsonSchemaFile.getName(),
+                schemaFileName,
                 hardCodedClassNames);
     }
 }

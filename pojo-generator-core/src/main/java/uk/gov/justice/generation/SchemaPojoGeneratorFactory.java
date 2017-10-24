@@ -10,12 +10,11 @@ import uk.gov.justice.generation.pojo.write.JavaClassFileWriter;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
 import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
-import uk.gov.justice.generation.provider.ClassNameFactoryProvider;
 import uk.gov.justice.generation.provider.DefinitionBuilderVisitorProvider;
 import uk.gov.justice.generation.provider.DefinitionProvider;
 import uk.gov.justice.generation.provider.GeneratorContextProvider;
-import uk.gov.justice.generation.provider.JavaGeneratorFactoryProvider;
 import uk.gov.justice.generation.provider.PluginContextProvider;
+import uk.gov.justice.generation.provider.PojoGeneratorFactoriesProvider;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorFactory;
 
@@ -37,11 +36,12 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
     public Generator<File> create() {
         return new SchemaPojoGenerator(
                 new PluginProviderFactoryFactory().create(),
-                new DefinitionProvider(schemaLoader, visitableFactory, definitionBuilderVisitorProvider, acceptorService),
+                new DefinitionProvider(visitableFactory, definitionBuilderVisitorProvider, acceptorService),
                 new GeneratorContextProvider(javaFileSimpleNameLister),
-                new ClassNameFactoryProvider(),
-                new JavaGeneratorFactoryProvider(),
+                new PojoGeneratorFactoriesProvider(),
                 new JavaClassFileWriter(writer),
-                new PluginContextProvider());
+                new PluginContextProvider(),
+                schemaLoader
+        );
     }
 }

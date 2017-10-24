@@ -8,20 +8,30 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
+import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 
 import java.util.Optional;
 
 import org.junit.Test;
 
-public class ClassNameFactoryProviderTest {
+public class PojoGeneratorFactoriesProviderTest {
+
+    @Test
+    public void shouldProvideJavaGeneratorFactory() throws Exception {
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+
+        final JavaGeneratorFactory javaGeneratorFactory = new PojoGeneratorFactoriesProvider().create(classNameFactory);
+
+        assertThat(fieldValue(javaGeneratorFactory, "classNameFactory"), is(Optional.of(classNameFactory)));
+    }
 
     @Test
     public void shouldProvideClassNameFactory() throws Exception {
         final GenerationContext generationContext = mock(GenerationContext.class);
         final PluginProvider pluginProvider = mock(PluginProvider.class);
 
-        final ClassNameFactory classNameFactory = new ClassNameFactoryProvider().create(generationContext, pluginProvider);
+        final ClassNameFactory classNameFactory = new PojoGeneratorFactoriesProvider().create(generationContext, pluginProvider);
 
         assertThat(classNameFactory, notNullValue());
 

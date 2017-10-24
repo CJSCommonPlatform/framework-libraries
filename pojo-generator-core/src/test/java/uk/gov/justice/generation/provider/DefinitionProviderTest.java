@@ -69,7 +69,7 @@ public class DefinitionProviderTest {
 
         when(visitableFactory.createWith(fieldName, schema, acceptorService)).thenReturn(mock(Visitable.class));
 
-        final List<Definition> result = definitionProvider.createDefinitions(schemaFile, pluginProvider, pluginContext);
+        final List<Definition> result = definitionProvider.createDefinitions(schema, schemaFilename, pluginProvider, pluginContext);
 
         assertThat(result, is(definitions));
     }

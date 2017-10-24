@@ -59,7 +59,9 @@ public class JavaGeneratorFactory {
             final Definition definition) {
 
         if (definition.getClass() == EnumDefinition.class) {
-            return new EnumGenerator((EnumDefinition) definition);
+            return new EnumGenerator((EnumDefinition) definition,
+                    classNameFactory,
+                    pluginContext);
         }
 
         return new ClassGenerator((ClassDefinition) definition,

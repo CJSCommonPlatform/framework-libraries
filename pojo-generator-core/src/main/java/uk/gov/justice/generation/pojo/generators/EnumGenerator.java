@@ -7,10 +7,18 @@ import static com.squareup.javapoet.TypeSpec.enumBuilder;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
+import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
+import java.util.Optional;
+
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 
@@ -25,10 +33,16 @@ public class EnumGenerator implements ClassGeneratable {
     private static final String UNDERSCORE = "_";
 
     private final EnumDefinition enumDefinition;
+    private final ClassNameFactory classNameFactory;
+    private final PluginContext pluginContext;
     private final String className;
 
-    public EnumGenerator(final EnumDefinition enumDefinition) {
-        this.enumDefinition = enumDefinition;
+    public EnumGenerator(final EnumDefinition definition,
+                         final ClassNameFactory classNameFactory,
+                         final PluginContext pluginContext) {
+        this.enumDefinition = definition;
+        this.classNameFactory = classNameFactory;
+        this.pluginContext = pluginContext;
         this.className = capitalize(enumDefinition.getFieldName());
     }
 
@@ -50,13 +64,42 @@ public class EnumGenerator implements ClassGeneratable {
                         .addParameter(String.class, VALUE_VARIABLE_NAME)
                         .addStatement("this.$L = $L", VALUE_VARIABLE_NAME, VALUE_VARIABLE_NAME)
                         .build())
-                .addMethod(methodBuilder("toString")
-                        .addAnnotation(Override.class)
-                        .addModifiers(PUBLIC)
-                        .returns(String.class)
-                        .addStatement("return $L", VALUE_VARIABLE_NAME)
-                        .build())
+                .addMethod(buildToStringMethod())
+                .addMethod(buildValueForMethod())
                 .build();
+    }
+
+    private MethodSpec buildToStringMethod() {
+        return methodBuilder("toString")
+                .addAnnotation(Override.class)
+                .addModifiers(PUBLIC)
+                .returns(String.class)
+                .addStatement("return $L", VALUE_VARIABLE_NAME)
+                .build();
+    }
+
+    private MethodSpec buildValueForMethod() {
+        final TypeName optionalEnumTypeName = ParameterizedTypeName.get(
+                ClassName.get(Optional.class),
+                classNameFactory.createTypeNameFrom(enumDefinition, pluginContext));
+
+        final MethodSpec.Builder methodBuilder = methodBuilder("valueFor")
+                .addModifiers(PUBLIC, STATIC)
+                .addParameter(String.class, "value", FINAL)
+                .returns(optionalEnumTypeName);
+
+        enumDefinition.getEnumValues().forEach(enumValue -> {
+            final String enumName = constructEnumNameFrom(enumValue);
+
+            methodBuilder.addStatement("if($L.value.equals(value)) { return $T.of($L); }",
+                    enumName,
+                    Optional.class,
+                    enumName);
+        });
+
+        methodBuilder.addStatement("return $T.empty()", Optional.class);
+
+        return methodBuilder.build();
     }
 
     @Override

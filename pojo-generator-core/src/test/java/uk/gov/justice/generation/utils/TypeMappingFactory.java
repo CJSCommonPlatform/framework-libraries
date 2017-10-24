@@ -1,6 +1,6 @@
 package uk.gov.justice.generation.utils;
 
-import static uk.gov.justice.generation.utils.ReflectionUtil.setField;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.generation.pojo.core.TypeMapping;
 

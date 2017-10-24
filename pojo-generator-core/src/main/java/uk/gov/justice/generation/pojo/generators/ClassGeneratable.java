@@ -19,7 +19,15 @@ public interface ClassGeneratable {
 
     /**
      * Gets the simple name of the POJO that is to be generated
+     *
      * @return The simple name of the POJO
      */
     String getSimpleClassName();
+
+    /**
+     * Gets the package name of the POJO that is to be generated
+     *
+     * @return The package name of the POJO
+     */
+    String getPackageName();
 }

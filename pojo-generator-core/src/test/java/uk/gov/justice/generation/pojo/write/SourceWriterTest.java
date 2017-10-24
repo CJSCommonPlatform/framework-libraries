@@ -51,8 +51,8 @@ public class SourceWriterTest {
         final GenerationContext generationContext = mock(GenerationContext.class);
 
         when(classGenerator.generate()).thenReturn(helloWorld);
+        when(classGenerator.getPackageName()).thenReturn(packageName);
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceOutputDirectory.toPath());
-        when(generationContext.getPackageName()).thenReturn(packageName);
 
         for (final ClassGeneratable classGeneratable : singletonList(classGenerator)) {
             sourceWriter.write(classGeneratable, generationContext);
@@ -72,8 +72,8 @@ public class SourceWriterTest {
         final GenerationContext generationContext = mock(GenerationContext.class);
 
         when(classGenerator.generate()).thenReturn(helloWorld);
+        when(classGenerator.getPackageName()).thenReturn(packageName);
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceOutputDirectory.toPath());
-        when(generationContext.getPackageName()).thenReturn(packageName);
 
         sourceOutputDirectory.setWritable(false);
 

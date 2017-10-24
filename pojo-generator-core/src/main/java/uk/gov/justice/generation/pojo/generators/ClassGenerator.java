@@ -49,6 +49,11 @@ public class ClassGenerator implements ClassGeneratable {
         return getClassName().simpleName();
     }
 
+    @Override
+    public String getPackageName() {
+        return getClassName().packageName();
+    }
+
     private ClassName getClassName() {
         return classNameFactory.createClassNameFrom(classDefinition);
     }

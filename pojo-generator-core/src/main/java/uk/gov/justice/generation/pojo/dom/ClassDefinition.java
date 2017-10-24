@@ -5,6 +5,7 @@ import static java.util.Comparator.comparing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Defines a class that will be generated as a java POJO
@@ -12,6 +13,7 @@ import java.util.List;
 public class ClassDefinition extends FieldDefinition {
 
     private final List<Definition> fieldDefinitions = new ArrayList<>();
+    private final Optional<String> id;
 
     private boolean allowAdditionalProperties = false;
     private boolean root = false;
@@ -19,14 +21,31 @@ public class ClassDefinition extends FieldDefinition {
     /**
      * Creates a ClassDefinition that is not the root class.
      *
-     * @param type The {@link DefinitionType} of the class. Can be a
-     *              {@link DefinitionType#CLASS}
-     *              {@link DefinitionType#ENUM} or
-     *              {@link DefinitionType#COMBINED}
+     * @param type      The {@link DefinitionType} of the class. Can be a
+     *                  {@link DefinitionType#CLASS}
+     *                  {@link DefinitionType#ENUM} or
+     *                  {@link DefinitionType#COMBINED}
+     * @param fieldName The name of the field that will be used in the generated POJO
+     * @param id        The id of the field used to create package and className
+     */
+    public ClassDefinition(final DefinitionType type, final String fieldName, final String id) {
+        super(type, fieldName);
+        this.id = Optional.ofNullable(id);
+    }
+
+    /**
+     * Creates a ClassDefinition that is not the root class and has not id.
+     *
+     * @param type      The {@link DefinitionType} of the class. Can be a
+     *                  {@link DefinitionType#CLASS}
+     *                  {@link DefinitionType#ENUM} or
+     *                  {@link DefinitionType#COMBINED}
+     *                  DefinitionType#COMBINED}
      * @param fieldName The name of the field that will be used in the generated POJO
      */
     public ClassDefinition(final DefinitionType type, final String fieldName) {
         super(type, fieldName);
+        this.id = Optional.empty();
     }
 
     /**
@@ -96,10 +115,20 @@ public class ClassDefinition extends FieldDefinition {
         this.root = root;
     }
 
+    /**
+     * Gets the id of the definition.  If present id is used to create the class name and package
+     *
+     * @return Optional id
+     */
+    public Optional<String> getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "ClassDefinition{" +
                 "fieldName=" + getFieldName() +
+                ", id=" + getId().toString() +
                 ", type=" + type() +
                 ", required=" + isRequired() +
                 ", allowAdditionalProperties=" + allowAdditionalProperties +

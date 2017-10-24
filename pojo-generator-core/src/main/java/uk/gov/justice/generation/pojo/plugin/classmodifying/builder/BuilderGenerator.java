@@ -76,6 +76,11 @@ public class BuilderGenerator implements ClassGeneratable {
         return BUILDER_SIMPLE_NAME;
     }
 
+    @Override
+    public String getPackageName() {
+        throw new UnsupportedOperationException();
+    }
+
     public MethodSpec generateStaticGetBuilderMethod() {
         return methodBuilder(classDefinition.getFieldName())
                 .addModifiers(PUBLIC, STATIC)

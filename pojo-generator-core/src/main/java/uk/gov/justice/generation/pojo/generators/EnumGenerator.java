@@ -8,7 +8,6 @@ import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
-import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
@@ -35,7 +34,6 @@ public class EnumGenerator implements ClassGeneratable {
     private final EnumDefinition enumDefinition;
     private final ClassNameFactory classNameFactory;
     private final PluginContext pluginContext;
-    private final String className;
 
     public EnumGenerator(final EnumDefinition definition,
                          final ClassNameFactory classNameFactory,
@@ -43,13 +41,12 @@ public class EnumGenerator implements ClassGeneratable {
         this.enumDefinition = definition;
         this.classNameFactory = classNameFactory;
         this.pluginContext = pluginContext;
-        this.className = capitalize(enumDefinition.getFieldName());
     }
 
     @Override
     public TypeSpec generate() {
 
-        final Builder enumBuilder = enumBuilder(className).addModifiers(PUBLIC);
+        final Builder enumBuilder = enumBuilder(getClassName()).addModifiers(PUBLIC);
 
         enumDefinition.getEnumValues().forEach(enumValue -> {
             final String enumName = constructEnumNameFrom(enumValue);
@@ -104,10 +101,19 @@ public class EnumGenerator implements ClassGeneratable {
 
     @Override
     public String getSimpleClassName() {
-        return className;
+        return getClassName().simpleName();
+    }
+
+    @Override
+    public String getPackageName() {
+        return getClassName().packageName();
     }
 
     private String constructEnumNameFrom(final String enumValue) {
         return enumValue.isEmpty() ? BLANK_ENUM_NAME : enumValue.toUpperCase().replace(SPACE, UNDERSCORE);
+    }
+
+    private ClassName getClassName() {
+        return classNameFactory.createClassNameFrom(enumDefinition);
     }
 }

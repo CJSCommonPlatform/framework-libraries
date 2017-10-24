@@ -17,8 +17,8 @@ import java.util.stream.Stream;
  */
 public class CombinedDefinition extends ClassDefinition {
 
-    public CombinedDefinition(final String fieldName) {
-        super(COMBINED, fieldName);
+    public CombinedDefinition(final String fieldName, final String id) {
+        super(COMBINED, fieldName, id);
     }
 
     /**

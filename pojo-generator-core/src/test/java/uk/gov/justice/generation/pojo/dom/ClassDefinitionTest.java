@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -17,10 +18,12 @@ public class ClassDefinitionTest {
     @Test
     public void shouldReturnFieldNameUsedInConstruction() throws Exception {
         final String fieldName = "test";
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName);
+        final String id = "http://id.com/id";
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName, id);
 
         assertThat(classDefinition, is(instanceOf(FieldDefinition.class)));
         assertThat(classDefinition.getFieldName(), is(fieldName));
+        assertThat(classDefinition.getId(), is(Optional.of(id)));
     }
 
     @Test
@@ -33,7 +36,7 @@ public class ClassDefinitionTest {
         when(fieldDefinition2.getFieldName()).thenReturn("fieldDefinition2");
         when(fieldDefinition3.getFieldName()).thenReturn("fieldDefinition3");
 
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName", "id");
         classDefinition.addFieldDefinition(fieldDefinition1);
         classDefinition.addFieldDefinition(fieldDefinition2);
         classDefinition.addFieldDefinition(fieldDefinition3);
@@ -54,7 +57,7 @@ public class ClassDefinitionTest {
         when(fieldDefinition_2.getFieldName()).thenReturn("aaa");
         when(fieldDefinition_3.getFieldName()).thenReturn("mmm");
 
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName", "id");
         classDefinition.addFieldDefinition(fieldDefinition_1);
         classDefinition.addFieldDefinition(fieldDefinition_2);
         classDefinition.addFieldDefinition(fieldDefinition_3);
@@ -68,13 +71,13 @@ public class ClassDefinitionTest {
 
     @Test
     public void additionalPropertiesShouldBeFalseByDefault() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "myField");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "myField", "id");
         assertThat(classDefinition.allowAdditionalProperties(), is(false));
     }
 
     @Test
     public void shouldAllowAdditionalProperties() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "fieldName", "id");
 
         assertThat(classDefinition.allowAdditionalProperties(), is(false));
 
@@ -85,7 +88,7 @@ public class ClassDefinitionTest {
 
     @Test
     public void shouldBeTheRootClass() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test", "id");
 
         classDefinition.setRoot(true);
 
@@ -95,7 +98,7 @@ public class ClassDefinitionTest {
 
     @Test
     public void shouldNotBeTheRootClass() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test", "id");
 
         classDefinition.setRoot(false);
 
@@ -105,7 +108,7 @@ public class ClassDefinitionTest {
 
     @Test
     public void shouldDefaultToNotBeTheRootClass() throws Exception {
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test");
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "test", "id");
 
         assertThat(classDefinition, is(instanceOf(FieldDefinition.class)));
         assertThat(classDefinition.isRoot(), is(false));
@@ -115,8 +118,8 @@ public class ClassDefinitionTest {
     public void shouldTestToStringMethodToStopCoverallsWhining() throws Exception {
 
         final String fieldName = "test";
-        final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName);
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, fieldName, "http://id.com/id");
 
-        assertThat(classDefinition.toString(), is("ClassDefinition{fieldName=test, type=CLASS, required=true, allowAdditionalProperties=false, root=false}"));
+        assertThat(classDefinition.toString(), is("ClassDefinition{fieldName=test, id=Optional[http://id.com/id], type=CLASS, required=true, allowAdditionalProperties=false, root=false}"));
     }
 }

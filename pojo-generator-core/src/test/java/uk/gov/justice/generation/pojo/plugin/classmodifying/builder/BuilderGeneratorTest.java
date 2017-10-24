@@ -101,6 +101,12 @@ public class BuilderGeneratorTest {
         assertThat(builderGenerator.getSimpleClassName(), is("Builder"));
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldThrowExceptionWhenRequestingPackageNameForTheBuilder() throws Exception {
+
+        builderGenerator.getPackageName();
+    }
+
     @Test
     public void shouldGenerateStaticGetBuilderMethod() throws Exception {
 

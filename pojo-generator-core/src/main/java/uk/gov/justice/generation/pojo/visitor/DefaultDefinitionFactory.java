@@ -54,11 +54,13 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
     @Override
     public Definition constructRootDefinitionFor(final String fieldName, final Schema schema) {
 
+        final String id = schema.getId();
+
         final ClassDefinition definition;
         if (schema instanceof CombinedSchema) {
-            definition = new CombinedDefinition(fieldName);
+            definition = new CombinedDefinition(fieldName, id);
         } else {
-            definition = new ClassDefinition(CLASS, fieldName);
+            definition = new ClassDefinition(CLASS, fieldName, id);
         }
 
         definition.setRoot(true);
@@ -74,15 +76,15 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
         }
 
         if (schema instanceof CombinedSchema) {
-            return new CombinedDefinition(fieldName);
+            return new CombinedDefinition(fieldName, schema.getId());
         }
 
         if (schema instanceof ObjectSchema) {
-            return new ClassDefinition(CLASS, fieldName);
+            return new ClassDefinition(CLASS, fieldName, schema.getId());
         }
 
         if (schema instanceof ArraySchema) {
-            return new ClassDefinition(ARRAY, fieldName);
+            return new ClassDefinition(ARRAY, fieldName, schema.getId());
         }
 
         if (schema instanceof EnumSchema) {
@@ -111,7 +113,7 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
         }
 
         if (schema instanceof EmptySchema) {
-            return new ClassDefinition(CLASS, fieldName);
+            return new ClassDefinition(CLASS, fieldName, schema.getId());
         }
 
         throw new UnsupportedSchemaException(format(EXCEPTION_FORMAT_MESSAGE, schema.getClass().getSimpleName()));

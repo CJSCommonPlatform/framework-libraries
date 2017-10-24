@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.pojo.generators;
 
+import static com.squareup.javapoet.ClassName.get;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
@@ -20,6 +20,7 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -27,21 +28,28 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class EnumGeneratorTest {
 
     @Mock
-    private ClassNameFactory classNameFactory;
+    private PluginContext pluginContext;
 
     @Mock
-    private PluginContext pluginContext;
+    private EnumDefinition enumDefinition;
+
+    @Mock
+    private ClassNameFactory classNameFactory;
+
+    @InjectMocks
+    private EnumGenerator enumGenerator;
 
     @Test
     public void shouldGenerateTypeSpecForSingleWordEnumValue() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", singletonList("Mr"));
-        final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition, classNameFactory, pluginContext);
+        final ClassName className = get(Pojo.class);
 
-        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(ClassName.get("", "Title"));
+        when(enumDefinition.getEnumValues()).thenReturn(singletonList("Mr"));
+        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(className);
+        when(classNameFactory.createClassNameFrom(enumDefinition)).thenReturn(className);
 
         final TypeSpec typeSpec = enumGenerator.generate();
 
-        assertThat(typeSpec.name, is("Title"));
+        assertThat(typeSpec.name, is("Pojo"));
         assertThat(typeSpec.enumConstants.keySet(), hasItem("MR"));
         assertThat(typeSpec.modifiers.size(), is(1));
         assertThat(typeSpec.modifiers, hasItem(PUBLIC));
@@ -51,14 +59,15 @@ public class EnumGeneratorTest {
 
     @Test
     public void shouldGenerateTypeSpecForMultiWordEnumValue() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", singletonList("Multi word value"));
-        final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition, classNameFactory, pluginContext);
+        final ClassName className = get(Pojo.class);
 
-        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(ClassName.get("", "Title"));
+        when(enumDefinition.getEnumValues()).thenReturn(singletonList("Multi word value"));
+        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(className);
+        when(classNameFactory.createClassNameFrom(enumDefinition)).thenReturn(className);
 
         final TypeSpec typeSpec = enumGenerator.generate();
 
-        assertThat(typeSpec.name, is("Title"));
+        assertThat(typeSpec.name, is("Pojo"));
         assertThat(typeSpec.enumConstants.keySet(), hasItem("MULTI_WORD_VALUE"));
         assertThat(typeSpec.modifiers.size(), is(1));
         assertThat(typeSpec.modifiers, hasItem(PUBLIC));
@@ -68,27 +77,29 @@ public class EnumGeneratorTest {
 
     @Test
     public void shouldGenerateTypeSpecForBlankString() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", singletonList(""));
-        final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition, classNameFactory, pluginContext);
+        final ClassName className = get(Pojo.class);
 
-        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(ClassName.get("", "Title"));
+        when(enumDefinition.getEnumValues()).thenReturn(singletonList(""));
+        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(className);
+        when(classNameFactory.createClassNameFrom(enumDefinition)).thenReturn(className);
 
         final TypeSpec typeSpec = enumGenerator.generate();
 
-        assertThat(typeSpec.name, is("Title"));
+        assertThat(typeSpec.name, is("Pojo"));
         assertThat(typeSpec.enumConstants.keySet(), hasItem("BLANK"));
     }
 
     @Test
     public void shouldGenerateTypeSpecWithValueForMethod() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", asList("", "Mr"));
-        final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition, classNameFactory, pluginContext);
+        final ClassName className = get(Pojo.class);
 
-        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(ClassName.get("", "Title"));
+        when(enumDefinition.getEnumValues()).thenReturn(asList("", "Mr"));
+        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(className);
+        when(classNameFactory.createClassNameFrom(enumDefinition)).thenReturn(className);
 
         final TypeSpec typeSpec = enumGenerator.generate();
 
-        assertThat(typeSpec.name, is("Title"));
+        assertThat(typeSpec.name, is("Pojo"));
         assertThat(typeSpec.enumConstants.keySet(), hasItems("BLANK", "MR"));
 
         final MethodSpec valueForMethod = typeSpec.methodSpecs.get(2);
@@ -96,19 +107,27 @@ public class EnumGeneratorTest {
         assertThat(valueForMethod.parameters, hasItem(ParameterSpec
                 .builder(String.class, "value", FINAL)
                 .build()));
-        assertThat(valueForMethod.returnType.toString(), is("java.util.Optional<Title>"));
+        assertThat(valueForMethod.returnType.toString(), is("java.util.Optional<uk.gov.justice.generation.pojo.generators.EnumGeneratorTest.Pojo>"));
     }
 
     @Test
     public void shouldReturnClassName() {
-        final EnumDefinition enumDefinition = new EnumDefinition("title", emptyList());
+        final ClassName className = get(Pojo.class);
 
-        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(ClassName.get("", "Title"));
+        when(classNameFactory.createClassNameFrom(enumDefinition)).thenReturn(className);
 
-        final EnumGenerator enumGenerator = new EnumGenerator(enumDefinition, classNameFactory, pluginContext);
-
-        assertThat(enumGenerator.getSimpleClassName(), is("Title"));
-
+        assertThat(enumGenerator.getSimpleClassName(), is("Pojo"));
     }
 
+    @Test
+    public void shouldReturnPackageName() {
+        final ClassName className = get(Pojo.class);
+
+        when(classNameFactory.createClassNameFrom(enumDefinition)).thenReturn(className);
+
+        assertThat(enumGenerator.getPackageName(), is("uk.gov.justice.generation.pojo.generators"));
+    }
+
+    private class Pojo {
+    }
 }

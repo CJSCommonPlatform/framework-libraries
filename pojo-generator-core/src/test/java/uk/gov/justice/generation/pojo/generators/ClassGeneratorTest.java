@@ -53,6 +53,16 @@ public class ClassGeneratorTest {
     }
 
     @Test
+    public void shouldReturnCorrectPackageNameForGenerator() throws Exception {
+        final ClassName className = get(AlcubierreDrive.class);
+
+        when(pluginProvider.classModifyingPlugins()).thenReturn(emptyList());
+        when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
+
+        assertThat(classGenerator.getPackageName(), is("uk.gov.justice.generation.pojo.generators"));
+    }
+
+    @Test
     public void shouldGenerateAnEmptyClassAndUseThePluginsToGenerateTheClassInternals() throws Exception {
         final ClassName className = get(AlcubierreDrive.class);
 

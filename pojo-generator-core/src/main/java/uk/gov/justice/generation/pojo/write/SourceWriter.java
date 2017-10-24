@@ -24,7 +24,7 @@ public class SourceWriter {
      */
     public void write(final ClassGeneratable classGenerator, final GenerationContext generationContext) {
         final TypeSpec typeSpec = classGenerator.generate();
-        writeClass(generationContext.getOutputDirectoryPath(), generationContext.getPackageName(), typeSpec);
+        writeClass(generationContext.getOutputDirectoryPath(), classGenerator.getPackageName(), typeSpec);
     }
 
     private void writeClass(final Path outputDirectory, final String packageName, final TypeSpec typeSpec) {

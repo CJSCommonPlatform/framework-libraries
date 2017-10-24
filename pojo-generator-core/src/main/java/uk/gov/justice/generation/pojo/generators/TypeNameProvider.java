@@ -18,8 +18,8 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 /**
- * Gets the correct class name for a java type. Used for return types, fields and parameters.
- * Can handle generics and lists
+ * Gets the correct class name for a java type. Used for return types, fields and parameters. Can
+ * handle generics and lists
  */
 public class TypeNameProvider {
 
@@ -32,13 +32,13 @@ public class TypeNameProvider {
     }
 
     /**
-     * Generates the correct class name for an array. As an array is always implemented as
-     * a java {@link List} the class name will always be a list of the type specified by
-     * the {@link Definition}
+     * Generates the correct class name for an array. As an array is always implemented as a java
+     * {@link List} the class name will always be a list of the type specified by the {@link
+     * Definition}
      *
-     * @param definition The {@link Definition} from which to create the class name
-     * @param classNameFactory The {@link ClassNameFactory} to create the underlying class name
-     *                         (not including any generics)
+     * @param definition       The {@link Definition} from which to create the class name
+     * @param classNameFactory The {@link ClassNameFactory} to create the underlying class name (not
+     *                         including any generics)
      * @return The correct type name
      */
     public TypeName typeNameForArray(
@@ -62,9 +62,9 @@ public class TypeNameProvider {
      * Creates the correct java type name for a {@link ReferenceDefinition} by using the child
      * reference as the java type. Can handle arrays and generics
      *
-     * @param definition The {@link ReferenceDefinition}
-     * @param classNameFactory The {@link ClassNameFactory} to create the underlying class name
-     *                         (not including any generics)
+     * @param definition       The {@link ReferenceDefinition}
+     * @param classNameFactory The {@link ClassNameFactory} to create the underlying class name (not
+     *                         including any generics)
      * @return The correct type name
      */
     public TypeName typeNameForReference(
@@ -83,6 +83,7 @@ public class TypeNameProvider {
 
     /**
      * Generates the correct type name for a {@link String}
+     *
      * @return The class name for {@link String}
      */
     public ClassName typeNameForString() {
@@ -91,8 +92,8 @@ public class TypeNameProvider {
 
     /**
      * Generates the correct type name for a java class
-     * @param definition The definition from which to generated the type name
      *
+     * @param definition The definition from which to generated the type name
      * @return The class name for a java class
      */
     public ClassName typeNameForClass(final Definition definition) {
@@ -101,6 +102,7 @@ public class TypeNameProvider {
 
     /**
      * Generates the correct type name for a {@link BigDecimal}
+     *
      * @return The class name for {@link BigDecimal}
      */
     public ClassName typeNameForNumber() {
@@ -109,6 +111,7 @@ public class TypeNameProvider {
 
     /**
      * Generates the correct type name for a {@link Integer}
+     *
      * @return The class name for {@link Integer}
      */
     public ClassName typeNameForInteger() {
@@ -117,6 +120,7 @@ public class TypeNameProvider {
 
     /**
      * Generates the correct type name for a {@link Boolean}
+     *
      * @return The class name for {@link Boolean}
      */
     public ClassName typeNameForBoolean() {

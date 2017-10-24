@@ -1,6 +1,5 @@
 package uk.gov.justice.generation.pojo.generators;
 
-import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
@@ -9,9 +8,8 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
 /**
- * Generates the correct {@link TypeName} for the specifed {@link Definition}.
- * Used for generating the correct return types and parameters. Can handle
- * generic types.
+ * Generates the correct {@link TypeName} for the specifed {@link Definition}. Used for generating
+ * the correct return types and parameters. Can handle generic types.
  *
  * The behaviour can be modified using {@link uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin}s
  */
@@ -30,9 +28,8 @@ public class ClassNameFactory {
     /**
      * Generate to correct return type/parameter type for the specified {@link Definition}
      *
-     * @param definition The definition for which to generate the correct return type
+     * @param definition    The definition for which to generate the correct return type
      * @param pluginContext The {@link PluginContext}
-     *                      
      * @return The correct type for returns and parameters
      */
     public TypeName createTypeNameFrom(final Definition definition, final PluginContext pluginContext) {
@@ -63,8 +60,8 @@ public class ClassNameFactory {
                 typeName = typeNameProvider.typeNameForString();
                 break;
 
-            case CLASS:
             case ENUM:
+            case CLASS:
             case COMBINED:
             default:
                 typeName = typeNameProvider.typeNameForClass(definition);
@@ -73,7 +70,7 @@ public class ClassNameFactory {
         return typeNamePluginProcessor.processTypeNamePlugins(typeName, definition, pluginContext);
     }
 
-    public ClassName createClassNameFrom(final ClassDefinition classDefinition) {
-        return typeNameProvider.typeNameForClass(classDefinition);
+    public ClassName createClassNameFrom(final Definition definition) {
+        return typeNameProvider.typeNameForClass(definition);
     }
 }

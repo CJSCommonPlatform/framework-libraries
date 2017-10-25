@@ -1,6 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
+  "id": "http://justice.gov.uk/events/pojo/equals/person-with-hash-code-and-equals.json",
   "properties": {
     "firstName": {
       "type": "string"

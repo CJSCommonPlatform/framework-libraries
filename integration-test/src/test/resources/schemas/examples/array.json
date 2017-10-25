@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "",
   "type": "object",
+  "id": "http://justice.gov.uk/events/pojo/arrays/recipe-with-array.json",
   "properties": {
     "name": {
       "type": "string"

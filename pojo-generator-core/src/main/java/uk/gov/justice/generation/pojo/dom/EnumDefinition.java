@@ -41,12 +41,12 @@ import java.util.List;
  * booleans for example) whereas a java enum the members must be of the same type. For this
  * reason only enums of {@link String}s are supported by this application
  */
-public class EnumDefinition extends FieldDefinition {
+public class EnumDefinition extends ClassDefinition {
 
     private final List<String> enumValues;
 
-    public EnumDefinition(final String fieldName, final List<String> enumValues) {
-        super(ENUM, fieldName);
+    public EnumDefinition(final String fieldName, final List<String> enumValues, final String id) {
+        super(ENUM, fieldName, id);
         this.enumValues = enumValues;
     }
 

@@ -9,11 +9,15 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.generation.pojo.core.ClassNameParser;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
+import uk.gov.justice.generation.pojo.core.PackageNameParser;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
+
+import java.util.Optional;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -28,6 +32,12 @@ public class TypeNameProviderTest {
 
     @Mock
     private GenerationContext generationContext;
+
+    @Mock
+    private PackageNameParser packageNameParser;
+
+    @Mock
+    private ClassNameParser classNameParser;
 
     @InjectMocks
     private TypeNameProvider typeNameProvider;
@@ -122,16 +132,32 @@ public class TypeNameProviderTest {
     }
 
     @Test
-    public void shouldGetTheCorrectTypeNameForAClass() throws Exception {
+    public void shouldUseGenerationContextForPackageAndFieldNameForClassNameIfIdIsNotPresentForClasses() throws Exception {
 
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
 
         when(classDefinition.getFieldName()).thenReturn("address");
+        when(classDefinition.getId()).thenReturn(Optional.empty());
         when(generationContext.getPackageName()).thenReturn("org.bloggs.fred");
 
         final TypeName typeName = typeNameProvider.typeNameForClass(classDefinition);
 
         assertThat(typeName.toString(), is("org.bloggs.fred.Address"));
+    }
+
+    @Test
+    public void shouldParseIdForPackageAndClassNameIfIdIsPresentForClasses() throws Exception {
+
+        final String id = "http://fred.bloggs.org/person.schema.json";
+        final ClassDefinition classDefinition = mock(ClassDefinition.class);
+
+        when(classDefinition.getId()).thenReturn(Optional.of(id));
+        when(packageNameParser.packageNameFrom(id)).thenReturn(Optional.of("org.bloggs.fred"));
+        when(classNameParser.simpleClassNameFrom(id)).thenReturn("Person");
+
+        final TypeName typeName = typeNameProvider.typeNameForClass(classDefinition);
+
+        assertThat(typeName.toString(), is("org.bloggs.fred.Person"));
     }
 
     @Test

@@ -54,7 +54,7 @@ public class GenerateBuilderForClassPluginIT {
 
         final Object studentBuilder = studentClass.getMethod("studentPojoWithBuilder").invoke(null);
 
-        assertThat(studentBuilder.getClass().getName(), is("uk.gov.justice.pojo.builder.StudentPojoWithBuilder$Builder"));
+        assertThat(studentBuilder.getClass().getName(), is("uk.gov.justice.events.pojo.builder.StudentPojoWithBuilder$Builder"));
 
         final String firstName = "Molly";
         final String lastName = "O'Golly";

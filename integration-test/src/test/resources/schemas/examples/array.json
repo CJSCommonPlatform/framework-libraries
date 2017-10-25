@@ -10,7 +10,7 @@
       "type": "array",
       "items": [
         {
-          "id": "ingredient",
+          "id": "#ingredient",
           "type": "object",
           "properties": {
             "name": {

@@ -3,9 +3,12 @@ package uk.gov.justice.generation.pojo.write;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -29,9 +32,14 @@ public class JavaSourceFileProviderTest {
         final String sourceFilename = "filename";
 
         final Class<Definition> definitionClass = Definition.class;
-        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, definitionClass.getPackage().getName(), sourceFilename, emptyList());
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "", sourceFilename, emptyList());
 
-        final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, definitionClass.getSimpleName());
+        final ClassGeneratable classGeneratable = mock(ClassGeneratable.class);
+
+        when(classGeneratable.getSimpleClassName()).thenReturn(definitionClass.getSimpleName());
+        when(classGeneratable.getPackageName()).thenReturn(definitionClass.getPackage().getName());
+
+        final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, classGeneratable);
 
         assertThat(javaFile.exists(), is(true));
 
@@ -44,10 +52,14 @@ public class JavaSourceFileProviderTest {
         final Path sourceRootDirectory = Paths.get("src/main/java");
         final String sourceFilename = "filename";
 
-        final Class<Definition> definitionClass = Definition.class;
-        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "NotAYetExistingClass", sourceFilename, emptyList());
+        final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "", sourceFilename, emptyList());
 
-        final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, "NotAYetExistingClass");
+        final ClassGeneratable classGeneratable = mock(ClassGeneratable.class);
+
+        when(classGeneratable.getSimpleClassName()).thenReturn("NotAYetExistingClass");
+        when(classGeneratable.getPackageName()).thenReturn("NotAYetExistingClass");
+
+        final File javaFile = javaSourceFileProvider.getJavaFile(generationContext, classGeneratable);
 
         assertThat(javaFile.exists(), is(false));
 

@@ -40,7 +40,6 @@ public class NonDuplicatingSourceWriterTest {
     public void shouldWriteANewJavaFile() throws Exception {
 
         final String fileName = "MyFunkyNewPojo.java";
-        final String className = "MyFunkyNewPojo";
 
         final GenerationContext generationContext = mock(GenerationContext.class);
         final ClassGenerator classGenerator = mock(ClassGenerator.class);
@@ -49,8 +48,7 @@ public class NonDuplicatingSourceWriterTest {
         final Logger logger = mock(Logger.class);
 
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
-        when(classGenerator.getSimpleClassName()).thenReturn(className);
-        when(javaSourceFileProvider.getJavaFile(generationContext, className)).thenReturn(sourceFile);
+        when(javaSourceFileProvider.getJavaFile(generationContext, classGenerator)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(false).thenReturn(true);
         when(generationContext.getLoggerFor(NonDuplicatingSourceWriter.class)).thenReturn(logger);
         when(sourceFile.getName()).thenReturn(fileName);
@@ -66,7 +64,6 @@ public class NonDuplicatingSourceWriterTest {
     @Test
     public void shouldNotWriteANewJavaFileIfTheFileAlreadyExists() throws Exception {
 
-        final String className = "MyExistingPojo";
         final GenerationContext generationContext = mock(GenerationContext.class);
         final ClassGenerator classGenerator = mock(ClassGenerator.class);
         final Path sourceRootDirectory = mock(Path.class);
@@ -75,8 +72,7 @@ public class NonDuplicatingSourceWriterTest {
 
         when(generationContext.getLoggerFor(NonDuplicatingSourceWriter.class)).thenReturn(logger);
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
-        when(classGenerator.getSimpleClassName()).thenReturn(className);
-        when(javaSourceFileProvider.getJavaFile(generationContext, className)).thenReturn(sourceFile);
+        when(javaSourceFileProvider.getJavaFile(generationContext, classGenerator)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(true);
         when(sourceFile.getAbsolutePath()).thenReturn("org/test/MyExistingPojo.java");
 
@@ -90,7 +86,6 @@ public class NonDuplicatingSourceWriterTest {
     public void shouldFailIfTheNewJavaFileDoesNotExistsAfterWriting() throws Exception {
 
         final String absolutePath = "path/to/MyFunkyNewPojo.java";
-        final String className = "MyFunkyNewPojo";
 
         final GenerationContext generationContext = mock(GenerationContext.class);
         final ClassGenerator classGenerator = mock(ClassGenerator.class);
@@ -99,8 +94,7 @@ public class NonDuplicatingSourceWriterTest {
         final Logger logger = mock(Logger.class);
 
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
-        when(classGenerator.getSimpleClassName()).thenReturn(className);
-        when(javaSourceFileProvider.getJavaFile(generationContext, className)).thenReturn(sourceFile);
+        when(javaSourceFileProvider.getJavaFile(generationContext, classGenerator)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(false).thenReturn(false);
         when(generationContext.getLoggerFor(NonDuplicatingSourceWriter.class)).thenReturn(logger);
         when(sourceFile.getAbsolutePath()).thenReturn(absolutePath);

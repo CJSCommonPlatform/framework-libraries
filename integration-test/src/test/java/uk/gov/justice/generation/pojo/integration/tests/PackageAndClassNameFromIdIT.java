@@ -1,0 +1,56 @@
+package uk.gov.justice.generation.pojo.integration.tests;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
+import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddHashcodeAndEqualsPlugin.newAddHashcodeAndEqualsPlugin;
+
+import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
+import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
+import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
+
+import java.io.File;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class PackageAndClassNameFromIdIT {
+
+    private final GeneratorUtil generatorUtil = new GeneratorUtil();
+    private final OutputDirectories outputDirectories = new OutputDirectories();
+
+    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/tests/package-and-class-name-from-id.json");
+
+    @Before
+    public void setup() throws Exception {
+        outputDirectories.makeDirectories("./target/test-generation/tests/package-and-class-name-from-id");
+    }
+
+    @Test
+    public void shouldUseIdToConstructPackageNameAndClassName() throws Exception {
+
+        final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
+                .withRootClassName("")
+                .build();
+
+        final List<Class<?>> newClasses = generatorUtil
+                .withClassModifyingPlugin(new AddAdditionalPropertiesToClassPlugin())
+                .withClassModifyingPlugin(newAddHashcodeAndEqualsPlugin())
+                .withTypeModifyingPlugin(new SupportJavaOptionalsPlugin())
+                .withGeneratorProperties(generatorProperties)
+                .generateAndCompileJavaSource(
+                        JSON_SCHEMA_FILE,
+                        "",
+                        outputDirectories);
+
+        assertThat(newClasses.size(), is(1));
+
+        final Class<?> pojo = newClasses.get(0);
+
+        assertThat(pojo.getName(), is("uk.gov.justice.standards.events.Pojo"));
+
+    }
+}

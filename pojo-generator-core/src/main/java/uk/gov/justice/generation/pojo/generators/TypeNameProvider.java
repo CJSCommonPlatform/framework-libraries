@@ -4,7 +4,9 @@ import static com.squareup.javapoet.ClassName.get;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
+import uk.gov.justice.generation.pojo.core.ClassNameParser;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
+import uk.gov.justice.generation.pojo.core.PackageNameParser;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
@@ -12,6 +14,7 @@ import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -26,9 +29,15 @@ public class TypeNameProvider {
     private static final int FIRST_CHILD = 0;
 
     private final GenerationContext generationContext;
+    private final PackageNameParser packageNameParser;
+    private final ClassNameParser classNameParser;
 
-    public TypeNameProvider(final GenerationContext generationContext) {
+    public TypeNameProvider(final GenerationContext generationContext,
+                            final PackageNameParser packageNameParser,
+                            final ClassNameParser classNameParser) {
         this.generationContext = generationContext;
+        this.packageNameParser = packageNameParser;
+        this.classNameParser = classNameParser;
     }
 
     /**
@@ -97,6 +106,17 @@ public class TypeNameProvider {
      * @return The class name for a java class
      */
     public ClassName typeNameForClass(final Definition definition) {
+        final ClassDefinition classDefinition = (ClassDefinition) definition;
+        final Optional<String> id = classDefinition.getId();
+
+        if (id.isPresent()) {
+            final String uri = id.get();
+            final String packageName = packageNameParser.packageNameFrom(uri)
+                    .orElse(generationContext.getPackageName());
+
+            return get(packageName, classNameParser.simpleClassNameFrom(uri));
+        }
+
         return get(generationContext.getPackageName(), capitalize(definition.getFieldName()));
     }
 

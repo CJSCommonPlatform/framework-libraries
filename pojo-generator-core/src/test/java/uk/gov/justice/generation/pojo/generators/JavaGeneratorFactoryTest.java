@@ -65,7 +65,7 @@ public class JavaGeneratorFactoryTest {
 
     @Test
     public void shouldReturnInstanceOfElementGeneratorForEnumDefinition() throws Exception {
-        final EnumDefinition enumDefinition = new EnumDefinition("test", emptyList());
+        final EnumDefinition enumDefinition = new EnumDefinition("test", emptyList(), "id");
         final PluginContext pluginContext = mock(PluginContext.class);
 
         final ElementGeneratable elementGeneratable = new JavaGeneratorFactory(classNameFactory)
@@ -79,7 +79,7 @@ public class JavaGeneratorFactoryTest {
     public void shouldReturnListOfClassGeneratorAndEnumGeneratorForClassDefinitionAndEnumDefinition() throws Exception {
         final List<Definition> classDefinitions = asList(
                 new ClassDefinition(CLASS, "test1"),
-                new EnumDefinition("test2", emptyList()));
+                new EnumDefinition("test2", emptyList(), "id"));
 
         final List<ClassGeneratable> classGeneratables = new JavaGeneratorFactory(classNameFactory)
                 .createClassGeneratorsFor(classDefinitions, pluginProvider, pluginContext, generationContext);
@@ -92,7 +92,7 @@ public class JavaGeneratorFactoryTest {
     public void shouldReturnEmptyListIfClassesAreAlreadyCreated() throws Exception {
         final List<Definition> classDefinitions = asList(
                 new ClassDefinition(CLASS, "test1"),
-                new EnumDefinition("test2", emptyList()));
+                new EnumDefinition("test2", emptyList(), "id"));
 
         when(generationContext.getIgnoredClassNames()).thenReturn(asList("Test1", "Test2"));
 
@@ -116,7 +116,7 @@ public class JavaGeneratorFactoryTest {
         final List<Definition> classDefinitions = asList(
                 new ClassDefinition(CLASS, "class"),
                 new FieldDefinition(STRING, "field1"),
-                new EnumDefinition("enum", emptyList()),
+                new EnumDefinition("enum", emptyList(), "id"),
                 new FieldDefinition(STRING, "field2")
         );
 

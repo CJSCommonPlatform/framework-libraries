@@ -91,7 +91,7 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
             final Set<Object> possibleValues = ((EnumSchema) schema).getPossibleValues();
             final List<String> enumValues = possibleValues.stream().map(Object::toString).collect(toList());
 
-            return new EnumDefinition(fieldName, enumValues);
+            return new EnumDefinition(fieldName, enumValues, schema.getId());
         }
 
         if (schema instanceof StringSchema) {

@@ -54,7 +54,7 @@ public class ArraysIT {
         final Class<?> recipeAddedClass = newClasses.get(1);
 
         assertThat(recipeAddedClass.getSimpleName(), is("RecipeWithArray"));
-        assertThat(ingredientsClass.getSimpleName(), is("Ingredients"));
+        assertThat(ingredientsClass.getSimpleName(), is("Ingredient"));
 
         final Object ingredient_1 = classInstantiator.newInstance(ingredientsClass, "Eye of Newt", 1);
         final Object ingredient_2 = classInstantiator.newInstance(ingredientsClass, "Toe of Frog", 3);

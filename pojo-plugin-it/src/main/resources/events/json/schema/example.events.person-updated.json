@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "id": "http://justice.gov.uk/events/pojo/example.events.person-updated.json",
+  "id": "http://justice.gov.uk/events/pojo/person-updated.json",
   "properties": {
     "personId": {
       "$ref": "#/definitions/uuid"

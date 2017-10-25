@@ -4,7 +4,9 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.pojo.core.ClassNameParser;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
+import uk.gov.justice.generation.pojo.core.PackageNameParser;
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
@@ -89,7 +91,7 @@ public class GeneratorUtil {
                 typeModifyingPlugins,
                 new RootNameGeneratorPlugin());
 
-        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext);
+        final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext, new PackageNameParser(), new ClassNameParser());
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
         final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
 

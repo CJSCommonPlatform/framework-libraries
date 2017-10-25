@@ -72,7 +72,7 @@ public class SchemaPojoGenerator implements Generator<File> {
         final PojoGeneratorProperties generatorProperties = (PojoGeneratorProperties) generatorConfig.getGeneratorProperties();
         final String schemaFileName = jsonSchemaFile.getName();
 
-        final GenerationContext generationContext = generatorContextProvider.create(schemaFileName, generatorConfig);
+        final GenerationContext generationContext = generatorContextProvider.create(schemaFileName, schema, generatorConfig);
         final PluginProvider pluginProvider = pluginProviderFactory.createFor(generatorProperties);
 
         final Logger logger = generationContext.getLoggerFor(getClass());

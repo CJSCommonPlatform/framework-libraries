@@ -2,6 +2,7 @@ package uk.gov.justice.generation;
 
 import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.pojo.core.PackageAndClassNameParser;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactoryFactory;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
@@ -32,12 +33,14 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
     private final SourceWriter sourceWriter = new SourceWriter();
     private NonDuplicatingSourceWriter writer = new NonDuplicatingSourceWriter(new JavaSourceFileProvider(), sourceWriter);
 
+    private final PackageAndClassNameParser packageAndClassNameParser = new PackageAndClassNameParser();
+
     @Override
     public Generator<File> create() {
         return new SchemaPojoGenerator(
                 new PluginProviderFactoryFactory().create(),
                 new DefinitionProvider(visitableFactory, definitionBuilderVisitorProvider, acceptorService),
-                new GeneratorContextProvider(javaFileSimpleNameLister),
+                new GeneratorContextProvider(javaFileSimpleNameLister, packageAndClassNameParser),
                 new PojoGeneratorFactoriesProvider(),
                 new JavaClassFileWriter(writer),
                 new PluginContextProvider(),

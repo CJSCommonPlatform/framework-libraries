@@ -84,7 +84,7 @@ public class SchemaPojoGeneratorTest {
         when(schemaLoader.loadFrom(jsonSchemaFile)).thenReturn(jsonSchema);
         when(jsonSchemaFile.getName()).thenReturn(jsonSchemaFileName);
         when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
-        when(generatorContextProvider.create(jsonSchemaFileName, generatorConfig)).thenReturn(generationContext);
+        when(generatorContextProvider.create(jsonSchemaFileName, jsonSchema, generatorConfig)).thenReturn(generationContext);
 
         when(pluginProviderFactory.createFor(generatorProperties)).thenReturn(pluginProvider);
         when(generationContext.getLoggerFor(SchemaPojoGenerator.class)).thenReturn(mock(Logger.class));

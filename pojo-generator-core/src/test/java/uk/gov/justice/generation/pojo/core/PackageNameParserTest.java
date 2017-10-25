@@ -35,13 +35,6 @@ public class PackageNameParserTest {
     }
 
     @Test
-    public void shouldNotParsePackageNameIfThereIsNoProtocolOrHostOrPath() throws Exception {
-        final Optional<String> packageName = new PackageNameParser().packageNameFrom("address");
-
-        assertThat(packageName, is(Optional.empty()));
-    }
-
-    @Test
     public void shouldReturnOptionalEmptyIfHashName() throws Exception {
         final Optional<String> packageName = new PackageNameParser().packageNameFrom("#address");
 
@@ -74,5 +67,35 @@ public class PackageNameParserTest {
         final Optional<String> packageName = new PackageNameParser().packageNameFrom("://justice.gov.uk");
 
         assertThat(packageName, is(Optional.empty()));
+    }
+
+    @Test
+    public void shouldParsePackageNameAndNotAppendToBasePackageIfAbsoluteUri() throws Exception {
+        final String uri = "http://justice.gov.uk/standards/events/address.schema.json";
+
+        final String packageName = new PackageNameParser().appendToBasePackage(uri, "uk.gov.something.else");
+
+        assertThat(packageName, is("uk.gov.justice.standards.events"));
+    }
+
+    @Test
+    public void shouldParsePackageNameAndAppendToBasePackage() throws Exception {
+        final String packageName = new PackageNameParser().appendToBasePackage("events/address.schema.json", "uk.gov.justice.standards");
+
+        assertThat(packageName, is("uk.gov.justice.standards.events"));
+    }
+
+    @Test
+    public void shouldParsePackageNameIfEmptyReturnBasePackage() throws Exception {
+        final String packageName = new PackageNameParser().appendToBasePackage("address.schema.json", "uk.gov.justice.standards");
+
+        assertThat(packageName, is("uk.gov.justice.standards"));
+    }
+
+    @Test
+    public void shouldReturnBasePackageNameIfInvalidUri() throws Exception {
+        final String packageName = new PackageNameParser().appendToBasePackage("://justice.gov.uk", "uk.gov.justice.standards");
+
+        assertThat(packageName, is("uk.gov.justice.standards"));
     }
 }

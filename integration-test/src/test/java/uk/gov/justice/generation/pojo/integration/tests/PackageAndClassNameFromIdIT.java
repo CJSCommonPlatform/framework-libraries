@@ -43,13 +43,19 @@ public class PackageAndClassNameFromIdIT {
                 .withGeneratorProperties(generatorProperties)
                 .generateAndCompileJavaSource(
                         JSON_SCHEMA_FILE,
-                        "",
+                        "uk.gov.justice.standards.events",
                         outputDirectories);
 
-        assertThat(newClasses.size(), is(1));
+        assertThat(newClasses.size(), is(4));
 
-        final Class<?> pojo = newClasses.get(0);
+        final Class<?> otherStuff = newClasses.get(0);
+        final Class<?> age = newClasses.get(1);
+        final Class<?> pocketMoney = newClasses.get(2);
+        final Class<?> pojo = newClasses.get(3);
 
+        assertThat(age.getName(), is("uk.gov.justice.standards.events.Age"));
+        assertThat(pocketMoney.getName(), is("uk.gov.justice.standards.events.common.PocketMoney"));
+        assertThat(otherStuff.getName(), is("uk.gov.justice.standards.events.OtherStuff"));
         assertThat(pojo.getName(), is("uk.gov.justice.standards.events.Pojo"));
 
     }

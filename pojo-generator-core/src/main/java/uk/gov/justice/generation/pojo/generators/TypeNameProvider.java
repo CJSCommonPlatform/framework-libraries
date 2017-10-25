@@ -111,8 +111,7 @@ public class TypeNameProvider {
 
         if (id.isPresent()) {
             final String uri = id.get();
-            final String packageName = packageNameParser.packageNameFrom(uri)
-                    .orElse(generationContext.getPackageName());
+            final String packageName = packageNameParser.appendToBasePackage(uri, generationContext.getPackageName());
 
             return get(packageName, classNameParser.simpleClassNameFrom(uri));
         }

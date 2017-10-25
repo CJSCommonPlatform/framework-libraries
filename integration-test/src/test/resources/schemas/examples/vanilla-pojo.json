@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "",
+  "id": "http://justice.gov.uk/events/pojo/vanilla/teen.json",
   "type": "object",
   "properties": {
     "name": {

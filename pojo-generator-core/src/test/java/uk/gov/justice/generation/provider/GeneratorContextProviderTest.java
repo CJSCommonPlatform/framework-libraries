@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
-import uk.gov.justice.generation.pojo.core.PackageAndClassNameParser;
+import uk.gov.justice.generation.pojo.core.PackageNameParser;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.nio.file.Path;
@@ -28,7 +28,7 @@ public class GeneratorContextProviderTest {
     private JavaFileSimpleNameLister javaFileSimpleNameLister;
 
     @Mock
-    private PackageAndClassNameParser packageAndClassNameParser;
+    private PackageNameParser packageNameParser;
 
     @InjectMocks
     private GeneratorContextProvider generatorContextProvider;
@@ -49,7 +49,7 @@ public class GeneratorContextProviderTest {
         when(generatorConfig.getSourcePaths()).thenReturn(sourcePaths);
         when(generatorConfig.getOutputDirectory()).thenReturn(outputDirectory);
         when(schema.getId()).thenReturn(schemaId);
-        when(packageAndClassNameParser.packageNameFrom(schemaId)).thenReturn(of(packageName));
+        when(packageNameParser.packageNameFrom(schemaId)).thenReturn(of(packageName));
 
         when(javaFileSimpleNameLister.findSimpleNames(sourcePaths, outputDirectory, packageName)).thenReturn(hardCodedClassNames);
         when(generatorConfig.getBasePackageName()).thenReturn(packageName);

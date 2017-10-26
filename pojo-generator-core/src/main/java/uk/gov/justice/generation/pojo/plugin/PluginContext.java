@@ -88,10 +88,6 @@ public class PluginContext {
         return pluginClasses.contains(pluginClass);
     }
 
-    public Optional<String> getRootClassName() {
-        return generatorProperties.getRootClassName();
-    }
-
     public Optional<String> typeMappingsFilteredBy(final Predicate<TypeMapping> mappingType, final String propertyName) {
         return Optional.ofNullable(generatorProperties.typeMappingsFilteredBy(mappingType).get(propertyName));
     }

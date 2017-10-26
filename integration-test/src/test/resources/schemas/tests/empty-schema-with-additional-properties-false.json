@@ -1,4 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/pojo/empty-schema-with-additional-properties-false.json",
   "additionalProperties": false
 }

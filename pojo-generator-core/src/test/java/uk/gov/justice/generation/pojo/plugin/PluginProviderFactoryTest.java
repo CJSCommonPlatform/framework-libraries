@@ -9,11 +9,9 @@ import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.factory.AllPluginsInstantiator;
 import uk.gov.justice.generation.pojo.plugin.factory.ClassModifyingPluginsSelector;
-import uk.gov.justice.generation.pojo.plugin.factory.NameGeneratingPluginFactory;
 import uk.gov.justice.generation.pojo.plugin.factory.PluginTypeSorter;
 import uk.gov.justice.generation.pojo.plugin.factory.PluginsFromClassnameListFactory;
 import uk.gov.justice.generation.pojo.plugin.factory.TypeModifyingPluginsSelector;
-import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 
 import java.util.List;
@@ -27,9 +25,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PluginProviderFactoryTest {
-
-    @Mock
-    private NameGeneratingPluginFactory nameGeneratingPluginFactory;
 
     @Mock
     private ClassModifyingPluginsSelector classModifyingPluginsSelector;
@@ -62,7 +57,6 @@ public class PluginProviderFactoryTest {
         final Map<Class<?>, List<Plugin>> pluginTypes = mock(Map.class);
         final List<ClassModifyingPlugin> classModifyingPlugins = mock(List.class);
         final List<TypeModifyingPlugin> typeModifyingPlugins = mock(List.class);
-        final NameGeneratablePlugin nameGeneratablePlugin = mock(NameGeneratablePlugin.class);
 
         when(parsePluginNames.parsePluginNames(generatorProperties)).thenReturn(pluginNames);
         when(allPluginsInstantiator.instantiate(pluginNames)).thenReturn(allPlugins);
@@ -70,13 +64,11 @@ public class PluginProviderFactoryTest {
 
         when(classModifyingPluginsSelector.selectFrom(pluginTypes, generatorProperties)).thenReturn(classModifyingPlugins);
         when(typeModifyingPluginsSelector.selectFrom(pluginTypes)).thenReturn(typeModifyingPlugins);
-        when(nameGeneratingPluginFactory.create(pluginTypes)).thenReturn(nameGeneratablePlugin);
 
         final PluginProvider pluginProvider = pluginProviderFactory.createFor(generatorProperties);
 
         assertThat(pluginProvider.classModifyingPlugins(), is(classModifyingPlugins));
         assertThat(pluginProvider.typeModifyingPlugins(), is(typeModifyingPlugins));
-        assertThat(pluginProvider.nameGeneratablePlugin(), is(nameGeneratablePlugin));
 
         pluginVerifier.verifyCompatibility(allPlugins, pluginNames);
     }

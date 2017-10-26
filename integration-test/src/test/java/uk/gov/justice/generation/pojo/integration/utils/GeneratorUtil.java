@@ -18,7 +18,6 @@ import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.plugin.namegeneratable.RootNameGeneratorPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
@@ -40,6 +39,7 @@ import org.json.JSONObject;
 
 public class GeneratorUtil {
 
+    private static final String ROOT_FIELD_NAME = "ROOT";
     private final DefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ReferenceValueParser(), new StringFormatValueParser());
     private final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
     private final VisitableFactory visitableFactory = new VisitableFactory();
@@ -88,8 +88,7 @@ public class GeneratorUtil {
 
         final PluginProvider pluginProvider = new ModifyingPluginProvider(
                 classModifyingPlugins,
-                typeModifyingPlugins,
-                new RootNameGeneratorPlugin());
+                typeModifyingPlugins);
 
         final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext, new PackageNameParser(), new ClassNameParser());
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
@@ -110,11 +109,7 @@ public class GeneratorUtil {
                 classModifyingPlugins,
                 generatorProperties);
 
-        final String fieldName = pluginProvider
-                .nameGeneratablePlugin()
-                .rootFieldNameFrom(schema, jsonSchemaFile.getName(), pluginContext);
-
-        final Visitable visitableSchema = visitableFactory.createWith(fieldName, schema, acceptorService);
+        final Visitable visitableSchema = visitableFactory.createWith(ROOT_FIELD_NAME, schema, acceptorService);
 
         visitableSchema.accept(definitionBuilderVisitor);
 

@@ -4,6 +4,7 @@ import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -82,7 +83,7 @@ public class BuilderGenerator implements ClassGeneratable {
     }
 
     public MethodSpec generateStaticGetBuilderMethod() {
-        return methodBuilder(classDefinition.getFieldName())
+        return methodBuilder(uncapitalize(classNameFactory.createClassNameFrom(classDefinition).simpleName()))
                 .addModifiers(PUBLIC, STATIC)
                 .returns(getBuilderClassName())
                 .addCode(CodeBlock.builder().addStatement("return new $L()", getBuilderClassName()).build())

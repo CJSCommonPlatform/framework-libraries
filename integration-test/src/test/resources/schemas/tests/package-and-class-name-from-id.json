@@ -8,13 +8,30 @@
     },
     "age": {
       "id": "http://justice.gov.uk/standards/events/pojo.schema.json#age",
-      "type": "integer"
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer"
+        }
+      }
     },
     "pocketMoney": {
-      "type": "number"
+      "id": "common/pocketMoney.json",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        }
+      }
     },
-    "likesJustinBieber": {
-      "type": "boolean"
+    "otherStuff": {
+      "id": "other-stuff.json",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "boolean"
+        }
+      }
     }
   },
   "additionalProperties": false,
@@ -22,6 +39,6 @@
     "name",
     "age",
     "pocketMoney",
-    "likesJustinBieber"
+    "otherStuff"
   ]
 }

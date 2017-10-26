@@ -149,10 +149,12 @@ public class TypeNameProviderTest {
     public void shouldParseIdForPackageAndClassNameIfIdIsPresentForClasses() throws Exception {
 
         final String id = "http://fred.bloggs.org/person.schema.json";
+        final String basePackageName = "org.bloggs.fred";
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
 
         when(classDefinition.getId()).thenReturn(Optional.of(id));
-        when(packageNameParser.packageNameFrom(id)).thenReturn(Optional.of("org.bloggs.fred"));
+        when(generationContext.getPackageName()).thenReturn(basePackageName);
+        when(packageNameParser.appendToBasePackage(id, basePackageName)).thenReturn(basePackageName);
         when(classNameParser.simpleClassNameFrom(id)).thenReturn("Person");
 
         final TypeName typeName = typeNameProvider.typeNameForClass(classDefinition);

@@ -16,6 +16,19 @@ public class PackageNameParser {
     private static final int BEGIN_INDEX = 0;
     private static final String HASH = "#";
 
+    public String appendToBasePackage(final String uri, final String basePackage) {
+        final Optional<URI> validUri = validUri(uri);
+        final Optional<String> packageName = packageNameFrom(uri);
+
+        if (validUri.isPresent() && validUri.get().isAbsolute() && packageName.isPresent()) {
+            return packageName.get();
+        }
+
+        return packageName
+                .map(packageNameValue -> basePackage + PACKAGE_SEPERATOR + packageNameValue)
+                .orElse(basePackage);
+    }
+
     public Optional<String> packageNameFrom(final String uri) {
         final Optional<URI> validUri = validUri(uri);
 
@@ -51,10 +64,10 @@ public class PackageNameParser {
 
             final String[] parts = removeNamePartFrom(path).split(URI_SEPERATOR);
 
-            if (parts.length > 1) {
+            if (parts.length > 0) {
                 final StringBuilder builder = new StringBuilder();
 
-                for (int index = 1; index < parts.length; index++) {
+                for (int index = 0; index < parts.length; index++) {
 
                     if (builder.length() > 0) {
                         builder.append(PACKAGE_SEPERATOR);
@@ -100,7 +113,7 @@ public class PackageNameParser {
             return uri.substring(BEGIN_INDEX, uri.lastIndexOf(URI_SEPERATOR));
         }
 
-        return uri;
+        return "";
     }
 
     private Function<Optional<String>, Stream<? extends String>> filterOptionalEmpty() {

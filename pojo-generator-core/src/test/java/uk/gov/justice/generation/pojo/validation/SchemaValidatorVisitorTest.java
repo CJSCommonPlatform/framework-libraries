@@ -58,6 +58,16 @@ public class SchemaValidatorVisitorTest {
     }
 
     @Test
+    public void shouldValidateAnObjectSchema() throws Exception {
+
+        final ObjectSchema objectSchema = ObjectSchema.builder().build();
+
+        schemaValidatorVisitor.enter(AN_EMPTY_STRING, objectSchema);
+
+        verify(validator).validate(objectSchema);
+    }
+
+    @Test
     public void shouldSuccessfullyCallTheDefaultConstructor() throws Exception {
 
         final SchemaValidatorVisitor schemaValidatorVisitor = new SchemaValidatorVisitor(validator);
@@ -73,7 +83,6 @@ public class SchemaValidatorVisitorTest {
 
     @Test
     public void shouldDoNothing() throws Exception {
-        schemaValidatorVisitor.enter(AN_EMPTY_STRING, mock(ObjectSchema.class));
         schemaValidatorVisitor.leave(mock(ObjectSchema.class));
         schemaValidatorVisitor.leave(mock(ArraySchema.class));
         schemaValidatorVisitor.enter(AN_EMPTY_STRING, mock(CombinedSchema.class));

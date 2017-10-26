@@ -4,11 +4,14 @@ import static java.lang.String.format;
 
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.EnumSchema;
+import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.Schema;
 
 public class Validator {
@@ -60,6 +63,24 @@ public class Validator {
                         throw new UnsupportedSchemaException(message);
                     }
                 }
+            }
+        }
+    }
+
+    public void validate(final ObjectSchema objectSchema) {
+
+        final String schemaId = objectSchema.getId();
+
+        if(schemaId != null) {
+            try {
+                final URI uri = new URI(schemaId);
+
+                if(! uri.isAbsolute()) {
+                    throw new UnsupportedOperationException(format("Schema id '%s' is not an absolute URI", schemaId));
+                }
+
+            } catch (URISyntaxException e) {
+                throw new UnsupportedOperationException(format("Schema id '%s' is not a valid URI", schemaId));
             }
         }
     }

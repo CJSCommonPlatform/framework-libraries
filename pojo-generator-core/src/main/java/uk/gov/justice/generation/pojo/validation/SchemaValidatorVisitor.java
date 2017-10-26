@@ -36,7 +36,7 @@ public class SchemaValidatorVisitor implements Visitor {
 
     @Override
     public void enter(final String fieldName, final ObjectSchema schema) {
-        //Do nothing
+        validator.validate(schema);
     }
 
     @Override

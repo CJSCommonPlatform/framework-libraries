@@ -21,7 +21,7 @@ public class PojoGeneratorFactoriesProviderTest {
     public void shouldProvideJavaGeneratorFactory() throws Exception {
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
-        final JavaGeneratorFactory javaGeneratorFactory = new PojoGeneratorFactoriesProvider().create(classNameFactory);
+        final JavaGeneratorFactory javaGeneratorFactory = new PojoGeneratorFactoriesProvider().createJavaGeneratorFactory(classNameFactory);
 
         assertThat(fieldValue(javaGeneratorFactory, "classNameFactory"), is(Optional.of(classNameFactory)));
     }
@@ -31,7 +31,7 @@ public class PojoGeneratorFactoriesProviderTest {
         final GenerationContext generationContext = mock(GenerationContext.class);
         final PluginProvider pluginProvider = mock(PluginProvider.class);
 
-        final ClassNameFactory classNameFactory = new PojoGeneratorFactoriesProvider().create(generationContext, pluginProvider);
+        final ClassNameFactory classNameFactory = new PojoGeneratorFactoriesProvider().createClassNameFactory(generationContext, pluginProvider);
 
         assertThat(classNameFactory, notNullValue());
 

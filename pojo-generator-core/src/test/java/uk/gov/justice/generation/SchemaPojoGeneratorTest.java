@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.SchemaPojoGenerator.ROOT_FIELD_NAME;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
@@ -14,12 +15,11 @@ import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
-import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
+import uk.gov.justice.generation.pojo.visitable.Visitable;
+import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
+import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.write.JavaClassFileWriter;
-import uk.gov.justice.generation.provider.DefinitionProvider;
-import uk.gov.justice.generation.provider.GeneratorContextProvider;
-import uk.gov.justice.generation.provider.PluginContextProvider;
-import uk.gov.justice.generation.provider.PojoGeneratorFactoriesProvider;
+import uk.gov.justice.generation.provider.DefinitionsFactory;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
 import java.io.File;
@@ -37,25 +37,22 @@ import org.slf4j.Logger;
 public class SchemaPojoGeneratorTest {
 
     @Mock
-    private GeneratorContextProvider generatorContextProvider;
-
-    @Mock
-    private PojoGeneratorFactoriesProvider pojoGeneratorFactoriesProvider;
-
-    @Mock
     private JavaClassFileWriter javaClassFileWriter;
 
     @Mock
-    private PluginProviderFactory pluginProviderFactory;
-
-    @Mock
-    private DefinitionProvider definitionProvider;
-
-    @Mock
-    private PluginContextProvider pluginContextProvider;
+    private DefinitionsFactory definitionsFactory;
 
     @Mock
     private SchemaLoader schemaLoader;
+
+    @Mock
+    private VisitableFactory visitableFactory;
+
+    @Mock
+    private AcceptorService acceptorService;
+
+    @Mock
+    private Bootstrapper bootstrapper;
 
     @InjectMocks
     private SchemaPojoGenerator schemaPojoGenerator;
@@ -63,6 +60,7 @@ public class SchemaPojoGeneratorTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldGeneratePojoFromSchema() throws Exception {
+
         final String jsonSchemaFileName = "jsonSchemaFileName";
 
         final File jsonSchemaFile = mock(File.class);
@@ -81,31 +79,26 @@ public class SchemaPojoGeneratorTest {
         final List<Definition> definitions = mock(List.class);
         final List<ClassGeneratable> classGenerators = mock(List.class);
 
+        final Visitable visitable = mock(Visitable.class);
+
         when(schemaLoader.loadFrom(jsonSchemaFile)).thenReturn(jsonSchema);
-        when(jsonSchemaFile.getName()).thenReturn(jsonSchemaFileName);
         when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
-        when(generatorContextProvider.create(jsonSchemaFileName, jsonSchema, generatorConfig)).thenReturn(generationContext);
+        when(jsonSchemaFile.getName()).thenReturn(jsonSchemaFileName);
 
-        when(pluginProviderFactory.createFor(generatorProperties)).thenReturn(pluginProvider);
-        when(generationContext.getLoggerFor(SchemaPojoGenerator.class)).thenReturn(mock(Logger.class));
-
-        when(pojoGeneratorFactoriesProvider.create(generationContext, pluginProvider)).thenReturn(classNameFactory);
-        when(pojoGeneratorFactoriesProvider.create(classNameFactory)).thenReturn(javaGeneratorFactory);
-
-        when(pluginContextProvider.create(
-                javaGeneratorFactory,
-                classNameFactory,
-                generationContext.getSourceFilename(),
-                pluginProvider.classModifyingPlugins(),
-                generatorProperties
-        )).thenReturn(pluginContext);
-
-        when(definitionProvider.createDefinitions(
-                jsonSchema,
-                jsonSchemaFileName,
+        when(bootstrapper.getGenerationContext(generatorConfig, jsonSchema, jsonSchemaFileName)).thenReturn(generationContext);
+        when(bootstrapper.getPluginProvider(generatorProperties)).thenReturn(pluginProvider);
+        when(bootstrapper.getClassNameFactory(generationContext, pluginProvider)).thenReturn(classNameFactory);
+        when(bootstrapper.getJavaGeneratorFactory(classNameFactory)).thenReturn(javaGeneratorFactory);
+        when(bootstrapper.getPluginContext(
+                generatorProperties,
+                generationContext,
                 pluginProvider,
-                pluginContext
-        )).thenReturn(definitions);
+                classNameFactory,
+                javaGeneratorFactory)).thenReturn(pluginContext);
+
+        when(generationContext.getLoggerFor(SchemaPojoGenerator.class)).thenReturn(mock(Logger.class));
+        when(visitableFactory.createWith(ROOT_FIELD_NAME, jsonSchema, acceptorService)).thenReturn(visitable);
+        when(definitionsFactory.createDefinitions(visitable)).thenReturn(definitions);
 
         when(javaGeneratorFactory.createClassGeneratorsFor(
                 definitions,

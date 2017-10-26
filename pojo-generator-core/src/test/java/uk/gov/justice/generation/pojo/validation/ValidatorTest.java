@@ -13,6 +13,7 @@ import java.util.Set;
 import org.everit.json.schema.ArraySchema;
 import org.everit.json.schema.EnumSchema;
 import org.everit.json.schema.NumberSchema;
+import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.StringSchema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,5 +99,51 @@ public class ValidatorTest {
         assertThat(arraySchema.getItemSchemas(), is(nullValue()));
 
         validator.validate(arraySchema);
+    }
+
+    @Test
+    public void shouldSuccessfullyValidateAnObjectSchemaIfItsIdIsAValidUri() throws Exception {
+
+        final String schemaId = "http://justice.gov.uk/events/pojo/example.events.person-removed.json";
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .id(schemaId)
+                .build();
+
+        validator.validate(objectSchema);
+    }
+
+    @Test
+    public void shouldFailValidationOfAnObjectSchemaIfItsIdIsNotAValidUri() throws Exception {
+
+        final String schemaId = "://justice.gov.uk/events/pojo/example.events.person-removed.json";
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .id(schemaId)
+                .build();
+
+        try {
+            validator.validate(objectSchema);
+            fail();
+        } catch (final UnsupportedOperationException expected) {
+            assertThat(expected.getMessage(), is("Schema id '://justice.gov.uk/events/pojo/example.events.person-removed.json' is not a valid URI"));
+        }
+    }
+
+    @Test
+    public void shouldFailValidationOfAnObjectSchemaIfItsIdIsNotAnAbsoluteUri() throws Exception {
+
+        final String schemaId = "/justice.gov.uk/events/pojo/example.events.person-removed.json";
+
+        final ObjectSchema objectSchema = ObjectSchema.builder()
+                .id(schemaId)
+                .build();
+
+        try {
+            validator.validate(objectSchema);
+            fail();
+        } catch (final UnsupportedOperationException expected) {
+            assertThat(expected.getMessage(), is("Schema id '/justice.gov.uk/events/pojo/example.events.person-removed.json' is not an absolute URI"));
+        }
     }
 }

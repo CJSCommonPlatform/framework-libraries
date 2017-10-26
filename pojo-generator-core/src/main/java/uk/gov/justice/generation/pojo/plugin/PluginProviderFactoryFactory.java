@@ -4,7 +4,6 @@ import uk.gov.justice.generation.pojo.plugin.factory.AllPluginsInstantiator;
 import uk.gov.justice.generation.pojo.plugin.factory.ClassModifyingPluginsSelector;
 import uk.gov.justice.generation.pojo.plugin.factory.DefaultPluginsProvider;
 import uk.gov.justice.generation.pojo.plugin.factory.Instantiator;
-import uk.gov.justice.generation.pojo.plugin.factory.NameGeneratingPluginFactory;
 import uk.gov.justice.generation.pojo.plugin.factory.PluginInstantiator;
 import uk.gov.justice.generation.pojo.plugin.factory.PluginTypeSorter;
 import uk.gov.justice.generation.pojo.plugin.factory.PluginsFromClassnameListFactory;
@@ -17,7 +16,6 @@ public class PluginProviderFactoryFactory {
         final DefaultPluginsProvider defaultPluginsProvider = new DefaultPluginsProvider();
 
         return new PluginProviderFactory(
-                new NameGeneratingPluginFactory(),
                 new ClassModifyingPluginsSelector(defaultPluginsProvider),
                 new TypeModifyingPluginsSelector(),
                 new PluginTypeSorter(),

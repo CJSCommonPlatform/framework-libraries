@@ -56,7 +56,7 @@ public class PackageAndClassNameFromIdIT {
         assertThat(age.getName(), is("uk.gov.justice.standards.events.Age"));
         assertThat(pocketMoney.getName(), is("uk.gov.justice.standards.events.common.PocketMoney"));
         assertThat(otherStuff.getName(), is("uk.gov.justice.standards.events.OtherStuff"));
-        assertThat(pojo.getName(), is("uk.gov.justice.standards.events.Pojo"));
+        assertThat(pojo.getName(), is("uk.gov.justice.standards.events.PackageAndClassNameFromId"));
 
     }
 }

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 
 import java.util.List;
@@ -17,14 +16,12 @@ public class ModifyingPluginProviderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldConstructModifyingPluginProvider() throws Exception {
-        final NameGeneratablePlugin nameGeneratablePlugin = mock(NameGeneratablePlugin.class);
         final List<TypeModifyingPlugin> typeModifyingPlugins = mock(List.class);
         final List<ClassModifyingPlugin> classModifyingPlugins = mock(List.class);
 
-        final ModifyingPluginProvider modifyingPluginProvider = new ModifyingPluginProvider(classModifyingPlugins, typeModifyingPlugins, nameGeneratablePlugin);
+        final ModifyingPluginProvider modifyingPluginProvider = new ModifyingPluginProvider(classModifyingPlugins, typeModifyingPlugins);
 
         assertThat(modifyingPluginProvider.classModifyingPlugins(), is(classModifyingPlugins));
         assertThat(modifyingPluginProvider.typeModifyingPlugins(), is(typeModifyingPlugins));
-        assertThat(modifyingPluginProvider.nameGeneratablePlugin(), is(nameGeneratablePlugin));
     }
 }

@@ -6,7 +6,6 @@ import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.pojo.plugin.factory.AllPluginsInstantiator;
 import uk.gov.justice.generation.pojo.plugin.factory.ClassModifyingPluginsSelector;
-import uk.gov.justice.generation.pojo.plugin.factory.NameGeneratingPluginFactory;
 import uk.gov.justice.generation.pojo.plugin.factory.PluginTypeSorter;
 import uk.gov.justice.generation.pojo.plugin.factory.PluginsFromClassnameListFactory;
 import uk.gov.justice.generation.pojo.plugin.factory.TypeModifyingPluginsSelector;
@@ -29,7 +28,6 @@ public class PluginProviderFactoryFactoryTest {
 
         final PluginProviderFactory pluginProviderFactory = pluginProviderFactoryFactory.create();
 
-        assertThat(getFieldFrom(pluginProviderFactory, "nameGeneratingPluginFactory"), is(instanceOf(NameGeneratingPluginFactory.class)));
         assertThat(getFieldFrom(pluginProviderFactory, "classModifyingPluginsSelector"), is(instanceOf(ClassModifyingPluginsSelector.class)));
         assertThat(getFieldFrom(pluginProviderFactory, "typeModifyingPluginsSelector"), is(instanceOf(TypeModifyingPluginsSelector.class)));
         assertThat(getFieldFrom(pluginProviderFactory, "pluginTypeSorter"), is(instanceOf(PluginTypeSorter.class)));

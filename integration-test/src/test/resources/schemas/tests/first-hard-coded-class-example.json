@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/pojo/example/hard/coded/javaclass/first/testcase/first-hard-coded-class-example.json",
   "type": "object",
   "properties": {
     "urn": {

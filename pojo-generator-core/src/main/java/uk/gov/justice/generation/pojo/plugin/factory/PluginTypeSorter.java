@@ -7,7 +7,6 @@ import static java.util.stream.Collectors.groupingBy;
 import uk.gov.justice.generation.pojo.plugin.Plugin;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderException;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
-import uk.gov.justice.generation.pojo.plugin.namegeneratable.NameGeneratablePlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 
 import java.util.List;
@@ -17,9 +16,8 @@ public class PluginTypeSorter {
 
     private static final Class<ClassModifyingPlugin> CLASS_MODIFYING_PLUGIN = ClassModifyingPlugin.class;
     private static final Class<TypeModifyingPlugin> TYPE_MODIFYING_PLUGIN = TypeModifyingPlugin.class;
-    private static final Class<NameGeneratablePlugin> NAME_GENERATABLE_PLUGIN = NameGeneratablePlugin.class;
 
-    private static final String INCORRECT_CLASS_TYPE_MESSAGE = "Incorrect Class Type, Class name: %s, does not implement ClassModifyingPlugin or TypeModifyingPlugin or NameGeneratablePlugin.";
+    private static final String INCORRECT_CLASS_TYPE_MESSAGE = "Incorrect Class Type, Class name: %s, does not implement ClassModifyingPlugin or TypeModifyingPlugin.";
 
     public Map<Class<?>, List<Plugin>> sortByType(final List<Plugin> plugins) {
 
@@ -38,10 +36,6 @@ public class PluginTypeSorter {
 
         if (classList.contains(TYPE_MODIFYING_PLUGIN)) {
             return TYPE_MODIFYING_PLUGIN;
-        }
-
-        if (classList.contains(NAME_GENERATABLE_PLUGIN)) {
-            return NAME_GENERATABLE_PLUGIN;
         }
 
         throw new PluginProviderException(format(INCORRECT_CLASS_TYPE_MESSAGE, plugin.getClass().getName()));

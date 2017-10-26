@@ -5,7 +5,6 @@ import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.plugin.typemodifying.TypeMappingPredicate.FORMAT_TYPE;
 import static uk.gov.justice.generation.pojo.plugin.typemodifying.TypeMappingPredicate.REFERENCE_TYPE;
 import static uk.gov.justice.generation.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
@@ -144,24 +143,5 @@ public class PluginContextTest {
                 generatorProperties);
 
         assertThat(pluginContext.typeMappingsFilteredBy(REFERENCE_TYPE, propertyName), is(Optional.empty()));
-    }
-
-    @Test
-    public void shouldReturnRootClassName() throws Exception {
-        final String rootClassName = "rootClassName";
-        final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
-
-        when(generatorProperties.getRootClassName()).thenReturn(Optional.of(rootClassName));
-
-        final PluginContext pluginContext = new PluginContext(
-                UNSPECIFIED_GENERATOR_FACTORY,
-                UNSPECIFIED_CLASS_NAME_FACTORY,
-                BLANK,
-                EMPTY_CLASS_MODIFYING_PLUGINS,
-                generatorProperties);
-
-        final Optional<String> result = pluginContext.getRootClassName();
-
-        assertThat(result, is(Optional.of(rootClassName)));
     }
 }

@@ -14,8 +14,8 @@ import org.everit.json.schema.Schema;
 public class Validator {
 
     /**
-     * Validates that an Enum Schema contains members that are the same type. i.e
-     * all strings, numbers etc
+     * Validates that an Enum Schema contains members that are the same type. i.e all strings,
+     * numbers etc
      *
      * @param enumSchema The Enum Schema for validation
      */
@@ -23,14 +23,14 @@ public class Validator {
         final Set<Object> possibleValues = enumSchema.getPossibleValues();
 
         Class<?> clazz = null;
-        for(final Object possibleValue: possibleValues) {
+        for (final Object possibleValue : possibleValues) {
             if (clazz == null) {
                 clazz = possibleValue.getClass();
             } else {
                 if (possibleValue.getClass() != clazz) {
                     final String message = format(
                             "Enums must have members of the same type. " +
-                            "Found %s, %s out of possible values %s",
+                                    "Found %s, %s out of possible values %s",
                             clazz.getName(),
                             possibleValue.getClass().getName(),
                             possibleValues);
@@ -44,19 +44,21 @@ public class Validator {
     public void validate(final ArraySchema arraySchema) {
         final List<Schema> itemSchemas = arraySchema.getItemSchemas();
 
-        Class<? extends Schema> clazz = null;
-        for (final Schema schema: itemSchemas) {
+        if (itemSchemas != null) {
+            Class<? extends Schema> clazz = null;
+            for (final Schema schema : itemSchemas) {
 
-            if (clazz == null) {
-                clazz = schema.getClass();
-            } else {
-                if (schema.getClass() != clazz) {
-                    final String message = format(
-                            "Arrays must have members of the same type. " +
-                                    "Found %s, %s",
-                            clazz.getName(),
-                            schema.getClass().getName());
-                    throw new UnsupportedSchemaException(message);
+                if (clazz == null) {
+                    clazz = schema.getClass();
+                } else {
+                    if (schema.getClass() != clazz) {
+                        final String message = format(
+                                "Arrays must have members of the same type. " +
+                                        "Found %s, %s",
+                                clazz.getName(),
+                                schema.getClass().getName());
+                        throw new UnsupportedSchemaException(message);
+                    }
                 }
             }
         }

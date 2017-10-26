@@ -9,6 +9,7 @@ import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
@@ -40,19 +41,22 @@ public class SchemaPojoGenerator implements Generator<File> {
     private final VisitableFactory visitableFactory;
     private final AcceptorService acceptorService;
     private final Bootstrapper bootstrapper;
+    private final SchemaValidatorVisitor schemaValidatorVisitor;
 
     public SchemaPojoGenerator(final DefinitionsFactory definitionsFactory,
                                final JavaClassFileWriter javaClassFileWriter,
                                final SchemaLoader schemaLoader,
                                final VisitableFactory visitableFactory,
                                final AcceptorService acceptorService,
-                               final Bootstrapper bootstrapper) {
+                               final Bootstrapper bootstrapper,
+                               final SchemaValidatorVisitor schemaValidatorVisitor) {
         this.definitionsFactory = definitionsFactory;
         this.javaClassFileWriter = javaClassFileWriter;
         this.schemaLoader = schemaLoader;
         this.visitableFactory = visitableFactory;
         this.acceptorService = acceptorService;
         this.bootstrapper = bootstrapper;
+        this.schemaValidatorVisitor = schemaValidatorVisitor;
     }
 
     /**
@@ -84,6 +88,9 @@ public class SchemaPojoGenerator implements Generator<File> {
         logger.info("Generating java pojos from schema file '{}'", schemaFileName);
 
         final Visitable visitable = visitableFactory.createWith(ROOT_FIELD_NAME, schema, acceptorService);
+
+        visitable.accept(schemaValidatorVisitor);
+
         final List<Definition> definitions = definitionsFactory.createDefinitions(visitable);
         final List<ClassGeneratable> classGenerators = javaGeneratorFactory.createClassGeneratorsFor(
                 definitions,

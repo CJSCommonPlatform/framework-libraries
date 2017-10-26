@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.validation;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -86,5 +87,16 @@ public class ValidatorTest {
         } catch (final UnsupportedSchemaException expected) {
             assertThat(expected.getMessage(), is(message));
         }
+    }
+
+    @Test
+    public void shouldHandleAnArraySchemaWithNullItemSchemas() throws Exception {
+
+        final ArraySchema arraySchema = ArraySchema.builder()
+                .build();
+
+        assertThat(arraySchema.getItemSchemas(), is(nullValue()));
+
+        validator.validate(arraySchema);
     }
 }

@@ -1,8 +1,8 @@
 package uk.gov.justice.generation;
 
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.SchemaPojoGenerator.ROOT_FIELD_NAME;
 
@@ -15,6 +15,7 @@ import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
@@ -28,6 +29,7 @@ import java.util.List;
 import org.everit.json.schema.Schema;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -53,6 +55,9 @@ public class SchemaPojoGeneratorTest {
 
     @Mock
     private Bootstrapper bootstrapper;
+
+    @Mock
+    private SchemaValidatorVisitor schemaValidatorVisitor;
 
     @InjectMocks
     private SchemaPojoGenerator schemaPojoGenerator;
@@ -109,6 +114,9 @@ public class SchemaPojoGeneratorTest {
 
         schemaPojoGenerator.run(jsonSchemaFile, generatorConfig);
 
-        verify(javaClassFileWriter, times(1)).writeJavaClassesToFile(generationContext, classGenerators);
+        final InOrder inOrder = inOrder(visitable, javaClassFileWriter);
+
+        inOrder.verify(visitable, times(1)).accept(schemaValidatorVisitor);
+        inOrder.verify(javaClassFileWriter, times(1)).writeJavaClassesToFile(generationContext, classGenerators);
     }
 }

@@ -5,6 +5,8 @@ import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.PackageNameParser;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactoryFactory;
+import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
+import uk.gov.justice.generation.pojo.validation.Validator;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
@@ -41,6 +43,7 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
     private final PluginProviderFactory pluginProviderFactory = new PluginProviderFactoryFactory().create();
     private final DefinitionsFactory definitionsFactory = new DefinitionsFactory(definitionBuilderVisitorProvider);
     private final GeneratorContextProvider generatorContextProvider = new GeneratorContextProvider(javaFileSimpleNameLister, packageNameParser);
+    private final SchemaValidatorVisitor schemaValidatorVisitor = new SchemaValidatorVisitor(new Validator());
 
     private final Bootstrapper bootstrapper = new Bootstrapper(
             pluginContextProvider,
@@ -56,7 +59,8 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
                 schemaLoader,
                 visitableFactory,
                 acceptorService,
-                bootstrapper
+                bootstrapper,
+                schemaValidatorVisitor
         );
     }
 }

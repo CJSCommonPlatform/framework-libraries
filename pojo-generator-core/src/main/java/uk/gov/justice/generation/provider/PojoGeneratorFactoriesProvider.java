@@ -11,11 +11,11 @@ import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 
 public class PojoGeneratorFactoriesProvider {
 
-    public JavaGeneratorFactory create(final ClassNameFactory classNameFactory) {
+    public JavaGeneratorFactory createJavaGeneratorFactory(final ClassNameFactory classNameFactory) {
         return new JavaGeneratorFactory(classNameFactory);
     }
 
-    public ClassNameFactory create(final GenerationContext generationContext, final PluginProvider pluginProvider) {
+    public ClassNameFactory createClassNameFactory(final GenerationContext generationContext, final PluginProvider pluginProvider) {
         final TypeNameProvider typeNameProvider = new TypeNameProvider(
                 generationContext,
                 new PackageNameParser(),

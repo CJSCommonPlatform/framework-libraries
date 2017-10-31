@@ -5,6 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+Updates to fix OWASP vulnerabilities
+
+- Update artemis-jms to 1.5.5
+- glassfish-json to 1.0.4
+
 ## [1.19.0] - 2017-10-18
 
 ### Changed

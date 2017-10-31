@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.20.0] - 2017-10-31
+
 ### Changed
 
 Updates to fix OWASP vulnerabilities

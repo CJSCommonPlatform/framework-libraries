@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.13.0] - 2017-11-01
+
+### Changed
+- Updated common-bom version to 1.21.0 to remove johnzon-core
+
 ## [1.12.0] - 2017-10-31
 
 ### Changed

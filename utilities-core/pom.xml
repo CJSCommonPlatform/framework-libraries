@@ -78,12 +78,6 @@
             <artifactId>test-utils-core</artifactId>
             <version>${test-utils.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.johnzon</groupId>
-                    <artifactId>johnzon-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>

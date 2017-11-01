@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Update common-bom to version 1.21.0
+- Update artemis version to 1.5.5
+
 ## [1.1.0] - 2017-07-28
 
 ### Changed

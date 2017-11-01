@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.10.0] - 2017-11-01
+
 ### Changed
 - Update common-bom version to 1.20.0 to fix OWASP issues
 

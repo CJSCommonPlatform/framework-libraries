@@ -5,14 +5,22 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.21.0] - 2017-11-01
+
+### Changed
+- Updates to fix OWASP vulnerabilities
+    - Exclude johnzon-core from artemis-jms-client
+    
+### Added
+- Updates to fix OWASP vulnerabilities
+    - johnzon-core version 1.0.0 dependency
+
 ## [1.20.0] - 2017-10-31
 
 ### Changed
-
-Updates to fix OWASP vulnerabilities
-
-- Update artemis-jms to 1.5.5
-- glassfish-json to 1.0.4
+- Updates to fix OWASP vulnerabilities
+    - Update artemis-jms to 1.5.5
+    - glassfish-json to 1.0.4
 
 ## [1.19.0] - 2017-10-18
 

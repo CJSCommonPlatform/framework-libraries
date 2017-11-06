@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- javax.mail version 1.5.0 
+
 ## [1.21.0] - 2017-11-01
 
 ### Changed

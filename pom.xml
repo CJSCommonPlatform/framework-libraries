@@ -98,6 +98,7 @@
         <wiremock.version>1.58</wiremock.version>
         <xbean.version>4.5</xbean.version>
         <johnzon.version>1.0.0</johnzon.version>
+        <javax.mail.version>1.5.0</javax.mail.version>
     </properties>
 
     <scm>
@@ -203,6 +204,11 @@
                         <artifactId>mail</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax.mail.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss</groupId>

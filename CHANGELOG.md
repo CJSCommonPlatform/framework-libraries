@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.13.1] - 2017-11-06
+
 ### Added
 - javax.mail dependency to fix no class found exception
 

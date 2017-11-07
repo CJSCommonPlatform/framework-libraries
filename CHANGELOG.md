@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [2.2.0] - 2017-11-07
+### Changed
+- Updated common-bom to version 1.21.0
+
 ## [2.1.0] - 2017-10-18
 ### Changed
 - Update common-bom to version 1.19.0 to use latest everit version

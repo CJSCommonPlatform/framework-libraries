@@ -25,11 +25,11 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.19.0</common-bom.version>
-        <framework-version>2.3.2</framework-version>
-        <utilities.version>1.9.0</utilities.version>
-        <test-utils.version>1.10.0</test-utils.version>
-        <generator-maven-plugin.version>2.1.0</generator-maven-plugin.version>
+        <common-bom.version>1.21.0</common-bom.version>
+        <framework-version>2.4.1</framework-version>
+        <utilities.version>1.10.0</utilities.version>
+        <test-utils.version>1.13.0</test-utils.version>
+        <generator-maven-plugin.version>2.2.0</generator-maven-plugin.version>
 
         <cpp.repo.name>jsonschema-pojo-generator</cpp.repo.name>
     </properties>

@@ -10,8 +10,9 @@ import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 
 import java.io.File;
-import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,10 +47,11 @@ public class ToStringMethodHandlesAdditionalPropertiesIT {
 
         final Class<?> studentClass = newClasses.get(0);
 
-        final Object student = classInstantiator.newInstance(studentClass, 23, "Fred", "Bloggs");
-        final Method additionalPropertySetter = studentClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class);
-        additionalPropertySetter.invoke(student, "name", "value");
+        final Map<String, Object> additionalPropertyMap = new HashMap<>();
+        additionalPropertyMap.put("additionalPropertyName", "additionalPropertyValue");
 
-        assertThat(student.toString(), is("StudentToStringAdditionalPropertiesTrue{age='23',firstName='Fred',lastName='Bloggs',additionalProperties='{name=value}'}"));
+        final Object student = classInstantiator.newInstance(studentClass, 23, "Fred", "Bloggs", additionalPropertyMap);
+
+        assertThat(student.toString(), is("StudentToStringAdditionalPropertiesTrue{age='23',firstName='Fred',lastName='Bloggs',additionalProperties='{additionalPropertyName=additionalPropertyValue}'}"));
     }
 }

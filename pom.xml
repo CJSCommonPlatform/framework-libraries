@@ -27,7 +27,7 @@
     <properties>
         <common-bom.version>1.21.0</common-bom.version>
         <framework-version>2.4.1</framework-version>
-        <utilities.version>1.10.0</utilities.version>
+        <utilities.version>1.11.0</utilities.version>
         <test-utils.version>1.13.0</test-utils.version>
         <generator-maven-plugin.version>2.2.0</generator-maven-plugin.version>
 

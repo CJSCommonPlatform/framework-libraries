@@ -15,6 +15,7 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropert
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,8 +60,8 @@ public class EqualsMethodHandlesAdditionalPropertiesAndOptionalsIT {
         final String lastName = "Bloggs";
 
         final Class<?> hashcodeAndEqualsClass = newClasses.get(0);
-        final Object hashcodeAndEquals_1 = classInstantiator.newInstance(hashcodeAndEqualsClass, firstName, lastName);
-        final Object hashcodeAndEquals_2 = classInstantiator.newInstance(hashcodeAndEqualsClass, firstName, lastName);
+        final Object hashcodeAndEquals_1 = classInstantiator.newInstance(hashcodeAndEqualsClass, firstName, lastName, new HashMap<>());
+        final Object hashcodeAndEquals_2 = classInstantiator.newInstance(hashcodeAndEqualsClass, firstName, lastName, new HashMap<>());
 
         assertThat(hashcodeAndEquals_1, is(hashcodeAndEquals_2));
 

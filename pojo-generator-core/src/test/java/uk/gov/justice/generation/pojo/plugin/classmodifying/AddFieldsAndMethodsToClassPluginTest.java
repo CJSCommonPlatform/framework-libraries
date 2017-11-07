@@ -5,6 +5,7 @@ import static com.squareup.javapoet.MethodSpec.constructorBuilder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
+import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin.newAddFieldsAndMethodsToClassPlugin;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
@@ -22,12 +24,15 @@ import uk.gov.justice.generation.pojo.generators.FieldGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
+import java.util.Map;
 import java.util.stream.Stream;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +59,7 @@ public class AddFieldsAndMethodsToClassPluginTest {
 
         when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
 
-        new AddFieldsAndMethodsToClassPlugin()
+        newAddFieldsAndMethodsToClassPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
@@ -94,7 +99,7 @@ public class AddFieldsAndMethodsToClassPluginTest {
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
 
-        new AddFieldsAndMethodsToClassPlugin()
+        newAddFieldsAndMethodsToClassPlugin()
                 .generateWith(
                         typeSpecBuilder,
                         classDefinition,
@@ -113,6 +118,54 @@ public class AddFieldsAndMethodsToClassPluginTest {
                         .addStatement("this.field = field")
                         .build(),
                 methodSpec)
+        );
+    }
+
+    @Test
+    public void shouldGenerateClassWithAdditionalPropertiesConstructor() throws Exception {
+
+        final ClassDefinition classDefinition = new ClassDefinition(CLASS, "ClassWithAdditionalProperties");
+        classDefinition.setAllowAdditionalProperties(true);
+
+        final ParameterizedTypeName map = ParameterizedTypeName.get(
+                ClassName.get(Map.class),
+                TypeName.get(String.class),
+                TypeName.get(Object.class));
+
+        final FieldSpec fieldSpec  = builder(map, "additionalProperties")
+                .addModifiers(PRIVATE, FINAL)
+                .build();
+
+        final FieldGenerator fieldGenerator = mock(FieldGenerator.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
+
+        when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
+        when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
+        when(fieldGenerator.generateField()).thenReturn(fieldSpec);
+        when(pluginContext.isPluginInUse(AddAdditionalPropertiesToClassPlugin.class)).thenReturn(true);
+
+        final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");
+        typeSpecBuilder.addField(fieldSpec);
+
+        newAddFieldsAndMethodsToClassPlugin()
+                .generateWith(
+                        typeSpecBuilder,
+                        classDefinition,
+                        pluginContext);
+
+        final TypeSpec typeSpec = typeSpecBuilder.build();
+
+
+        assertThat(typeSpec.name, is("ClassName"));
+        assertThat(typeSpec.fieldSpecs.size(), is(1));
+        assertThat(typeSpec.fieldSpecs, hasItem(fieldSpec));
+        assertThat(typeSpec.methodSpecs.size(), is(1));
+        assertThat(typeSpec.methodSpecs, hasItems(
+                constructorBuilder()
+                        .addModifiers(PUBLIC)
+                        .addParameter(map, "additionalProperties", FINAL)
+                        .addStatement("this.additionalProperties = additionalProperties")
+                        .build())
         );
     }
 }

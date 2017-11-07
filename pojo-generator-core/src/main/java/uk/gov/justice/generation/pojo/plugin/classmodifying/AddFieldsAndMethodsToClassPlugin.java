@@ -10,27 +10,42 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.ElementGeneratable;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 /**
- * Plugin that adds fields, a constructor and getter methods to a class's
- * Type Specification.
- *
- * Without this plugin each class will be generated with
- * no fields nor getter methods and with an empty constructor. For this reason
- * this class is added by default; although it is possible to override it should
- * you need to change it's behaviour.
+ * Plugin that adds fields, a constructor and getter methods to a class's Type Specification. <p>
+ * Without this plugin each class will be generated with no fields nor getter methods and with an
+ * empty constructor. For this reason this class is added by default; although it is possible to
+ * override it should you need to change it's behaviour.
  */
 public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
+
+    private final static String ADDITIONAL_PROPERTIES = "additionalProperties";
+    private final AdditionalPropertiesDeterminer additionalPropertiesDeterminer;
+
+    public AddFieldsAndMethodsToClassPlugin(final AdditionalPropertiesDeterminer additionalPropertiesDeterminer) {
+        this.additionalPropertiesDeterminer = additionalPropertiesDeterminer;
+    }
+
+    @FactoryMethod
+    public static AddFieldsAndMethodsToClassPlugin newAddFieldsAndMethodsToClassPlugin() {
+        return new AddFieldsAndMethodsToClassPlugin(new AdditionalPropertiesDeterminer());
+    }
 
     @Override
     public TypeSpec.Builder generateWith(final TypeSpec.Builder classBuilder,
@@ -58,9 +73,11 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
         final MethodSpec constructor = buildConstructor(
                 fieldDefinitions,
                 pluginContext.getClassNameFactory(),
-                pluginContext);
-        classBuilder.addMethod(constructor)
-                .addFields(fields)
+                pluginContext,
+                classDefinition);
+        classBuilder.addMethod(constructor);
+
+        classBuilder.addFields(fields)
                 .addMethods(methods);
 
         return classBuilder;
@@ -69,18 +86,32 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
     private MethodSpec buildConstructor(
             final List<Definition> definitions,
             final ClassNameFactory classNameFactory,
-            final PluginContext pluginContext) {
+            final PluginContext pluginContext,
+            final ClassDefinition classDefinition) {
         final List<String> fieldNames = definitions.stream().map(Definition::getFieldName).collect(toList());
 
         final List<ParameterSpec> constructorParameters = constructorParameters(
                 definitions,
                 classNameFactory,
                 pluginContext);
-        return constructorBuilder()
+
+       final MethodSpec.Builder constructorBuilder = constructorBuilder()
                 .addModifiers(PUBLIC)
                 .addParameters(constructorParameters)
-                .addCode(constructorStatements(fieldNames))
-                .build();
+                .addCode(constructorStatements(fieldNames));
+
+        if (additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)) {
+
+            final ParameterizedTypeName map = ParameterizedTypeName.get(
+                    ClassName.get(Map.class),
+                    TypeName.get(String.class),
+                    TypeName.get(Object.class));
+
+            constructorBuilder
+                    .addParameter(map, ADDITIONAL_PROPERTIES, FINAL)
+                    .addCode(constructorStatements(Collections.singletonList(ADDITIONAL_PROPERTIES)));
+        }
+        return constructorBuilder.build();
     }
 
     private CodeBlock constructorStatements(final List<String> names) {

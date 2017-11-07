@@ -10,12 +10,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -32,19 +29,13 @@ import com.squareup.javapoet.TypeSpec;
  * Without this, it would be possible to have a json document which abides by the json schema fail
  * to be parsed into the POJO.
  *
- * NB: This is the only part of this application which is tied to Jackson as the Jackson {@link
- * JsonAnyGetter} and {@link JsonAnySetter} annotations are used.
- *
  * <pre>
+ *       {@code private final Map<String, Object> additionalProperties;}
  *
- *       {@code private final Map<String, Object> additionalProperties = new HashMap<>();}
- *
- *       {@code @JsonAnyGetter}
  *       {@code public Map<String, Object> getAdditionalProperties() {
  *          return additionalProperties;
  *        }}
  *
- *       {@code @JsonAnySetter}
  *       {@code public void setAdditionalProperty(final String name, final Object value) {
  *          additionalProperties.put(name, value);
  *        }}
@@ -75,10 +66,8 @@ public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugi
                 TypeName.get(String.class),
                 TypeName.get(Object.class));
 
-        final ClassName hashMap = ClassName.get(HashMap.class);
         return builder(map, "additionalProperties")
                 .addModifiers(PRIVATE, FINAL)
-                .initializer("new $T<>()", hashMap)
                 .build();
     }
 
@@ -98,7 +87,6 @@ public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugi
 
         return methodBuilder("getAdditionalProperties")
                 .addModifiers(PUBLIC)
-                .addAnnotation(JsonAnyGetter.class)
                 .returns(map)
                 .addCode(CodeBlock.builder().addStatement("return $L", "additionalProperties").build())
                 .build();
@@ -107,7 +95,6 @@ public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugi
     private MethodSpec generateSetter() {
         return methodBuilder("setAdditionalProperty")
                 .addModifiers(PUBLIC)
-                .addAnnotation(JsonAnySetter.class)
                 .addParameter(String.class, "name", FINAL)
                 .addParameter(Object.class, "value", FINAL)
                 .addCode(CodeBlock.builder().addStatement("additionalProperties.put($L, $L)", "name", "value").build())

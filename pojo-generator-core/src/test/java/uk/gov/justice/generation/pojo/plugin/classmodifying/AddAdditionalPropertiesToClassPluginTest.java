@@ -25,8 +25,7 @@ public class AddAdditionalPropertiesToClassPluginTest {
     public void shouldGenerateTheAdditionalPropertiesFieldDeclarationIfAllowAdditionalPropertiesIsTrue() throws Exception {
 
         final String expectedField = "private final java.util.Map" +
-                "<java.lang.String, java.lang.Object> additionalProperties " +
-                "= new java.util.HashMap<>();\n";
+                "<java.lang.String, java.lang.Object> additionalProperties;\n";
 
         final TypeSpec.Builder classBuilder = classBuilder("MyClass");
 
@@ -49,17 +48,17 @@ public class AddAdditionalPropertiesToClassPluginTest {
     @Test
     public void shouldGenerateTheAdditionalPropertiesGetterAndSetterIfAllowAdditionalPropertiesIsTrue() throws Exception {
 
-        final String expectedGetter = "@com.fasterxml.jackson.annotation.JsonAnyGetter\n" +
+        final String expectedGetter =
                 "public java.util.Map<java.lang.String, java.lang.Object> getAdditionalProperties() {\n" +
-                "  return additionalProperties;\n" +
-                "}\n";
+                        "  return additionalProperties;\n" +
+                        "}\n";
 
-        final String expectedSetter = "@com.fasterxml.jackson.annotation.JsonAnySetter\n" +
+        final String expectedSetter =
                 "public void setAdditionalProperty(" +
-                    "final java.lang.String name, " +
-                    "final java.lang.Object value) {\n" +
-                    "  additionalProperties.put(name, value);\n" +
-                "}\n";
+                        "final java.lang.String name, " +
+                        "final java.lang.Object value) {\n" +
+                        "  additionalProperties.put(name, value);\n" +
+                        "}\n";
 
         final TypeSpec.Builder classBuilder = classBuilder("MyClass");
 

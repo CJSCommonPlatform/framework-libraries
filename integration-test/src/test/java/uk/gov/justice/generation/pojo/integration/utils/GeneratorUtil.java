@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.integration.utils;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin.newAddFieldsAndMethodsToClassPlugin;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
 import uk.gov.justice.generation.pojo.core.ClassNameParser;
@@ -16,7 +17,6 @@ import uk.gov.justice.generation.pojo.plugin.ModifyingPluginProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
-import uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
@@ -84,7 +84,7 @@ public class GeneratorUtil {
 
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 
-        classModifyingPlugins.add(new AddFieldsAndMethodsToClassPlugin());
+        classModifyingPlugins.add(newAddFieldsAndMethodsToClassPlugin());
 
         final PluginProvider pluginProvider = new ModifyingPluginProvider(
                 classModifyingPlugins,

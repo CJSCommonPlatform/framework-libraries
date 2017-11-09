@@ -20,9 +20,10 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.21.0</common-bom.version>
-        <framework-version>2.2.0</framework-version>
         <cpp.repo.name>json-schema-catalog</cpp.repo.name>
+        <common-bom.version>1.21.0</common-bom.version>
+        <utilities.version>1.10.0</utilities.version>
+        <pojo-generator.version>1.0.0</pojo-generator.version>
     </properties>
 
     <scm>

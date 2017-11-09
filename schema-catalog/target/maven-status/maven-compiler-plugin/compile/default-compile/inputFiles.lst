@@ -1,0 +1,11 @@
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/DictionarySchemaResolver.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/SchemaLoader.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/CatalogLoader.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/generator/GenerateCatalogPojos.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/pojo/Schema.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/SchemaDefinitionCache.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/pojo/Group.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/pojo/Catalog.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/BulkSchemaResolver.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/pojo/CatalogWrapper.java
+/Users/joao/projects/MOJ/CJSCommonPlatform/myserviceparent/schema-catalog/src/main/java/uk/gov/justice/schema/catalog/SchemaDictionary.java

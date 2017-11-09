@@ -1,0 +1,11 @@
+uk/gov/moj/cpp/myservice/command/api/ProgressionCommandApi.class
+uk/gov/justice/api/mapper/DefaultCommandApiCasesCaseIdDefendantsRequestpsrResourceActionMapper.class
+uk/gov/justice/api/resource/DefaultCommandApiCasesCaseIdDefendantsDefendantIdResource.class
+uk/gov/justice/api/resource/CommandApiCasesCaseIdResource.class
+uk/gov/justice/api/mapper/DefaultCommandApiCasesCaseIdResourceActionMapper.class
+uk/gov/justice/api/mapper/DefaultCommandApiCasesCaseIdDefendantsDefendantIdResourceActionMapper.class
+uk/gov/justice/api/resource/DefaultCommandApiCasesCaseIdResource.class
+uk/gov/justice/api/CommandApiRestProgressionApplication.class
+uk/gov/justice/api/resource/DefaultCommandApiCasesCaseIdDefendantsRequestpsrResource.class
+uk/gov/justice/api/resource/CommandApiCasesCaseIdDefendantsRequestpsrResource.class
+uk/gov/justice/api/resource/CommandApiCasesCaseIdDefendantsDefendantIdResource.class

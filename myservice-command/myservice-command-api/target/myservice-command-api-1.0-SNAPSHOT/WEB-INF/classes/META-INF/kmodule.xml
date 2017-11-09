@@ -1,0 +1,5 @@
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
+    <kbase name="COMMAND_API" packages="rules" default="true">
+        <ksession name="COMMAND_API_SESSION" default="true" type="stateless"/>
+    </kbase>
+</kmodule>

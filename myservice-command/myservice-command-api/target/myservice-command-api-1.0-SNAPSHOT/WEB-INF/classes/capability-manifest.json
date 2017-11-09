@@ -1,0 +1,47 @@
+{
+  "capabilities": [
+    {
+      "name": "progression.command.add-case-to-crown-court",
+      "type": "action",
+      "action": "progression.command.add-case-to-crown-court"
+    },
+    {
+      "name": "progression.command.request-psr-for-defendants",
+      "type": "action",
+      "action": "progression.command.request-psr-for-defendants"
+    },
+    {
+      "name": "progression.command.sentence-hearing-date",
+      "type": "action",
+      "action": "progression.command.sentence-hearing-date"
+    },
+    {
+      "name": "progression.command.add-defendant-additional-information",
+      "type": "action",
+      "action": "progression.command.add-defendant-additional-information"
+    },
+    {
+      "name": "progression.command.no-more-information-required",
+      "type": "action",
+      "action": "progression.command.no-more-information-required"
+    },
+    {
+      "name": "progression.command.case-to-be-assigned",
+      "type": "action",
+      "action": "progression.command.case-to-be-assigned"
+    },
+    {
+      "name": "progression.command.case-assigned-for-review",
+      "type": "action",
+      "action": "progression.command.case-assigned-for-review"
+    },
+    {
+      "name": "progression.command.prepare-for-sentence-hearing",
+      "type": "action",
+      "action": "progression.command.prepare-for-sentence-hearing"
+    }
+  ]
+}
+
+
+

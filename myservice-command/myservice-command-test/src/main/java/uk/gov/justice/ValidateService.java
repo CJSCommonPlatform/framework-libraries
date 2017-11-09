@@ -6,8 +6,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.services.messaging.JsonEnvelope.METADATA;
 
 import uk.gov.justice.services.core.json.DefaultJsonSchemaValidator;
-import uk.gov.justice.services.core.json.FileSystemUrlResolverStrategy;
-import uk.gov.justice.services.core.json.JsonSchemaLoader;
 import uk.gov.justice.services.core.json.JsonSchemaValidator;
 import uk.gov.justice.services.core.json.SchemaLoadingException;
 
@@ -38,11 +36,15 @@ public class ValidateService implements JsonSchemaValidator {
         try (final InputStream schemaFileStream = this.getClass().getResourceAsStream(schemaFile)){
             final URL schemaUrl = getClass().getResource(schemaFile);
 
-            return SchemaLoader.builder()
+            Schema schema = SchemaLoader.builder()
                     .resolutionScope(resolveUrl(schemaUrl))
                     .schemaJson(
                             new JSONObject(new JSONTokener(schemaFileStream))).httpClient(new CPPSchemaClient())
                     .build().load().build();
+            System.out.println("*********************************");
+            System.out.println(schema.toString());
+            System.out.println("*********************************");
+            return schema;
         } catch (final Exception ex) {
             throw new SchemaLoadingException(format("Unable to load JSON schema %s from classpath", schemaFile), ex);
         }

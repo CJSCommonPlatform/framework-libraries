@@ -1,0 +1,14 @@
+uk/gov/justice/schema/catalog/BulkSchemaResolver.class
+uk/gov/justice/schema/catalog/DictionarySchemaResolver.class
+uk/gov/justice/schema/catalog/generator/GenerateCatalogPojos.class
+uk/gov/justice/schema/catalog/pojo/Catalog.class
+uk/gov/justice/schema/catalog/SchemaLoader.class
+uk/gov/justice/schema/catalog/CatalogLoader.class
+uk/gov/justice/schema/catalog/pojo/Schema.class
+uk/gov/justice/schema/catalog/pojo/Catalog$Builder.class
+uk/gov/justice/schema/catalog/pojo/Group$Builder.class
+uk/gov/justice/schema/catalog/SchemaDefinitionCache.class
+uk/gov/justice/schema/catalog/pojo/CatalogWrapper.class
+uk/gov/justice/schema/catalog/SchemaDictionary.class
+uk/gov/justice/schema/catalog/pojo/Group.class
+uk/gov/justice/schema/catalog/pojo/Schema$Builder.class

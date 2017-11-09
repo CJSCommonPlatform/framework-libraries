@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss:ejb-jar xmlns:jboss="http://www.jboss.com/xml/ns/javaee"
+               xmlns="http://java.sun.com/xml/ns/javaee"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:d="urn:delivery-active:1.1"
+               xsi:schemaLocation="http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-ejb3-2_0.xsd http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+               version="3.1"
+               impl-version="2.0">
+    <!-- Set the 'delivery-active' attribute to false for all EJBs names *JmsListener (i.e. all our MDBs) so they effectively start paused -->
+    <assembly-descriptor>
+        <d:delivery>
+            <ejb-name>*JmsListener</ejb-name>
+            <!-- Currently set to TRUE until the auto-restart has been implemented -->
+            <d:active>true</d:active>
+        </d:delivery>
+    </assembly-descriptor>
+</jboss:ejb-jar>

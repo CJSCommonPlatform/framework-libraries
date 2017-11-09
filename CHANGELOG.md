@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.14.0] - 2017-11-09
+
+### Added
+- Adds the SchemaComplianceChecker to check differences between schemas across multiple modules, aiding in the single war refectoring process
+
 ## [1.13.1] - 2017-11-06
 
 ### Added

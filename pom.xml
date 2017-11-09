@@ -21,7 +21,7 @@
 
     <properties>
         <common-bom.version>1.21.0</common-bom.version>
-        <framework-version>2.4.1</framework-version>
+        <framework-version>2.2.0</framework-version>
         <cpp.repo.name>json-schema-catalog</cpp.repo.name>
     </properties>
 

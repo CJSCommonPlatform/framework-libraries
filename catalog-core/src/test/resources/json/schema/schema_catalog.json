@@ -1,0 +1,30 @@
+{
+  "catalog": {
+    "name": "my catalog",
+    "group": [
+      {
+        "name": "standards",
+        "baseLocation": "/json/schema/standards",
+        "schema": [
+          {
+            "id": "http://justice.gov.uk/standards/complex_address.json",
+            "location": "complex_address.json"
+          },
+          {
+            "id": "http://justice.gov.uk/standards/address.json",
+            "location": "address.json"
+          }
+        ]
+      },
+      {
+        "name": "staging interface",
+        "schema": [
+          {
+            "id": "http://justice.gov.uk/context/person.json",
+            "location": "/json/schema/context/person.json"
+          }
+        ]
+      }
+    ]
+  }
+}

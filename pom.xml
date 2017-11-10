@@ -10,13 +10,14 @@
         <version>1.6.0</version>
     </parent>
 
-    <groupId>uk.gov.moj.cpp.myservice</groupId>
+    <groupId>uk.gov.justice.schema</groupId>
     <artifactId>json-schema-catalog</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>schema-catalog</module>
+        <module>schema-client-common</module>
+        <module>everit-schema-client</module>
     </modules>
 
     <properties>

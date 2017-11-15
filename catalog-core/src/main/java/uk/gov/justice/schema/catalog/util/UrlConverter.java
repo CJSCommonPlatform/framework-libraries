@@ -26,4 +26,12 @@ public class UrlConverter {
             throw new SchemaCatalogException(format("Failed to convert URI '%s' to URL", uri), e);
         }
     }
+
+    public URI toUri(final String uri) {
+        try {
+            return new URI(uri);
+        } catch (URISyntaxException e) {
+            throw new SchemaCatalogException(format("Failed to convert URI '%s' to URL", uri), e);
+        }
+    }
 }

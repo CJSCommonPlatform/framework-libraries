@@ -1,0 +1,17 @@
+{
+  "catalog": {
+    "name": "example",
+    "group": [
+      {
+        "name": "",
+        "baseLocation": "",
+        "schema": [
+          {
+            "id": "http://justice.gov.uk/example/cakeshop/example.add-recipe.json",
+            "location": "example.add-recipe.json"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.11.0] - 2017-11-15
+
+### Changed
+- Added additional properties functionality.
+
 ## [1.10.0] - 2017-11-01
 
 ### Changed

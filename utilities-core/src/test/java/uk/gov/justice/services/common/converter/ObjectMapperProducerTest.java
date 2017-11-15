@@ -11,6 +11,8 @@ import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.
 
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.json.JsonObject;
@@ -113,6 +115,37 @@ public class ObjectMapperProducerTest {
         assertThat(person.getFavouriteColour(), is(favouriteColour));
     }
 
+    @Test
+    public void shouldReadObjectWithAdditionalProperties() throws Exception {
+
+        final Map<String, Object> additionalProperties = Collections.singletonMap("additionalPropertiesKey", "additionalPropertyValue");
+
+        final PersonWithAdditionalProperties bean = new PersonWithAdditionalProperties("fred", 42, additionalProperties);
+
+        final String json = mapper.writeValueAsString(bean);
+
+        with(json)
+                .assertThat("$.name", is("fred"))
+                .assertThat("$.age", is(42))
+                .assertThat("$.additionalPropertiesKey", is("additionalPropertyValue"));
+
+    }
+
+    @Test
+    public void shouldWriteObjectWithAdditionalProperties() throws Exception {
+
+        final String jsonString = "{\"name\":\"Jack\",\"age\":42,\"Test\":\"Test Value\",\"Test 2\":\"Test Value 2\",\"Test Number\":25}";
+        final PersonWithAdditionalProperties personWithAdditionalProperties = mapper.readValue(jsonString, PersonWithAdditionalProperties.class);
+
+        assertThat(personWithAdditionalProperties.getName(), is("Jack"));
+        assertThat(personWithAdditionalProperties.getAge(), is(42));
+        assertThat(personWithAdditionalProperties.getAdditionalProperties(), is(notNullValue()));
+        assertThat(personWithAdditionalProperties.getAdditionalProperties().get("Test"), is("Test Value"));
+        assertThat(personWithAdditionalProperties.getAdditionalProperties().get("Test 2"), is("Test Value 2"));
+        assertThat(personWithAdditionalProperties.getAdditionalProperties().get("Test Number"), is(25));
+    }
+
+
     public static class DummyBeanWithSingleArgConstructor {
         private final String name;
 
@@ -181,6 +214,34 @@ public class ObjectMapperProducerTest {
 
         public Colour getFavouriteColour() {
             return favouriteColour;
+        }
+    }
+
+    public static class PersonWithAdditionalProperties {
+
+        private  String name;
+        private  int age;
+        private  Map<String, Object> additionalProperties;
+
+
+
+        public PersonWithAdditionalProperties(final String name, final int age, final Map<String, Object> additionalProperties) {
+            this.name = name;
+            this.age = age;
+            this.additionalProperties = additionalProperties;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+
+        public Map<String, Object> getAdditionalProperties() {
+            return additionalProperties;
         }
     }
 }

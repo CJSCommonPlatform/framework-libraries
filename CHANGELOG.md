@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.15.0] -
+## [1.15.0] - 2017-11-16
 
 ### Added
 - Adds support for whitespace in the SchemaDuplicateChecker (false positives)

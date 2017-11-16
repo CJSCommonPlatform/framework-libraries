@@ -20,6 +20,7 @@
         <module>everit-schema-client</module>
         <module>integration-test</module>
         <module>catalog-core</module>
+        <module>schema-service</module>
     </modules>
 
     <properties>

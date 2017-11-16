@@ -1,1 +1,4 @@
-empty
+{
+  "element1": "bla",
+  "element2": "element"
+}

@@ -82,7 +82,7 @@ public class EnumGenerator implements ClassGeneratable {
 
         final MethodSpec.Builder methodBuilder = methodBuilder("valueFor")
                 .addModifiers(PUBLIC, STATIC)
-                .addParameter(String.class, "value", FINAL)
+                .addParameter(String.class, VALUE_VARIABLE_NAME, FINAL)
                 .returns(optionalEnumTypeName);
 
         enumDefinition.getEnumValues().forEach(enumValue -> {

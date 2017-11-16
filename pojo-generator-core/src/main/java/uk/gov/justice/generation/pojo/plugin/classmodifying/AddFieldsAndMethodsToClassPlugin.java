@@ -35,7 +35,8 @@ import com.squareup.javapoet.TypeSpec;
  */
 public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
 
-    private final static String ADDITIONAL_PROPERTIES = "additionalProperties";
+    private static final String ADDITIONAL_PROPERTIES = "additionalProperties";
+
     private final AdditionalPropertiesDeterminer additionalPropertiesDeterminer;
 
     public AddFieldsAndMethodsToClassPlugin(final AdditionalPropertiesDeterminer additionalPropertiesDeterminer) {

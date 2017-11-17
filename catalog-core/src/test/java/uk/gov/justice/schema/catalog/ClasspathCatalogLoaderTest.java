@@ -9,8 +9,10 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.schema.catalog.domain.CatalogWrapper;
 import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
+import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,19 +31,21 @@ public class ClasspathCatalogLoaderTest {
     @Mock
     private ClasspathResourceLoader classpathResourceLoader;
 
+    @Mock
+    private UrlConverter urlConverter;
+
     @InjectMocks
     private ClasspathCatalogLoader classpathCatalogLoader;
-
 
     @Test
     public void shouldThrowExceptionIfLoadingFileThrowsIOException() throws Exception {
 
         final IOException ioException = new IOException("Ooops");
-
         final URL url = new URL("file://src/code/my-file.txt");
-
+        final URI uri = url.toURI();
 
         when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "json/schema/schema_catalog.json")).thenReturn(singletonList(url));
+        when(urlConverter.toUri(url)).thenReturn(uri);
         when(objectMapper.readValue(url, CatalogWrapper.class)).thenThrow(ioException);
 
         try {

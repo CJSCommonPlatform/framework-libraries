@@ -1,12 +1,14 @@
 package uk.gov.justice.generation.pojo.write;
 
-
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.anyVararg;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -15,6 +17,12 @@ import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.spi.FileSystemProvider;
 
 import javax.lang.model.element.Modifier;
 
@@ -25,6 +33,9 @@ import org.junit.Test;
 
 public class SourceWriterTest {
 
+    private final static String TEST_SOURCE_OUTPUT_DIR_NAME = "./target/test-generation";
+    private final static String TEST_PACKAGE_NAME = "org.bloggs.fred";
+
     private final SourceWriter sourceWriter = new SourceWriter();
 
     private File sourceOutputDirectory;
@@ -32,26 +43,25 @@ public class SourceWriterTest {
     @Before
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
-        sourceOutputDirectory = new File("./target/test-generation");
+        sourceOutputDirectory = new File(TEST_SOURCE_OUTPUT_DIR_NAME);
 
         sourceOutputDirectory.mkdirs();
 
         if (sourceOutputDirectory.exists()) {
             cleanDirectory(sourceOutputDirectory);
         }
+
     }
 
     @Test
     public void shouldWriteASingleSourceFile() throws Exception {
-        final String packageName = "org.bloggs.fred";
-
         final TypeSpec helloWorld = simpleClassTypeSpec();
 
         final ClassGeneratable classGenerator = mock(ClassGeneratable.class);
         final GenerationContext generationContext = mock(GenerationContext.class);
 
         when(classGenerator.generate()).thenReturn(helloWorld);
-        when(classGenerator.getPackageName()).thenReturn(packageName);
+        when(classGenerator.getPackageName()).thenReturn(TEST_PACKAGE_NAME);
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceOutputDirectory.toPath());
 
         for (final ClassGeneratable classGeneratable : singletonList(classGenerator)) {
@@ -64,23 +74,37 @@ public class SourceWriterTest {
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void shouldThrowExceptionIfUnableToWriteJavaFile() throws Exception {
-        final String packageName = "org.bloggs.fred";
 
         final TypeSpec helloWorld = simpleClassTypeSpec();
 
         final ClassGeneratable classGenerator = mock(ClassGeneratable.class);
         final GenerationContext generationContext = mock(GenerationContext.class);
 
-        when(classGenerator.generate()).thenReturn(helloWorld);
-        when(classGenerator.getPackageName()).thenReturn(packageName);
-        when(generationContext.getOutputDirectoryPath()).thenReturn(sourceOutputDirectory.toPath());
+        final Path destPathMock = mock(Path.class);
+        final FileSystem fileSystemMock = mock(FileSystem.class);
+        final FileSystemProvider providerMock = mock(FileSystemProvider.class);
 
-        sourceOutputDirectory.setWritable(false);
+        // Next few lines provide mocking to enable IOException to be thrown from
+        // FileSystemProvider.newOutputstream()
+        when(destPathMock.getFileSystem()).thenReturn(fileSystemMock);
+        when(destPathMock.toString()).thenReturn(TEST_SOURCE_OUTPUT_DIR_NAME);
+        when(destPathMock.resolve(anyString())).thenReturn(destPathMock);
+
+        when(fileSystemMock.provider()).thenReturn(providerMock);
+
+        final BasicFileAttributes basicFileAttributes = Files.readAttributes(sourceOutputDirectory.toPath(), BasicFileAttributes.class);
+        when(providerMock.readAttributes(anyObject(), (Class) anyObject(), new LinkOption[0])).thenReturn(basicFileAttributes);
+        when(providerMock.newOutputStream(anyObject(), anyVararg())).thenThrow(new IOException());
+
+        when(classGenerator.generate()).thenReturn(helloWorld);
+        when(classGenerator.getPackageName()).thenReturn(TEST_PACKAGE_NAME);
+        when(generationContext.getOutputDirectoryPath()).thenReturn(destPathMock);
 
         try {
             sourceWriter.write(classGenerator, generationContext);
 
             fail();
+
         } catch (final SourceCodeWriteException ex) {
             sourceOutputDirectory.setWritable(true);
             assertThat(ex.getMessage(), is("Failed to write java file to './target/test-generation' for 'org.bloggs.fred.Address.java'"));

@@ -10,7 +10,7 @@ import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +30,11 @@ public class ClasspathCatalogLoaderIntegrationTest {
 
     @Spy
     @SuppressWarnings("unused")
-    private ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader(new UrlConverter());
+    private ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader();
+
+    @Spy
+    @SuppressWarnings("unused")
+    private UrlConverter urlConverter = new UrlConverter();
 
     @InjectMocks
     private ClasspathCatalogLoader classpathCatalogLoader;
@@ -38,16 +42,16 @@ public class ClasspathCatalogLoaderIntegrationTest {
     @Test
     public void shouldLoadCatalogsFromTheClasspath() throws Exception {
 
-        final Map<URL, Catalog> catalogs = classpathCatalogLoader.getCatalogs();
+        final Map<URI, Catalog> catalogs = classpathCatalogLoader.getCatalogs();
 
         assertThat(catalogs.size(), is(1));
 
-        final URL url = catalogs.keySet().iterator().next();
+        final URI uri = catalogs.keySet().iterator().next();
 
-        assertThat(url.toString(), startsWith("file:/"));
-        assertThat(url.toString(), endsWith("/json-schema-catalog/catalog-core/target/test-classes/json/schema/schema_catalog.json"));
+        assertThat(uri.toString(), startsWith("file:/"));
+        assertThat(uri.toString(), endsWith("/json-schema-catalog/catalog-core/target/test-classes/json/schema/schema_catalog.json"));
 
-        final Catalog catalog = catalogs.get(url);
+        final Catalog catalog = catalogs.get(uri);
 
         assertThat(catalog.getName(), is("my catalog"));
         assertThat(catalog.getGroup().size(), is(2));

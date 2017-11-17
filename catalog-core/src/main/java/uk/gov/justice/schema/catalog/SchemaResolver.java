@@ -17,13 +17,11 @@ public class SchemaResolver {
     }
 
     public URL resolve(
-            final URL catalogUrl,
+            final URI catalogUri,
             final String fileLocation,
             final Optional<String> fileBaseLocation) {
 
         final URI schemaUri = URI.create(fileBaseLocation.orElse(AN_EMPTY_STRING)).resolve(fileLocation);
-        final URI uri = urlConverter.toUri(catalogUrl).resolve(schemaUri);
-
-        return urlConverter.toUrl(uri);
+        return urlConverter.toUrl(catalogUri.resolve(schemaUri));
     }
 }

@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import uk.gov.justice.schema.catalog.domain.Catalog;
 import uk.gov.justice.schema.catalog.domain.CatalogWrapper;
 import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
+import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,29 +22,31 @@ public class ClasspathCatalogLoader {
 
     private final ObjectMapper objectMapper;
     private final ClasspathResourceLoader classpathResourceLoader;
+    private final UrlConverter urlConverter;
 
-    public ClasspathCatalogLoader(final ObjectMapper objectMapper, final ClasspathResourceLoader classpathResourceLoader) {
+    public ClasspathCatalogLoader(final ObjectMapper objectMapper, final ClasspathResourceLoader classpathResourceLoader, final UrlConverter urlConverter) {
         this.objectMapper = objectMapper;
         this.classpathResourceLoader = classpathResourceLoader;
+        this.urlConverter = urlConverter;
     }
 
-    public Map<URL, Catalog> getCatalogs() {
+    public Map<URI, Catalog> getCatalogs() {
 
-        final Map<URL, Catalog> map = new HashMap<>();
+        final Map<URI, Catalog> map = new HashMap<>();
 
-        for (final URI uri : listAllCatalogsFromClasspath()) {
+        for (final URL catalogUrl : listAllCatalogsFromClasspath()) {
             try {
-                final Catalog catalog = objectMapper.readValue(uri.toURL(), CatalogWrapper.class).getCatalog();
-                map.put(uri.toURL(), catalog);
+                final Catalog catalog = objectMapper.readValue(catalogUrl, CatalogWrapper.class).getCatalog();
+                map.put(urlConverter.toUri(catalogUrl), catalog);
             } catch (IOException e) {
-                throw new SchemaCatalogException(format("Failed to convert to json loaded from '%s' to a Catalog pojo", uri.toString()), e);
+                throw new SchemaCatalogException(format("Failed to convert to json loaded from '%s' to a Catalog pojo", catalogUrl.toString()), e);
             }
         }
 
         return map;
     }
 
-    private List<URI> listAllCatalogsFromClasspath() {
+    private List<URL> listAllCatalogsFromClasspath() {
         try {
             return classpathResourceLoader.getResources(getClass(), DEFAULT_JSON_CATALOG_LOCATION);
         } catch (final IOException e) {

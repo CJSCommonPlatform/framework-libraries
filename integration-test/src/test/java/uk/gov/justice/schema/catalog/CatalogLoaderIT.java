@@ -22,8 +22,8 @@ public class CatalogLoaderIT {
     private final SchemaResolverAndLoader schemaResolverAndLoader = new SchemaResolverAndLoader(jsonStringToSchemaConverter);
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final UrlConverter urlConverter = new UrlConverter();
-    private final ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader(urlConverter);
-    private final ClasspathCatalogLoader classpathCatalogLoader = new ClasspathCatalogLoader(objectMapper, classpathResourceLoader);
+    private final ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader();
+    private final ClasspathCatalogLoader classpathCatalogLoader = new ClasspathCatalogLoader(objectMapper, classpathResourceLoader, urlConverter);
     private final SchemaResolver schemaResolver = new SchemaResolver(urlConverter);
     private final CatalogToSchemaResolver catalogToSchemaResolver = new CatalogToSchemaResolver(classpathCatalogLoader, schemaResolver);
     private final JsonSchemaLoader jsonSchemaLoader = new JsonSchemaLoader(fileContentsAsStringLoader);

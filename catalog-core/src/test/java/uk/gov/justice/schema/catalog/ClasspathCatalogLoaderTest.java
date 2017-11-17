@@ -11,7 +11,7 @@ import uk.gov.justice.schema.catalog.domain.CatalogWrapper;
 import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
 
 import java.io.IOException;
-import java.net.URI;
+import java.net.URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -38,11 +38,11 @@ public class ClasspathCatalogLoaderTest {
 
         final IOException ioException = new IOException("Ooops");
 
-        final URI uri = new URI("file://src/code/my-file.txt");
+        final URL url = new URL("file://src/code/my-file.txt");
 
 
-        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "json/schema/schema_catalog.json")).thenReturn(singletonList(uri));
-        when(objectMapper.readValue(uri.toURL(), CatalogWrapper.class)).thenThrow(ioException);
+        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "json/schema/schema_catalog.json")).thenReturn(singletonList(url));
+        when(objectMapper.readValue(url, CatalogWrapper.class)).thenThrow(ioException);
 
         try {
             classpathCatalogLoader.getCatalogs();

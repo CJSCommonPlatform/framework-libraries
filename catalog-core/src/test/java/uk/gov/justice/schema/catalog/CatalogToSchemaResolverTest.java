@@ -11,6 +11,7 @@ import uk.gov.justice.schema.catalog.domain.Group;
 import uk.gov.justice.schema.catalog.domain.Schema;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.Map;
 
@@ -43,9 +44,9 @@ public class CatalogToSchemaResolverTest {
         final Group group = mock(Group.class);
         final Schema schema = mock(Schema.class);
 
-        final URL url = new URL("file:/src/main/schema.json");
+        final URI uri = new URI("file:/src/main/schema.json");
 
-        final Map<URL, Catalog> catalogPojoMap = ImmutableMap.of(url, catalog);
+        final Map<URI, Catalog> catalogPojoMap = ImmutableMap.of(uri, catalog);
 
         when(classpathCatalogLoader.getCatalogs()).thenReturn(catalogPojoMap);
         when(catalog.getGroup()).thenReturn(singletonList(group));

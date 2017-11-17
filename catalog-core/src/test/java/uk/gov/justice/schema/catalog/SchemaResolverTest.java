@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.Optional;
 
@@ -29,26 +30,26 @@ public class SchemaResolverTest {
     @Test
     public void shouldResolveTheLocationToAUrlUsingTheCatalogUrlAndBaseLocation() throws Exception {
 
-        final URL catalogUrl = new URL("file:/src/main/schema.json");
+        final URI catalogUri = new URI("file:/src/main/schema.json");
 
         final String fileLocation = "some/path/to.json";
         final Optional<String> baseLocation = of("base/location/");
 
-        final URL resolvedUrl = schemaResolver.resolve(catalogUrl, fileLocation, baseLocation);
+        final URL resolvedUri = schemaResolver.resolve(catalogUri, fileLocation, baseLocation);
 
-        assertThat(resolvedUrl.toString(), is("file:/src/main/base/location/some/path/to.json"));
+        assertThat(resolvedUri.toString(), is("file:/src/main/base/location/some/path/to.json"));
     }
 
     @Test
     public void shouldResolveTheLocationToAUrlUsingTheCatalogUrlAndAnEmptyBaseLocation() throws Exception {
 
-        final URL catalogUrl = new URL("file:/src/main/schema.json");
+        final URI catalogUri = new URI("file:/src/main/schema.json");
 
         final String fileLocation = "some/path/to.json";
         final Optional<String> baseLocation = empty();
 
-        final URL resolvedUrl = schemaResolver.resolve(catalogUrl, fileLocation, baseLocation);
+        final URL resolvedUri = schemaResolver.resolve(catalogUri, fileLocation, baseLocation);
 
-        assertThat(resolvedUrl.toString(), is("file:/src/main/some/path/to.json"));
+        assertThat(resolvedUri.toString(), is("file:/src/main/some/path/to.json"));
     }
 }

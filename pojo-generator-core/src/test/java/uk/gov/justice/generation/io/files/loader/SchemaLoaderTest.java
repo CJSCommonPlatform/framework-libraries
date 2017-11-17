@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
 
@@ -33,7 +34,8 @@ public class SchemaLoaderTest {
     @Test
     public void shouldThrowExceptionIfFileDoesNotExist() throws Exception {
         expectedException.expect(SchemaLoaderException.class);
-        expectedException.expectMessage("File failed to load: src/test/resources/schemas/unknown-file.json");
+        String message = "File failed to load: src/test/resources/schemas/unknown-file.json".replace('/', File.separatorChar);
+        expectedException.expectMessage(message);
         expectedException.expectCause(isA(FileNotFoundException.class));
 
         new SchemaLoader().loadFrom(get("src/test/resources/schemas/unknown-file.json").toFile());

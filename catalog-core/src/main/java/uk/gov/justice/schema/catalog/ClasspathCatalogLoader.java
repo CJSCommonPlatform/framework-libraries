@@ -1,6 +1,7 @@
 package uk.gov.justice.schema.catalog;
 
 import static java.lang.String.format;
+import static java.util.stream.Collectors.toMap;
 
 import uk.gov.justice.schema.catalog.domain.Catalog;
 import uk.gov.justice.schema.catalog.domain.CatalogWrapper;
@@ -10,7 +11,6 @@ import uk.gov.justice.schema.catalog.util.UrlConverter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,26 +24,25 @@ public class ClasspathCatalogLoader {
     private final ClasspathResourceLoader classpathResourceLoader;
     private final UrlConverter urlConverter;
 
-    public ClasspathCatalogLoader(final ObjectMapper objectMapper, final ClasspathResourceLoader classpathResourceLoader, final UrlConverter urlConverter) {
+    public ClasspathCatalogLoader(final ObjectMapper objectMapper,
+                                  final ClasspathResourceLoader classpathResourceLoader,
+                                  final UrlConverter urlConverter) {
         this.objectMapper = objectMapper;
         this.classpathResourceLoader = classpathResourceLoader;
         this.urlConverter = urlConverter;
     }
 
     public Map<URI, Catalog> getCatalogs() {
+        return listAllCatalogsFromClasspath().stream()
+                .collect(toMap(urlConverter::toUri, this::loadCatalog));
+    }
 
-        final Map<URI, Catalog> map = new HashMap<>();
-
-        for (final URL catalogUrl : listAllCatalogsFromClasspath()) {
-            try {
-                final Catalog catalog = objectMapper.readValue(catalogUrl, CatalogWrapper.class).getCatalog();
-                map.put(urlConverter.toUri(catalogUrl), catalog);
-            } catch (IOException e) {
-                throw new SchemaCatalogException(format("Failed to convert to json loaded from '%s' to a Catalog pojo", catalogUrl.toString()), e);
-            }
+    private Catalog loadCatalog(final URL catalogUrl) {
+        try {
+            return objectMapper.readValue(catalogUrl, CatalogWrapper.class).getCatalog();
+        } catch (IOException e) {
+            throw new SchemaCatalogException(format("Failed to convert to json loaded from '%s' to a Catalog pojo", catalogUrl.toString()), e);
         }
-
-        return map;
     }
 
     private List<URL> listAllCatalogsFromClasspath() {

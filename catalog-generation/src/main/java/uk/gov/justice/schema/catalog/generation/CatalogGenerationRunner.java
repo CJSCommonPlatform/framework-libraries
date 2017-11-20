@@ -7,6 +7,7 @@ import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 
 public class CatalogGenerationRunner {
@@ -24,13 +25,13 @@ public class CatalogGenerationRunner {
         this.urlConverter = urlConverter;
     }
 
-    public void generateCatalog(final String catalogName, final List<URI> schemaFiles) {
+    public void generateCatalog(final String catalogName, final List<URI> schemaFiles, final Path catalogGenerationPath) {
 
         final Catalog catalog = catalogObjectGenerator.generate(
                 catalogName,
                 asUrls(schemaFiles));
 
-        catalogWriter.write(catalog);
+        catalogWriter.write(catalog, catalogGenerationPath);
     }
 
     private List<URL> asUrls(final List<URI> schemaFiles) {

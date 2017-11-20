@@ -1,8 +1,6 @@
 package uk.gov.justice.schema.catalog.generation;
 
-import uk.gov.justice.schema.catalog.SchemaCatalogException;
-
-public class CatalogGenerationException extends SchemaCatalogException {
+public class CatalogGenerationException extends RuntimeException {
 
     public CatalogGenerationException(final String message) {
         super(message);

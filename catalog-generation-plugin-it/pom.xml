@@ -30,7 +30,7 @@
                             <basePackageName>uk.gov.justice.events.pojo</basePackageName>
                             <sourceDirectory>${basedir}/src/raml/json/schema
                             </sourceDirectory>
-                            <outputDirectory>${project.build.directory}/generated-sources
+                            <outputDirectory>${project.build.directory}/generated-resources
                             </outputDirectory>
                             <includes>
                                 <include>**/*.json</include>

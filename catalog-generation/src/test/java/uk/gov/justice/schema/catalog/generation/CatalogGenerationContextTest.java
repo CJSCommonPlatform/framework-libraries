@@ -15,16 +15,6 @@ public class CatalogGenerationContextTest {
     private CatalogGenerationContext catalogGenerationContext;
 
     @Test
-    public void shouldGetCatalogGenerationRoot() throws Exception {
-        assertThat(catalogGenerationContext.getCatalogGenerationRoot(), is("target/generated-catalogs"));
-    }
-
-    @Test
-    public void shouldGetCatalogPath() throws Exception {
-        assertThat(catalogGenerationContext.getCatalogPath(), is("json/schema/catalog"));
-    }
-
-    @Test
     public void shouldGetCatalogFilename() throws Exception {
         assertThat(catalogGenerationContext.getCatalogFilename(), is("schema_catalog.json"));
     }

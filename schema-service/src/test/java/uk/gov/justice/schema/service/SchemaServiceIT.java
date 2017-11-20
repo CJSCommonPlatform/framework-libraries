@@ -3,6 +3,17 @@ package uk.gov.justice.schema.service;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import uk.gov.justice.schema.catalog.CatalogLoader;
+import uk.gov.justice.schema.catalog.CatalogToSchemaResolver;
+import uk.gov.justice.schema.catalog.ClasspathCatalogLoader;
+import uk.gov.justice.schema.catalog.FileContentsAsStringLoader;
+import uk.gov.justice.schema.catalog.JsonSchemaLoader;
+import uk.gov.justice.schema.catalog.JsonStringToSchemaConverter;
+import uk.gov.justice.schema.catalog.SchemaResolver;
+import uk.gov.justice.schema.catalog.SchemaResolverAndLoader;
+import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
+import uk.gov.justice.schema.catalog.util.UrlConverter;
+import uk.gov.justice.schema.client.SchemaClientFactory;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.util.Optional;
@@ -26,9 +37,19 @@ public class SchemaServiceIT {
 
     @Module
     @Classes(cdi = true, value = {
+            CatalogLoader.class,
+            CatalogToSchemaResolver.class,
+            ClasspathCatalogLoader.class,
+            ClasspathResourceLoader.class,
+            FileContentsAsStringLoader.class,
+            JsonSchemaLoader.class,
+            JsonStringToSchemaConverter.class,
             ObjectMapperProducer.class,
-            CatalogLoaderProducer.class,
-            SchemaCatalogService.class
+            SchemaCatalogService.class,
+            SchemaClientFactory.class,
+            SchemaResolver.class,
+            SchemaResolverAndLoader.class,
+            UrlConverter.class
     })
     public WebApp war() {
         return new WebApp()

@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaClient;
 
@@ -11,6 +13,7 @@ public class SchemaResolverAndLoader {
 
     private final JsonStringToSchemaConverter jsonStringToSchemaConverter;
 
+    @Inject
     public SchemaResolverAndLoader(final JsonStringToSchemaConverter jsonStringToSchemaConverter) {
         this.jsonStringToSchemaConverter = jsonStringToSchemaConverter;
     }

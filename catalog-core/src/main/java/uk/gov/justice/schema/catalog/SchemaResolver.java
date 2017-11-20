@@ -6,12 +6,15 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 public class SchemaResolver {
 
     private static final String AN_EMPTY_STRING = "";
 
     private final UrlConverter urlConverter;
 
+    @Inject
     public SchemaResolver(final UrlConverter urlConverter) {
         this.urlConverter = urlConverter;
     }

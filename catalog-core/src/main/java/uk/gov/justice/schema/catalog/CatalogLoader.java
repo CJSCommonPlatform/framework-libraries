@@ -4,6 +4,8 @@ import uk.gov.justice.schema.client.SchemaClientFactory;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.everit.json.schema.Schema;
 
 public class CatalogLoader {
@@ -13,6 +15,7 @@ public class CatalogLoader {
     private final JsonSchemaLoader jsonSchemaLoader;
     private final SchemaClientFactory schemaClientFactory;
 
+    @Inject
     public CatalogLoader(
             final SchemaResolverAndLoader schemaResolverAndLoader,
             final CatalogToSchemaResolver catalogToSchemaResolver,

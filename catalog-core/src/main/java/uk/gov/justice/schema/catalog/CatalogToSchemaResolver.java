@@ -13,11 +13,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 public class CatalogToSchemaResolver {
 
     private final ClasspathCatalogLoader classpathCatalogLoader;
     private final SchemaResolver schemaResolver;
 
+    @Inject
     public CatalogToSchemaResolver(final ClasspathCatalogLoader classpathCatalogLoader, final SchemaResolver schemaResolver) {
         this.classpathCatalogLoader = classpathCatalogLoader;
         this.schemaResolver = schemaResolver;

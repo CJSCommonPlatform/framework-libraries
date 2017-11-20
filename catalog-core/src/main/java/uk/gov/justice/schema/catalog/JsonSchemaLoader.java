@@ -5,10 +5,13 @@ import static java.util.stream.Collectors.toMap;
 import java.net.URL;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class JsonSchemaLoader {
 
     private final FileContentsAsStringLoader fileContentsAsStringLoader;
 
+    @Inject
     public JsonSchemaLoader(final FileContentsAsStringLoader fileContentsAsStringLoader) {
         this.fileContentsAsStringLoader = fileContentsAsStringLoader;
     }

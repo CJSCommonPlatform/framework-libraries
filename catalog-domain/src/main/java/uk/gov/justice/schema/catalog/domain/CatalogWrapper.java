@@ -2,13 +2,14 @@ package uk.gov.justice.schema.catalog.domain;
 
 public class CatalogWrapper {
 
-    private Catalog catalog;
+    private final Catalog catalog;
+
+    public CatalogWrapper(final Catalog catalog) {
+        this.catalog = catalog;
+    }
 
     public Catalog getCatalog() {
         return catalog;
     }
 
-    public void setCatalog(Catalog catalog) {
-        this.catalog = catalog;
-    }
 }

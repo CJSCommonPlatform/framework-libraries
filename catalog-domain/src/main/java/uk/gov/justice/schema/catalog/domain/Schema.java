@@ -17,4 +17,12 @@ public class Schema {
     public String getLocation() {
         return location;
     }
+
+    @Override
+    public String toString() {
+        return "Schema{" +
+                "id='" + id + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
 }

@@ -57,7 +57,7 @@ public class ClasspathCatalogLoaderIntegrationTest {
         assertThat(catalog.getGroup().size(), is(2));
 
         assertThat(catalog.getGroup().get(0).getName(), is("standards"));
-        assertThat(catalog.getGroup().get(0).getBaseLocation(), is("/json/schema/standards"));
+        assertThat(catalog.getGroup().get(0).getBaseLocation(), is("standards/"));
 
         assertThat(catalog.getGroup().get(0).getSchema().size(), is(2));
         assertThat(catalog.getGroup().get(0).getSchema().get(0).getId(), is("http://justice.gov.uk/standards/complex_address.json"));
@@ -70,6 +70,6 @@ public class ClasspathCatalogLoaderIntegrationTest {
 
         assertThat(catalog.getGroup().get(1).getSchema().size(), is(1));
         assertThat(catalog.getGroup().get(1).getSchema().get(0).getId(), is("http://justice.gov.uk/context/person.json"));
-        assertThat(catalog.getGroup().get(1).getSchema().get(0).getLocation(), is("/json/schema/context/person.json"));
+        assertThat(catalog.getGroup().get(1).getSchema().get(0).getLocation(), is("context/person.json"));
     }
 }

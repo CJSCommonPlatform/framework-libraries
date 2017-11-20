@@ -4,7 +4,7 @@
     "group": [
       {
         "name": "standards",
-        "baseLocation": "/json/schema/standards",
+        "baseLocation": "standards/",
         "schema": [
           {
             "id": "http://justice.gov.uk/standards/complex_address.json",
@@ -21,7 +21,7 @@
         "schema": [
           {
             "id": "http://justice.gov.uk/context/person.json",
-            "location": "/json/schema/context/person.json"
+            "location": "context/person.json"
           }
         ]
       }

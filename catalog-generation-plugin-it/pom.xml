@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>json-schema-catalog</artifactId>
+        <groupId>uk.gov.justice.schema</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>catalog-generation-plugin-it</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>generator-plugin</artifactId>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <version>${generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>internal-jsons</id>
+                        <configuration>
+                            <generatorName>
+                                uk.gov.justice.schema.catalog.generation.MavenCatalogGenerator
+                            </generatorName>
+                            <parserName>
+                                uk.gov.justice.schema.catalog.generation.io.parser.ListOfUriParser
+                            </parserName>
+                            <basePackageName>uk.gov.justice.events.pojo</basePackageName>
+                            <sourceDirectory>${basedir}/src/raml/json/schema
+                            </sourceDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources
+                            </outputDirectory>
+                            <includes>
+                                <include>**/*.json</include>
+                            </includes>
+                            <excludes>
+                            </excludes>
+                            <generatorProperties
+                                    implementation="uk.gov.justice.schema.catalog.generation.maven.CatalogGeneratorProperties">
+                                <catalogName>${project.artifactId}</catalogName>
+                            </generatorProperties>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>uk.gov.justice.schema</groupId>
+                        <artifactId>catalog-generation</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

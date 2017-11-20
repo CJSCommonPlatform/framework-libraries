@@ -25,4 +25,13 @@ public class Group {
     public List<Schema> getSchema() {
         return schema;
     }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "baseLocation='" + baseLocation + '\'' +
+                ", name='" + name + '\'' +
+                ", schema=" + schema +
+                '}';
+    }
 }

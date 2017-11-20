@@ -1,0 +1,20 @@
+
+
+Schema file location:
+    file:/Users/dev/workspace/json-schema-catalog/catalog-generation/target/test-classes/raml/json/schema/context/person.json
+
+Id (taken from the schema file):
+    http://justice.gov.uk/context/person.json
+
+Location where catalog will be generated (on classpath):
+    raml/json/schema/schema_catalog.json
+
+Group:
+    context
+
+Base location:
+    context/
+
+Location
+    person.json
+

@@ -8,6 +8,8 @@ import uk.gov.justice.schema.catalog.domain.Catalog;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.Test;
@@ -16,7 +18,7 @@ public class CatalogObjectGeneratorTest {
 
     private final UrlConverter urlConverter = new UrlConverter();
     private final SchemaIdParser schemaIdParser = new SchemaIdParser(urlConverter);
-    private final SchemaDefParser schemaDefParser = new SchemaDefParser(schemaIdParser, new CatalogGenerationContext());
+    private final SchemaDefParser schemaDefParser = new SchemaDefParser(schemaIdParser);
 
     private final CatalogObjectGenerator catalogObjectGenerator = new CatalogObjectGenerator(schemaDefParser);
 
@@ -24,6 +26,7 @@ public class CatalogObjectGeneratorTest {
     public void shouldParseAListOfSchemaFilesIntoACatalogObject() throws Exception {
 
         final String catalogName = "my catalog";
+        final Path jsonSchemaPath = Paths.get("raml/json/schema/");
 
         final ClassLoader classLoader = getClass().getClassLoader();
         final URL personSchemaFile = classLoader.getResource("raml/json/schema/context/person.json");
@@ -38,7 +41,7 @@ public class CatalogObjectGeneratorTest {
                 defendantSchemaFile);
 
 
-        final Catalog catalog = catalogObjectGenerator.generate(catalogName, schemaFiles);
+        final Catalog catalog = catalogObjectGenerator.generate(catalogName, schemaFiles, jsonSchemaPath);
 
         assertThat(catalog.getName(), is(catalogName));
         assertThat(catalog.getGroup().size(), is(2));

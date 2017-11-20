@@ -1,30 +1,27 @@
 {
-  "catalog": {
-    "name": "my catalog",
-    "group": [
-      {
-        "name": "staging interface",
-        "schema": [
-          {
-            "id": "http://justice.gov.uk/context/person.json",
-            "location": "context/person.json"
-          }
-        ]
-      },
-      {
-        "name": "standards",
-        "baseLocation": "standards/",
-        "schema": [
-          {
-            "id": "http://justice.gov.uk/standards/complex_address.json",
-            "location": "complex_address.json"
-          },
-          {
-            "id": "http://justice.gov.uk/standards/address.json",
-            "location": "address.json"
-          }
-        ]
-      }
-    ]
-  }
+  "group": [
+    {
+      "name": "staging interface",
+      "schema": [
+        {
+          "id": "http://justice.gov.uk/context/person.json",
+          "location": "context/person.json"
+        }
+      ]
+    },
+    {
+      "name": "standards",
+      "baseLocation": "standards/",
+      "schema": [
+        {
+          "id": "http://justice.gov.uk/standards/complex_address.json",
+          "location": "complex_address.json"
+        },
+        {
+          "id": "http://justice.gov.uk/standards/address.json",
+          "location": "address.json"
+        }
+      ]
+    }
+  ]
 }

@@ -10,12 +10,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>example-context</artifactId>
+    <artifactId>schema-example-context</artifactId>
     <packaging>pom</packaging>
 
     <modules>
         <module>schema-example-command-api</module>
-        <module>example-standards</module>
+        <module>schema-example-standards</module>
         <module>example-integration-test</module>
     </modules>
 

@@ -43,4 +43,15 @@ public class SchemaDef {
     public String getLocation() {
         return location;
     }
+
+    @Override
+    public String toString() {
+        return "SchemaDef{" +
+                "schemaFile=" + schemaFile +
+                ", id=" + id +
+                ", groupName='" + groupName + '\'' +
+                ", baseLocation='" + baseLocation + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
 }

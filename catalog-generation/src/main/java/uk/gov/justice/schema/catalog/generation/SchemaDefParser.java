@@ -4,26 +4,23 @@ import static uk.gov.justice.schema.catalog.generation.CatalogGenerationContext.
 
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 
 public class SchemaDefParser {
 
     private final SchemaIdParser schemaIdParser;
-    private final CatalogGenerationContext catalogGenerationContext;
 
-    public SchemaDefParser(
-            final SchemaIdParser schemaIdParser,
-            final CatalogGenerationContext catalogGenerationContext) {
+    public SchemaDefParser(final SchemaIdParser schemaIdParser) {
         this.schemaIdParser = schemaIdParser;
-        this.catalogGenerationContext = catalogGenerationContext;
     }
 
-    public SchemaDef parse(final URL schemaFile) {
+    public SchemaDef parse(final URL schemaFile, final Path jsonSchemaPath) {
 
         final URI id = schemaIdParser.parse(schemaFile);
         final String fileUrl = schemaFile.toString();
 
-        final String jsonSchemaPath = catalogGenerationContext.getJsonSchemaPath();
-        final String relativeUri = fileUrl.substring(fileUrl.indexOf(jsonSchemaPath) + jsonSchemaPath.length());
+        final String jsonSchemaPathString = jsonSchemaPath.toString();
+        final String relativeUri = fileUrl.substring(fileUrl.indexOf(jsonSchemaPathString) + jsonSchemaPathString.length() + 1);
 
         final int firstSlashIndex = relativeUri.indexOf('/');
 

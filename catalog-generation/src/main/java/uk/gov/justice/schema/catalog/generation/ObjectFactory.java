@@ -32,7 +32,7 @@ public class ObjectFactory {
     }
 
     public SchemaDefParser schemaDefParser() {
-        return new SchemaDefParser(schemaIdParser(), catalogGenerationConstants());
+        return new SchemaDefParser(schemaIdParser());
     }
 
     public CatalogGenerationRunner catalogGenerationRunner() {

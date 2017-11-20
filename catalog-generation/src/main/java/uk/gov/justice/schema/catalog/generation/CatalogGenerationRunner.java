@@ -25,11 +25,12 @@ public class CatalogGenerationRunner {
         this.urlConverter = urlConverter;
     }
 
-    public void generateCatalog(final String catalogName, final List<URI> schemaFiles, final Path catalogGenerationPath) {
+    public void generateCatalog(final String catalogName, final List<URI> schemaFiles, final Path catalogGenerationPath, final Path jsonSchemaPath) {
 
         final Catalog catalog = catalogObjectGenerator.generate(
                 catalogName,
-                asUrls(schemaFiles));
+                asUrls(schemaFiles),
+                jsonSchemaPath);
 
         catalogWriter.write(catalog, catalogGenerationPath);
     }

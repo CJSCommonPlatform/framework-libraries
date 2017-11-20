@@ -18,16 +18,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.maven.generator</groupId>
-            <artifactId>generator-core</artifactId>
-            <version>${generator-maven-plugin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.maven.generator</groupId>
-            <artifactId>parser-common</artifactId>
-            <version>${generator-maven-plugin.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
         </dependency>

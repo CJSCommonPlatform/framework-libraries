@@ -2,13 +2,16 @@ package uk.gov.justice.schema.catalog;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import uk.gov.justice.schema.catalog.util.UriResolver;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -56,5 +59,22 @@ public class SchemaResolverTest {
         final URL resolvedUri = schemaResolver.resolve(catalogUri, fileLocation, baseLocation);
 
         assertThat(resolvedUri.toString(), is("file:/src/main/some/path/to.json"));
+    }
+
+    @Test
+    public void shouldFailIfResolvingTheUrlThrowsAURISyntaxException() throws Exception {
+
+        final URI catalogUri = new URI("file:/src/main/schema.json");
+
+        final String fileLocation = "some/path/to.json";
+        final Optional<String> baseLocation = of("this path is silly");
+
+        try {
+            schemaResolver.resolve(catalogUri, fileLocation, baseLocation);
+            fail();
+        } catch (final SchemaCatalogException expected) {
+            assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
+            assertThat(expected.getMessage(), is("Failed to resolve 'file:/src/main/schema.json', to file location 'some/path/to.json', with base location 'this path is silly'"));
+        }
     }
 }

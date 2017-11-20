@@ -21,7 +21,8 @@ import org.junit.Test;
 
 public class CatalogWriterTest {
 
-    private static final File GENERATED_CATALOG_FILE = new File(new File("target/generated-catalogs", "json/schema/catalog"), "schema_catalog.json");
+    private static final File CATALOG_GENERATION_PATH = new File("target/test-output-directory");
+    private static final File GENERATED_CATALOG_FILE = new File(CATALOG_GENERATION_PATH + "/json/schema", "schema_catalog.json");
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
 
@@ -55,7 +56,7 @@ public class CatalogWriterTest {
                 )
         );
 
-        catalogWriter.write(catalog);
+        catalogWriter.write(catalog, CATALOG_GENERATION_PATH.toPath());
 
         assertThat(GENERATED_CATALOG_FILE.exists(), is(true));
 

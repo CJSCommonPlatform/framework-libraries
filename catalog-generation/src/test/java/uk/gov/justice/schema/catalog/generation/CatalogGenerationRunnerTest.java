@@ -10,6 +10,8 @@ import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +40,7 @@ public class CatalogGenerationRunnerTest {
         final String catalogName = "catalog name";
         final URI schemaFile = new URI("file:/schemaFile.json");
         final URL schemaFileUrl = schemaFile.toURL();
+        final Path catalogGenerationPath = Paths.get(new URI("file:/path/to/catalog/generation/directory"));
 
         final Catalog catalog = mock(Catalog.class);
 
@@ -46,8 +49,8 @@ public class CatalogGenerationRunnerTest {
                 catalogName,
                 singletonList(schemaFileUrl))).thenReturn(catalog);
 
-        catalogGenerationRunner.generateCatalog(catalogName, singletonList(schemaFile));
+        catalogGenerationRunner.generateCatalog(catalogName, singletonList(schemaFile), catalogGenerationPath);
 
-        verify(catalogWriter).write(catalog);
+        verify(catalogWriter).write(catalog, catalogGenerationPath);
     }
 }

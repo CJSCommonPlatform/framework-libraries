@@ -7,12 +7,15 @@ import uk.gov.justice.schema.catalog.domain.Catalog;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 
 public class CatalogWriter {
+
+    private static final String CATALOG_SUB_DIRECTORY = "json/schema";
 
     private final ObjectMapper objectMapper;
     private final CatalogGenerationContext catalogGenerationContext;
@@ -23,13 +26,11 @@ public class CatalogWriter {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void write(final Catalog catalog) {
+    public void write(final Catalog catalog, final Path catalogGenerationPath) {
+
 
         final String catalogJson = writeAsString(catalog);
-
-        final String catalogGenerationRoot = catalogGenerationContext.getCatalogGenerationRoot();
-        final String catalogPath = catalogGenerationContext.getCatalogPath();
-        final File outputDirectory = new File(catalogGenerationRoot, catalogPath);
+        final File outputDirectory = catalogGenerationPath.resolve(CATALOG_SUB_DIRECTORY).toFile();
         outputDirectory.mkdirs();
 
         final File outputFile = new File(outputDirectory, catalogGenerationContext.getCatalogFilename());

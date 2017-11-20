@@ -1,0 +1,17 @@
+{
+  "catalog": {
+    "name": "standards",
+    "group": [
+      {
+        "name": "cakeshop",
+        "baseLocation": "standards/",
+        "schema": [
+          {
+            "id": "http://justice.gov.uk/example/standard/ingredient.json",
+            "location": "ingredient.json"
+          }
+        ]
+      }
+    ]
+  }
+}

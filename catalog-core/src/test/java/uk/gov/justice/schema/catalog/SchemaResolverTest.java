@@ -5,6 +5,7 @@ import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.schema.catalog.util.UriResolver;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URI;
@@ -22,7 +23,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class SchemaResolverTest {
 
     @Spy @SuppressWarnings("unused")
-    private UrlConverter urlConverter = new UrlConverter();
+    private final UrlConverter urlConverter = new UrlConverter();
+
+    @Spy
+    @SuppressWarnings("unused")
+    private final UriResolver uriResolver = new UriResolver();
 
     @InjectMocks
     private SchemaResolver schemaResolver;

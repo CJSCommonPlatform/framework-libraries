@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.schema.catalog.domain.Catalog;
 import uk.gov.justice.schema.catalog.domain.Group;
 import uk.gov.justice.schema.catalog.domain.Schema;
+import uk.gov.justice.schema.catalog.util.UriResolver;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URI;
@@ -32,7 +33,7 @@ public class CatalogToSchemaResolverTest {
 
     @Spy
     @SuppressWarnings("unused")
-    private final SchemaResolver schemaResolver = new SchemaResolver(new UrlConverter());
+    private final SchemaResolver schemaResolver = new SchemaResolver(new UrlConverter(), new UriResolver());
 
     @InjectMocks
     private CatalogToSchemaResolver catalogToSchemaResolver;

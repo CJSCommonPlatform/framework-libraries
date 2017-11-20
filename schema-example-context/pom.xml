@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>example-command-api</module>
+        <module>schema-example-command-api</module>
         <module>example-standards</module>
         <module>example-integration-test</module>
     </modules>

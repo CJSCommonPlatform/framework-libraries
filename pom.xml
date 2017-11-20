@@ -23,7 +23,7 @@
         <module>catalog-generation</module>
         <module>catalog-generation-plugin-it</module>
         <module>schema-service</module>
-        <module>example-context</module>
+        <module>schema-example-context</module>
     </modules>
 
     <properties>

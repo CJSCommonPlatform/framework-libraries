@@ -7,6 +7,7 @@ import uk.gov.justice.schema.catalog.domain.Group;
 import uk.gov.justice.schema.catalog.domain.Schema;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,10 +21,10 @@ public class CatalogObjectGenerator {
         this.schemaDefParser = schemaDefParser;
     }
 
-    public Catalog generate(final String catalogName, final List<URL> schemaFiles) {
+    public Catalog generate(final String catalogName, final List<URL> schemaFiles, final Path jsonSchemaPath) {
 
         final List<SchemaDef> schemaDefs = schemaFiles.stream()
-                .map(schemaDefParser::parse)
+                .map(schemaFile -> schemaDefParser.parse(schemaFile, jsonSchemaPath))
                 .collect(toList());
 
         final List<Group> groups = asGroups(schemaDefs);

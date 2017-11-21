@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.Schema;
 import org.junit.Test;
 
-public class CatalogLoaderIT {
+public class ExampleCatalogLoaderIT {
 
     private final FileContentsAsStringLoader fileContentsAsStringLoader = new FileContentsAsStringLoader();
     private final JsonStringToSchemaConverter jsonStringToSchemaConverter = new JsonStringToSchemaConverter();
@@ -37,7 +37,7 @@ public class CatalogLoaderIT {
             schemaClientFactory);
 
     @Test
-    public void shouldMapSchemasOnClasspathToTheirIds() throws Exception {
+    public void shouldMapSchemasOnClasspathToTheirIds2() throws Exception {
 
         final Map<String, Schema> idsToSchemaMap = catalogLoader.loadCatalogsFromClasspath();
 

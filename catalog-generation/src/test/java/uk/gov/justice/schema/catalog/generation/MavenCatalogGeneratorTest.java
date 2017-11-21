@@ -37,6 +37,7 @@ public class MavenCatalogGeneratorTest {
         final String catalogName = "my catalog";
         final List<URI> schemaFiles = singletonList(new URI("/a-schema-file.json"));
         final Path catalogGenerationPath = Paths.get(new URI("file:/path/to/catalog/generation/directory"));
+        final Path jsonSchemaPath = Paths.get("json/schema/");
 
         final CatalogGenerationRunner catalogGenerationRunner = mock(CatalogGenerationRunner.class);
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
@@ -46,10 +47,11 @@ public class MavenCatalogGeneratorTest {
         when(objectFactory.catalogGenerationRunner()).thenReturn(catalogGenerationRunner);
         when(generatorConfig.getGeneratorProperties()).thenReturn(catalogGeneratorProperties);
         when(catalogGeneratorProperties.getCatalogName()).thenReturn(catalogName);
+        when(catalogGeneratorProperties.getJsonSchemaPath()).thenReturn(jsonSchemaPath);
 
         mavenCatalogGenerator.run(schemaFiles, generatorConfig);
 
-        verify(catalogGenerationRunner).generateCatalog(catalogName, schemaFiles, catalogGenerationPath);
+        verify(catalogGenerationRunner).generateCatalog(catalogName, schemaFiles, catalogGenerationPath, jsonSchemaPath);
     }
 
     @Test

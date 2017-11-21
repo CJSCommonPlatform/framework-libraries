@@ -33,7 +33,8 @@ public class MavenCatalogGenerator implements Generator<List<URI>> {
         final CatalogGeneratorProperties generatorProperties =
                 (CatalogGeneratorProperties) generatorConfig.getGeneratorProperties();
         final String catalogName = generatorProperties.getCatalogName();
+        final Path jsonSchemaPath = generatorProperties.getJsonSchemaPath();
 
-        catalogGenerationRunner.generateCatalog(catalogName, schemaFiles, catalogGenerationPath);
+        catalogGenerationRunner.generateCatalog(catalogName, schemaFiles, catalogGenerationPath, jsonSchemaPath);
     }
 }

@@ -18,9 +18,4 @@ public class CatalogGenerationContextTest {
     public void shouldGetCatalogFilename() throws Exception {
         assertThat(catalogGenerationContext.getCatalogFilename(), is("schema_catalog.json"));
     }
-
-    @Test
-    public void shouldGetJsonSchemaPath() throws Exception {
-        assertThat(catalogGenerationContext.getJsonSchemaPath(), is("raml/json/schema/"));
-    }
 }

@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.schema.catalog.domain.CatalogWrapper;
+import uk.gov.justice.schema.catalog.domain.Catalog;
 import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
@@ -46,7 +46,7 @@ public class ClasspathCatalogLoaderTest {
 
         when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "json/schema/schema_catalog.json")).thenReturn(singletonList(url));
         when(urlConverter.toUri(url)).thenReturn(uri);
-        when(objectMapper.readValue(url, CatalogWrapper.class)).thenThrow(ioException);
+        when(objectMapper.readValue(url, Catalog.class)).thenThrow(ioException);
 
         try {
             classpathCatalogLoader.getCatalogs();

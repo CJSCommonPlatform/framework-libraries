@@ -39,6 +39,7 @@ public class CatalogGenerationRunnerTest {
 
         final String catalogName = "catalog name";
         final URI schemaFile = new URI("file:/schemaFile.json");
+        final Path jsonSchemaPath = Paths.get("json/schema/");
         final URL schemaFileUrl = schemaFile.toURL();
         final Path catalogGenerationPath = Paths.get(new URI("file:/path/to/catalog/generation/directory"));
 
@@ -47,9 +48,10 @@ public class CatalogGenerationRunnerTest {
         when(urlConverter.toUrl(schemaFile)).thenReturn(schemaFileUrl);
         when(catalogObjectGenerator.generate(
                 catalogName,
-                singletonList(schemaFileUrl))).thenReturn(catalog);
+                singletonList(schemaFileUrl),
+                jsonSchemaPath)).thenReturn(catalog);
 
-        catalogGenerationRunner.generateCatalog(catalogName, singletonList(schemaFile), catalogGenerationPath);
+        catalogGenerationRunner.generateCatalog(catalogName, singletonList(schemaFile), catalogGenerationPath, jsonSchemaPath);
 
         verify(catalogWriter).write(catalog, catalogGenerationPath);
     }

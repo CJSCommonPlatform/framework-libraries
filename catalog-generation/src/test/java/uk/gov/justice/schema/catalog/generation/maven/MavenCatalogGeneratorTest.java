@@ -1,15 +1,13 @@
-package uk.gov.justice.schema.catalog.generation;
+package uk.gov.justice.schema.catalog.generation.maven;
 
 import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
-import uk.gov.justice.schema.catalog.generation.maven.CatalogGeneratorProperties;
+import uk.gov.justice.schema.catalog.generation.CatalogGenerationRunner;
+import uk.gov.justice.schema.catalog.generation.ObjectFactory;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -52,10 +50,5 @@ public class MavenCatalogGeneratorTest {
         mavenCatalogGenerator.run(schemaFiles, generatorConfig);
 
         verify(catalogGenerationRunner).generateCatalog(catalogName, schemaFiles, catalogGenerationPath, jsonSchemaPath);
-    }
-
-    @Test
-    public void shouldAddThisTestToStopCoverallsFromWhingeing() throws Exception {
-        assertThat(new MavenCatalogGenerator(), is(instanceOf(MavenCatalogGenerator.class)));
     }
 }

@@ -1,24 +1,18 @@
-package uk.gov.justice.schema.catalog.generation;
+package uk.gov.justice.schema.catalog.generation.maven;
 
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
-import uk.gov.justice.schema.catalog.generation.maven.CatalogGeneratorProperties;
+import uk.gov.justice.schema.catalog.generation.CatalogGenerationRunner;
+import uk.gov.justice.schema.catalog.generation.ObjectFactory;
 
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
 
-import com.google.common.annotations.VisibleForTesting;
-
 public class MavenCatalogGenerator implements Generator<List<URI>> {
 
     private final ObjectFactory objectFactory;
 
-    public MavenCatalogGenerator() {
-        this(new ObjectFactory());
-    }
-
-    @VisibleForTesting
     public MavenCatalogGenerator(final ObjectFactory objectFactory) {
         this.objectFactory = objectFactory;
     }

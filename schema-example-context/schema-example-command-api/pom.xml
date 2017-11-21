@@ -23,7 +23,7 @@
                         <id>internal-jsons</id>
                         <configuration>
                             <generatorName>
-                                uk.gov.justice.schema.catalog.generation.MavenCatalogGenerator
+                                uk.gov.justice.schema.catalog.generation.maven.MavenCatalogGeneratorFactory
                             </generatorName>
                             <parserName>
                                 uk.gov.justice.schema.catalog.generation.io.parser.ListOfUriParser

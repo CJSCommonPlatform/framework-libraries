@@ -7,7 +7,7 @@ import uk.gov.justice.schema.catalog.CatalogLoader;
 import uk.gov.justice.schema.catalog.CatalogToSchemaResolver;
 import uk.gov.justice.schema.catalog.ClasspathCatalogLoader;
 import uk.gov.justice.schema.catalog.FileContentsAsStringLoader;
-import uk.gov.justice.schema.catalog.JsonSchemaLoader;
+import uk.gov.justice.schema.catalog.JsonSchemaFileLoader;
 import uk.gov.justice.schema.catalog.JsonStringToSchemaConverter;
 import uk.gov.justice.schema.catalog.SchemaResolver;
 import uk.gov.justice.schema.catalog.SchemaResolverAndLoader;
@@ -43,7 +43,7 @@ public class SchemaServiceIT {
             ClasspathCatalogLoader.class,
             ClasspathResourceLoader.class,
             FileContentsAsStringLoader.class,
-            JsonSchemaLoader.class,
+            JsonSchemaFileLoader.class,
             JsonStringToSchemaConverter.class,
             ObjectMapperProducer.class,
             SchemaCatalogService.class,

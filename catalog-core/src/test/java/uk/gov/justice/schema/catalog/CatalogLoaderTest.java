@@ -30,7 +30,7 @@ public class CatalogLoaderTest {
     private CatalogToSchemaResolver catalogToSchemaResolver;
 
     @Mock
-    private JsonSchemaLoader jsonSchemaLoader;
+    private JsonSchemaFileLoader jsonSchemaFileLoader;
 
     @Mock
     private SchemaClientFactory schemaClientFactory;
@@ -48,7 +48,7 @@ public class CatalogLoaderTest {
         final LocalFileSystemSchemaClient localFileSystemSchemaClient = mock(LocalFileSystemSchemaClient.class);
 
         when(catalogToSchemaResolver.resolveSchemaLocations()).thenReturn(schemaLocationMap);
-        when(jsonSchemaLoader.loadJsonFrom(schemaLocationMap)).thenReturn(urlsToJson);
+        when(jsonSchemaFileLoader.loadJsonFrom(schemaLocationMap)).thenReturn(urlsToJson);
         when(schemaClientFactory.create(urlsToJson)).thenReturn(localFileSystemSchemaClient);
 
         when(schemaResolverAndLoader.loadSchemas(urlsToJson, localFileSystemSchemaClient)).thenReturn(urlsToSchema);

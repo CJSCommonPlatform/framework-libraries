@@ -7,12 +7,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-public class JsonSchemaLoader {
+public class JsonSchemaFileLoader {
 
     private final FileContentsAsStringLoader fileContentsAsStringLoader;
 
     @Inject
-    public JsonSchemaLoader(final FileContentsAsStringLoader fileContentsAsStringLoader) {
+    public JsonSchemaFileLoader(final FileContentsAsStringLoader fileContentsAsStringLoader) {
         this.fileContentsAsStringLoader = fileContentsAsStringLoader;
     }
 

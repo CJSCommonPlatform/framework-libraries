@@ -15,13 +15,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JsonSchemaLoaderTest {
+public class JsonSchemaFileLoaderTest {
 
     @Mock
     private FileContentsAsStringLoader fileContentsAsStringLoader;
 
     @InjectMocks
-    private JsonSchemaLoader jsonSchemaLoader;
+    private JsonSchemaFileLoader jsonSchemaFileLoader;
 
     @Test
     public void shouldName() throws Exception {
@@ -37,7 +37,7 @@ public class JsonSchemaLoaderTest {
         when(fileContentsAsStringLoader.readFileContents(url_1)).thenReturn(json_1);
         when(fileContentsAsStringLoader.readFileContents(url_2)).thenReturn(json_2);
 
-        final Map<String, String> idsToJson = jsonSchemaLoader.loadJsonFrom(schemaLocationMap);
+        final Map<String, String> idsToJson = jsonSchemaFileLoader.loadJsonFrom(schemaLocationMap);
 
         assertThat(idsToJson.get("id_1"), is(json_1));
         assertThat(idsToJson.get("id_2"), is(json_2));

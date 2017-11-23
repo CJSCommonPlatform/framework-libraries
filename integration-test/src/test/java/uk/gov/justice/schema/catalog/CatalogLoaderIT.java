@@ -28,13 +28,13 @@ public class CatalogLoaderIT {
     private final ClasspathCatalogLoader classpathCatalogLoader = new ClasspathCatalogLoader(objectMapper, classpathResourceLoader, urlConverter);
     private final SchemaResolver schemaResolver = new SchemaResolver(urlConverter, uriResolver);
     private final CatalogToSchemaResolver catalogToSchemaResolver = new CatalogToSchemaResolver(classpathCatalogLoader, schemaResolver);
-    private final JsonSchemaLoader jsonSchemaLoader = new JsonSchemaLoader(fileContentsAsStringLoader);
+    private final JsonSchemaFileLoader jsonSchemaFileLoader = new JsonSchemaFileLoader(fileContentsAsStringLoader);
     private final SchemaClientFactory schemaClientFactory = new SchemaClientFactory();
 
     private final CatalogLoader catalogLoader = new CatalogLoader(
             schemaResolverAndLoader,
             catalogToSchemaResolver,
-            jsonSchemaLoader,
+            jsonSchemaFileLoader,
             schemaClientFactory);
 
     @Test

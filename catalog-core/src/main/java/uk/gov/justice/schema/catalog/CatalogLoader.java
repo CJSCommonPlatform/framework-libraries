@@ -12,24 +12,24 @@ public class CatalogLoader {
 
     private final SchemaResolverAndLoader schemaResolverAndLoader;
     private final CatalogToSchemaResolver catalogToSchemaResolver;
-    private final JsonSchemaLoader jsonSchemaLoader;
+    private final JsonSchemaFileLoader jsonSchemaFileLoader;
     private final SchemaClientFactory schemaClientFactory;
 
     @Inject
     public CatalogLoader(
             final SchemaResolverAndLoader schemaResolverAndLoader,
             final CatalogToSchemaResolver catalogToSchemaResolver,
-            final JsonSchemaLoader jsonSchemaLoader,
+            final JsonSchemaFileLoader jsonSchemaFileLoader,
             final SchemaClientFactory schemaClientFactory) {
         this.schemaResolverAndLoader = schemaResolverAndLoader;
         this.catalogToSchemaResolver = catalogToSchemaResolver;
-        this.jsonSchemaLoader = jsonSchemaLoader;
+        this.jsonSchemaFileLoader = jsonSchemaFileLoader;
         this.schemaClientFactory = schemaClientFactory;
     }
 
     public Map<String, Schema> loadCatalogsFromClasspath() {
 
-        final Map<String, String> urlsToJson = jsonSchemaLoader.loadJsonFrom(
+        final Map<String, String> urlsToJson = jsonSchemaFileLoader.loadJsonFrom(
                 catalogToSchemaResolver.resolveSchemaLocations()
         );
 

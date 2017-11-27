@@ -20,6 +20,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>uk.gov.justice.schema</groupId>
+            <artifactId>catalog-generation</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-core</artifactId>
             <version>${utilities.version}</version>

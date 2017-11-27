@@ -37,16 +37,8 @@
             <version>${utilities.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.everit-org.json-schema</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.raml</groupId>
-            <artifactId>raml-parser</artifactId>
         </dependency>
 
         <!-- Test Dependencies -->

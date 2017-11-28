@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- Jacoco exclude uk/gov/justice/api/mapper/*MediaTypeToSchemaIdMapper.class
+
 ### Changed
  - wildfly-maven-plugin 1.2.0.Alpha6 -> 1.2.0.Final
 

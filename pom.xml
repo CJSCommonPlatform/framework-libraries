@@ -154,6 +154,7 @@
                         <exclude>uk/gov/justice/api/controller/Remote*.class</exclude>
                         <exclude>uk/gov/justice/api/resource/*Resource.class</exclude>
                         <exclude>uk/gov/justice/api/mapper/*ActionMapper.class</exclude>
+                        <exclude>uk/gov/justice/api/mapper/*MediaTypeToSchemaIdMapper.class</exclude>
                         <exclude>entity/*_.class</exclude>
                     </excludes>
                 </configuration>

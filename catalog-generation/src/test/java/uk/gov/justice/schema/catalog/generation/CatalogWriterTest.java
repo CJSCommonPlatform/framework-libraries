@@ -64,16 +64,16 @@ public class CatalogWriterTest {
 
         with(catalogJson)
                 .assertThat("$.name", is(catalog.getName()))
-                .assertThat("$.group[0].name", is(catalog.getGroup().get(0).getName()))
-                .assertThat("$.group[0].baseLocation", is(catalog.getGroup().get(0).getBaseLocation()))
-                .assertThat("$.group[0].schema[0].id", is(catalog.getGroup().get(0).getSchema().get(0).getId()))
-                .assertThat("$.group[0].schema[0].location", is(catalog.getGroup().get(0).getSchema().get(0).getLocation()))
-                .assertThat("$.group[0].schema[1].id", is(catalog.getGroup().get(0).getSchema().get(1).getId()))
-                .assertThat("$.group[0].schema[1].location", is(catalog.getGroup().get(0).getSchema().get(1).getLocation()))
-                .assertThat("$.group[1].name", is(catalog.getGroup().get(1).getName()))
+                .assertThat("$.groups[0].name", is(catalog.getGroups().get(0).getName()))
+                .assertThat("$.groups[0].baseLocation", is(catalog.getGroups().get(0).getBaseLocation()))
+                .assertThat("$.groups[0].schemas[0].id", is(catalog.getGroups().get(0).getSchemas().get(0).getId()))
+                .assertThat("$.groups[0].schemas[0].location", is(catalog.getGroups().get(0).getSchemas().get(0).getLocation()))
+                .assertThat("$.groups[0].schemas[1].id", is(catalog.getGroups().get(0).getSchemas().get(1).getId()))
+                .assertThat("$.groups[0].schemas[1].location", is(catalog.getGroups().get(0).getSchemas().get(1).getLocation()))
+                .assertThat("$.groups[1].name", is(catalog.getGroups().get(1).getName()))
                 .assertNotDefined("$.group[1].baseLocation")
-                .assertThat("$.group[1].schema[0].id", is(catalog.getGroup().get(1).getSchema().get(0).getId()))
-                .assertThat("$.group[1].schema[0].location", is(catalog.getGroup().get(1).getSchema().get(0).getLocation()))
+                .assertThat("$.groups[1].schemas[0].id", is(catalog.getGroups().get(1).getSchemas().get(0).getId()))
+                .assertThat("$.groups[1].schemas[0].location", is(catalog.getGroups().get(1).getSchemas().get(0).getLocation()))
         ;
     }
 }

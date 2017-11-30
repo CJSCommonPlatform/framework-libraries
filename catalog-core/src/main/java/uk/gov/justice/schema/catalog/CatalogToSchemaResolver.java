@@ -45,8 +45,8 @@ public class CatalogToSchemaResolver {
         final Map<URI, Catalog> catalogs = classpathCatalogLoader.getCatalogs();
 
         for(final URI catalogLocation: catalogs.keySet()) {
-            for(final Group group: catalogs.get(catalogLocation).getGroup()) {
-                for(final Schema schema: group.getSchema()) {
+            for(final Group group: catalogs.get(catalogLocation).getGroups()) {
+                for(final Schema schema: group.getSchemas()) {
                     final String location = schema.getLocation();
                     final Optional<String> baseLocation = ofNullable(group.getBaseLocation());
 

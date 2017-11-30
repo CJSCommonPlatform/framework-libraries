@@ -55,8 +55,8 @@ public class CatalogToSchemaResolverTest {
         final Map<URI, Catalog> catalogPojoMap = ImmutableMap.of(uri, catalog);
 
         when(classpathCatalogLoader.getCatalogs()).thenReturn(catalogPojoMap);
-        when(catalog.getGroup()).thenReturn(singletonList(group));
-        when(group.getSchema()).thenReturn(singletonList(schema));
+        when(catalog.getGroups()).thenReturn(singletonList(group));
+        when(group.getSchemas()).thenReturn(singletonList(schema));
 
         when(schema.getLocation()).thenReturn("some/path/to.json");
         when(schema.getId()).thenReturn("schemaId");
@@ -85,10 +85,10 @@ public class CatalogToSchemaResolverTest {
         final Map<URI, Catalog> catalogPojoMap = ImmutableMap.of(catalogLocation_1, catalog_1, catalogLocation_2, catalog_2);
 
         when(classpathCatalogLoader.getCatalogs()).thenReturn(catalogPojoMap);
-        when(catalog_1.getGroup()).thenReturn(singletonList(group_1));
-        when(catalog_2.getGroup()).thenReturn(singletonList(group_2));
-        when(group_1.getSchema()).thenReturn(singletonList(schema_1));
-        when(group_2.getSchema()).thenReturn(singletonList(schema_2));
+        when(catalog_1.getGroups()).thenReturn(singletonList(group_1));
+        when(catalog_2.getGroups()).thenReturn(singletonList(group_2));
+        when(group_1.getSchemas()).thenReturn(singletonList(schema_1));
+        when(group_2.getSchemas()).thenReturn(singletonList(schema_2));
 
         when(schema_1.getLocation()).thenReturn("some/path/to.json");
         when(schema_2.getLocation()).thenReturn("some/other/path/to.json");

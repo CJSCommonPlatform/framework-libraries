@@ -4,16 +4,16 @@ import java.util.List;
 
 public class Catalog {
 
-    private final List<Group> group;
+    private final List<Group> groups;
     private final String name;
 
-    public Catalog(final String name, final List<Group> group) {
-        this.group = group;
+    public Catalog(final String name, final List<Group> groups) {
+        this.groups = groups;
         this.name = name;
     }
 
-    public List<Group> getGroup() {
-        return group;
+    public List<Group> getGroups() {
+        return groups;
     }
 
     public String getName() {
@@ -23,7 +23,7 @@ public class Catalog {
     @Override
     public String toString() {
         return "Catalog{" +
-                "group=" + group +
+                "groups=" + groups +
                 ", name='" + name + '\'' +
                 '}';
     }

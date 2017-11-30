@@ -44,22 +44,22 @@ public class CatalogObjectGeneratorTest {
         final Catalog catalog = catalogObjectGenerator.generate(catalogName, schemaFiles, jsonSchemaPath);
 
         assertThat(catalog.getName(), is(catalogName));
-        assertThat(catalog.getGroup().size(), is(2));
+        assertThat(catalog.getGroups().size(), is(2));
 
-        assertThat(catalog.getGroup().get(0).getName(), is("standards"));
-        assertThat(catalog.getGroup().get(0).getBaseLocation(), is("standards/"));
-        assertThat(catalog.getGroup().get(0).getSchema().size(), is(3));
-        assertThat(catalog.getGroup().get(0).getSchema().get(0).getId(), is("http://justice.gov.uk/standards/address.json"));
-        assertThat(catalog.getGroup().get(0).getSchema().get(0).getLocation(), is("address.json"));
-        assertThat(catalog.getGroup().get(0).getSchema().get(1).getId(), is("http://justice.gov.uk/standards/complex_address.json"));
-        assertThat(catalog.getGroup().get(0).getSchema().get(1).getLocation(), is("complex_address.json"));
-        assertThat(catalog.getGroup().get(0).getSchema().get(2).getId(), is("http://justice.gov.uk/standards/defendant.json"));
-        assertThat(catalog.getGroup().get(0).getSchema().get(2).getLocation(), is("defendant.json"));
+        assertThat(catalog.getGroups().get(0).getName(), is("standards"));
+        assertThat(catalog.getGroups().get(0).getBaseLocation(), is("standards/"));
+        assertThat(catalog.getGroups().get(0).getSchemas().size(), is(3));
+        assertThat(catalog.getGroups().get(0).getSchemas().get(0).getId(), is("http://justice.gov.uk/standards/address.json"));
+        assertThat(catalog.getGroups().get(0).getSchemas().get(0).getLocation(), is("address.json"));
+        assertThat(catalog.getGroups().get(0).getSchemas().get(1).getId(), is("http://justice.gov.uk/standards/complex_address.json"));
+        assertThat(catalog.getGroups().get(0).getSchemas().get(1).getLocation(), is("complex_address.json"));
+        assertThat(catalog.getGroups().get(0).getSchemas().get(2).getId(), is("http://justice.gov.uk/standards/defendant.json"));
+        assertThat(catalog.getGroups().get(0).getSchemas().get(2).getLocation(), is("defendant.json"));
 
-        assertThat(catalog.getGroup().get(1).getName(), is("context"));
-        assertThat(catalog.getGroup().get(1).getBaseLocation(), is("context/"));
-        assertThat(catalog.getGroup().get(1).getSchema().size(), is(1));
-        assertThat(catalog.getGroup().get(1).getSchema().get(0).getId(), is("http://justice.gov.uk/context/person.json"));
-        assertThat(catalog.getGroup().get(1).getSchema().get(0).getLocation(), is("person.json"));
+        assertThat(catalog.getGroups().get(1).getName(), is("context"));
+        assertThat(catalog.getGroups().get(1).getBaseLocation(), is("context/"));
+        assertThat(catalog.getGroups().get(1).getSchemas().size(), is(1));
+        assertThat(catalog.getGroups().get(1).getSchemas().get(0).getId(), is("http://justice.gov.uk/context/person.json"));
+        assertThat(catalog.getGroups().get(1).getSchemas().get(0).getLocation(), is("person.json"));
     }
 }

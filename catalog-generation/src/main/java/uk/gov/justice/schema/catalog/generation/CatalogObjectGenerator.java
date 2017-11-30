@@ -56,7 +56,7 @@ public class CatalogObjectGenerator {
 
         final Group group = groups.get(groupName);
 
-        final List<Schema> schemas = group.getSchema();
+        final List<Schema> schemas = group.getSchemas();
 
         schemas.add(new Schema(schemaDef.getId().toString(), schemaDef.getLocation()));
     }

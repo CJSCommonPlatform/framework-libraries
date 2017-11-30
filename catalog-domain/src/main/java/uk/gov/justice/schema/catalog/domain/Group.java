@@ -6,12 +6,12 @@ public class Group {
 
     private final String baseLocation;
     private final String name;
-    private final List<Schema> schema;
+    private final List<Schema> schemas;
 
-    public Group(final String baseLocation, final String name, final List<Schema> schema) {
+    public Group(final String baseLocation, final String name, final List<Schema> schemas) {
         this.baseLocation = baseLocation;
         this.name = name;
-        this.schema = schema;
+        this.schemas = schemas;
     }
 
     public String getBaseLocation() {
@@ -22,8 +22,8 @@ public class Group {
         return name;
     }
 
-    public List<Schema> getSchema() {
-        return schema;
+    public List<Schema> getSchemas() {
+        return schemas;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Group {
         return "Group{" +
                 "baseLocation='" + baseLocation + '\'' +
                 ", name='" + name + '\'' +
-                ", schema=" + schema +
+                ", schemas=" + schemas +
                 '}';
     }
 }

@@ -15,6 +15,7 @@ import uk.gov.justice.schema.client.SchemaClientFactory;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.LoggerFactory;
 
 public class ObjectFactory {
 
@@ -81,7 +82,7 @@ public class ObjectFactory {
     }
 
     public CatalogToSchemaResolver catalogToSchemaResolver() {
-       return new CatalogToSchemaResolver(classpathCatalogLoader(), schemaResolver());
+       return new CatalogToSchemaResolver(classpathCatalogLoader(), schemaResolver(), LoggerFactory.getLogger(CatalogToSchemaResolver.class));
     }
 
     public FileContentsAsStringLoader fileContentsAsStringLoader() {

@@ -4,6 +4,7 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.schema.catalog.domain.Catalog;
@@ -23,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,6 +36,9 @@ public class CatalogToSchemaResolverTest {
     @Spy
     @SuppressWarnings("unused")
     private final SchemaResolver schemaResolver = new SchemaResolver(new UrlConverter(), new UriResolver());
+
+    @Mock
+    private Logger logger;
 
     @InjectMocks
     private CatalogToSchemaResolver catalogToSchemaResolver;
@@ -62,5 +67,41 @@ public class CatalogToSchemaResolverTest {
 
         assertThat(schemaLocations.containsKey("schemaId"), is(true));
         assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/some/path/to.json"));
+    }
+
+    @Test
+    public void shouldHandleDuplicates() throws Exception {
+
+        final Catalog catalog_1 = mock(Catalog.class);
+        final Catalog catalog_2 = mock(Catalog.class);
+        final Group group_1 = mock(Group.class);
+        final Group group_2 = mock(Group.class);
+        final Schema schema_1 = mock(Schema.class);
+        final Schema schema_2 = mock(Schema.class);
+
+        final URI catalogLocation_1 = new URI("file:/src/main/catalog.json");
+        final URI catalogLocation_2 = new URI("file:/src/main/another-catalog.json");
+
+        final Map<URI, Catalog> catalogPojoMap = ImmutableMap.of(catalogLocation_1, catalog_1, catalogLocation_2, catalog_2);
+
+        when(classpathCatalogLoader.getCatalogs()).thenReturn(catalogPojoMap);
+        when(catalog_1.getGroup()).thenReturn(singletonList(group_1));
+        when(catalog_2.getGroup()).thenReturn(singletonList(group_2));
+        when(group_1.getSchema()).thenReturn(singletonList(schema_1));
+        when(group_2.getSchema()).thenReturn(singletonList(schema_2));
+
+        when(schema_1.getLocation()).thenReturn("some/path/to.json");
+        when(schema_2.getLocation()).thenReturn("some/other/path/to.json");
+        when(schema_1.getId()).thenReturn("schemaId");
+        when(schema_2.getId()).thenReturn("schemaId");
+
+        final Map<String, URL> schemaLocations = catalogToSchemaResolver.resolveSchemaLocations();
+
+        assertThat(schemaLocations.size(), is(1));
+
+        assertThat(schemaLocations.containsKey("schemaId"), is(true));
+        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/some/path/to.json"));
+
+        verify(logger).warn("Found duplicate schema id 'schemaId' for schemaLocations 'file:/src/main/some/path/to.json' and 'file:/src/main/some/other/path/to.json'");
     }
 }

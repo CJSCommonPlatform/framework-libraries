@@ -12,7 +12,6 @@ import uk.gov.justice.schema.catalog.JsonStringToSchemaConverter;
 import uk.gov.justice.schema.catalog.SchemaResolver;
 import uk.gov.justice.schema.catalog.SchemaResolverAndLoader;
 import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
-import uk.gov.justice.schema.catalog.util.LoggerProducer;
 import uk.gov.justice.schema.catalog.util.UriResolver;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 import uk.gov.justice.schema.client.SchemaClientFactory;

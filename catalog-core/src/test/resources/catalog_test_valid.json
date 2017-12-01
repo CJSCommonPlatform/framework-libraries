@@ -1,11 +1,11 @@
 {
   "catalog": {
     "name": "my catalog",
-    "group": [
+    "groups": [
       {
         "name": "standards",
         "baseLocation": "jar://CommonSchemas.jar!//context/schemas",
-        "schema": [
+        "schemas": [
           {
             "id": "http://justive.gov.uk/standards/complex_addressV1.json",
             "location": "standards/complex_addressV1.json"
@@ -19,7 +19,7 @@
       {
         "name": "staging interface",
         "baseLocation": "file:///context/schemas",
-        "schema": [
+        "schemas": [
           {
             "id": "http://justive.gov.uk/context/exhibitV1.json",
             "location": "context/eh.json"

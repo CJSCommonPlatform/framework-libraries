@@ -11,7 +11,6 @@ import org.json.JSONTokener;
 
 public class JsonStringToSchemaConverter {
 
-    // TODO: test me!!!
     public Schema convert(final String schemaJson, final SchemaClient schemaClient) {
         try {
             return SchemaLoader.builder()

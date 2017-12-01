@@ -1,8 +1,10 @@
 # Json Schema Catalog
 
+This library is intended as a json version of XML Catalogs: https://www.oasis-open.org/committees/entity/spec-2001-08-06.html
 
 ## Overview
 Json Schema Catalog is a Maven Plugin which allows easy inclusion of references in json schema documents to other json schemas, without the need to host the fragment schemas on a server, and/or to solve the problems of paths if the fragment schemas are stored on a file system. This allows for common standard schema definitions like *address* or *UUID* to be commonly used in all json schema documents and for these fragment schemas to be shared as jars.
+
 
 Json Schema Catalog works by building a catalog of all json schemas found at a known location on the classpath and mapping the actual location (on the classpath) to the id of the json schema file.
 
@@ -86,4 +88,6 @@ Instead, we build a catalog of all json schemas found on the classpath (at a kno
 So, in our example we would map the address.json fragment id http://justice.gov.uk/standard/fragments/address.json against it's actual location jar://CommonSchemas.jar!//context/schemas/fragments/addresses/address.json.
 
 When a json document is validated, we override the call to the fragment id url and instead return an InputStream to the actual fragment schema file.
+
+For this to work, each schema file *must* define an id and that id *must* match the reference given in the main json schema document.
 

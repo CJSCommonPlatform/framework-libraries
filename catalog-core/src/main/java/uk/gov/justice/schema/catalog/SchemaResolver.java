@@ -10,8 +10,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
-import javax.inject.Inject;
-
 public class SchemaResolver {
 
     private static final String AN_EMPTY_STRING = "";
@@ -19,7 +17,6 @@ public class SchemaResolver {
     private final UrlConverter urlConverter;
     private final UriResolver uriResolver;
 
-    @Inject
     public SchemaResolver(final UrlConverter urlConverter, final UriResolver uriResolver) {
         this.urlConverter = urlConverter;
         this.uriResolver = uriResolver;

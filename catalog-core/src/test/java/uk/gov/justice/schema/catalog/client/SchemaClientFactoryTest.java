@@ -1,12 +1,13 @@
-package uk.gov.justice.schema.client;
+package uk.gov.justice.schema.catalog.client;
 
-import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
+import uk.gov.justice.schema.catalog.RawCatalog;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
 import org.everit.json.schema.loader.SchemaClient;
 import org.junit.Test;
@@ -23,15 +24,15 @@ public class SchemaClientFactoryTest {
     @Test
     public void shouldCreateANewLocalFileSystemSchemaClient() throws Exception {
 
-        final Map<String, String> urlsToJson = of("id", "{\"some\": \"json\"}");
+        final RawCatalog rawCatalog = mock(RawCatalog.class);
 
-        final SchemaClient schemaClient = schemaClientFactory.create(urlsToJson);
+        final SchemaClient schemaClient = schemaClientFactory.create(rawCatalog);
 
         assertThat(schemaClient, is(instanceOf(LocalFileSystemSchemaClient.class)));
 
-        final Field idsToJsonField = schemaClient.getClass().getDeclaredField("urlsToJson");
-        idsToJsonField.setAccessible(true);
+        final Field rawCatalogField = schemaClient.getClass().getDeclaredField("rawCatalog");
+        rawCatalogField.setAccessible(true);
 
-        assertThat(idsToJsonField.get(schemaClient), is(urlsToJson));
+        assertThat(rawCatalogField.get(schemaClient), is(rawCatalog));
     }
 }

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 import uk.gov.justice.schema.catalog.generation.CatalogGenerationRunner;
-import uk.gov.justice.schema.catalog.generation.ObjectFactory;
+import uk.gov.justice.schema.catalog.generation.GenerationObjectFactory;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -24,7 +24,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class MavenCatalogGeneratorTest {
 
     @Mock
-    private ObjectFactory objectFactory;
+    private GenerationObjectFactory generationObjectFactory;
 
     @InjectMocks
     private MavenCatalogGenerator mavenCatalogGenerator;
@@ -42,7 +42,7 @@ public class MavenCatalogGeneratorTest {
         final CatalogGeneratorProperties catalogGeneratorProperties = mock(CatalogGeneratorProperties.class);
 
         when(generatorConfig.getOutputDirectory()).thenReturn(catalogGenerationPath);
-        when(objectFactory.catalogGenerationRunner()).thenReturn(catalogGenerationRunner);
+        when(generationObjectFactory.catalogGenerationRunner()).thenReturn(catalogGenerationRunner);
         when(generatorConfig.getGeneratorProperties()).thenReturn(catalogGeneratorProperties);
         when(catalogGeneratorProperties.getCatalogName()).thenReturn(catalogName);
         when(catalogGeneratorProperties.getJsonSchemaPath()).thenReturn(jsonSchemaPath);

@@ -2,22 +2,22 @@ package uk.gov.justice.schema.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.schema.catalog.CatalogLoader;
+import uk.gov.justice.schema.catalog.Catalog;
 
-import java.util.Map;
 import java.util.Optional;
 
-import com.google.common.collect.ImmutableMap;
 import org.everit.json.schema.Schema;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+@SuppressWarnings("ConstantConditions")
 @RunWith(MockitoJUnitRunner.class)
 public class SchemaCatalogServiceTest {
 
@@ -25,35 +25,46 @@ public class SchemaCatalogServiceTest {
     private Schema catalogSchema;
 
     @Mock
-    private CatalogLoader catalogLoader;
+    private Catalog catalog;
 
     @InjectMocks
     private SchemaCatalogService schemaCatalogService;
 
-    @Before
-    public void setup() {
-        final Map<String, Schema> catalog = ImmutableMap.of("uri", catalogSchema);
-
-        when(catalogLoader.loadCatalogsFromClasspath()).thenReturn(catalog);
-        schemaCatalogService.initialiseCatalog();
-    }
-
     @Test
-    public void shouldReturnSchemaForUriId() throws Exception {
-        final String uri = "uri";
+    public void shouldReturnSchemaForSchemaId() throws Exception {
+        final String schemaId = "schemaId";
 
-        final Optional<Schema> schema = schemaCatalogService.findSchema(uri);
+        when(catalog.getSchema(schemaId)).thenReturn(Optional.of(catalogSchema));
+
+        final Optional<Schema> schema = schemaCatalogService.findSchema(schemaId);
 
         assertThat(schema.isPresent(), is(true));
         assertThat(schema.get(), is(catalogSchema));
     }
 
     @Test
-    public void shouldReturnOptionalEmptyIfUriIdIsUnknown() throws Exception {
-        final String uri = "unknown";
+    public void shouldReturnOptionalEmptyIfSchemaIdIsUnknown() throws Exception {
+        final String schemaId = "unknown";
 
-        final Optional<Schema> schema = schemaCatalogService.findSchema(uri);
+        when(catalog.getSchema(schemaId)).thenReturn(Optional.empty());
+
+        final Optional<Schema> schema = schemaCatalogService.findSchema(schemaId);
 
         assertThat(schema.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldCacheTheResultsOfTheCallToCatalog() throws Exception {
+        final String schemaId = "schemaId";
+
+        when(catalog.getSchema(schemaId)).thenReturn(Optional.of(catalogSchema));
+
+        assertThat(schemaCatalogService.findSchema(schemaId).get(), is(catalogSchema));
+        assertThat(schemaCatalogService.findSchema(schemaId).get(), is(catalogSchema));
+        assertThat(schemaCatalogService.findSchema(schemaId).get(), is(catalogSchema));
+        assertThat(schemaCatalogService.findSchema(schemaId).get(), is(catalogSchema));
+        assertThat(schemaCatalogService.findSchema(schemaId).get(), is(catalogSchema));
+
+        verify(catalog, times(1)).getSchema(schemaId);
     }
 }

@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [2.3.0]
+### Changed
+- plugin basePackageName property is optional
+
 ## [2.2.0] - 2017-11-07
 ### Changed
 - Updated common-bom to version 1.21.0

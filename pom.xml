@@ -12,7 +12,7 @@
 
     <groupId>uk.gov.justice.schema</groupId>
     <artifactId>json-schema-catalog</artifactId>
-    <version>0.9.4-SNAPSHOT</version>
+    <version>0.9.3</version>
     <packaging>pom</packaging>
 
     <modules>

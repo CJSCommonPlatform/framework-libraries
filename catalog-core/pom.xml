@@ -23,11 +23,6 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.schema</groupId>
-            <artifactId>everit-schema-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.schema</groupId>
             <artifactId>catalog-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -35,6 +30,10 @@
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-core</artifactId>
             <version>${utilities.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.everit-org.json-schema</groupId>
+            <artifactId>org.everit.json.schema</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

@@ -23,6 +23,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "generate", requiresDependencyResolution = COMPILE_PLUS_RUNTIME, defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateMojo extends BasicMojo {
 
+    private static final String EMPTY_STRING = "";
     /**
      * The fully qualified classname for the generator to use
      */
@@ -44,8 +45,8 @@ public class GenerateMojo extends BasicMojo {
     /**
      * Base package name used for generated Java classes.
      */
-    @Parameter(property = "basePackageName", required = true)
-    private String basePackageName;
+    @Parameter(property = "basePackageName", required = false, defaultValue = EMPTY_STRING)
+    private String basePackageName = EMPTY_STRING;
 
     @Parameter(property = "generatorProperties", required = false)
     private GeneratorProperties generatorProperties;

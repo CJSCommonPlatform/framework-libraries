@@ -17,7 +17,6 @@
 
     <modules>
         <module>catalog-domain</module>
-        <module>everit-schema-client</module>
         <module>integration-test</module>
         <module>catalog-core</module>
         <module>catalog-generation</module>

@@ -13,8 +13,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ClasspathCatalogLoader {
@@ -25,7 +23,6 @@ public class ClasspathCatalogLoader {
     private final ClasspathResourceLoader classpathResourceLoader;
     private final UrlConverter urlConverter;
 
-    @Inject
     public ClasspathCatalogLoader(final ObjectMapper objectMapper,
                                   final ClasspathResourceLoader classpathResourceLoader,
                                   final UrlConverter urlConverter) {

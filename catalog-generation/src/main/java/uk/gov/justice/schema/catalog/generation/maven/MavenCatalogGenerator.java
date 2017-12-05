@@ -3,7 +3,7 @@ package uk.gov.justice.schema.catalog.generation.maven;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 import uk.gov.justice.schema.catalog.generation.CatalogGenerationRunner;
-import uk.gov.justice.schema.catalog.generation.ObjectFactory;
+import uk.gov.justice.schema.catalog.generation.GenerationObjectFactory;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -11,10 +11,10 @@ import java.util.List;
 
 public class MavenCatalogGenerator implements Generator<List<URI>> {
 
-    private final ObjectFactory objectFactory;
+    private final GenerationObjectFactory generationObjectFactory;
 
-    public MavenCatalogGenerator(final ObjectFactory objectFactory) {
-        this.objectFactory = objectFactory;
+    public MavenCatalogGenerator(final GenerationObjectFactory generationObjectFactory) {
+        this.generationObjectFactory = generationObjectFactory;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class MavenCatalogGenerator implements Generator<List<URI>> {
 
         final Path catalogGenerationPath = generatorConfig.getOutputDirectory();
 
-        final CatalogGenerationRunner catalogGenerationRunner = objectFactory.catalogGenerationRunner();
+        final CatalogGenerationRunner catalogGenerationRunner = generationObjectFactory.catalogGenerationRunner();
 
         final CatalogGeneratorProperties generatorProperties =
                 (CatalogGeneratorProperties) generatorConfig.getGeneratorProperties();

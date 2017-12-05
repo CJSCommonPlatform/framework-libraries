@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 
 public class CatalogToSchemaResolver {
@@ -23,19 +21,15 @@ public class CatalogToSchemaResolver {
     private final SchemaResolver schemaResolver;
     private final Logger logger;
 
-    @Inject
-    public CatalogToSchemaResolver(
-            final ClasspathCatalogLoader classpathCatalogLoader,
-            final SchemaResolver schemaResolver,
-            final Logger logger) {
+    public CatalogToSchemaResolver(final ClasspathCatalogLoader classpathCatalogLoader,
+                                   final SchemaResolver schemaResolver,
+                                   final Logger logger) {
         this.classpathCatalogLoader = classpathCatalogLoader;
         this.schemaResolver = schemaResolver;
         this.logger = logger;
     }
 
-
     /**
-     *
      * @return Mapping from schemaId to a schema location url
      */
     public Map<String, URL> resolveSchemaLocations() {
@@ -44,16 +38,16 @@ public class CatalogToSchemaResolver {
 
         final Map<URI, Catalog> catalogs = classpathCatalogLoader.getCatalogs();
 
-        for(final URI catalogLocation: catalogs.keySet()) {
-            for(final Group group: catalogs.get(catalogLocation).getGroups()) {
-                for(final Schema schema: group.getSchemas()) {
+        for (final URI catalogLocation : catalogs.keySet()) {
+            for (final Group group : catalogs.get(catalogLocation).getGroups()) {
+                for (final Schema schema : group.getSchemas()) {
                     final String location = schema.getLocation();
                     final Optional<String> baseLocation = ofNullable(group.getBaseLocation());
 
                     final String schemaId = schema.getId();
                     final URL schemaLocationUrl = schemaResolver.resolve(catalogLocation, location, baseLocation);
 
-                    if(schemaLocations.containsKey(schemaId)) {
+                    if (schemaLocations.containsKey(schemaId)) {
                         final URL otherLocation = schemaLocations.get(schemaId);
                         logger.warn(format("Found duplicate schema id '%s' for schemaLocations '%s' and '%s'", schemaId, otherLocation, schemaLocationUrl));
                     } else {

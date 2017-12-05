@@ -1,11 +1,11 @@
 package uk.gov.justice.schema.service;
 
-import uk.gov.justice.schema.catalog.CatalogLoader;
+import uk.gov.justice.schema.catalog.Catalog;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -14,17 +14,21 @@ import org.everit.json.schema.Schema;
 @ApplicationScoped
 public class SchemaCatalogService {
 
+    private final Map<String, Optional<Schema>> schemaMap = new ConcurrentHashMap<>();
+
     @Inject
-    private CatalogLoader catalogLoader;
+    private Catalog catalog;
 
-    private Map<String, Schema> catalog;
+    public Optional<Schema> findSchema(final String schemaId) {
 
-    @PostConstruct
-    public void initialiseCatalog() {
-        catalog = catalogLoader.loadCatalogsFromClasspath();
-    }
+        if(schemaMap.containsKey(schemaId)) {
+            return schemaMap.get(schemaId);
+        }
 
-    public Optional<Schema> findSchema(final String uri) {
-        return Optional.ofNullable(catalog.get(uri));
+        final Optional<Schema> schema = catalog.getSchema(schemaId);
+
+        schemaMap.put(schemaId, schema);
+
+        return schema;
     }
 }

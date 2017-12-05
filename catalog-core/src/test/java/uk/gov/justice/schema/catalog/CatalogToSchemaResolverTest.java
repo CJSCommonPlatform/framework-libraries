@@ -10,8 +10,6 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.schema.catalog.domain.Catalog;
 import uk.gov.justice.schema.catalog.domain.Group;
 import uk.gov.justice.schema.catalog.domain.Schema;
-import uk.gov.justice.schema.catalog.util.UriResolver;
-import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URI;
 import java.net.URL;
@@ -35,13 +33,14 @@ public class CatalogToSchemaResolverTest {
 
     @Spy
     @SuppressWarnings("unused")
-    private final SchemaResolver schemaResolver = new SchemaResolver(new UrlConverter(), new UriResolver());
+    private final SchemaResolver schemaResolver = new CatalogObjectFactory().schemaResolver();
 
     @Mock
     private Logger logger;
 
     @InjectMocks
     private CatalogToSchemaResolver catalogToSchemaResolver;
+
 
     @Test
     public void shouldMapSchemasFoundOnTheClasspathToTheirIds() throws Exception {

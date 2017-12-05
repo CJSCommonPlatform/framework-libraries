@@ -1,4 +1,4 @@
-package uk.gov.justice.schema.client;
+package uk.gov.justice.schema.catalog.client;
 
 public class SchemaClientException extends RuntimeException {
 

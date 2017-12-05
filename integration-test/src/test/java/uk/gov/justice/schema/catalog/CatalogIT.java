@@ -2,28 +2,18 @@ package uk.gov.justice.schema.catalog;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
-import uk.gov.justice.schema.catalog.generation.ObjectFactory;
-
-import java.util.Map;
-
-import org.everit.json.schema.Schema;
 import org.junit.Test;
 
-public class CatalogLoaderIT {
+public class CatalogIT {
 
-    private final CatalogLoader catalogLoader = new ObjectFactory().catalogLoader();
+    private final Catalog catalog = new CatalogObjectFactory().catalog();
 
     @Test
     public void shouldMapSchemasOnClasspathToTheirIds() throws Exception {
 
-        final Map<String, Schema> idsToSchemaMap = catalogLoader.loadCatalogsFromClasspath();
-
-        assertThat(idsToSchemaMap.size(), is(3));
-
         final String id_1 = "http://justice.gov.uk/standards/address.json";
-        final String json_1 = idsToSchemaMap.get(id_1).toString();
+        final String json_1 = catalog.getSchema(id_1).get().toString();
 
         with(json_1)
                 .assertThat("$.id", is(id_1))
@@ -35,7 +25,7 @@ public class CatalogLoaderIT {
         ;
 
         final String id_2 = "http://justice.gov.uk/context/person.json";
-        final String json_2 = idsToSchemaMap.get(id_2).toString();
+        final String json_2 = catalog.getSchema(id_2).get().toString();
 
         with(json_2)
                 .assertThat("$.id", is(id_2))
@@ -46,7 +36,7 @@ public class CatalogLoaderIT {
         ;
 
         final String id_3 = "http://justice.gov.uk/standards/complex_address.json";
-        final String json_3 = idsToSchemaMap.get(id_3).toString();
+        final String json_3 = catalog.getSchema(id_3).get().toString();
 
         with(json_3)
                 .assertThat("$.id", is(id_3))

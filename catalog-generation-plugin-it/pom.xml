@@ -27,7 +27,6 @@
                             <parserName>
                                 uk.gov.justice.schema.catalog.generation.io.parser.ListOfUriParser
                             </parserName>
-                            <basePackageName>uk.gov.justice.events.pojo</basePackageName>
                             <sourceDirectory>${basedir}/src/raml/json/schema
                             </sourceDirectory>
                             <outputDirectory>${project.build.directory}/generated-resources

@@ -8,8 +8,18 @@ import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 
+/**
+ *  Gets the contents of a file as a {@link String}
+ */
 public class FileContentsAsStringLoader {
 
+    /**
+     * Gets the contents of a file as a {@link String}
+     *
+     * @param urlOfFile The {@link java.net.URI} of the file
+     *
+     * @return The File's contents as a UTF 8 String.
+     */
     public String readFileContents(final URL urlOfFile) {
 
         try  {

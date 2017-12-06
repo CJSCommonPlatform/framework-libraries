@@ -33,7 +33,7 @@ public class SchemaDefParserTest {
     public void shouldParseTheSchemaUrlIntoIdGroupBaseLocationAndLocation() throws Exception {
 
         final Path jsonSchemaPath = Paths.get("json/schema/");
-        final URL schemaFile = new URL("file:/path/to/raml/json/schema/a-sub-directory/some-schema-or-other.json");
+        final URL schemaFile = new URL("file:/path/to/raml/json/schema/group/some/path/some-schema-or-other.json");
 
         final String schemaId = "http://justice.gov.uk/context/some-schema-or-other.json";
         when(schemaIdParser.parse(schemaFile)).thenReturn(new URL(schemaId).toURI());
@@ -42,9 +42,9 @@ public class SchemaDefParserTest {
 
         assertThat(schemaDef.getSchemaFile(), is(schemaFile));
         assertThat(schemaDef.getId().toString(), is(schemaId));
-        assertThat(schemaDef.getGroupName(), is("a-sub-directory"));
-        assertThat(schemaDef.getBaseLocation(), is("a-sub-directory/"));
-        assertThat(schemaDef.getLocation(), is("some-schema-or-other.json"));
+        assertThat(schemaDef.getGroupName(), is("group"));
+        assertThat(schemaDef.getBaseLocation(), is("group/"));
+        assertThat(schemaDef.getLocation(), is("some/path/some-schema-or-other.json"));
     }
 
     @Test

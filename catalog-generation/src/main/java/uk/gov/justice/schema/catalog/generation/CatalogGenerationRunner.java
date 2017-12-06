@@ -10,6 +10,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Class for running the generation of a json catalog file from within a Maven plugin
+ */
 public class CatalogGenerationRunner {
 
     private final CatalogObjectGenerator catalogObjectGenerator;
@@ -25,6 +28,13 @@ public class CatalogGenerationRunner {
         this.urlConverter = urlConverter;
     }
 
+    /**
+     * Generates a json catalog
+     * @param catalogName The name of the catalog
+     * @param schemaFiles A list of json schema files
+     * @param catalogGenerationPath The path to where the catalog should be generated
+     * @param jsonSchemaPath A path where json schema files can be found
+     */
     public void generateCatalog(final String catalogName, final List<URI> schemaFiles, final Path catalogGenerationPath, final Path jsonSchemaPath) {
 
         final Catalog catalog = catalogObjectGenerator.generate(

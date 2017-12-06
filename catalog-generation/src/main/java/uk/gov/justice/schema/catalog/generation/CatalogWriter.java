@@ -13,6 +13,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 
+/**
+ * Writes a {@link Catalog} Object as a json document
+ */
 public class CatalogWriter {
 
     private static final String CATALOG_SUB_DIRECTORY = "json/schema";
@@ -25,6 +28,12 @@ public class CatalogWriter {
         this.catalogGenerationContext = catalogGenerationContext;
     }
 
+    /**
+     * Write a {@link Catalog} Object as a json document
+     *
+     * @param catalog The {@link Catalog}
+     * @param catalogGenerationPath The location of where the new json document should be written
+     */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void write(final Catalog catalog, final Path catalogGenerationPath) {
 

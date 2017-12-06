@@ -14,6 +14,10 @@ import java.util.regex.Pattern;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
+
+/**
+ * Lists all *.json files found on the classpath under a known package
+ */
 public class SchemaFinder {
 
     private static final String SCHEMA_PACKAGE = "raml.json.schema";
@@ -24,6 +28,10 @@ public class SchemaFinder {
         this.urlConverter = urlConverter;
     }
 
+    /**
+     * @return A list of all *.json files found under the <b>raml.json.schema</b> package on the
+     * classpath
+     */
     public List<URI> listSchemas() {
 
         final Reflections reflections = new Reflections(SCHEMA_PACKAGE, new ResourcesScanner());

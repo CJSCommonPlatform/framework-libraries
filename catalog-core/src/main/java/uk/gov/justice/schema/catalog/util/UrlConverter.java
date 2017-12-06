@@ -9,8 +9,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * Utility class for converting {@link URL}s to {@link URI}s, that handles any exceptions
+ * thrown by the conversion.
+ */
 public class UrlConverter {
 
+    /**
+     * Converts a {@link URI} to a {@link URL}
+     * @param url A {@link URL} to convert
+     * @return The converted {@link URI}
+     */
     public URI toUri(final URL url) {
         try {
             return url.toURI();
@@ -19,6 +28,11 @@ public class UrlConverter {
         }
     }
 
+    /**
+     * Converts a {@link URI} to a {@link URL}
+     * @param uri A {@link URI} to convert
+     * @return The converted {@link URL}
+     */
     public URL toUrl(final URI uri) {
         try {
             return uri.toURL();
@@ -27,6 +41,11 @@ public class UrlConverter {
         }
     }
 
+    /**
+     * Converts a {@link String} URI to a {@link URI} Object
+     * @param uri A URI in String form
+     * @return A {@link URI} Object of that String uri
+     */
     public URI toUri(final String uri) {
         try {
             return new URI(uri);

@@ -15,6 +15,10 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 
+/**
+ * Finds all catalog files on the classpath, then returns a mapping of the schema id to its
+ * location.
+ */
 public class CatalogToSchemaResolver {
 
     private final ClasspathCatalogLoader classpathCatalogLoader;
@@ -30,6 +34,9 @@ public class CatalogToSchemaResolver {
     }
 
     /**
+     * Find all catalog files on the classpath and return a mapping of the schema id to
+     * the location of the schema file
+     *
      * @return Mapping from schemaId to a schema location url
      */
     public Map<String, URL> resolveSchemaLocations() {

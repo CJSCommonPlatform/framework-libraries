@@ -9,6 +9,11 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Implementation of a maven generator which generates a catalog of json schema
+ * files in the spirit of
+ * <a href="https://www.oasis-open.org/committees/entity/spec-2001-08-06.html">XML Catalog</a>
+ */
 public class MavenCatalogGenerator implements Generator<List<URI>> {
 
     private final GenerationObjectFactory generationObjectFactory;
@@ -17,6 +22,12 @@ public class MavenCatalogGenerator implements Generator<List<URI>> {
         this.generationObjectFactory = generationObjectFactory;
     }
 
+    /**
+     * Main entry point of the Maven Plugin
+     *
+     * @param schemaFiles A {@link List} of json schema files
+     * @param generatorConfig The configuration of the Maven Plugin
+     */
     @Override
     public void run(final List<URI> schemaFiles, final GeneratorConfig generatorConfig) {
 

@@ -9,12 +9,13 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.schema.catalog.client.LocalFileSystemSchemaClient;
+
 import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.loader.SchemaClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -40,14 +41,14 @@ public class JsonStringToSchemaConverterTest {
         assertThat(schemaFragmentUrl, is(notNullValue()));
         assertThat(jsonToVerifyUrl, is(notNullValue()));
 
-        final SchemaClient schemaClient = mock(SchemaClient.class);
+        final LocalFileSystemSchemaClient localFileSystemSchemaClient = mock(LocalFileSystemSchemaClient.class);
 
         try(final InputStream inputStream = schemaFragmentUrl.openStream()) {
 
-            when(schemaClient.get("http://justice.gov.uk/standards/complex_address.json")).thenReturn(inputStream);
+            when(localFileSystemSchemaClient.get("http://justice.gov.uk/standards/complex_address.json")).thenReturn(inputStream);
 
             final String schemaJson = IOUtils.toString(mainSchemaUrl);
-            final Schema schema = jsonStringToSchemaConverter.convert(schemaJson, schemaClient);
+            final Schema schema = jsonStringToSchemaConverter.convert(schemaJson, localFileSystemSchemaClient);
 
             final String json = IOUtils.toString(jsonToVerifyUrl);
 
@@ -65,7 +66,7 @@ public class JsonStringToSchemaConverterTest {
         final String schemaJson = IOUtils.toString(url);
 
         try {
-            jsonStringToSchemaConverter.convert(schemaJson, mock(SchemaClient.class));
+            jsonStringToSchemaConverter.convert(schemaJson, mock(LocalFileSystemSchemaClient.class));
             fail();
         } catch (final SchemaCatalogException expected) {
             assertThat(expected.getCause(), is(instanceOf(JSONException.class)));

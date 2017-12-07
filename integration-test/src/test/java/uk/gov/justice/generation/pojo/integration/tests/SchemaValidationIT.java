@@ -11,6 +11,7 @@ import uk.gov.justice.generation.pojo.validation.Validator;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 
@@ -24,7 +25,8 @@ public class SchemaValidationIT {
 
     @Test
     public void shouldFailValidationIfEnumContainsDifferentTypesOfValues() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/invalid-schemas/invalid-enum.json");
+        final File jsonSchemaFile = new ClasspathFileResource()
+                .getFileFromClasspath("/invalid-schemas/invalid-enum.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 
         final Visitable visitableSchema = new VisitableFactory().createWith("fieldName", schema, new DefaultAcceptorService(new VisitableFactory()));
@@ -39,7 +41,8 @@ public class SchemaValidationIT {
 
     @Test
     public void shouldFailValidationIfArrayContainsDifferentTypesOfValues() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/invalid-schemas/invalid-array.json");
+        final File jsonSchemaFile = new ClasspathFileResource()
+                .getFileFromClasspath("/invalid-schemas/invalid-array.json");
         final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
 
         final Visitable visitableSchema = new VisitableFactory().createWith("fieldName", schema, new DefaultAcceptorService(new VisitableFactory()));

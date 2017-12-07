@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.1] - 2017-12-07
+
+### Fixed
+- Schemas are now validated to ensure that they have an id
+
 ## [1.1.0] - 2017-12-04
 
 ### Added

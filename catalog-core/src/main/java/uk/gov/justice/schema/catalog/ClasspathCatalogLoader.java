@@ -15,6 +15,10 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Loads all {@link Catalog}s from any part of the classpath, which have the path
+ * '/json/schema/schema_catalog.json'
+ */
 public class ClasspathCatalogLoader {
 
     private static final String DEFAULT_JSON_CATALOG_LOCATION = "json/schema/schema_catalog.json";
@@ -31,6 +35,12 @@ public class ClasspathCatalogLoader {
         this.urlConverter = urlConverter;
     }
 
+    /**
+     * Loads all {@link Catalog}s from any part of the classpath found on the path
+     * 'json/schema/schema_catalog.json'
+     *
+     * @return All found {@link Catalog}s mapped by their URIs
+     */
     public Map<URI, Catalog> getCatalogs() {
         return listAllCatalogsFromClasspath().stream()
                 .collect(toMap(urlConverter::toUri, this::loadCatalog));

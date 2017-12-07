@@ -2,6 +2,9 @@ package uk.gov.justice.schema.catalog.domain;
 
 import java.util.List;
 
+/**
+ * An Object representation of a group in a json catalog file
+ */
 public class Group {
 
     private final String baseLocation;
@@ -14,14 +17,23 @@ public class Group {
         this.schemas = schemas;
     }
 
+    /**
+     * @return The base location of the group
+     */
     public String getBaseLocation() {
         return baseLocation;
     }
 
+    /**
+     * @return The name of the group
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return A {@link List} of all {@link Schema}s in the group
+     */
     public List<Schema> getSchemas() {
         return schemas;
     }

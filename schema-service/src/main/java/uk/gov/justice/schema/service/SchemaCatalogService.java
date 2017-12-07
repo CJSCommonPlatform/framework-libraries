@@ -11,6 +11,11 @@ import javax.inject.Inject;
 
 import org.everit.json.schema.Schema;
 
+/**
+ * A service that finds a fully resolved json schema by its schema id. Allows a schema catalog
+ * to be used in an application that uses a dependency injection framework. All schemas are
+ * looked up on the fly, then cached.
+ */
 @ApplicationScoped
 public class SchemaCatalogService {
 
@@ -19,6 +24,11 @@ public class SchemaCatalogService {
     @Inject
     private Catalog catalog;
 
+    /**
+     * Finds a json schema file on the classpath by its schema id
+     * @param schemaId The id of the schema
+     * @return An {@link Optional} containing the fully resolved schema or empty if not found
+     */
     public Optional<Schema> findSchema(final String schemaId) {
 
         if(schemaMap.containsKey(schemaId)) {

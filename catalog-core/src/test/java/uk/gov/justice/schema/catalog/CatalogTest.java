@@ -7,10 +7,10 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.schema.catalog.client.LocalFileSystemSchemaClient;
 import uk.gov.justice.schema.catalog.client.SchemaClientFactory;
 
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.loader.SchemaClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -39,12 +39,12 @@ public class CatalogTest {
         final String schemaId = "schemaId";
         final String rawJsonSchema = "raw json schema";
 
-        final SchemaClient schemaClient = mock(SchemaClient.class);
+        final LocalFileSystemSchemaClient localFileSystemSchemaClient = mock(LocalFileSystemSchemaClient.class);
         final Schema schema = mock(Schema.class);
 
         when(rawCatalog.getRawJsonSchema(schemaId)).thenReturn(of(rawJsonSchema));
-        when(schemaClientFactory.create(rawCatalog)).thenReturn(schemaClient);
-        when(jsonStringToSchemaConverter.convert(rawJsonSchema, schemaClient)).thenReturn(schema);
+        when(schemaClientFactory.create(rawCatalog)).thenReturn(localFileSystemSchemaClient);
+        when(jsonStringToSchemaConverter.convert(rawJsonSchema, localFileSystemSchemaClient)).thenReturn(schema);
 
         assertThat(catalog.getSchema(schemaId), is(of(schema)));
     }

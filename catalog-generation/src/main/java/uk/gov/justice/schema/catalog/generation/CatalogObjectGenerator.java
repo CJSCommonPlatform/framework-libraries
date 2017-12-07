@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Generates a json {@link Catalog} from a list of json schema files
+ */
 public class CatalogObjectGenerator {
 
     private final SchemaDefParser schemaDefParser;
@@ -21,6 +24,13 @@ public class CatalogObjectGenerator {
         this.schemaDefParser = schemaDefParser;
     }
 
+    /**
+     * Generate a new json {@link Catalog} from a list of json schema files
+     * @param catalogName The name of the catalog
+     * @param schemaFiles A list of json schema files
+     * @param jsonSchemaPath A default root location in the schemas path
+     * @return A {@link Catalog} of the json schema files
+     */
     public Catalog generate(final String catalogName, final List<URL> schemaFiles, final Path jsonSchemaPath) {
 
         final List<SchemaDef> schemaDefs = schemaFiles.stream()

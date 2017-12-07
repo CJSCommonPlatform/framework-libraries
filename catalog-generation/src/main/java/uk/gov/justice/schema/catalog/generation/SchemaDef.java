@@ -3,6 +3,12 @@ package uk.gov.justice.schema.catalog.generation;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * The file location, id, group name, base location and location of a json schema file.
+ *
+ * See {@link SchemaDefParser} for an explanation of the terms
+ *
+ */
 public class SchemaDef {
 
     private final URL schemaFile;
@@ -24,22 +30,37 @@ public class SchemaDef {
         this.location = location;
     }
 
+    /**
+     * @return The {@link URL} of the json schema file
+     */
     public URL getSchemaFile() {
         return schemaFile;
     }
 
+    /**
+     * @return The id of the json schema file
+     */
     public URI getId() {
         return id;
     }
 
+    /**
+     * @return The group name 
+     */
     public String getGroupName() {
         return groupName;
     }
 
+    /**
+     * @return The base location of the schema files
+     */
     public String getBaseLocation() {
         return baseLocation;
     }
 
+    /**
+     * @return The location of the schema file
+     */
     public String getLocation() {
         return location;
     }

@@ -1,5 +1,8 @@
 package uk.gov.justice.schema.catalog.domain;
 
+/**
+ * Object representation of a Schema in a json catalog file
+ */
 public class Schema {
     private final String id;
 
@@ -10,10 +13,16 @@ public class Schema {
         this.location = location;
     }
 
+    /**
+     * @return The id of the Schema
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @return The Schema's location
+     */
     public String getLocation() {
         return location;
     }

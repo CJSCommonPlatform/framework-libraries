@@ -16,6 +16,10 @@ import javax.json.JsonReader;
 
 import org.apache.commons.io.IOUtils;
 
+/**
+ * Loads a json schema file and extracts the schema id. A {@link CatalogGenerationException} is
+ * thrown if no id is found in the schema file.
+ */
 public class SchemaIdParser {
 
     private final UrlConverter urlConverter;
@@ -24,6 +28,13 @@ public class SchemaIdParser {
         this.urlConverter = urlConverter;
     }
 
+    /**
+     * Extracts the id from a json schema file. A {@link CatalogGenerationException} is
+     * thrown if no id is found in the schema file, or if there is a problem reading the file.
+     *
+     * @param schemaFile A {@link URL} to the json schema file
+     * @return The id contained in the json schema file.
+     */
     public URI parse(final URL schemaFile) {
 
         try {

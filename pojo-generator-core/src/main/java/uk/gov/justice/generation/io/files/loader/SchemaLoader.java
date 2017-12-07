@@ -25,7 +25,12 @@ public class SchemaLoader {
      */
     public Schema loadFrom(final File jsonSchemaFile) {
         final JSONObject schemaJsonObject = new JSONObject(loadAsJsonString(jsonSchemaFile));
-        return load(schemaJsonObject);
+
+        if(schemaJsonObject.has("id")) {
+            return load(schemaJsonObject);
+        }
+
+        throw new SchemaLoaderException(format("Missing id in Schema file '%s'. Unable to load", jsonSchemaFile.getAbsolutePath()));
     }
 
     private String loadAsJsonString(final File file) {

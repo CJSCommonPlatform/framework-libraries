@@ -1,15 +1,15 @@
-package uk.gov.justice.services.domain.aggregate;
-
-import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
-import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
+package uk.gov.justice.services.test.domain.aggregate;
 
 import uk.gov.justice.domain.aggregate.Aggregate;
-import uk.gov.justice.services.domain.event.SomethingHappened;
+import uk.gov.justice.services.test.domain.event.SomethingHappened;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
+import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
 
 
 public class StatelessAggregate implements Aggregate {
@@ -34,8 +34,7 @@ public class StatelessAggregate implements Aggregate {
     @Override
     public Object apply(final Object event) {
         return match(event).with(
-                when(SomethingHappened.class).apply(x -> {
-                    this.id = x.getId();
-                }));
+                when(SomethingHappened.class)
+                        .apply(somethingHappenedEvent -> this.id = somethingHappenedEvent.getId()));
     }
 }

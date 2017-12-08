@@ -1,4 +1,4 @@
-package uk.gov.justice.services.test.utils.domain.arg;
+package uk.gov.justice.services.test.domain.arg;
 
 public class ComplexArgument {
 

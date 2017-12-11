@@ -1,10 +1,13 @@
 package uk.gov.justice.schema.catalog.generation;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static uk.gov.justice.schema.catalog.generation.CatalogGenerationContext.AN_EMPTY_STRING;
 
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * Parses an absolute {@link URL} to a json schema file into a {@link SchemaDef} containing:
@@ -50,21 +53,28 @@ public class SchemaDefParser {
      * @param jsonSchemaPath a path to the schema root
      * @return The parsed {@link SchemaDef}
      */
-    public SchemaDef parse(final URL schemaFile, final Path jsonSchemaPath) {
+    public Optional<SchemaDef> parse(final URL schemaFile, final Path jsonSchemaPath) {
 
-        final URI id = schemaIdParser.parse(schemaFile);
-        final String fileUrl = schemaFile.toString();
+        final Optional<URI> id = schemaIdParser.parse(schemaFile);
 
-        final String jsonSchemaPathString = jsonSchemaPath.toString();
-        final String relativeUri = fileUrl.substring(fileUrl.indexOf(jsonSchemaPathString) + jsonSchemaPathString.length() + 1);
+        if (id.isPresent()) {
+            final String fileUrl = schemaFile.toString();
 
-        final int firstSlashIndex = relativeUri.indexOf('/');
+            final String jsonSchemaPathString = jsonSchemaPath.toString();
+            final String relativeUri = fileUrl.substring(fileUrl.indexOf(jsonSchemaPathString) + jsonSchemaPathString.length() + 1);
 
-        final String groupName = getGroup(relativeUri, firstSlashIndex);
-        final String baseLocation = getBaseLocation(groupName, firstSlashIndex);
-        final String location = relativeUri.substring(firstSlashIndex + 1);
+            final int firstSlashIndex = relativeUri.indexOf('/');
 
-        return new SchemaDef(schemaFile, id, groupName, baseLocation, location);
+            final String groupName = getGroup(relativeUri, firstSlashIndex);
+            final String baseLocation = getBaseLocation(groupName, firstSlashIndex);
+            final String location = relativeUri.substring(firstSlashIndex + 1);
+
+            final SchemaDef schemaDef = new SchemaDef(schemaFile, id.get(), groupName, baseLocation, location);
+
+            return of(schemaDef);
+        }
+
+        return empty();
     }
 
     private String getGroup(final String relativeUri, final int firstSlashIndex) {

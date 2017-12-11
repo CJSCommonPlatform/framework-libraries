@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.schema.catalog.domain.Catalog;
-import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -16,11 +15,7 @@ import org.junit.Test;
 
 public class CatalogObjectGeneratorTest {
 
-    private final UrlConverter urlConverter = new UrlConverter();
-    private final SchemaIdParser schemaIdParser = new SchemaIdParser(urlConverter);
-    private final SchemaDefParser schemaDefParser = new SchemaDefParser(schemaIdParser);
-
-    private final CatalogObjectGenerator catalogObjectGenerator = new CatalogObjectGenerator(schemaDefParser);
+    private final CatalogObjectGenerator catalogObjectGenerator = new GenerationObjectFactory().catalogObjectGenerator();
 
     @Test
     public void shouldParseAListOfSchemaFilesIntoACatalogObject() throws Exception {
@@ -39,7 +34,6 @@ public class CatalogObjectGeneratorTest {
                 addressSchemaFile,
                 complexAddressSchemaFile,
                 defendantSchemaFile);
-
 
         final Catalog catalog = catalogObjectGenerator.generate(catalogName, schemaFiles, jsonSchemaPath);
 

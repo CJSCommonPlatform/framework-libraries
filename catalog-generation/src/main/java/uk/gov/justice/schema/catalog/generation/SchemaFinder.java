@@ -20,6 +20,7 @@ import org.reflections.scanners.ResourcesScanner;
  */
 public class SchemaFinder {
 
+    // TODO: Un-hard-code me
     private static final String SCHEMA_PACKAGE = "raml.json.schema";
 
     private final UrlConverter urlConverter;

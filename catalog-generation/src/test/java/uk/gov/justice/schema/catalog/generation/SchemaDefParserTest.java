@@ -1,13 +1,17 @@
 package uk.gov.justice.schema.catalog.generation;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.schema.catalog.generation.CatalogGenerationContext.AN_EMPTY_STRING;
 
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,15 +40,20 @@ public class SchemaDefParserTest {
         final URL schemaFile = new URL("file:/path/to/raml/json/schema/group/some/path/some-schema-or-other.json");
 
         final String schemaId = "http://justice.gov.uk/context/some-schema-or-other.json";
-        when(schemaIdParser.parse(schemaFile)).thenReturn(new URL(schemaId).toURI());
+        when(schemaIdParser.parse(schemaFile)).thenReturn(of(new URL(schemaId).toURI()));
 
-        final SchemaDef schemaDef = schemaDefParser.parse(schemaFile, jsonSchemaPath);
+        final Optional<SchemaDef> schemaDefOptional = schemaDefParser.parse(schemaFile, jsonSchemaPath);
 
-        assertThat(schemaDef.getSchemaFile(), is(schemaFile));
-        assertThat(schemaDef.getId().toString(), is(schemaId));
-        assertThat(schemaDef.getGroupName(), is("group"));
-        assertThat(schemaDef.getBaseLocation(), is("group/"));
-        assertThat(schemaDef.getLocation(), is("some/path/some-schema-or-other.json"));
+        if (schemaDefOptional.isPresent()) {
+            final SchemaDef schemaDef = schemaDefOptional.get();
+            assertThat(schemaDef.getSchemaFile(), is(schemaFile));
+            assertThat(schemaDef.getId().toString(), is(schemaId));
+            assertThat(schemaDef.getGroupName(), is("group"));
+            assertThat(schemaDef.getBaseLocation(), is("group/"));
+            assertThat(schemaDef.getLocation(), is("some/path/some-schema-or-other.json"));
+        } else {
+            fail();
+        }
     }
 
     @Test
@@ -54,15 +63,20 @@ public class SchemaDefParserTest {
         final URL schemaFile = new URL("file:/path/to/raml/json/schema/some-schema-or-other.json");
 
         final String schemaId = "http://justice.gov.uk/context/some-schema-or-other.json";
-        when(schemaIdParser.parse(schemaFile)).thenReturn(new URL(schemaId).toURI());
+        when(schemaIdParser.parse(schemaFile)).thenReturn(of(new URL(schemaId).toURI()));
 
-        final SchemaDef schemaDef = schemaDefParser.parse(schemaFile, jsonSchemaPath);
+        final Optional<SchemaDef> schemaDefOptional = schemaDefParser.parse(schemaFile, jsonSchemaPath);
 
-        assertThat(schemaDef.getSchemaFile(), is(schemaFile));
-        assertThat(schemaDef.getId().toString(), is(schemaId));
-        assertThat(schemaDef.getGroupName(), is(AN_EMPTY_STRING));
-        assertThat(schemaDef.getBaseLocation(), is(AN_EMPTY_STRING));
-        assertThat(schemaDef.getLocation(), is("some-schema-or-other.json"));
+        if (schemaDefOptional.isPresent()) {
+            final SchemaDef schemaDef = schemaDefOptional.get();
+            assertThat(schemaDef.getSchemaFile(), is(schemaFile));
+            assertThat(schemaDef.getId().toString(), is(schemaId));
+            assertThat(schemaDef.getGroupName(), is(AN_EMPTY_STRING));
+            assertThat(schemaDef.getBaseLocation(), is(AN_EMPTY_STRING));
+            assertThat(schemaDef.getLocation(), is("some-schema-or-other.json"));
+        } else {
+            fail();
+        }
     }
 
     @Test
@@ -72,14 +86,32 @@ public class SchemaDefParserTest {
         final URL schemaFile = new URL("file:/path/to/raml/json/schema/a-sub-directory/another-sub-directory/some-schema-or-other.json");
 
         final String schemaId = "http://justice.gov.uk/context/some-schema-or-other.json";
-        when(schemaIdParser.parse(schemaFile)).thenReturn(new URL(schemaId).toURI());
+        when(schemaIdParser.parse(schemaFile)).thenReturn(of(new URL(schemaId).toURI()));
 
-        final SchemaDef schemaDef = schemaDefParser.parse(schemaFile, jsonSchemaPath);
+        final Optional<SchemaDef> schemaDefOptional = schemaDefParser.parse(schemaFile, jsonSchemaPath);
 
-        assertThat(schemaDef.getSchemaFile(), is(schemaFile));
-        assertThat(schemaDef.getId().toString(), is(schemaId));
-        assertThat(schemaDef.getGroupName(), is("a-sub-directory"));
-        assertThat(schemaDef.getBaseLocation(), is("a-sub-directory/"));
-        assertThat(schemaDef.getLocation(), is("another-sub-directory/some-schema-or-other.json"));
+        if (schemaDefOptional.isPresent()) {
+            final SchemaDef schemaDef = schemaDefOptional.get();
+
+            assertThat(schemaDef.getSchemaFile(), is(schemaFile));
+            assertThat(schemaDef.getId().toString(), is(schemaId));
+            assertThat(schemaDef.getGroupName(), is("a-sub-directory"));
+            assertThat(schemaDef.getBaseLocation(), is("a-sub-directory/"));
+            assertThat(schemaDef.getLocation(), is("another-sub-directory/some-schema-or-other.json"));
+        } else {
+            fail();
+        }
+    }
+
+    @Test
+    public void shouldReturnEmptyIfTheSchemaHasNoId() throws Exception {
+        final Path jsonSchemaPath = Paths.get("json/schema/");
+        final URL schemaFile = new URL("file:/path/to/raml/json/schema/a-sub-directory/another-sub-directory/some-schema-or-other.json");
+
+        when(schemaIdParser.parse(schemaFile)).thenReturn(empty());
+
+        final Optional<SchemaDef> schemaDefOptional = schemaDefParser.parse(schemaFile, jsonSchemaPath);
+
+        assertThat(schemaDefOptional.isPresent(), is(false));
     }
 }

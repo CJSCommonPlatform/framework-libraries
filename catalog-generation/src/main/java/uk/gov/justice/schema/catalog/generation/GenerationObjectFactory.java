@@ -1,5 +1,7 @@
 package uk.gov.justice.schema.catalog.generation;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
 /**
@@ -26,7 +28,7 @@ public class GenerationObjectFactory extends CatalogObjectFactory {
      * @return a new instance of {@link SchemaIdParser}
      */
     public SchemaIdParser schemaIdParser() {
-        return new SchemaIdParser(urlConverter());
+        return new SchemaIdParser(urlConverter(), getLogger(SchemaIdParser.class));
     }
 
     /**

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Generates a json {@link Catalog} from a list of json schema files
@@ -35,6 +36,8 @@ public class CatalogObjectGenerator {
 
         final List<SchemaDef> schemaDefs = schemaFiles.stream()
                 .map(schemaFile -> schemaDefParser.parse(schemaFile, jsonSchemaPath))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(toList());
 
         final List<Group> groups = asGroups(schemaDefs);

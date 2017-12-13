@@ -52,12 +52,20 @@ public class CatalogObjectFactory {
     }
 
     /**
+     * @return a new instance of {@link CatalogContext}
+     */
+    public CatalogContext catalogContext() {
+        return new CatalogContext();
+    }
+
+    /**
      * @return a new instance of {@link ClasspathCatalogLoader}
      */
     public ClasspathCatalogLoader classpathCatalogLoader() {
         return new ClasspathCatalogLoader(
                 objectMapper(),
                 classpathResourceLoader(),
+                catalogContext(),
                 urlConverter());
     }
 

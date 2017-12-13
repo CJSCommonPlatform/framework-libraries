@@ -49,7 +49,7 @@ public class CatalogToSchemaResolverTest {
         final Group group = mock(Group.class);
         final Schema schema = mock(Schema.class);
 
-        final URI uri = new URI("file:/src/main/schema.json");
+        final URI uri = new URI("file:/src/main/resources/META-INF/schema.json");
 
         final Map<URI, Catalog> catalogPojoMap = ImmutableMap.of(uri, catalog);
 
@@ -65,7 +65,7 @@ public class CatalogToSchemaResolverTest {
         assertThat(schemaLocations.size(), is(1));
 
         assertThat(schemaLocations.containsKey("schemaId"), is(true));
-        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/some/path/to.json"));
+        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/resources/json/schema/some/path/to.json"));
     }
 
     @Test
@@ -78,8 +78,8 @@ public class CatalogToSchemaResolverTest {
         final Schema schema_1 = mock(Schema.class);
         final Schema schema_2 = mock(Schema.class);
 
-        final URI catalogLocation_1 = new URI("file:/src/main/catalog.json");
-        final URI catalogLocation_2 = new URI("file:/src/main/another-catalog.json");
+        final URI catalogLocation_1 = new URI("file:/src/main/resources/META-INF/catalog.json");
+        final URI catalogLocation_2 = new URI("file:/src/main/resources/META-INF/another-catalog.json");
 
         final Map<URI, Catalog> catalogPojoMap = ImmutableMap.of(catalogLocation_1, catalog_1, catalogLocation_2, catalog_2);
 
@@ -99,8 +99,8 @@ public class CatalogToSchemaResolverTest {
         assertThat(schemaLocations.size(), is(1));
 
         assertThat(schemaLocations.containsKey("schemaId"), is(true));
-        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/some/path/to.json"));
+        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/resources/json/schema/some/path/to.json"));
 
-        verify(logger).warn("Found duplicate schema id 'schemaId' for schemaLocations 'file:/src/main/some/path/to.json' and 'file:/src/main/some/other/path/to.json'");
+        verify(logger).warn("Found duplicate schema id 'schemaId' for schemaLocations 'file:/src/main/resources/json/schema/some/path/to.json' and 'file:/src/main/resources/json/schema/some/other/path/to.json'");
     }
 }

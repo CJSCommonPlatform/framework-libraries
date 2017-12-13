@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import uk.gov.justice.schema.catalog.SchemaCatalogException;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -59,6 +60,32 @@ public class UrlConverterTest {
         } catch (final SchemaCatalogException expected) {
             assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
             assertThat(expected.getMessage(), is("Failed to convert URI 'this is not a uri' to URL"));
+        }
+    }
+
+    @Test
+    public void shouldFailIfConvertingAUrlToAUriThrowsAURISyntaxException() throws Exception {
+
+        final URL url = new URL("file:/this is not a uri");
+        try {
+            urlConverter.toUri(url);
+            fail();
+        } catch (final SchemaCatalogException expected) {
+            assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
+            assertThat(expected.getMessage(), is("Failed to convert URL 'file:/this is not a uri' to URI"));
+        }
+    }
+
+    @Test
+    public void shouldFailIfConvertingAUriToAUrlThrowsAMalformedURLException() throws Exception {
+
+        final URI uri = new URI("silly:/this-is-not-a-url");
+        try {
+            urlConverter.toUrl(uri);
+            fail();
+        } catch (final SchemaCatalogException expected) {
+            assertThat(expected.getCause(), is(instanceOf(MalformedURLException.class)));
+            assertThat(expected.getMessage(), is("Failed to convert URI 'silly:/this-is-not-a-url' to URL"));
         }
     }
 }

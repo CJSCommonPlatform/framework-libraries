@@ -8,6 +8,7 @@ import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.schema.catalog.CatalogContext;
 import uk.gov.justice.schema.catalog.domain.Catalog;
 import uk.gov.justice.schema.catalog.domain.Group;
 import uk.gov.justice.schema.catalog.domain.Schema;
@@ -18,25 +19,26 @@ import java.io.File;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
 public class CatalogWriterTest {
 
-    private static final File CATALOG_GENERATION_PATH = new File("target/test-output-directory");
-    private static final File GENERATED_CATALOG_FILE = new File(CATALOG_GENERATION_PATH + "/json/schema", "schema_catalog.json");
-
+    private final CatalogContext catalogContext = new CatalogContext();
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+    private final CatalogWriter catalogWriter = new CatalogWriter(objectMapper, catalogContext, LoggerFactory.getLogger(CatalogWriter.class));
 
-    private CatalogWriter catalogWriter = new CatalogWriter(objectMapper, new CatalogGenerationContext());
+    private final File catalogGenerationPath = new File("target/test-output-directory");
+    private final File generatedCatalogFile = new File(catalogGenerationPath + "/" + catalogContext.getCatalogLocation(), catalogContext.getCatalogFilename());
 
     @Before
     public void cleanUpAnyPreviouslyGeneratedCatalog() {
-        deleteQuietly(GENERATED_CATALOG_FILE);
+        deleteQuietly(generatedCatalogFile);
     }
 
     @Test
     public void shouldGenerateACatalogInTheCorrectLocationFromTheCatalogDomainObjects() throws Exception {
 
-        assertThat(GENERATED_CATALOG_FILE.exists(), is(false));
+        assertThat(generatedCatalogFile.exists(), is(false));
 
         final Catalog catalog = new Catalog(
                 "my catalog",
@@ -56,11 +58,11 @@ public class CatalogWriterTest {
                 )
         );
 
-        catalogWriter.write(catalog, CATALOG_GENERATION_PATH.toPath());
+        catalogWriter.write(catalog, catalogGenerationPath.toPath());
 
-        assertThat(GENERATED_CATALOG_FILE.exists(), is(true));
+        assertThat(generatedCatalogFile.exists(), is(true));
 
-        final String catalogJson = readFileToString(GENERATED_CATALOG_FILE);
+        final String catalogJson = readFileToString(generatedCatalogFile);
 
         with(catalogJson)
                 .assertThat("$.name", is(catalog.getName()))

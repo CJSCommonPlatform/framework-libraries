@@ -30,10 +30,11 @@ public class CatalogGenerationRunner {
 
     /**
      * Generates a json catalog
-     * @param catalogName The name of the catalog
-     * @param schemaFiles A list of json schema files
+     *
+     * @param catalogName           The name of the catalog
+     * @param schemaFiles           A list of json schema files
      * @param catalogGenerationPath The path to where the catalog should be generated
-     * @param jsonSchemaPath A path where json schema files can be found
+     * @param jsonSchemaPath        A path where json schema files can be found
      */
     public void generateCatalog(final String catalogName, final List<URI> schemaFiles, final Path catalogGenerationPath, final Path jsonSchemaPath) {
 

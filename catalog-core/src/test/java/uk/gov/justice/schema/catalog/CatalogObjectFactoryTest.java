@@ -57,6 +57,11 @@ public class CatalogObjectFactoryTest {
     }
 
     @Test
+    public void shouldCreateACatalogGenerationContext() throws Exception {
+        assertThat(catalogObjectFactory.catalogContext(), is(instanceOf(CatalogContext.class)));
+    }
+
+    @Test
     public void shouldCreateAClasspathCatalogLoader() throws Exception {
 
         final ClasspathCatalogLoader classpathCatalogLoader = catalogObjectFactory.classpathCatalogLoader();
@@ -67,6 +72,9 @@ public class CatalogObjectFactoryTest {
 
         final ClasspathResourceLoader classpathResourceLoader = getPrivateField("classpathResourceLoader", classpathCatalogLoader, ClasspathResourceLoader.class);
         assertThat(classpathResourceLoader, is(notNullValue()));
+
+        final CatalogContext catalogContext = getPrivateField("catalogContext", classpathCatalogLoader, CatalogContext.class);
+        assertThat(catalogContext, is(notNullValue()));
 
         final UrlConverter urlConverter = getPrivateField("urlConverter", classpathCatalogLoader, UrlConverter.class);
         assertThat(urlConverter, is(notNullValue()));

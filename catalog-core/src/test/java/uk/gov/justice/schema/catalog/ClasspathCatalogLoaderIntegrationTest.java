@@ -6,38 +6,16 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.schema.catalog.domain.Catalog;
-import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;
-import uk.gov.justice.schema.catalog.util.UrlConverter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.net.URI;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ClasspathCatalogLoaderIntegrationTest {
 
-    @Spy
-    @SuppressWarnings("unused")
-    private ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-
-    @Spy
-    @SuppressWarnings("unused")
-    private ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader();
-
-    @Spy
-    @SuppressWarnings("unused")
-    private UrlConverter urlConverter = new UrlConverter();
-
-    @InjectMocks
-    private ClasspathCatalogLoader classpathCatalogLoader;
+    private final ClasspathCatalogLoader classpathCatalogLoader = new CatalogObjectFactory().classpathCatalogLoader();
 
     @Test
     public void shouldLoadCatalogsFromTheClasspath() throws Exception {
@@ -49,7 +27,7 @@ public class ClasspathCatalogLoaderIntegrationTest {
         final URI uri = catalogs.keySet().iterator().next();
 
         assertThat(uri.toString(), startsWith("file:/"));
-        assertThat(uri.toString(), endsWith("/json-schema-catalog/catalog-core/target/test-classes/json/schema/schema_catalog.json"));
+        assertThat(uri.toString(), endsWith("/json-schema-catalog/catalog-core/target/test-classes/META-INF/schema_catalog.json"));
 
         final Catalog catalog = catalogs.get(uri);
 

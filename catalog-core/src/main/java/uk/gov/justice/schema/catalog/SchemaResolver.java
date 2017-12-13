@@ -34,6 +34,7 @@ import java.util.Optional;
 public class SchemaResolver {
 
     private static final String AN_EMPTY_STRING = "";
+    private static final String RELATIVE_SCHEMA_DIRECTORY = "../json/schema/";
 
     private final UrlConverter urlConverter;
     private final UriResolver uriResolver;
@@ -57,7 +58,8 @@ public class SchemaResolver {
             final Optional<String> schemaBaseLocation) {
 
         try {
-            final URI schemaUri = new URI(schemaBaseLocation.orElse(AN_EMPTY_STRING)).resolve(relativeLocationOfSchema);
+            final String baseLocation = RELATIVE_SCHEMA_DIRECTORY + schemaBaseLocation.orElse(AN_EMPTY_STRING);
+            final URI schemaUri = new URI(baseLocation).resolve(relativeLocationOfSchema);
             final URI resolvedUri = uriResolver.resolve(uriOfCatalogFile, schemaUri);
 
             return urlConverter.toUrl(resolvedUri);

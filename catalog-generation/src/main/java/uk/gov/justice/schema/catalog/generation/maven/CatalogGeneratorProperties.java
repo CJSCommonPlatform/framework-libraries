@@ -15,9 +15,9 @@ public class CatalogGeneratorProperties implements GeneratorProperties {
     @Parameter
     private String catalogName;
 
-
-    @Parameter(defaultValue = "json/schema/")
+    @Parameter
     private String jsonSchemaPath = "json/schema/";
+
 
     /**
      * @return The name of the catalog specified in the maven plugin xml

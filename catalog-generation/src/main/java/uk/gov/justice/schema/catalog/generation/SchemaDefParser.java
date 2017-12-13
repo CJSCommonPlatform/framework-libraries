@@ -2,7 +2,7 @@ package uk.gov.justice.schema.catalog.generation;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static uk.gov.justice.schema.catalog.generation.CatalogGenerationContext.AN_EMPTY_STRING;
+import static uk.gov.justice.schema.catalog.CatalogContext.AN_EMPTY_STRING;
 
 import java.net.URI;
 import java.net.URL;

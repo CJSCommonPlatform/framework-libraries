@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.schema.catalog.CatalogContext;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
 import java.lang.reflect.Field;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -24,17 +26,13 @@ public class GenerationObjectFactoryTest {
     private GenerationObjectFactory generationObjectFactory;
 
     @Test
-    public void shouldCreateACatalogGenerationContext() throws Exception {
-        assertThat(generationObjectFactory.catalogGenerationContext(), is(instanceOf(CatalogGenerationContext.class)));
-    }
-
-    @Test
     public void shouldCreateACatalogWriter() throws Exception {
         final CatalogWriter catalogWriter = generationObjectFactory.catalogWriter();
         assertThat(catalogWriter, is(instanceOf(CatalogWriter.class)));
 
         assertThat(getPrivateField("objectMapper", catalogWriter, ObjectMapper.class), is(notNullValue()));
-        assertThat(getPrivateField("catalogGenerationContext", catalogWriter, CatalogGenerationContext.class), is(notNullValue()));
+        assertThat(getPrivateField("catalogContext", catalogWriter, CatalogContext.class), is(notNullValue()));
+        assertThat(getPrivateField("logger", catalogWriter, Logger.class), is(notNullValue()));
     }
 
     @Test

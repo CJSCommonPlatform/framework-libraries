@@ -21,17 +21,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class ClasspathCatalogLoader {
 
-    private static final String DEFAULT_JSON_CATALOG_LOCATION = "json/schema/schema_catalog.json";
-
     private final ObjectMapper objectMapper;
     private final ClasspathResourceLoader classpathResourceLoader;
+    private final CatalogContext catalogContext;
     private final UrlConverter urlConverter;
 
     public ClasspathCatalogLoader(final ObjectMapper objectMapper,
                                   final ClasspathResourceLoader classpathResourceLoader,
+                                  final CatalogContext catalogContext,
                                   final UrlConverter urlConverter) {
         this.objectMapper = objectMapper;
         this.classpathResourceLoader = classpathResourceLoader;
+        this.catalogContext = catalogContext;
         this.urlConverter = urlConverter;
     }
 
@@ -55,10 +56,11 @@ public class ClasspathCatalogLoader {
     }
 
     private List<URL> listAllCatalogsFromClasspath() {
+        final String catalogFullPath = catalogContext.getCatalogFullPath();
         try {
-            return classpathResourceLoader.getResources(getClass(), DEFAULT_JSON_CATALOG_LOCATION);
+            return classpathResourceLoader.getResources(getClass(), catalogFullPath);
         } catch (final IOException e) {
-            throw new SchemaCatalogException(format("Failed to load the catalogs from the classpath for location '%s'", DEFAULT_JSON_CATALOG_LOCATION), e);
+            throw new SchemaCatalogException(format("Failed to load the catalogs from the classpath for location '%s'", catalogFullPath), e);
         }
     }
 }

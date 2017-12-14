@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,6 +31,10 @@ public class ClasspathCatalogLoaderTest {
 
     @Mock
     private ClasspathResourceLoader classpathResourceLoader;
+
+    @SuppressWarnings("unused")
+    @Spy
+    private final CatalogContext catalogContext = new CatalogContext();
 
     @Mock
     private UrlConverter urlConverter;
@@ -44,7 +49,7 @@ public class ClasspathCatalogLoaderTest {
         final URL url = new URL("file://src/code/my-file.txt");
         final URI uri = url.toURI();
 
-        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "json/schema/schema_catalog.json")).thenReturn(singletonList(url));
+        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "META-INF/schema_catalog.json")).thenReturn(singletonList(url));
         when(urlConverter.toUri(url)).thenReturn(uri);
         when(objectMapper.readValue(url, Catalog.class)).thenThrow(ioException);
 
@@ -62,14 +67,14 @@ public class ClasspathCatalogLoaderTest {
 
         final IOException ioException = new IOException("Ooops");
 
-        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "json/schema/schema_catalog.json")).thenThrow(ioException);
+        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "META-INF/schema_catalog.json")).thenThrow(ioException);
 
         try {
             classpathCatalogLoader.getCatalogs();
             fail();
         } catch (final Exception expected) {
             assertThat(expected.getCause(), is(ioException));
-            assertThat(expected.getMessage(), startsWith("Failed to load the catalogs from the classpath for location 'json/schema/schema_catalog.json'"));
+            assertThat(expected.getMessage(), startsWith("Failed to load the catalogs from the classpath for location 'META-INF/schema_catalog.json'"));
 
         }
     }

@@ -6,7 +6,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.schema.catalog.generation.CatalogGenerationContext.AN_EMPTY_STRING;
+import static uk.gov.justice.schema.catalog.CatalogContext.AN_EMPTY_STRING;
+
+import uk.gov.justice.schema.catalog.CatalogContext;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -25,7 +27,7 @@ public class SchemaDefParserTest {
 
     @Spy
     @SuppressWarnings("unused")
-    private final CatalogGenerationContext catalogGenerationContext = new CatalogGenerationContext();
+    private final CatalogContext catalogContext = new CatalogContext();
 
     @Mock
     private SchemaIdParser schemaIdParser;

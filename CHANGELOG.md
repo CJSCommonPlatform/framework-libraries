@@ -5,5 +5,5 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-### Added
-- Initial version 
+## [1.0.0] - 2017-12-15
+- First release

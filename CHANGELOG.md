@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.8.0] - 2017-12-15
+### Added
+- Schema catalog generation plugin
+
 ## [1.7.0] - 2017-11-28
 ### Added
 - Jacoco exclude uk/gov/justice/api/mapper/*MediaTypeToSchemaIdMapper.class

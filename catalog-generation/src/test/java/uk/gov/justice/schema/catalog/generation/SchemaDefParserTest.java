@@ -39,7 +39,7 @@ public class SchemaDefParserTest {
     public void shouldParseTheSchemaUrlIntoIdGroupBaseLocationAndLocation() throws Exception {
 
         final Path jsonSchemaPath = Paths.get("json/schema/");
-        final URL schemaFile = new URL("file:/path/to/raml/json/schema/group/some/path/some-schema-or-other.json");
+        final URL schemaFile = new URL("file:/path/to/raml/json/schema/some/path/some-schema-or-other.json");
 
         final String schemaId = "http://justice.gov.uk/context/some-schema-or-other.json";
         when(schemaIdParser.parse(schemaFile)).thenReturn(of(new URL(schemaId).toURI()));
@@ -50,9 +50,9 @@ public class SchemaDefParserTest {
             final SchemaDef schemaDef = schemaDefOptional.get();
             assertThat(schemaDef.getSchemaFile(), is(schemaFile));
             assertThat(schemaDef.getId().toString(), is(schemaId));
-            assertThat(schemaDef.getGroupName(), is("group"));
-            assertThat(schemaDef.getBaseLocation(), is("group/"));
-            assertThat(schemaDef.getLocation(), is("some/path/some-schema-or-other.json"));
+            assertThat(schemaDef.getGroupName(), is("some/path"));
+            assertThat(schemaDef.getBaseLocation(), is("json/schema/some/path/"));
+            assertThat(schemaDef.getLocation(), is("some-schema-or-other.json"));
         } else {
             fail();
         }
@@ -74,7 +74,7 @@ public class SchemaDefParserTest {
             assertThat(schemaDef.getSchemaFile(), is(schemaFile));
             assertThat(schemaDef.getId().toString(), is(schemaId));
             assertThat(schemaDef.getGroupName(), is(AN_EMPTY_STRING));
-            assertThat(schemaDef.getBaseLocation(), is(AN_EMPTY_STRING));
+            assertThat(schemaDef.getBaseLocation(), is("json/schema/"));
             assertThat(schemaDef.getLocation(), is("some-schema-or-other.json"));
         } else {
             fail();
@@ -97,9 +97,9 @@ public class SchemaDefParserTest {
 
             assertThat(schemaDef.getSchemaFile(), is(schemaFile));
             assertThat(schemaDef.getId().toString(), is(schemaId));
-            assertThat(schemaDef.getGroupName(), is("a-sub-directory"));
-            assertThat(schemaDef.getBaseLocation(), is("a-sub-directory/"));
-            assertThat(schemaDef.getLocation(), is("another-sub-directory/some-schema-or-other.json"));
+            assertThat(schemaDef.getGroupName(), is("a-sub-directory/another-sub-directory"));
+            assertThat(schemaDef.getBaseLocation(), is("json/schema/a-sub-directory/another-sub-directory/"));
+            assertThat(schemaDef.getLocation(), is("some-schema-or-other.json"));
         } else {
             fail();
         }

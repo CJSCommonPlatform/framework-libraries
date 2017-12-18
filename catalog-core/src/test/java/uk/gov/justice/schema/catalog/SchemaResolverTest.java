@@ -45,7 +45,7 @@ public class SchemaResolverTest {
 
         final URL resolvedUri = schemaResolver.resolve(absoluteCatalogUri, schemaFileLocation, baseLocation);
 
-        assertThat(resolvedUri.toString(), is("file:/src/main/resources/json/schema/base/location/some/path/to/schema.json"));
+        assertThat(resolvedUri.toString(), is("file:/src/main/resources/base/location/some/path/to/schema.json"));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class SchemaResolverTest {
 
         final URL resolvedUri = schemaResolver.resolve(absoluteCatalogUri, schemaFileLocation, baseLocation);
 
-        assertThat(resolvedUri.toString(), is("file:/src/main/resources/json/schema/some/path/to/schema.json"));
+        assertThat(resolvedUri.toString(), is("file:/src/main/resources/some/path/to/schema.json"));
     }
 
     @Test

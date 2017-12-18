@@ -10,7 +10,6 @@ import uk.gov.justice.schema.catalog.domain.Catalog;
 import java.net.URI;
 import java.util.Map;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 public class ClasspathCatalogLoaderIntegrationTest {
@@ -35,7 +34,7 @@ public class ClasspathCatalogLoaderIntegrationTest {
         assertThat(catalog.getGroups().size(), is(2));
 
         assertThat(catalog.getGroups().get(0).getName(), is("standards"));
-        assertThat(catalog.getGroups().get(0).getBaseLocation(), is("standards/"));
+        assertThat(catalog.getGroups().get(0).getBaseLocation(), is("json/schema/standards/"));
 
         assertThat(catalog.getGroups().get(0).getSchemas().size(), is(2));
         assertThat(catalog.getGroups().get(0).getSchemas().get(0).getId(), is("http://justice.gov.uk/standards/complex_address.json"));
@@ -44,10 +43,10 @@ public class ClasspathCatalogLoaderIntegrationTest {
         assertThat(catalog.getGroups().get(0).getSchemas().get(1).getLocation(), is("address.json"));
 
         assertThat(catalog.getGroups().get(1).getName(), is("staging interface"));
-        assertThat(catalog.getGroups().get(1).getBaseLocation(), is(CoreMatchers.nullValue()));
+        assertThat(catalog.getGroups().get(1).getBaseLocation(), is("json/schema/context/"));
 
         assertThat(catalog.getGroups().get(1).getSchemas().size(), is(1));
         assertThat(catalog.getGroups().get(1).getSchemas().get(0).getId(), is("http://justice.gov.uk/context/person.json"));
-        assertThat(catalog.getGroups().get(1).getSchemas().get(0).getLocation(), is("context/person.json"));
+        assertThat(catalog.getGroups().get(1).getSchemas().get(0).getLocation(), is("person.json"));
     }
 }

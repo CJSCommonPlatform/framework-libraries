@@ -3,16 +3,17 @@
   "groups": [
     {
       "name": "staging interface",
+      "baseLocation": "json/schema/context/",
       "schemas": [
         {
           "id": "http://justice.gov.uk/context/person.json",
-          "location": "context/person.json"
+          "location": "person.json"
         }
       ]
     },
     {
       "name": "standards",
-      "baseLocation": "standards/",
+      "baseLocation": "json/schema/standards/",
       "schemas": [
         {
           "id": "http://justice.gov.uk/standards/complex_address.json",

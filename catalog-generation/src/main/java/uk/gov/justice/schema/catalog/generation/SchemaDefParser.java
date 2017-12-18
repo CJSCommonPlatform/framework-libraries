@@ -21,22 +21,21 @@ import java.util.Optional;
  *
  * For example:<br/>
  * Given an absolute {@link URL} of a json file
- * <pre>file:/path/to/raml/json/schema/group/some/path/some-schema-or-other.json</pre>
+ * <pre>file:/path/to/raml/json/schema/some/path/some-schema-or-other.json</pre>
  * and a path to the json files (a sub path to locate the root of the json schemas)
  * <pre>json/schema/</pre>
  * would give us the remaining sub path:
- * <pre>group/some/path/some-schema-or-other.json</pre>
- * which would give use the group name
- * <pre>group</pre>
- * and the base location
- * <pre>group/</pre>
- * and the schema location:
  * <pre>some/path/some-schema-or-other.json</pre>
- *
- *
+ * which would give use the base location
+ * <pre>json/schema/</pre>
+ * and the group name
+ * <pre>some/path</pre>
+ * and the schema location:
+ * <pre>some-schema-or-other.json</pre>
  */
 public class SchemaDefParser {
 
+    private static final char SLASH = '/';
     private final SchemaIdParser schemaIdParser;
 
     public SchemaDefParser(final SchemaIdParser schemaIdParser) {
@@ -60,14 +59,14 @@ public class SchemaDefParser {
         if (id.isPresent()) {
             final String fileUrl = schemaFile.toString();
 
-            final String jsonSchemaPathString = jsonSchemaPath.toString();
-            final String relativeUri = fileUrl.substring(fileUrl.indexOf(jsonSchemaPathString) + jsonSchemaPathString.length() + 1);
+            final String jsonSchemaString = jsonSchemaPath.toString();
+            final String relativeUri = fileUrl.substring(fileUrl.indexOf(jsonSchemaString) + jsonSchemaString.length() + 1);
 
-            final int firstSlashIndex = relativeUri.indexOf('/');
+            final int lastSlashIndex = relativeUri.lastIndexOf(SLASH);
 
-            final String groupName = getGroup(relativeUri, firstSlashIndex);
-            final String baseLocation = getBaseLocation(groupName, firstSlashIndex);
-            final String location = relativeUri.substring(firstSlashIndex + 1);
+            final String groupName = getGroup(relativeUri, lastSlashIndex);
+            final String baseLocation =  getBaseLocation(jsonSchemaString, groupName);
+            final String location = relativeUri.substring(lastSlashIndex + 1);
 
             final SchemaDef schemaDef = new SchemaDef(schemaFile, id.get(), groupName, baseLocation, location);
 
@@ -86,12 +85,12 @@ public class SchemaDefParser {
         return relativeUri.substring(0, firstSlashIndex);
     }
 
-    private String getBaseLocation(final String groupName, final int firstSlashIndex) {
+    private String getBaseLocation(final String jsonSchemaPath, final String groupName) {
 
-        if(firstSlashIndex == -1) {
-            return AN_EMPTY_STRING;
+        if (groupName.isEmpty()) {
+            return jsonSchemaPath + SLASH;
         }
 
-        return groupName + "/";
+        return jsonSchemaPath + SLASH + groupName + SLASH;
     }
 }

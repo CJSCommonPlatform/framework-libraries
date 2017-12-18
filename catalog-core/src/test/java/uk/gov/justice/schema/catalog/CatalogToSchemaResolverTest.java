@@ -65,7 +65,7 @@ public class CatalogToSchemaResolverTest {
         assertThat(schemaLocations.size(), is(1));
 
         assertThat(schemaLocations.containsKey("schemaId"), is(true));
-        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/resources/json/schema/some/path/to.json"));
+        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/resources/some/path/to.json"));
     }
 
     @Test
@@ -99,8 +99,8 @@ public class CatalogToSchemaResolverTest {
         assertThat(schemaLocations.size(), is(1));
 
         assertThat(schemaLocations.containsKey("schemaId"), is(true));
-        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/resources/json/schema/some/path/to.json"));
+        assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/resources/some/path/to.json"));
 
-        verify(logger).warn("Found duplicate schema id 'schemaId' for schemaLocations 'file:/src/main/resources/json/schema/some/path/to.json' and 'file:/src/main/resources/json/schema/some/other/path/to.json'");
+        verify(logger).warn("Found duplicate schema id 'schemaId' for schemaLocations 'file:/src/main/resources/some/path/to.json' and 'file:/src/main/resources/some/other/path/to.json'");
     }
 }

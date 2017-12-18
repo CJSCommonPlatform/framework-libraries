@@ -41,7 +41,7 @@ public class CatalogObjectGeneratorTest {
         assertThat(catalog.getGroups().size(), is(2));
 
         assertThat(catalog.getGroups().get(0).getName(), is("standards"));
-        assertThat(catalog.getGroups().get(0).getBaseLocation(), is("standards/"));
+        assertThat(catalog.getGroups().get(0).getBaseLocation(), is("raml/json/schema/standards/"));
         assertThat(catalog.getGroups().get(0).getSchemas().size(), is(3));
         assertThat(catalog.getGroups().get(0).getSchemas().get(0).getId(), is("http://justice.gov.uk/standards/address.json"));
         assertThat(catalog.getGroups().get(0).getSchemas().get(0).getLocation(), is("address.json"));
@@ -51,7 +51,7 @@ public class CatalogObjectGeneratorTest {
         assertThat(catalog.getGroups().get(0).getSchemas().get(2).getLocation(), is("defendant.json"));
 
         assertThat(catalog.getGroups().get(1).getName(), is("context"));
-        assertThat(catalog.getGroups().get(1).getBaseLocation(), is("context/"));
+        assertThat(catalog.getGroups().get(1).getBaseLocation(), is("raml/json/schema/context/"));
         assertThat(catalog.getGroups().get(1).getSchemas().size(), is(1));
         assertThat(catalog.getGroups().get(1).getSchemas().get(0).getId(), is("http://justice.gov.uk/context/person.json"));
         assertThat(catalog.getGroups().get(1).getSchemas().get(0).getLocation(), is("person.json"));

@@ -34,7 +34,7 @@ import java.util.Optional;
 public class SchemaResolver {
 
     private static final String AN_EMPTY_STRING = "";
-    private static final String RELATIVE_SCHEMA_DIRECTORY = "../json/schema/";
+    private static final String RELATIVE_SCHEMA_DIRECTORY = "../";
 
     private final UrlConverter urlConverter;
     private final UriResolver uriResolver;

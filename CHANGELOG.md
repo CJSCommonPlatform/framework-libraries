@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.9.0] - 2017-12-19
 ### Added
 - Schema catalog generation for RAML jar
 

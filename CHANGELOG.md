@@ -4,6 +4,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Schema catalog generation for RAML jar
+
+### Changed
+- Maven parent pom version to 1.7.1
+- Json schema catalog version to 1.0.1
 
 ## [1.8.0] - 2017-12-15
 ### Added

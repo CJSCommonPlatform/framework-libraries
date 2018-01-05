@@ -36,15 +36,15 @@ public class Catalog {
 
     private final RawCatalog rawCatalog;
     private final SchemaClientFactory schemaClientFactory;
-    private final JsonStringToSchemaConverter jsonStringToSchemaConverter;
+    private final JsonToSchemaConverter jsonToSchemaConverter;
 
     public Catalog(
             final RawCatalog rawCatalog,
             final SchemaClientFactory schemaClientFactory,
-            final JsonStringToSchemaConverter jsonStringToSchemaConverter) {
+            final JsonToSchemaConverter jsonToSchemaConverter) {
         this.rawCatalog = rawCatalog;
         this.schemaClientFactory = schemaClientFactory;
-        this.jsonStringToSchemaConverter = jsonStringToSchemaConverter;
+        this.jsonToSchemaConverter = jsonToSchemaConverter;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Catalog {
         final Optional<String> rawJsonSchema = rawCatalog.getRawJsonSchema(schemaId);
 
         if (rawJsonSchema.isPresent()) {
-            final Schema schema = jsonStringToSchemaConverter.convert(
+            final Schema schema = jsonToSchemaConverter.convert(
                     rawJsonSchema.get(),
                     schemaClientFactory.create(rawCatalog));
 

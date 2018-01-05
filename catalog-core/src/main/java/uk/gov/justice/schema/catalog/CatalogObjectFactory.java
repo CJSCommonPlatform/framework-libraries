@@ -38,10 +38,10 @@ public class CatalogObjectFactory {
     }
 
     /**
-     * @return a new instance of {@link JsonStringToSchemaConverter}
+     * @return a new instance of {@link JsonToSchemaConverter}
      */
-    public JsonStringToSchemaConverter jsonStringToSchemaConverter() {
-        return new JsonStringToSchemaConverter();
+    public JsonToSchemaConverter jsonToSchemaConverter() {
+        return new JsonToSchemaConverter();
     }
 
     /**
@@ -114,7 +114,7 @@ public class CatalogObjectFactory {
         return new Catalog(
                 rawCatalog(),
                 schemaClientFactory(),
-                jsonStringToSchemaConverter());
+                jsonToSchemaConverter());
     }
 
     /**

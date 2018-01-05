@@ -28,7 +28,7 @@ public class CatalogProducerTest {
 
         assertThat(getPrivateField(catalog, "rawCatalog", RawCatalog.class), is(notNullValue()));
         assertThat(getPrivateField(catalog, "schemaClientFactory", SchemaClientFactory.class), is(notNullValue()));
-        assertThat(getPrivateField(catalog, "jsonStringToSchemaConverter", JsonStringToSchemaConverter.class), is(notNullValue()));
+        assertThat(getPrivateField(catalog, "jsonToSchemaConverter", JsonToSchemaConverter.class), is(notNullValue()));
     }
 
     @SuppressWarnings("unchecked")

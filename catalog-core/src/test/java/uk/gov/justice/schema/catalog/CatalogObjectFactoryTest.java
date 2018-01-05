@@ -45,8 +45,8 @@ public class CatalogObjectFactoryTest {
     @Test
     public void shouldCreateAJsonStringToSchemaConverter() throws Exception {
 
-        final JsonStringToSchemaConverter jsonStringToSchemaConverter = catalogObjectFactory.jsonStringToSchemaConverter();
-        assertThat(jsonStringToSchemaConverter, is(notNullValue()));
+        final JsonToSchemaConverter jsonToSchemaConverter = catalogObjectFactory.jsonToSchemaConverter();
+        assertThat(jsonToSchemaConverter, is(notNullValue()));
     }
 
     @Test
@@ -155,8 +155,8 @@ public class CatalogObjectFactoryTest {
         final SchemaClientFactory schemaClientFactory = getPrivateField("schemaClientFactory", catalog, SchemaClientFactory.class);
         assertThat(schemaClientFactory, is(notNullValue()));
 
-        final JsonStringToSchemaConverter jsonStringToSchemaConverter = getPrivateField("jsonStringToSchemaConverter", catalog, JsonStringToSchemaConverter.class);
-        assertThat(jsonStringToSchemaConverter, is(notNullValue()));
+        final JsonToSchemaConverter jsonToSchemaConverter = getPrivateField("jsonToSchemaConverter", catalog, JsonToSchemaConverter.class);
+        assertThat(jsonToSchemaConverter, is(notNullValue()));
     }
 
     @SuppressWarnings("unchecked")

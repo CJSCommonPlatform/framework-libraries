@@ -5,12 +5,14 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.io.files.loader.SchemaLoaderResolver;
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
 import uk.gov.justice.generation.pojo.validation.Validator;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
+import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
@@ -20,7 +22,14 @@ import org.junit.Test;
 
 public class SchemaValidationIT {
 
-    private final SchemaLoader schemaLoader = new SchemaLoader();
+    private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
+
+    private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
+            catalogObjectFactory.rawCatalog(),
+            catalogObjectFactory.schemaClientFactory(),
+            catalogObjectFactory.jsonStringToSchemaConverter());
+
+    private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
     private final SchemaValidatorVisitor schemaValidatorVisitor = new SchemaValidatorVisitor(new Validator());
 
     @Test

@@ -6,8 +6,8 @@
 
     <parent>
         <groupId>uk.gov.justice</groupId>
-        <artifactId>maven-framework-parent-pom</artifactId>
-        <version>1.6.1</version>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>1.7.1</version>
     </parent>
 
     <groupId>uk.gov.justice.generators</groupId>
@@ -22,14 +22,16 @@
         <module>integration-test</module>
         <module>pojo-plugin-it</module>
         <module>pojo-event-annotation-plugin</module>
+        <module>standard-test-catalog</module>
     </modules>
 
     <properties>
-        <common-bom.version>1.21.0</common-bom.version>
-        <framework-version>2.4.1</framework-version>
+        <common-bom.version>1.22.0</common-bom.version>
+        <framework-version>2.5.1</framework-version>
         <utilities.version>1.11.0</utilities.version>
-        <test-utils.version>1.13.0</test-utils.version>
-        <generator-maven-plugin.version>2.2.0</generator-maven-plugin.version>
+        <test-utils.version>1.15.0</test-utils.version>
+        <generator-maven-plugin.version>2.3.0</generator-maven-plugin.version>
+        <json-schema-catalog.version>1.0.1</json-schema-catalog.version>
 
         <cpp.repo.name>jsonschema-pojo-generator</cpp.repo.name>
     </properties>

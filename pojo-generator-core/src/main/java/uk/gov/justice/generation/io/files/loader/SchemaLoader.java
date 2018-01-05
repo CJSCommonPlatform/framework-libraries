@@ -1,7 +1,6 @@
 package uk.gov.justice.generation.io.files.loader;
 
 import static java.lang.String.format;
-import static org.everit.json.schema.loader.SchemaLoader.load;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,18 +15,23 @@ import org.json.JSONObject;
  */
 public class SchemaLoader {
 
+    private final SchemaLoaderResolver schemaLoaderResolver;
+
+    public SchemaLoader(final SchemaLoaderResolver schemaLoaderResolver) {
+        this.schemaLoaderResolver = schemaLoaderResolver;
+    }
+
     /**
      * Loads the specified schema file
      *
      * @param jsonSchemaFile A {@link File} pointing to a json schema file
-     *
      * @return The loaded json schema
      */
     public Schema loadFrom(final File jsonSchemaFile) {
         final JSONObject schemaJsonObject = new JSONObject(loadAsJsonString(jsonSchemaFile));
 
-        if(schemaJsonObject.has("id")) {
-            return load(schemaJsonObject);
+        if (schemaJsonObject.has("id")) {
+            return schemaLoaderResolver.loadSchema(schemaJsonObject);
         }
 
         throw new SchemaLoaderException(format("Missing id in Schema file '%s'. Unable to load", jsonSchemaFile.getAbsolutePath()));

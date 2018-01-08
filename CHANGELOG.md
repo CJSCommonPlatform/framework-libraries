@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+
+## [1.2.0] - 2018-01-08
+
+### Changed
+- Integrate Json Schema Catalog schema id resolution
+
 ## [1.1.1] - 2017-12-07
 
 ### Fixed

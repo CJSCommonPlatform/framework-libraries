@@ -5,7 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.10.0] - 2018-01-08
+## [1.10.1] - 2018-01-08
+### Fixed
+- Wrong Json Schema Catalog property name 
+
+## [1.10.0] - 2018-01-08 
 ### Changed
 - Json Schema Catalog version to 1.1.0
 

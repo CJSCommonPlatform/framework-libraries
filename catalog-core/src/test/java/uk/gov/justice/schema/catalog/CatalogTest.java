@@ -28,7 +28,7 @@ public class CatalogTest {
     private SchemaClientFactory schemaClientFactory;
 
     @Mock
-    private JsonStringToSchemaConverter jsonStringToSchemaConverter;
+    private JsonToSchemaConverter jsonToSchemaConverter;
 
     @InjectMocks
     private Catalog catalog;
@@ -44,7 +44,7 @@ public class CatalogTest {
 
         when(rawCatalog.getRawJsonSchema(schemaId)).thenReturn(of(rawJsonSchema));
         when(schemaClientFactory.create(rawCatalog)).thenReturn(localFileSystemSchemaClient);
-        when(jsonStringToSchemaConverter.convert(rawJsonSchema, localFileSystemSchemaClient)).thenReturn(schema);
+        when(jsonToSchemaConverter.convert(rawJsonSchema, localFileSystemSchemaClient)).thenReturn(schema);
 
         assertThat(catalog.getSchema(schemaId), is(of(schema)));
     }

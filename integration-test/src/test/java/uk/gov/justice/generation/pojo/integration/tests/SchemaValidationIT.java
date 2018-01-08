@@ -27,7 +27,7 @@ public class SchemaValidationIT {
     private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
             catalogObjectFactory.rawCatalog(),
             catalogObjectFactory.schemaClientFactory(),
-            catalogObjectFactory.jsonStringToSchemaConverter());
+            catalogObjectFactory.jsonToSchemaConverter());
 
     private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
     private final SchemaValidatorVisitor schemaValidatorVisitor = new SchemaValidatorVisitor(new Validator());

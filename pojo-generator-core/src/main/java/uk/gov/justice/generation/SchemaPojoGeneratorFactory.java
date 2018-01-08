@@ -33,7 +33,7 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
     private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
             catalogObjectFactory.rawCatalog(),
             catalogObjectFactory.schemaClientFactory(),
-            catalogObjectFactory.jsonStringToSchemaConverter());
+            catalogObjectFactory.jsonToSchemaConverter());
 
     private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
     private final VisitableFactory visitableFactory = new VisitableFactory();

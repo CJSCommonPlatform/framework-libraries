@@ -51,7 +51,7 @@ public class GeneratorUtil {
     private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
             catalogObjectFactory.rawCatalog(),
             catalogObjectFactory.schemaClientFactory(),
-            catalogObjectFactory.jsonStringToSchemaConverter());
+            catalogObjectFactory.jsonToSchemaConverter());
 
     private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);

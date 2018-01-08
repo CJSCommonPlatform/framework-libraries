@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.schema.catalog.JsonStringToSchemaConverter;
+import uk.gov.justice.schema.catalog.JsonToSchemaConverter;
 import uk.gov.justice.schema.catalog.RawCatalog;
 import uk.gov.justice.schema.catalog.client.SchemaClientFactory;
 
@@ -28,7 +28,7 @@ public class SchemaLoaderResolverTest {
     private SchemaClientFactory schemaClientFactory;
 
     @Mock
-    private JsonStringToSchemaConverter jsonStringToSchemaConverter;
+    private JsonToSchemaConverter jsonStringToSchemaConverter;
 
     @InjectMocks
     private SchemaLoaderResolver schemaLoaderResolver;
@@ -37,12 +37,10 @@ public class SchemaLoaderResolverTest {
     public void shouldResolveSchema() {
         final Schema schema = mock(Schema.class);
         final JSONObject jsonSchema = mock(JSONObject.class);
-        final String jsonSchemaString = "{}";
         final SchemaClient schemaClient = mock(SchemaClient.class);
 
-        when(jsonSchema.toString()).thenReturn(jsonSchemaString);
         when(schemaClientFactory.create(rawCatalog)).thenReturn(schemaClient);
-        when(jsonStringToSchemaConverter.convert(jsonSchemaString, schemaClient)).thenReturn(schema);
+        when(jsonStringToSchemaConverter.convert(jsonSchema, schemaClient)).thenReturn(schema);
 
         final Schema resultSchema = schemaLoaderResolver.loadSchema(jsonSchema);
 

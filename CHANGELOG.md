@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.10.0] - 2018-01-08
+### Changed
+- Json Schema Catalog version to 1.1.0
+
 ## [1.9.0] - 2017-12-19
 ### Added
 - Schema catalog generation for RAML jar

@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin.newAddFieldsAndMethodsToClassPlugin;
 
 import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.io.files.loader.SchemaLoaderResolver;
 import uk.gov.justice.generation.pojo.core.ClassNameParser;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.PackageNameParser;
@@ -29,6 +30,7 @@ import uk.gov.justice.generation.pojo.visitor.DefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.visitor.StringFormatValueParser;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
+import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +45,15 @@ public class GeneratorUtil {
     private final DefinitionFactory definitionFactory = new DefaultDefinitionFactory(new ReferenceValueParser(), new StringFormatValueParser());
     private final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitor(definitionFactory);
     private final VisitableFactory visitableFactory = new VisitableFactory();
-    private final SchemaLoader schemaLoader = new SchemaLoader();
+
+    private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
+
+    private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
+            catalogObjectFactory.rawCatalog(),
+            catalogObjectFactory.schemaClientFactory(),
+            catalogObjectFactory.jsonStringToSchemaConverter());
+
+    private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
     private List<String> ignoredClassNames = emptyList();

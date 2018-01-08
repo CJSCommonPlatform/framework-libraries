@@ -114,6 +114,11 @@
                         <artifactId>pojo-event-annotation-plugin</artifactId>
                         <version>${project.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>uk.gov.justice.generators</groupId>
+                        <artifactId>standard-test-catalog</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
                 </dependencies>
             </plugin>
         </plugins>

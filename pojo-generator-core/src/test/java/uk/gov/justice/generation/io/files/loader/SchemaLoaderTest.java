@@ -3,41 +3,49 @@ package uk.gov.justice.generation.io.files.loader;
 import static java.nio.file.Paths.get;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.StringSchema;
-import org.junit.Rule;
+import org.json.JSONObject;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SchemaLoaderTest {
 
-    private final SchemaLoader schemaLoader = new SchemaLoader();
+    @Mock
+    private SchemaLoaderResolver schemaLoaderResolver;
+
+    @InjectMocks
+    private SchemaLoader schemaLoader;
 
     @Test
     public void shouldLoadObjectSchema() throws Exception {
 
+        final Schema schema = mock(Schema.class);
+
+        when(schemaLoaderResolver.loadSchema(any(JSONObject.class))).thenReturn(schema);
+
         final File jsonSchemaFile = new ClasspathFileResource()
                 .getFileFromClasspath("/schemas/person-schema.json");
 
-        final ObjectSchema objectSchema = (ObjectSchema) schemaLoader.loadFrom(jsonSchemaFile);
+        final Schema resultSchema = schemaLoader.loadFrom(jsonSchemaFile);
 
-        final Map<String, Schema> propertySchemas = objectSchema.getPropertySchemas();
-        assertThat(propertySchemas.get("firstName"), is(instanceOf(StringSchema.class)));
-        assertThat(propertySchemas.get("lastName"), is(instanceOf(StringSchema.class)));
+        assertThat(resultSchema, is(schema));
     }
 
     @Test

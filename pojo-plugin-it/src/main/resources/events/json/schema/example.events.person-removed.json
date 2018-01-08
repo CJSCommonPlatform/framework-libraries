@@ -4,17 +4,11 @@
   "id": "http://justice.gov.uk/events/pojo/example.events.person-removed.json",
   "properties": {
     "personId": {
-      "$ref": "#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/events/pojo/example.standard.uuid.json"
     }
   },
   "additionalProperties": false,
   "required": [
     "personId"
-  ],
-  "definitions": {
-    "uuid": {
-      "type": "string",
-      "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-    }
-  }
+  ]
 }

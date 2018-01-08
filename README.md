@@ -166,6 +166,13 @@ The relevant parts of this plugin definition are:
 * jsonSchemaPath:      the base path to the schema files - keeping in mind that the schema_catalog.json 
 will be created inside the META-INF
 
+#### Catalog File
+
+The Schema Catalog file is generated in the **META-INF** directory, as **schema_catalog.json**
+
+All schemas referenced will be relative to the base of the jar or war
+
+
 ## JSON Validation
 
 ### Schema Catalog Service

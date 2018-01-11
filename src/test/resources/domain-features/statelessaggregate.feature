@@ -1,34 +1,46 @@
 Feature: StatelessAggregate
-  # Issue with "the"  in Then
-  # Issue with "no events" in Then
 
   Scenario: No previous events
 
     Given no previous events
-    When doSomething to a uk.gov.justice.services.domain.aggregate.StatelessAggregate using argsA
-    Then the something-happened
+    When you doSomething to a StatelessAggregate using a argsA
+    Then something happened
 
   Scenario: One previous event
 
-    Given there are previous events something-happened
-    When doSomething to a uk.gov.justice.services.domain.aggregate.StatelessAggregate using argsA
-    Then the something-happened
+    Given something happened
+    When you doSomething in a StatelessAggregate with an argsA
+    Then something happened
+
+  Scenario: One previous event with qualifier
+
+    Given cake ordered with icing
+    And something happened
+    When you doSomething in a StatelessAggregate with an argsA
+    Then something happened
 
   Scenario: Two previous events
 
-    Given there are previous events something-happened,something-happened
-    When doSomething to a uk.gov.justice.services.domain.aggregate.StatelessAggregate using argsA
-    Then the something-happened
+    Given something happened, something happened
+    When you doSomething to a StatelessAggregate using a argsA
+    Then something happened
 
   Scenario: No new events
 
-    Given there are previous events something-happened
-    When doNotDoSomething to a uk.gov.justice.services.domain.aggregate.StatelessAggregate using argsA
-    #Then the no events occurred
+    Given something happened
+    When you doNotDoSomething to a StatelessAggregate using a argsA
+    Then no events occured
 
   Scenario: Two new events
 
-    Given there are previous events something-happened
-    When doSomethingTwice to a uk.gov.justice.services.domain.aggregate.StatelessAggregate using argsA
-    Then the something-happened,something-happened
+    Given something happened
+    When you doSomethingTwice to a StatelessAggregate using a argsA
+    Then something happened, something happened
+
+  Scenario: Two new events separated with AND
+
+    Given something happened
+    When you doSomethingTwice to a StatelessAggregate using a argsA
+    Then something happened
+    And something happened
 

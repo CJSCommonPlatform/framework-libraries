@@ -37,16 +37,31 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <classesDirectory>target/classes/</classesDirectory>
+                                    <testClassesDirectory>target/test-classes/</testClassesDirectory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
+                            <classesDirectory>target/test-classes/</classesDirectory>
                             <testClassesDirectory>target/classes/</testClassesDirectory>
-                            <includes>
-                                <include>
-                                    **/*DomainTest.java
-                                </include>
-                            </includes>
                             <additionalClasspathElements>
-                                <additionalClasspathElement>target/test-classes</additionalClasspathElement>
+                                <additionalClasspathElement>target/classes/</additionalClasspathElement>
                             </additionalClasspathElements>
                         </configuration>
                     </plugin>
@@ -63,11 +78,8 @@
                                 </goals>
                                 <configuration>
                                     <projectName>${project.artifactId}</projectName>
-                                    <outputDirectory>
-                                        ${project.build.directory}/site/cucumber-reports
-                                    </outputDirectory>
-                                    <cucumberOutput>${project.build.directory}/cucumber.json
-                                    </cucumberOutput>
+                                    <outputDirectory>${project.build.directory}/site/cucumber-reports</outputDirectory>
+                                    <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
                                     <skippedFails>true</skippedFails>
                                     <buildNumber>${maven.build.timestamp}</buildNumber>
                                 </configuration>
@@ -76,7 +88,6 @@
                     </plugin>
                 </plugins>
             </build>
-
         </profile>
     </profiles>
     <dependencies>

@@ -1,15 +1,15 @@
-package uk.gov.justice.services.domain.event;
+package uk.gov.justice.services.test.domain.event;
 
 import uk.gov.justice.domain.annotation.Event;
 
 import java.util.UUID;
 
-@Event("something-happened")
-public class SomethingHappened {
+@Event("something-else-happened")
+public class SomethingElseHappened {
 
     private final UUID id;
 
-    public SomethingHappened(final UUID id) {
+    public SomethingElseHappened(final UUID id) {
         this.id = id;
     }
 

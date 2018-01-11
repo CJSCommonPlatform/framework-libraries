@@ -1,4 +1,4 @@
-package uk.gov.justice.services.test.utils.domain.event;
+package uk.gov.justice.services.test.domain.event;
 
 
 import uk.gov.justice.domain.annotation.Event;

@@ -1,18 +1,21 @@
 package uk.gov.justice.services.test.domain;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-
-import java.util.List;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
-import static uk.gov.justice.services.test.DomainTest.*;
+import static uk.gov.justice.services.test.DomainTest.eventNameFrom;
+import static uk.gov.justice.services.test.DomainTest.generatedEventAsJsonNode;
+import static uk.gov.justice.services.test.DomainTest.jsonNodeWithoutMetadataFrom;
+import static uk.gov.justice.services.test.DomainTest.jsonNodesListFrom;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
+
+import java.util.List;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 public class DomainTestSteps {
 
@@ -23,7 +26,7 @@ public class DomainTestSteps {
         aggregateWrapper = aggregateWrapper();
     }
 
-    @Given("^((?:(?!I|you|no).*)(?:using|with)?.*)$")
+    @Given("^((?:(?!I\\s|you\\s|no\\s).*)(?:using\\s|with\\s)?.*)$")
     public void previous_events(final String fileNames) {
         if (aggregateWrapper != null && aggregateWrapper.initialised()) {
             assert_events_generated(fileNames);

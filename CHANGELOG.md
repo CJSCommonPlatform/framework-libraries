@@ -5,7 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## 1.0.0 - 2018-01-15
+
 ### Added
 - Initial copy of API from microservice original framework project
 
-[Unreleased]: https://github.com/CJSCommonPlatform/framework-api/commits
+[Unreleased]: https://github.com/CJSCommonPlatform/framework-api/compare/release-1.0.0...HEAD
+[1.0.0]: https://github.com/CJSCommonPlatform/framework-api/commits/release-1.0.0

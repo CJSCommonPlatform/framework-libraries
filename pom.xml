@@ -40,7 +40,7 @@
     </scm>
 
     <properties>
-        <cpp.repo.name>framework-ap</cpp.repo.name>
+        <cpp.repo.name>framework-api</cpp.repo.name>
         <common-bom.version>1.22.0</common-bom.version>
     </properties>
 

@@ -73,4 +73,11 @@ public interface InterceptorContext {
     ContextPayload inputContext();
 
     ContextPayload outputContext();
+
+    /**
+     * Gets the Component Name of the context.
+     *
+     * @return the Component Name of UNKNOWN if not set.
+     */
+    String getComponentName();
 }

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## 1.1.0 - 2018-01-17
+
+### Changed
+- Added getComponentName to InterceptorContext
+
 ## 1.0.0 - 2018-01-15
 
 ### Added

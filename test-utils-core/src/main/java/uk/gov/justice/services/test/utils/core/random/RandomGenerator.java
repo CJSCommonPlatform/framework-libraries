@@ -37,6 +37,10 @@ public class RandomGenerator {
             Period.ofYears(5), ZonedDateTime.now(UTC), Direction.FUTURE);
     public static final Generator<ZonedDateTime> PAST_ZONED_DATE_TIME = new ZonedDateTimeGenerator(
             Period.ofYears(5), ZonedDateTime.now(UTC), Direction.PAST);
+    public static final Generator<ZonedDateTime> FUTURE_UTC_DATE_TIME = new ZonedDateTimeGenerator(
+            Period.ofYears(5), ZonedDateTime.now(UTC), Direction.FUTURE, UTC);
+    public static final Generator<ZonedDateTime> PAST_UTC_DATE_TIME = new ZonedDateTimeGenerator(
+            Period.ofYears(5), ZonedDateTime.now(UTC), Direction.PAST, UTC);
 
     public static Generator<String> string(final int length) {
         return new StringGenerator(length);

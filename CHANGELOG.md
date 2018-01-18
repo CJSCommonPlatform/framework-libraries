@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- Added matcher for asserting jsonpath against a schema
+
 ### Fixed
 - Generate random ZonedDateTime in different time zones and provide option to generate in UTC specific timezone
 - Test cases for random ZonedDateTime generators and added logging to show more info when they fail

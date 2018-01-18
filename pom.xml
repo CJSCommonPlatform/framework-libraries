@@ -6,8 +6,8 @@
 
     <parent>
         <groupId>uk.gov.justice</groupId>
-        <artifactId>maven-framework-parent-pom</artifactId>
-        <version>1.6.0</version>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>1.7.1</version>
     </parent>
 
     <groupId>uk.gov.justice.utils</groupId>

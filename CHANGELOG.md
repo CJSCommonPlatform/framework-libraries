@@ -7,6 +7,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ### Fixed
 - Generate random ZonedDateTime in different time zones and provide option to generate in UTC specific timezone
+- Test cases for random ZonedDateTime generators and added logging to show more info when they fail
 
 ## [1.15.0] - 2017-11-16
 

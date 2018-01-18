@@ -1,0 +1,15 @@
+[
+    {
+      "id": "7e2f843e-d639-40b3-8611-8015f3a18954",
+      "prosecutorCaseId": "TFL21345",
+      "offenceSequenceNo": 1,
+      "libraOffenceCode": "PS00001",
+      "chargeDate": "2016-01-01",
+      "libraOffenceDateCode": 1,
+      "offenceDate": "2016-01-01",
+      "offenceWording": "Committed some offence",
+      "prosecutionFacts": "No ticket at the gates, forgery",
+      "witnessStatement": "Jumped over the barriers",
+      "compensation": 2.34
+    }
+]

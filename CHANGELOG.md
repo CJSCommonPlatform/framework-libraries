@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.16.0] - 2018-01-18
+
 ### Added
 - Added matcher for asserting jsonpath against a schema
 

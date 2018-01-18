@@ -3,22 +3,18 @@ package uk.gov.justice.services.test.utils.core.random;
 import static com.btmatthews.hamcrest.regex.PatternMatcher.matches;
 import static com.google.common.collect.ImmutableList.of;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
 import static java.math.BigDecimal.ROUND_HALF_EVEN;
-import static java.time.LocalDate.now;
-import static java.time.ZoneOffset.UTC;
 import static java.util.EnumSet.allOf;
 import static org.apache.commons.lang3.StringUtils.isAlpha;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.randomEnum;
@@ -28,12 +24,8 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -169,96 +161,6 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateRandomFutureLocalDate() {
-        final LocalDateTime startDate = now().atStartOfDay();
-        final LocalDateTime endDate = now().plus(Period.ofYears(5)).atStartOfDay();
-        final Generator<LocalDate> futureLocalDateGenerator = RandomGenerator.FUTURE_LOCAL_DATE;
-
-        LOGGER.debug("Start date: {} End date: {}", startDate, endDate);
-
-        typeCheck(futureLocalDateGenerator, s -> !(s.isBefore(startDate.toLocalDate()) || s.isAfter(endDate.toLocalDate())))
-                .verify(times(NUMBER_OF_TIMES));
-    }
-
-    @Test
-    public void shouldGenerateRandomPastLocalDate() {
-        final LocalDateTime startDate = now().atStartOfDay();
-        final LocalDateTime endDate = now().minus(Period.ofYears(5)).atStartOfDay();
-        final Generator<LocalDate> pastLocalDateGenerator = RandomGenerator.PAST_LOCAL_DATE;
-
-        LOGGER.debug("Start date: {} End date: {}", startDate, endDate);
-
-        typeCheck(pastLocalDateGenerator, s -> !(s.isBefore(endDate.toLocalDate()) || s.isAfter(startDate.toLocalDate())))
-                .verify(times(NUMBER_OF_TIMES));
-    }
-
-    @Test
-    public void shouldGenerateRandomFutureZonedDateTime() {
-        final ZonedDateTime startDateTime = ZonedDateTime.now(UTC);
-        final ZonedDateTime endDateTime = startDateTime.plus(Period.ofYears(5));
-        final Set<ZoneId> randomZones = newHashSet();
-        final Generator<ZonedDateTime> futureZonedDateTimeGenerator = RandomGenerator.FUTURE_ZONED_DATE_TIME;
-
-        LOGGER.debug("Start dateTime: {} End dateTime: {}", startDateTime, endDateTime);
-
-        typeCheck(futureZonedDateTimeGenerator, s -> {
-            randomZones.add(s.getZone());
-            return !(s.isBefore(startDateTime.withZoneSameInstant(s.getZone())) || s.isAfter(endDateTime.withZoneSameInstant(s.getZone())));
-        }).verify(times(NUMBER_OF_TIMES));
-
-        assertThat(randomZones, hasSize(greaterThan(10)));
-    }
-
-    @Test
-    public void shouldGenerateRandomPastZonedDateTime() {
-        final ZonedDateTime startDateTime = ZonedDateTime.now(UTC);
-        final ZonedDateTime endDateTime = startDateTime.minus(Period.ofYears(5));
-        final Set<ZoneId> randomZones = newHashSet();
-        final Generator<ZonedDateTime> pastZonedDateTimeGenerator = RandomGenerator.PAST_ZONED_DATE_TIME;
-
-        LOGGER.debug("Start dateTime: {} End dateTime: {}", startDateTime, endDateTime);
-
-        typeCheck(pastZonedDateTimeGenerator, s -> {
-            randomZones.add(s.getZone());
-            return !(s.isBefore(endDateTime.withZoneSameInstant(s.getZone())) || s.isAfter(startDateTime.withZoneSameInstant(s.getZone())));
-        }).verify(times(NUMBER_OF_TIMES));
-
-        assertThat(randomZones, hasSize(greaterThan(10)));
-    }
-
-    @Test
-    public void shouldGenerateRandomFutureDateTimeInUTCZone() {
-        final ZonedDateTime startDateTime = ZonedDateTime.now(UTC);
-        final ZonedDateTime endDateTime = startDateTime.plus(Period.ofYears(5));
-        final Generator<ZonedDateTime> futureZonedDateTimeGenerator = RandomGenerator.FUTURE_UTC_DATE_TIME;
-
-        LOGGER.debug("Start dateTime: {} End dateTime: {}", startDateTime, endDateTime);
-
-        typeCheck(futureZonedDateTimeGenerator, s -> {
-            assertThat(s.getOffset().getId(), is("Z"));
-            assertThat(s.getOffset().getTotalSeconds(), is(0));
-
-            return !(s.isBefore(startDateTime) || s.isAfter(endDateTime));
-        }).verify(times(NUMBER_OF_TIMES));
-    }
-
-    @Test
-    public void shouldGenerateRandomPastDateTimeInUTCZone() {
-        final ZonedDateTime startDateTime = ZonedDateTime.now(UTC);
-        final ZonedDateTime endDateTime = startDateTime.minus(Period.ofYears(5));
-        final Generator<ZonedDateTime> pastZonedDateTimeGenerator = RandomGenerator.PAST_UTC_DATE_TIME;
-
-        LOGGER.debug("Start dateTime: {} End dateTime: {}", startDateTime, endDateTime);
-
-        typeCheck(pastZonedDateTimeGenerator, s -> {
-            assertThat(s.getOffset().getId(), is("Z"));
-            assertThat(s.getOffset().getTotalSeconds(), is(0));
-
-            return !(s.isBefore(endDateTime) || s.isAfter(startDateTime));
-        }).verify(times(NUMBER_OF_TIMES));
-    }
-
-    @Test
     public void shouldGenerateValuesFromIterable() {
         final List<Integer> integers = newArrayList(1, 2, 3, 4, 5);
         final Generator<Integer> valuesGenerator = RandomGenerator.values(integers);
@@ -320,6 +222,46 @@ public class RandomGeneratorTest {
         final Generator<Double> doubleGenerator = RandomGenerator.doubleValue(min, max, scale);
 
         typeCheck(doubleGenerator, s -> s >= min && s <= max).verify(times(NUMBER_OF_TIMES));
+    }
+
+    @Test
+    public void shouldGenerateRandomFutureLocalDate() {
+        final Generator<LocalDate> futureLocalDateGenerator = RandomGenerator.FUTURE_LOCAL_DATE;
+
+        LocalDate randomDateTime = futureLocalDateGenerator.next();
+
+        assertThat("Generator should generate a random local date",
+                randomDateTime, notNullValue());
+    }
+
+    @Test
+    public void shouldGenerateRandomPastLocalDate() {
+        final Generator<LocalDate> pastLocalDateGenerator = RandomGenerator.PAST_LOCAL_DATE;
+
+        LocalDate randomDateTime = pastLocalDateGenerator.next();
+
+        assertThat("Generator should generate a random local date",
+                randomDateTime, notNullValue());
+    }
+
+    @Test
+    public void shouldGenerateRandomFutureZonedDateTime() {
+        final Generator<ZonedDateTime> futureZonedDateTimeGenerator = RandomGenerator.FUTURE_ZONED_DATE_TIME;
+
+        ZonedDateTime randomDateTime = futureZonedDateTimeGenerator.next();
+
+        assertThat("Generator should generate a random date time",
+                randomDateTime, notNullValue());
+    }
+
+    @Test
+    public void shouldGenerateRandomPastZonedDateTime() {
+        final Generator<ZonedDateTime> pastZonedDateTimeGenerator = RandomGenerator.PAST_ZONED_DATE_TIME;
+
+        ZonedDateTime randomDateTime = pastZonedDateTimeGenerator.next();
+
+        assertThat("Generator should generate a random date time",
+                randomDateTime, notNullValue());
     }
 
     @Test

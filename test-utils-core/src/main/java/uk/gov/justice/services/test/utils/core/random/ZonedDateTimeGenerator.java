@@ -1,6 +1,5 @@
 package uk.gov.justice.services.test.utils.core.random;
 
-
 import static java.time.Instant.ofEpochMilli;
 import static java.time.ZoneOffset.ofTotalSeconds;
 import static uk.gov.justice.services.test.utils.core.random.DateGenerator.Direction.FUTURE;

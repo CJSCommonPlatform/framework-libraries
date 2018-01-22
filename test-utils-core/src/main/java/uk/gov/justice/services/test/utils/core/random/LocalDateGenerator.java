@@ -11,6 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.stream.LongStream;
 
 public class LocalDateGenerator extends DateGenerator<LocalDate> {
+
     private final LocalDate start;
     private final LocalDate end;
     private final Direction direction;
@@ -40,5 +41,4 @@ public class LocalDateGenerator extends DateGenerator<LocalDate> {
         randomMillsecs = longStream.limit(1).findFirst().orElse(BOOLEAN.next() ? startMillsecs : endMillisecs);
         return ofEpochMilli(randomMillsecs).atZone(systemDefault()).toLocalDate();
     }
-
 }

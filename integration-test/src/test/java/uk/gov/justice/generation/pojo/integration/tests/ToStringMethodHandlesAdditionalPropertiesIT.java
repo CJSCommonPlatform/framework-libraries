@@ -8,6 +8,7 @@ import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class ToStringMethodHandlesAdditionalPropertiesIT {
     @Test
     public void shouldAddToStringMethodUsingAllFieldsPlusAdditionalProperties() throws Exception {
 
-        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/student-to-string-additional-properties-true.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/student-to-string-additional-properties-true.json");
         final String packageName = "uk.gov.justice.pojo.string";
 
 

@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.integration.tests;
 
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 
@@ -21,7 +22,7 @@ public class NullSchemaIT {
 
     @Test
     public void shouldGeneratePojosFromNullSchema() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/null-schema.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/null-schema.json");
         final String packageName = "uk.gov.justice.pojo.nullable.schema";
 
         generatorUtil.generateAndCompileJavaSource(

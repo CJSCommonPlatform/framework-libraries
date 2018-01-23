@@ -10,6 +10,7 @@ import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.util.List;
@@ -24,7 +25,7 @@ public class GenerateBuilderForClassPluginIT {
     private final OutputDirectories outputDirectories = new OutputDirectories();
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
 
-    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/examples/plugins/generate-builder-for-class-plugin.json");
+    private static final File JSON_SCHEMA_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/examples/plugins/generate-builder-for-class-plugin.json");
 
     @Before
     public void setup() throws Exception {

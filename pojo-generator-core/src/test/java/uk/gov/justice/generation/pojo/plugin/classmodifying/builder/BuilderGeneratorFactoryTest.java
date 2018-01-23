@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
 import java.lang.reflect.Field;
 
@@ -40,6 +41,7 @@ public class BuilderGeneratorFactoryTest {
 
         assertThat(getPrivateFieldFrom(builderGenerator, "builderFieldFactory"), is(instanceOf(BuilderFieldFactory.class)));
         assertThat(getPrivateFieldFrom(builderGenerator, "builderMethodFactory"), is(instanceOf(BuilderMethodFactory.class)));
+        assertThat(getPrivateFieldFrom(builderGenerator, "additionalPropertiesDeterminer"), is(instanceOf(AdditionalPropertiesDeterminer.class)));
     }
 
     private Object getPrivateFieldFrom(final Object containerObject, final String fieldName) throws NoSuchFieldException, IllegalAccessException {

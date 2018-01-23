@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.apache.commons.lang3.StringUtils.capitalize;
+import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin.ADDITIONAL_PROPERTIES_FIELD_NAME;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
@@ -38,9 +39,29 @@ public class BuilderMethodFactory {
                 .collect(toList());
     }
 
+    public List<MethodSpec> createTheWithMethodsWithAdditionalProperties(
+            final List<Definition> fieldDefinitions,
+            final ClassNameFactory classNameFactory,
+            final ClassName builderClassName,
+            final PluginContext pluginContext) {
+
+        final List<MethodSpec> methods = fieldDefinitions.stream()
+                .map(fieldDefinition -> generateWithMethod(
+                        fieldDefinition,
+                        builderClassName,
+                        classNameFactory,
+                        pluginContext))
+                .collect(toList());
+
+        methods.add(generateWithMethodForAdditionalProperties(builderClassName));
+
+        return methods;
+    }
+
     public MethodSpec createTheBuildMethod(
             final List<Definition> fieldDefinitions,
             final ClassName pojoClassName) {
+
         final String params = fieldDefinitions.stream()
                 .map(Definition::getFieldName)
                 .collect(joining(", "));
@@ -48,6 +69,21 @@ public class BuilderMethodFactory {
         return MethodSpec.methodBuilder("build")
                 .addModifiers(PUBLIC)
                 .addStatement("return new $L(" + params + ")", pojoClassName)
+                .returns(pojoClassName)
+                .build();
+    }
+
+    public MethodSpec createTheBuildMethodWithAdditionalProperties(
+            final List<Definition> fieldDefinitions,
+            final ClassName pojoClassName) {
+        
+        final String params = fieldDefinitions.stream()
+                .map(Definition::getFieldName)
+                .collect(joining(", "));
+
+        return MethodSpec.methodBuilder("build")
+                .addModifiers(PUBLIC)
+                .addStatement("return new $L(" + params + ", $N)", pojoClassName, ADDITIONAL_PROPERTIES_FIELD_NAME)
                 .returns(pojoClassName)
                 .build();
     }
@@ -67,6 +103,20 @@ public class BuilderMethodFactory {
                 .returns(builderClassName)
                 .addCode(CodeBlock.builder()
                         .addStatement("this.$L = $L", fieldName, fieldName)
+                        .addStatement("return this")
+                        .build())
+                .build();
+    }
+
+    private MethodSpec generateWithMethodForAdditionalProperties(final ClassName builderClassName) {
+
+        return methodBuilder("withAdditionalProperty")
+                .addModifiers(PUBLIC)
+                .addParameter(ClassName.get(String.class), "name", FINAL)
+                .addParameter(ClassName.get(Object.class), "value", FINAL)
+                .returns(builderClassName)
+                .addCode(CodeBlock.builder()
+                        .addStatement("$N.put($N, $N)", ADDITIONAL_PROPERTIES_FIELD_NAME, "name", "value")
                         .addStatement("return this")
                         .build())
                 .build();

@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- SynchronousDirectAdapterCache interface to remove dependency on implementation in core
+
 ## 1.1.0 - 2018-01-17
 
 ### Changed

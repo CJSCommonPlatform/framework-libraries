@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.1] - 2018-01-24
+
+### Fixed
+- Fix of improperly created build constructor in Builder plugin if additionalProperties are used
 
 ## [1.2.0] - 2018-01-08
 

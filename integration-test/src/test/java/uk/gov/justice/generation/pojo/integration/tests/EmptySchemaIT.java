@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.util.List;
@@ -28,7 +29,7 @@ public class EmptySchemaIT {
     @Test
     public void shouldGenerateEmptyClassWithAdditionalPropertiesIfNoAdditionalPropertiesSpecified() throws Exception {
 
-        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/empty-schema.json");
 
         final String packageName = "uk.gov.justice.pojo.empty.schemas";
 
@@ -53,7 +54,7 @@ public class EmptySchemaIT {
     @Test
     public void shouldGenerateEmptyClassWithAdditionalPropertiesIfAdditionalPropertiesIsSetToTrue() throws Exception {
 
-        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema-with-additional-properties-true.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/empty-schema-with-additional-properties-true.json");
 
         final String packageName = "uk.gov.justice.pojo.empty.schemas";
 
@@ -77,7 +78,7 @@ public class EmptySchemaIT {
     @Test
     public void shouldGenerateEmptyClassWithAdditionalPropertiesIfAdditionalPropertiesIsSetToFalse() throws Exception {
 
-        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/empty-schema-with-additional-properties-false.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/empty-schema-with-additional-properties-false.json");
         final String packageName = "uk.gov.justice.pojo.empty.schemas";
 
         final List<Class<?>> classes = generatorUtil

@@ -3,6 +3,7 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.AdditionalPropertiesDeterminer;
 
 /**
  * Factory for creating a {@link BuilderGenerator}
@@ -27,6 +28,7 @@ public class BuilderGeneratorFactory {
                 classNameFactory,
                 new BuilderFieldFactory(),
                 new BuilderMethodFactory(),
+                new AdditionalPropertiesDeterminer(),
                 pluginContext
         );
     }

@@ -10,6 +10,7 @@ import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -26,7 +27,7 @@ public class VanillaPojoIT {
     private final ClassInstantiator classInstantiator = new ClassInstantiator();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/examples/vanilla-pojo.json");
+    private static final File JSON_SCHEMA_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/examples/vanilla-pojo.json");
 
     @Before
     public void setup() throws Exception {

@@ -13,6 +13,7 @@ import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class EqualsMethodHandlesAdditionalPropertiesAndOptionalsIT {
     private final ClassInstantiator classInstantiator = new ClassInstantiator();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/tests/equals-method-handles-additional-properties.json");
+    private static final File JSON_SCHEMA_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/equals-method-handles-additional-properties.json");
 
     @Before
     public void setup() throws Exception {

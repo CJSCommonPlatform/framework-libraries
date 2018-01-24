@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 
@@ -24,17 +25,19 @@ public class IgnoreHardCodedClassesIT {
 
     @Test
     public void shouldNotAutoGenerateClassesWhichHaveBeenCraftedByHand() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/first-hard-coded-class-example.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/first-hard-coded-class-example.json");
         final String packageName = "uk.gov.justice.pojo.example.hard.coded.javaclass.first.testcase";
 
         generatorUtil
-                .withIgnoredClassNames(singletonList("IgnoreMeAsIAlreadyExist"))
+                .withIgnoredClassNames(singletonList("IgnoreMeAsImAlreadyHardCoded"))
                 .generateAndCompileJavaSource(
                         jsonSchemaFile,
                         packageName,
                         outputDirectories);
 
-        final File generatedSourceDir = new File("target/test-generation/tests/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/first/testcase");
+        final File generatedSourceDir = new File("./target/test-generation/tests/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/first/testcase");
+
+        assertThat(generatedSourceDir.exists(), is(true));
 
         assertThat(new File(generatedSourceDir, "FirstHardCodedClassExample.java").exists(), is(true));
         assertThat(new File(generatedSourceDir, "IgnoreMeAsImAlreadyHardCoded.java").exists(), is(false));
@@ -42,7 +45,7 @@ public class IgnoreHardCodedClassesIT {
 
     @Test
     public void shouldHandleTheRootObjectBeingCraftedByHand() throws Exception {
-        final File jsonSchemaFile = new File("src/test/resources/schemas/tests/second-hard-coded-class-example.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/second-hard-coded-class-example.json");
         final String packageName = "uk.gov.justice.pojo.example.hard.coded.javaclass.second.testcase";
 
         generatorUtil
@@ -52,7 +55,7 @@ public class IgnoreHardCodedClassesIT {
                         packageName,
                         outputDirectories);
 
-        final File generatedSourceDir = new File("target/test-generation/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/second/testcase");
+        final File generatedSourceDir = new File("./target/test-generation/hard-coded/uk/gov/justice/pojo/example/hard/coded/javaclass/second/testcase");
 
         assertThat(new File(generatedSourceDir, "SecondHardCodedClassExample.java").exists(), is(false));
     }

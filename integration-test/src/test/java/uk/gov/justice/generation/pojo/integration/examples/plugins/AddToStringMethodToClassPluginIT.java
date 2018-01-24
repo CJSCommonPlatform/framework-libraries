@@ -9,6 +9,7 @@ import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.util.List;
@@ -30,7 +31,7 @@ public class AddToStringMethodToClassPluginIT {
     @Test
     public void shouldAddToStringMethodUsingAllFields() throws Exception {
 
-        final File jsonSchemaFile = new File("src/test/resources/schemas/examples/plugins/add-to-string-method-to-class.json");
+        final File jsonSchemaFile = new ClasspathFileResource().getFileFromClasspath("/schemas/examples/plugins/add-to-string-method-to-class.json");
         final String packageName = "uk.gov.justice.pojo.string";
 
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()

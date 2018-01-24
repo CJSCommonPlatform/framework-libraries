@@ -44,6 +44,8 @@ import com.squareup.javapoet.TypeSpec;
  */
 public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugin {
 
+    public static final String ADDITIONAL_PROPERTIES_FIELD_NAME = "additionalProperties";
+
     @Override
     public TypeSpec.Builder generateWith(
             final TypeSpec.Builder classBuilder,
@@ -66,7 +68,7 @@ public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugi
                 TypeName.get(String.class),
                 TypeName.get(Object.class));
 
-        return builder(map, "additionalProperties")
+        return builder(map, ADDITIONAL_PROPERTIES_FIELD_NAME)
                 .addModifiers(PRIVATE, FINAL)
                 .build();
     }
@@ -88,7 +90,7 @@ public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugi
         return methodBuilder("getAdditionalProperties")
                 .addModifiers(PUBLIC)
                 .returns(map)
-                .addCode(CodeBlock.builder().addStatement("return $L", "additionalProperties").build())
+                .addCode(CodeBlock.builder().addStatement("return $L", ADDITIONAL_PROPERTIES_FIELD_NAME).build())
                 .build();
     }
 
@@ -97,7 +99,7 @@ public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugi
                 .addModifiers(PUBLIC)
                 .addParameter(String.class, "name", FINAL)
                 .addParameter(Object.class, "value", FINAL)
-                .addCode(CodeBlock.builder().addStatement("additionalProperties.put($L, $L)", "name", "value").build())
+                .addCode(CodeBlock.builder().addStatement("$N.put($L, $L)", ADDITIONAL_PROPERTIES_FIELD_NAME, "name", "value").build())
                 .build();
     }
 }

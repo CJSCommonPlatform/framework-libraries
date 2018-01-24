@@ -14,6 +14,7 @@ import uk.gov.justice.generation.pojo.integration.utils.NullParameter;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 import java.util.List;
@@ -29,7 +30,7 @@ public class CombinedSchemaIT {
     private final ClassInstantiator classInstantiator = new ClassInstantiator();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    private static final File JSON_SCHEMA_FILE = new File("src/test/resources/schemas/examples/combined-schema.json");
+    private static final File JSON_SCHEMA_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/examples/combined-schema.json");
 
     @Before
     public void setup() throws Exception {

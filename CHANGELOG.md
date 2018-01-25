@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.11.0] - 2018-01-25
 ### Removed
 - Schema generator plugin from framework parent pom
 

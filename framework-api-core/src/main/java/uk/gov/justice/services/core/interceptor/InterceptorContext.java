@@ -1,10 +1,23 @@
 package uk.gov.justice.services.core.interceptor;
 
+import uk.gov.justice.services.core.interceptor.spi.InterceptorContextProvider;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import java.util.Optional;
 
 public interface InterceptorContext {
+
+    /**
+     * Create an interceptor context with an input {@link ContextPayload} that wraps the input
+     * envelope, an output {@link ContextPayload} with no envelope and an injection point.
+     *
+     * @param inputEnvelope the input JsonEnvelope
+     * @return the new InterceptorContext
+     */
+    static InterceptorContext interceptorContextWithInput(final JsonEnvelope inputEnvelope) {
+        return InterceptorContextProvider.provider().interceptorContextWithInput(inputEnvelope);
+
+    }
 
     /**
      * Create a copy of this interceptor context that will contain the provided input

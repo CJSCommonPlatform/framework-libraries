@@ -7,6 +7,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ### Added
 - SynchronousDirectAdapterCache interface to remove dependency on implementation in core
+- InterceptorContextProvider service provider
 
 ## 1.1.0 - 2018-01-17
 

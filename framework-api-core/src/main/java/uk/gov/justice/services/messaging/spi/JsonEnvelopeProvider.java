@@ -18,7 +18,7 @@ import javax.json.JsonValue;
  * Call the static method {@code JsonEnvelopeProvider.provider()} to retrieve the
  * JsonEnvelopeProvider instance from service dependency on the classpath.
  */
-public abstract class JsonEnvelopeProvider {
+public interface JsonEnvelopeProvider {
 
     /**
      * Loads an implementation of JsonEnvelopeProvider using the {@link ServiceLoader} mechanism. An
@@ -28,15 +28,15 @@ public abstract class JsonEnvelopeProvider {
      * @throws JsonEnvelopeProviderNotFoundException if no implementations of JsonEnvelopeProvider
      *                                               are found
      */
-    public static JsonEnvelopeProvider provider() {
+    static JsonEnvelopeProvider provider() {
         final ServiceLoader<JsonEnvelopeProvider> loader = ServiceLoader.load(JsonEnvelopeProvider.class);
         final Iterator<JsonEnvelopeProvider> iterator = loader.iterator();
 
         if (iterator.hasNext()) {
             return iterator.next();
-        } else {
-            throw new JsonEnvelopeProviderNotFoundException("No JsonEnvelopeProvider implementation found");
         }
+
+        throw new JsonEnvelopeProviderNotFoundException("No JsonEnvelopeProvider implementation found");
     }
 
     /**
@@ -47,7 +47,7 @@ public abstract class JsonEnvelopeProvider {
      * @param payload  the JsonValue to be added to the JsonEnvelope
      * @return the JsonEnvelope instance
      */
-    public abstract JsonEnvelope envelopeFrom(final Metadata metadata, final JsonValue payload);
+    JsonEnvelope envelopeFrom(final Metadata metadata, final JsonValue payload);
 
     /**
      * Provide an instance of a {@link JsonEnvelope} with given {@link MetadataBuilder} and {@link
@@ -57,7 +57,7 @@ public abstract class JsonEnvelopeProvider {
      * @param payload         the JsonValue to be added to the JsonEnvelope
      * @return the JsonEnvelope instance
      */
-    public abstract JsonEnvelope envelopeFrom(final MetadataBuilder metadataBuilder, final JsonValue payload);
+    JsonEnvelope envelopeFrom(final MetadataBuilder metadataBuilder, final JsonValue payload);
 
     /**
      * Provide an instance of a {@link JsonEnvelope} with given {@link MetadataBuilder} and {@link
@@ -67,14 +67,14 @@ public abstract class JsonEnvelopeProvider {
      * @param payloadBuilder  the JsonObjectBuilder to be used to build {@link JsonValue}
      * @return the JsonEnvelope instance
      */
-    public abstract JsonEnvelope envelopeFrom(final MetadataBuilder metadataBuilder, final JsonObjectBuilder payloadBuilder);
+    JsonEnvelope envelopeFrom(final MetadataBuilder metadataBuilder, final JsonObjectBuilder payloadBuilder);
 
     /**
      * Provide an instance of a {@link MetadataBuilder}
      *
      * @return the MetadataBuilder instance
      */
-    public abstract MetadataBuilder metadataBuilder();
+    MetadataBuilder metadataBuilder();
 
     /**
      * Provide an instance of a {@link MetadataBuilder} from the given {@link Metadata}
@@ -82,7 +82,7 @@ public abstract class JsonEnvelopeProvider {
      * @param metadata the Metadata to add to the MetadataBuilder
      * @return the MetadataBuilder instance
      */
-    public abstract MetadataBuilder metadataFrom(final Metadata metadata);
+    MetadataBuilder metadataFrom(final Metadata metadata);
 
     /**
      * Provide an instance of a {@link MetadataBuilder} from the given {@link JsonObject}
@@ -90,6 +90,6 @@ public abstract class JsonEnvelopeProvider {
      * @param jsonObject the JsonObject to add to the MetadataBuilder
      * @return the MetadataBuilder instance
      */
-    public abstract MetadataBuilder metadataFrom(final JsonObject jsonObject);
+    MetadataBuilder metadataFrom(final JsonObject jsonObject);
 
 }

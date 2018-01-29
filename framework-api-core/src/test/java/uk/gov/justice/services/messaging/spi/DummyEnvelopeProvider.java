@@ -1,27 +1,20 @@
 package uk.gov.justice.services.messaging.spi;
 
-import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.messaging.MetadataBuilder;
 
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
 
-public class DummyJsonEnvelopeProvider implements JsonEnvelopeProvider {
+public class DummyEnvelopeProvider implements EnvelopeProvider {
 
     @Override
-    public JsonEnvelope envelopeFrom(final Metadata metadata, final JsonValue payload) {
+    public <T> Envelope<T> envelopeFrom(final Metadata metadata, final T payload) {
         return null;
     }
 
     @Override
-    public JsonEnvelope envelopeFrom(final MetadataBuilder metadataBuilder, final JsonValue payload) {
-        return null;
-    }
-
-    @Override
-    public JsonEnvelope envelopeFrom(final MetadataBuilder metadataBuilder, final JsonObjectBuilder payloadBuilder) {
+    public <T> Envelope<T> envelopeFrom(final MetadataBuilder metadataBuilder, final T payload) {
         return null;
     }
 

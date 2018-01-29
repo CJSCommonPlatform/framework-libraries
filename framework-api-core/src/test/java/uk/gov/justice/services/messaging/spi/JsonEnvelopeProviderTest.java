@@ -12,7 +12,7 @@ import org.junit.Test;
 public class JsonEnvelopeProviderTest {
 
     @Test
-    public void shouldProviderJsonEnvelopeProvider() throws Exception {
+    public void shouldProvideJsonEnvelopeProvider() throws Exception {
         final JsonEnvelopeProvider provider = JsonEnvelopeProvider.provider();
 
         assertThat(provider, notNullValue());

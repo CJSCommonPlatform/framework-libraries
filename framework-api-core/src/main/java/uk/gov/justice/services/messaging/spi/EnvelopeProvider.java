@@ -25,17 +25,17 @@ public interface EnvelopeProvider {
      *
      * @return an instance of EnvelopeProvider
      * @throws EnvelopeProviderNotFoundException if no implementations of EnvelopeProvider
-     *                                               are found
+     *                                           are found
      */
-    public static EnvelopeProvider provider() {
+    static EnvelopeProvider provider() {
         final ServiceLoader<EnvelopeProvider> loader = ServiceLoader.load(EnvelopeProvider.class);
         final Iterator<EnvelopeProvider> iterator = loader.iterator();
 
         if (iterator.hasNext()) {
             return iterator.next();
-        } else {
-            throw new EnvelopeProviderNotFoundException("No EnvelopeProvider implementation found");
         }
+
+        throw new EnvelopeProviderNotFoundException("No EnvelopeProvider implementation found");
     }
 
     /**
@@ -46,7 +46,7 @@ public interface EnvelopeProvider {
      * @param payload  the JsonValue to be added to the Envelope
      * @return the Envelope instance
      */
-    public abstract <T> Envelope<T> envelopeFrom(final Metadata metadata, final T payload);
+    <T> Envelope<T> envelopeFrom(final Metadata metadata, final T payload);
 
     /**
      * Provide an instance of a {@link Envelope} with given {@link MetadataBuilder} and {@link
@@ -56,14 +56,14 @@ public interface EnvelopeProvider {
      * @param payload         the JsonValue to be added to the Envelope
      * @return the Envelope instance
      */
-    public abstract <T> Envelope<T> envelopeFrom(final MetadataBuilder metadataBuilder, final T payload);
+    <T> Envelope<T> envelopeFrom(final MetadataBuilder metadataBuilder, final T payload);
 
     /**
      * Provide an instance of a {@link MetadataBuilder}
      *
      * @return the MetadataBuilder instance
      */
-    public abstract MetadataBuilder metadataBuilder();
+    MetadataBuilder metadataBuilder();
 
     /**
      * Provide an instance of a {@link MetadataBuilder} from the given {@link Metadata}
@@ -71,7 +71,7 @@ public interface EnvelopeProvider {
      * @param metadata the Metadata to add to the MetadataBuilder
      * @return the MetadataBuilder instance
      */
-    public abstract MetadataBuilder metadataFrom(final Metadata metadata);
+    MetadataBuilder metadataFrom(final Metadata metadata);
 
     /**
      * Provide an instance of a {@link MetadataBuilder} from the given {@link JsonObject}
@@ -79,6 +79,6 @@ public interface EnvelopeProvider {
      * @param jsonObject the JsonObject to add to the MetadataBuilder
      * @return the MetadataBuilder instance
      */
-    public abstract MetadataBuilder metadataFrom(final JsonObject jsonObject);
+    MetadataBuilder metadataFrom(final JsonObject jsonObject);
 
 }

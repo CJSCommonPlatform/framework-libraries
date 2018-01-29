@@ -1,4 +1,4 @@
-package uk.gov.justice.services.messaging;
+package uk.gov.justice.services.messaging.spi;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;

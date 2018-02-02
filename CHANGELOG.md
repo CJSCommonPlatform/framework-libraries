@@ -6,6 +6,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [Unreleased]
 
 ### Added
+- exception JsonSchemaValidatonException
+- Interface JsonValidationLoggerHelper
 - Interface NamedToMediaTypeConverter
 
 ## [2.0.0] - 2018-01-29

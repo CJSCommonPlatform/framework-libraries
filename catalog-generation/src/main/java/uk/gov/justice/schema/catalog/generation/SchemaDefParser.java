@@ -59,7 +59,9 @@ public class SchemaDefParser {
         if (id.isPresent()) {
             final String fileUrl = schemaFile.toString();
 
-            final String jsonSchemaString = jsonSchemaPath.toString();
+            // Replace back slashes to support running on Windows
+            final String jsonSchemaString = jsonSchemaPath.toString().replace('\\', SLASH);
+
             final String relativeUri = fileUrl.substring(fileUrl.indexOf(jsonSchemaString) + jsonSchemaString.length() + 1);
 
             final int lastSlashIndex = relativeUri.lastIndexOf(SLASH);

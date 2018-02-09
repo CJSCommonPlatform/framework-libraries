@@ -5,17 +5,17 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-public class JsonSchemaValidatonExceptionTest {
+public class JsonSchemaValidationExceptionTest {
 
     @Test
     public void shouldCreateExceptionWithMessage() throws Exception {
-        final JsonSchemaValidatonException exception = new JsonSchemaValidatonException("Test message");
+        final JsonSchemaValidationException exception = new JsonSchemaValidationException("Test message");
         assertThat(exception.getMessage(), is("Test message"));
     }
 
     @Test
     public void shouldCreateExceptionWithMessageAndCause() throws Exception {
-        final JsonSchemaValidatonException exception = new JsonSchemaValidatonException("Test message", new Throwable());
+        final JsonSchemaValidationException exception = new JsonSchemaValidationException("Test message", new Throwable());
         assertThat(exception.getMessage(), is("Test message"));
     }
 }

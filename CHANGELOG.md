@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Moved LoggerUtils to utilities project.
 
 ## [1.11.0] - 2017-11-15
 

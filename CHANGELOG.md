@@ -4,17 +4,20 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Changed
+
+## [1.12.0] - 2018-02-09
+
+### Added
 - Moved LoggerUtils to utilities project.
 
 ## [1.11.0] - 2017-11-15
 
-### Changed
+### Added
 - Added additional properties functionality.
 
 ## [1.10.0] - 2017-11-01
 
-### Changed
+### Added
 - Update common-bom version to 1.20.0 to fix OWASP issues
 
 ## [1.9.0] - 2017-10-12
@@ -82,7 +85,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 - Initial project configuration
 - Initial Utilities
 
-[Unreleased]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.8.1...HEAD
+[Unreleased]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.12.0...HEAD
+[1.12.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.11.0...release-1.12.0
+[1.11.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.10.0...release-1.11.0
+[1.10.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.9.0...release-1.10.0
+[1.9.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.8.0...release-1.9.0
 [1.8.1]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.8.0...release-1.8.1
 [1.8.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.7.0...release-1.8.0
 [1.7.0]: https://github.com/CJSCommonPlatform/utilities/compare/release-1.6.0...release-1.7.0

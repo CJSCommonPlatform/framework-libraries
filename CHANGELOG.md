@@ -4,8 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.15.0] - 2018-02-09
 ### Changed
-- Updated utilities library to version 1.12.0 for development
+- Updated utilities library to version 1.12.0
 
 ## [1.14.0] - 2017-12-11
 ### Changed
@@ -94,7 +96,8 @@ fileservice.metadata.sql.provider.strategy
 ### Added
 - Initial version of the File Service
 
-[Unreleased]: https://github.com/CJSCommonPlatform/microservice_framework/compare/release-1.14.0...HEAD
+[Unreleased]: https://github.com/CJSCommonPlatform/microservice_framework/compare/release-1.15.0...HEAD
+[1.15.0]: https://github.com/CJSCommonPlatform/file-service/compare/release-1.14.0...release-1.15.0
 [1.14.0]: https://github.com/CJSCommonPlatform/file-service/compare/release-1.13.0...release-1.14.0
 [1.13.0]: https://github.com/CJSCommonPlatform/file-service/compare/release-1.12.0...release-1.13.0
 [1.12.0]: https://github.com/CJSCommonPlatform/file-service/compare/release-1.11.0...release-1.12.0

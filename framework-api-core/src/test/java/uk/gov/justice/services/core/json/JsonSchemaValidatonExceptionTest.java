@@ -9,8 +9,13 @@ public class JsonSchemaValidatonExceptionTest {
 
     @Test
     public void shouldCreateExceptionWithMessage() throws Exception {
-        final JsonSchemaValidatonException exception = new JsonSchemaValidatonException("Test message", new Throwable());
+        final JsonSchemaValidatonException exception = new JsonSchemaValidatonException("Test message");
         assertThat(exception.getMessage(), is("Test message"));
     }
 
+    @Test
+    public void shouldCreateExceptionWithMessageAndCause() throws Exception {
+        final JsonSchemaValidatonException exception = new JsonSchemaValidatonException("Test message", new Throwable());
+        assertThat(exception.getMessage(), is("Test message"));
+    }
 }

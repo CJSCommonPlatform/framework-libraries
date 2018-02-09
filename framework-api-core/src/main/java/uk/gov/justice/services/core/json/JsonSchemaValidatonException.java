@@ -8,4 +8,8 @@ public class JsonSchemaValidatonException extends RuntimeException {
         super(message, cause);
     }
 
+    public JsonSchemaValidatonException(final String message) {
+        super(message);
+    }
+
 }

@@ -4,9 +4,8 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.generation.SchemaPojoGenerator.ROOT_FIELD_NAME;
 
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.io.files.parser.SchemaDefinition;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -38,14 +37,13 @@ import org.slf4j.Logger;
 @RunWith(MockitoJUnitRunner.class)
 public class SchemaPojoGeneratorTest {
 
+    private static final String ROOT_FIELD_NAME = "ROOT";
+    
     @Mock
     private JavaClassFileWriter javaClassFileWriter;
 
     @Mock
     private DefinitionsFactory definitionsFactory;
-
-    @Mock
-    private SchemaLoader schemaLoader;
 
     @Mock
     private VisitableFactory visitableFactory;
@@ -67,10 +65,11 @@ public class SchemaPojoGeneratorTest {
     public void shouldGeneratePojoFromSchema() throws Exception {
 
         final String jsonSchemaFileName = "jsonSchemaFileName";
+        final Schema jsonSchema = mock(Schema.class);
+        final SchemaDefinition schemaDefinition = new SchemaDefinition(jsonSchemaFileName, jsonSchema);
 
         final File jsonSchemaFile = mock(File.class);
         final GeneratorConfig generatorConfig = mock(GeneratorConfig.class);
-        final Schema jsonSchema = mock(Schema.class);
 
         final PojoGeneratorProperties generatorProperties = mock(PojoGeneratorProperties.class);
         final GenerationContext generationContext = mock(GenerationContext.class);
@@ -86,7 +85,6 @@ public class SchemaPojoGeneratorTest {
 
         final Visitable visitable = mock(Visitable.class);
 
-        when(schemaLoader.loadFrom(jsonSchemaFile)).thenReturn(jsonSchema);
         when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
         when(jsonSchemaFile.getName()).thenReturn(jsonSchemaFileName);
 
@@ -112,7 +110,7 @@ public class SchemaPojoGeneratorTest {
                 generationContext
         )).thenReturn(classGenerators);
 
-        schemaPojoGenerator.run(jsonSchemaFile, generatorConfig);
+        schemaPojoGenerator.run(schemaDefinition, generatorConfig);
 
         final InOrder inOrder = inOrder(visitable, javaClassFileWriter);
 

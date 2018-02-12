@@ -1,11 +1,15 @@
 package uk.gov.justice.generation.pojo.integration.tests;
 
+import static java.nio.file.Paths.get;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.io.files.loader.SchemaLoaderResolver;
+import uk.gov.justice.generation.io.files.loader.FileResourceLoader;
+import uk.gov.justice.generation.io.files.loader.InputStreamToJsonObjectConverter;
+import uk.gov.justice.generation.io.files.loader.Resource;
+import uk.gov.justice.generation.io.files.resolver.SchemaCatalogResolver;
+import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
 import uk.gov.justice.generation.pojo.validation.Validator;
@@ -24,19 +28,25 @@ public class SchemaValidationIT {
 
     private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
 
-    private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
+    private final SchemaCatalogResolver schemaCatalogResolver = new SchemaCatalogResolver(
             catalogObjectFactory.rawCatalog(),
             catalogObjectFactory.schemaClientFactory(),
             catalogObjectFactory.jsonToSchemaConverter());
 
-    private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
+    private final InputStreamToJsonObjectConverter inputStreamToJsonObjectConverter = new InputStreamToJsonObjectConverter();
+    private final SchemaResolver schemaResolver = new SchemaResolver(schemaCatalogResolver);
     private final SchemaValidatorVisitor schemaValidatorVisitor = new SchemaValidatorVisitor(new Validator());
 
     @Test
     public void shouldFailValidationIfEnumContainsDifferentTypesOfValues() throws Exception {
         final File jsonSchemaFile = new ClasspathFileResource()
                 .getFileFromClasspath("/invalid-schemas/invalid-enum.json");
-        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
+
+        final Schema schema = schemaResolver.resolve(new Resource(
+                get(""),
+                jsonSchemaFile.toPath(),
+                new FileResourceLoader(),
+                inputStreamToJsonObjectConverter));
 
         final Visitable visitableSchema = new VisitableFactory().createWith("fieldName", schema, new DefaultAcceptorService(new VisitableFactory()));
 
@@ -52,7 +62,12 @@ public class SchemaValidationIT {
     public void shouldFailValidationIfArrayContainsDifferentTypesOfValues() throws Exception {
         final File jsonSchemaFile = new ClasspathFileResource()
                 .getFileFromClasspath("/invalid-schemas/invalid-array.json");
-        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
+
+        final Schema schema = schemaResolver.resolve(new Resource(
+                get(""),
+                jsonSchemaFile.toPath(),
+                new FileResourceLoader(),
+                inputStreamToJsonObjectConverter));
 
         final Visitable visitableSchema = new VisitableFactory().createWith("fieldName", schema, new DefaultAcceptorService(new VisitableFactory()));
 

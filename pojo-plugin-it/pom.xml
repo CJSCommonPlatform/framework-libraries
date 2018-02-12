@@ -61,15 +61,13 @@
                                 uk.gov.justice.generation.SchemaPojoGeneratorFactory
                             </generatorName>
                             <parserName>
-                                uk.gov.justice.generation.io.files.parser.FileTypeParser
+                                uk.gov.justice.generation.io.files.parser.SchemaDefinitionParser
                             </parserName>
                             <basePackageName>uk.gov.justice.events.pojo</basePackageName>
-                            <sourceDirectory>${basedir}/src/main/resources/events/json/schema
-                            </sourceDirectory>
                             <outputDirectory>${project.build.directory}/generated-sources
                             </outputDirectory>
                             <includes>
-                                <include>**/*.json</include>
+                                <include>**/*.events.*.json</include>
                             </includes>
                             <excludes>
                             </excludes>
@@ -77,11 +75,21 @@
                                     implementation="uk.gov.justice.generation.pojo.core.PojoGeneratorProperties">
                                 <excludeDefaultPlugins>true</excludeDefaultPlugins>
                                 <plugins>
-                                    <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin</plugin>
-                                    <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin</plugin>
-                                    <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin</plugin>
-                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.ReferenceCustomReturnTypePlugin</plugin>
-                                    <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.FormatCustomReturnTypePlugin</plugin>
+                                    <plugin>
+                                        uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin
+                                    </plugin>
+                                    <plugin>
+                                        uk.gov.justice.generation.pojo.plugin.classmodifying.AddEventAnnotationToClassPlugin
+                                    </plugin>
+                                    <plugin>
+                                        uk.gov.justice.generation.pojo.plugin.classmodifying.MakeClassSerializablePlugin
+                                    </plugin>
+                                    <plugin>
+                                        uk.gov.justice.generation.pojo.plugin.typemodifying.ReferenceCustomReturnTypePlugin
+                                    </plugin>
+                                    <plugin>
+                                        uk.gov.justice.generation.pojo.plugin.typemodifying.FormatCustomReturnTypePlugin
+                                    </plugin>
                                 </plugins>
                                 <typeMappings>
                                     <typeMapping>
@@ -112,6 +120,11 @@
                     <dependency>
                         <groupId>uk.gov.justice.generators</groupId>
                         <artifactId>pojo-event-annotation-plugin</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>uk.gov.justice.generators</groupId>
+                        <artifactId>example-pojo-schema</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>

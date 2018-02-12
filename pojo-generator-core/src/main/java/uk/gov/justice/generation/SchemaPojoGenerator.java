@@ -1,6 +1,6 @@
 package uk.gov.justice.generation;
 
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
+import uk.gov.justice.generation.io.files.parser.SchemaDefinition;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -18,7 +18,6 @@ import uk.gov.justice.generation.provider.DefinitionsFactory;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 
-import java.io.File;
 import java.util.List;
 
 import org.everit.json.schema.Schema;
@@ -32,12 +31,12 @@ import org.slf4j.Logger;
  * This class is called by maven which will pass in all the maven configuration specified in the
  * maven pom
  */
-public class SchemaPojoGenerator implements Generator<File> {
+public class SchemaPojoGenerator implements Generator<SchemaDefinition> {
 
-    public static final String ROOT_FIELD_NAME = "ROOT";
+    private static final String ROOT_FIELD_NAME = "ROOT";
+
     private final JavaClassFileWriter javaClassFileWriter;
     private final DefinitionsFactory definitionsFactory;
-    private final SchemaLoader schemaLoader;
     private final VisitableFactory visitableFactory;
     private final AcceptorService acceptorService;
     private final Bootstrapper bootstrapper;
@@ -45,14 +44,12 @@ public class SchemaPojoGenerator implements Generator<File> {
 
     public SchemaPojoGenerator(final DefinitionsFactory definitionsFactory,
                                final JavaClassFileWriter javaClassFileWriter,
-                               final SchemaLoader schemaLoader,
                                final VisitableFactory visitableFactory,
                                final AcceptorService acceptorService,
                                final Bootstrapper bootstrapper,
                                final SchemaValidatorVisitor schemaValidatorVisitor) {
         this.definitionsFactory = definitionsFactory;
         this.javaClassFileWriter = javaClassFileWriter;
-        this.schemaLoader = schemaLoader;
         this.visitableFactory = visitableFactory;
         this.acceptorService = acceptorService;
         this.bootstrapper = bootstrapper;
@@ -62,16 +59,16 @@ public class SchemaPojoGenerator implements Generator<File> {
     /**
      * Run the pojo generation based on the specified json schema file
      *
-     * @param jsonSchemaFile  The json schema file from which to generate pojos
-     * @param generatorConfig The configuration specified in the maven pom
+     * @param schemaDefinition The container with a schema from which to generate pojos
+     * @param generatorConfig  The configuration specified in the maven pom
      */
     @Override
-    public void run(final File jsonSchemaFile, final GeneratorConfig generatorConfig) {
+    public void run(final SchemaDefinition schemaDefinition, final GeneratorConfig generatorConfig) {
 
-        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
+        final Schema schema = schemaDefinition.getSchema();
 
         final PojoGeneratorProperties generatorProperties = (PojoGeneratorProperties) generatorConfig.getGeneratorProperties();
-        final String schemaFileName = jsonSchemaFile.getName();
+        final String schemaFileName = schemaDefinition.getFilename();
 
         final GenerationContext generationContext = bootstrapper.getGenerationContext(generatorConfig, schema, schemaFileName);
         final PluginProvider pluginProvider = bootstrapper.getPluginProvider(generatorProperties);

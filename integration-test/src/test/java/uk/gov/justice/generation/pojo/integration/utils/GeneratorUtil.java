@@ -1,11 +1,15 @@
 package uk.gov.justice.generation.pojo.integration.utils;
 
+import static java.nio.file.Paths.get;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndMethodsToClassPlugin.newAddFieldsAndMethodsToClassPlugin;
 
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.io.files.loader.SchemaLoaderResolver;
+import uk.gov.justice.generation.io.files.loader.FileResourceLoader;
+import uk.gov.justice.generation.io.files.loader.InputStreamToJsonObjectConverter;
+import uk.gov.justice.generation.io.files.loader.Resource;
+import uk.gov.justice.generation.io.files.resolver.SchemaCatalogResolver;
+import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.generation.pojo.core.ClassNameParser;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.core.PackageNameParser;
@@ -33,6 +37,7 @@ import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,12 +53,13 @@ public class GeneratorUtil {
 
     private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
 
-    private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
+    private final SchemaCatalogResolver schemaCatalogResolver = new SchemaCatalogResolver(
             catalogObjectFactory.rawCatalog(),
             catalogObjectFactory.schemaClientFactory(),
             catalogObjectFactory.jsonToSchemaConverter());
 
-    private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
+    private final InputStreamToJsonObjectConverter inputStreamToJsonObjectConverter = new InputStreamToJsonObjectConverter();
+    private final SchemaResolver schemaResolver = new SchemaResolver(schemaCatalogResolver);
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
     private List<String> ignoredClassNames = emptyList();
@@ -92,7 +98,10 @@ public class GeneratorUtil {
                 jsonSchemaFile.getName(),
                 ignoredClassNames);
 
-        final Schema schema = schemaLoader.loadFrom(jsonSchemaFile);
+        final Schema schema = schemaResolver.resolve(new Resource(get(""),
+                jsonSchemaFile.toPath(),
+                new FileResourceLoader(),
+                inputStreamToJsonObjectConverter));
 
         classModifyingPlugins.add(newAddFieldsAndMethodsToClassPlugin());
 
@@ -139,7 +148,10 @@ public class GeneratorUtil {
     }
 
     public void validate(final File schemaFile, final String json) {
-        final Schema schema = schemaLoader.loadFrom(schemaFile);
+        final Schema schema = schemaResolver.resolve(new Resource(get(""),
+                schemaFile.toPath(),
+                new FileResourceLoader(),
+                inputStreamToJsonObjectConverter));
         schema.validate(new JSONObject(json));
     }
 

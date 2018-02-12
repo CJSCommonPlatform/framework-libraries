@@ -1,4 +1,4 @@
-package uk.gov.justice.generation.io.files.loader;
+package uk.gov.justice.generation.io.files.resolver;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SchemaLoaderResolverTest {
+public class SchemaCatalogResolverTest {
 
     @Mock
     private RawCatalog rawCatalog;
@@ -31,7 +31,7 @@ public class SchemaLoaderResolverTest {
     private JsonToSchemaConverter jsonStringToSchemaConverter;
 
     @InjectMocks
-    private SchemaLoaderResolver schemaLoaderResolver;
+    private SchemaCatalogResolver schemaCatalogResolver;
 
     @Test
     public void shouldResolveSchema() {
@@ -42,7 +42,7 @@ public class SchemaLoaderResolverTest {
         when(schemaClientFactory.create(rawCatalog)).thenReturn(schemaClient);
         when(jsonStringToSchemaConverter.convert(jsonSchema, schemaClient)).thenReturn(schema);
 
-        final Schema resultSchema = schemaLoaderResolver.loadSchema(jsonSchema);
+        final Schema resultSchema = schemaCatalogResolver.loadSchema(jsonSchema);
 
         assertThat(resultSchema, is(schema));
     }

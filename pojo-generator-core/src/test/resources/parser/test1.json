@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/context/test1.json",
+  "properties": {
+    "objectProperty": {
+      "type": "object",
+      "properties": {
+        "stringProperty": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

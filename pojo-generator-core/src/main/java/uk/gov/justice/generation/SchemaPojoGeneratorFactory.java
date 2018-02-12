@@ -1,8 +1,7 @@
 package uk.gov.justice.generation;
 
 import uk.gov.justice.generation.io.files.JavaFileSimpleNameLister;
-import uk.gov.justice.generation.io.files.loader.SchemaLoader;
-import uk.gov.justice.generation.io.files.loader.SchemaLoaderResolver;
+import uk.gov.justice.generation.io.files.parser.SchemaDefinition;
 import uk.gov.justice.generation.pojo.core.PackageNameParser;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginProviderFactoryFactory;
@@ -22,20 +21,9 @@ import uk.gov.justice.generation.provider.PluginContextProvider;
 import uk.gov.justice.generation.provider.PojoGeneratorFactoriesProvider;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorFactory;
-import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
-import java.io.File;
+public class SchemaPojoGeneratorFactory implements GeneratorFactory<SchemaDefinition> {
 
-public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
-
-    private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
-
-    private final SchemaLoaderResolver schemaLoaderResolver = new SchemaLoaderResolver(
-            catalogObjectFactory.rawCatalog(),
-            catalogObjectFactory.schemaClientFactory(),
-            catalogObjectFactory.jsonToSchemaConverter());
-
-    private final SchemaLoader schemaLoader = new SchemaLoader(schemaLoaderResolver);
     private final VisitableFactory visitableFactory = new VisitableFactory();
     private final DefinitionBuilderVisitorProvider definitionBuilderVisitorProvider = new DefinitionBuilderVisitorProvider();
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
@@ -61,11 +49,10 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<File> {
             generatorContextProvider);
 
     @Override
-    public Generator<File> create() {
+    public Generator<SchemaDefinition> create() {
         return new SchemaPojoGenerator(
                 definitionsFactory,
                 new JavaClassFileWriter(writer),
-                schemaLoader,
                 visitableFactory,
                 acceptorService,
                 bootstrapper,

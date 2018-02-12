@@ -23,6 +23,7 @@
         <module>pojo-plugin-it</module>
         <module>pojo-event-annotation-plugin</module>
         <module>standard-test-catalog</module>
+        <module>example-pojo-schema</module>
     </modules>
 
     <properties>

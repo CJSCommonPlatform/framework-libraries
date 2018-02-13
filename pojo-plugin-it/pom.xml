@@ -64,6 +64,8 @@
                                 uk.gov.justice.generation.io.files.parser.SchemaDefinitionParser
                             </parserName>
                             <basePackageName>uk.gov.justice.events.pojo</basePackageName>
+                            <!-- Use if not checking the classpath -->
+                            <!--<sourceDirectory>${basedir}/src/main/resources/events/json/schema</sourceDirectory>-->
                             <outputDirectory>${project.build.directory}/generated-sources
                             </outputDirectory>
                             <includes>

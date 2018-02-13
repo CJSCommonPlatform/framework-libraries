@@ -37,11 +37,31 @@ public class SchemaDefinitionParserTest {
     }
 
     @Test
-    public void shouldParseRamlFilesFromClassPath() {
+    public void shouldReturnColectionOfSchemaFromClassPath() {
         final Collection<SchemaDefinition> schemaDefinitions = new SchemaDefinitionParser().parse(
                 get("CLASSPATH"),
                 asList(
                         get("parser/test1.json"),
+                        get("parser/test2.json")));
+
+        assertThat(schemaDefinitions.size(), is(2));
+        final Iterator<SchemaDefinition> schemaContainerIterator = schemaDefinitions.iterator();
+        final SchemaDefinition schemaDefinition_1 = schemaContainerIterator.next();
+        assertThat(schemaDefinition_1.getSchema().getId(), is("http://justice.gov.uk/context/test1.json"));
+        assertThat(schemaDefinition_1.getFilename(), is("test1.json"));
+
+        final SchemaDefinition schemaDefinition_2 = schemaContainerIterator.next();
+        assertThat(schemaDefinition_2.getSchema().getId(), is("http://justice.gov.uk/context/test2.json"));
+        assertThat(schemaDefinition_2.getFilename(), is("test2.json"));
+    }
+
+    @Test
+    public void shouldOnlyReturnValidSchema() {
+        final Collection<SchemaDefinition> schemaDefinitions = new SchemaDefinitionParser().parse(
+                get("CLASSPATH"),
+                asList(
+                        get("parser/test1.json"),
+                        get("parser/test1.txt"),
                         get("parser/test2.json")));
 
         assertThat(schemaDefinitions.size(), is(2));

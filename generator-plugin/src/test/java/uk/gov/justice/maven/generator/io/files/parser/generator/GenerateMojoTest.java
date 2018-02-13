@@ -120,6 +120,7 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
     }
 
+    //WARNING: This test will fail in Intellij, as everything is on the one classpath in Intellij
     @SuppressWarnings("unchecked")
     public void testShouldIncludeRamlFilesFromTheClasspath() throws Exception {
         File pom = getTestFile("src/test/resources/includes-excludes-external/pom.xml");

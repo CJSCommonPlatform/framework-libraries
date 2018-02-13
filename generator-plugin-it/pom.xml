@@ -116,7 +116,7 @@
                             <generatorName>
                                 uk.gov.justice.maven.generator.io.files.parser.json.test.JsonTitleAppendingGeneratorFactory
                             </generatorName>
-                            <parserName>uk.gov.justice.maven.generator.io.files.parser.JsonSchemaFileParser</parserName>
+                            <parserName>uk.gov.justice.maven.generator.io.files.parser.JsonSchemaFileParserFactory</parserName>
                             <basePackageName>uk.gov.justice.api</basePackageName>
                             <sourceDirectory>${basedir}/src/json</sourceDirectory>
                             <outputDirectory>${project.build.directory}/generated-sources

@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- Support for FileParser Factory
 
 ## [2.3.0]
 ### Changed

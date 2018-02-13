@@ -1,9 +1,7 @@
 package uk.gov.justice.maven.generator.io.files.parser.generator;
 
-import static java.lang.Class.forName;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
-import uk.gov.justice.maven.generator.io.files.parser.FileParser;
 import uk.gov.justice.maven.generator.io.files.parser.common.BasicMojo;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorProperties;
 import uk.gov.justice.maven.generator.io.files.parser.io.FileTreeScannerFactory;
@@ -71,7 +69,7 @@ public class GenerateMojo extends BasicMojo {
                 new GenerateGoalProcessor(
                         new MojoGeneratorFactory(),
                         new FileTreeScannerFactory(),
-                        (FileParser) forName(parserName).newInstance())
+                        new FileParserInstanceFactory().newInstanceOf(parserName))
                         .generate(configuration(sourcePaths));
             } catch (Exception e) {
                 throw new MojoExecutionException("Failed to apply generator to source file", e);

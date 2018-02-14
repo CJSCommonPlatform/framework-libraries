@@ -3,14 +3,11 @@ package uk.gov.justice.generation.io.files.parser;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
-import uk.gov.justice.generation.io.files.loader.InputStreamToJsonObjectConverter;
 import uk.gov.justice.generation.io.files.loader.Resource;
 import uk.gov.justice.generation.io.files.loader.ResourceLoader;
 import uk.gov.justice.generation.io.files.loader.ResourceLoaderFactory;
-import uk.gov.justice.generation.io.files.resolver.SchemaCatalogResolver;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.maven.generator.io.files.parser.FileParser;
-import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -18,22 +15,24 @@ import java.util.Optional;
 
 import org.everit.json.schema.Schema;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SchemaDefinitionParser implements FileParser<SchemaDefinition> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SchemaDefinitionParser.class);
+    private final ResourceLoaderFactory resourceLoaderFactory;
+    private final SchemaResolver schemaResolver;
+    private final ResourceProvider resourceProvider;
+    private final Logger logger;
 
-    private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
-
-    private final SchemaCatalogResolver schemaCatalogResolver = new SchemaCatalogResolver(
-            catalogObjectFactory.rawCatalog(),
-            catalogObjectFactory.schemaClientFactory(),
-            catalogObjectFactory.jsonToSchemaConverter());
-
-    private final InputStreamToJsonObjectConverter inputStreamToJsonObjectConverter = new InputStreamToJsonObjectConverter();
-    private final ResourceLoaderFactory resourceLoaderFactory = new ResourceLoaderFactory();
-    private final SchemaResolver schemaResolver = new SchemaResolver(schemaCatalogResolver);
+    public SchemaDefinitionParser(
+            final ResourceLoaderFactory resourceLoaderFactory,
+            final SchemaResolver schemaResolver,
+            final ResourceProvider resourceProvider,
+            final Logger logger) {
+        this.resourceLoaderFactory = resourceLoaderFactory;
+        this.schemaResolver = schemaResolver;
+        this.resourceProvider = resourceProvider;
+        this.logger = logger;
+    }
 
     /**
      * Takes a collection of resource paths, loads the resources and parses them into {@link SchemaDefinition}
@@ -55,16 +54,16 @@ public class SchemaDefinitionParser implements FileParser<SchemaDefinition> {
 
     private Optional<SchemaDefinition> parse(final Path basePath, final Path resourcePath, final ResourceLoader resourceLoader) {
         try {
-            final Resource resource = new Resource(basePath, resourcePath, resourceLoader, inputStreamToJsonObjectConverter);
+            final Resource resource = resourceProvider.getResource(basePath, resourcePath, resourceLoader);
             final Schema schema = schemaResolver.resolve(resource);
             final String filename = resourcePath.toFile().getName();
 
             return Optional.of(new SchemaDefinition(filename, schema));
-        } catch (final Exception ex) {
-            LOGGER.warn(format("Skipping resource for basePath: %s, resourcePath: %s, with reason: %s",
+        } catch (final RuntimeException e) {
+            logger.warn(format("Skipping resource for basePath: %s, resourcePath: %s, with reason: %s",
                     basePath,
                     resourcePath,
-                    ex.getMessage()));
+                    e.getMessage()));
 
             return Optional.empty();
         }

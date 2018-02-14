@@ -37,7 +37,6 @@ import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

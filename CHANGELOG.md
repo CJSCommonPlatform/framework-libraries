@@ -5,11 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [1.3.0] - 2018-02-14
-
-### Added
-- Logging and skipping of schema, if the schema fails to load or resolve correctly
-- Support for classpath pojo generation
+## [1.3.0] - 2018-02-14	
+	
+### Added	
+- Logging and skipping of schema, if the schema fails to load or resolve correctly	
+- Support for classpath pojo generation	
 
 ## [1.2.1] - 2018-01-24
 

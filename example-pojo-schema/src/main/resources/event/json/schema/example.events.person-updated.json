@@ -34,30 +34,10 @@
       "type": "string",
       "format": "date-time"
     },
-    "alias": {
+    "aliases": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "aliasForenames": {
-            "type": "string",
-            "maxLength": 20
-          },
-          "aliasInitials": {
-            "type": "string",
-            "maxLength": 2
-          },
-          "aliasSurname": {
-            "type": "string",
-            "maxLength": 30
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "aliasForenames",
-          "aliasInitials",
-          "aliasSurname"
-        ]
+        "$ref": "http://justice.gov.uk/events/pojo/alias.json"
       }
     }
   },

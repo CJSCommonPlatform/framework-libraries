@@ -5,6 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.2.0] - 2018-02-14
 ### Changed
 - Update generator maven plugin to version 2.4.0
 

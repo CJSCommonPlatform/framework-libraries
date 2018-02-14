@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.1] - 2018-02-14
+### Added
+- Factory for SchemaDefinitionParser to enable uint testing 
+
 ## [1.3.0] - 2018-02-14	
 	
 ### Added	

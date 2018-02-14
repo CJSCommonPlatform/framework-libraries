@@ -61,7 +61,7 @@
                                 uk.gov.justice.generation.SchemaPojoGeneratorFactory
                             </generatorName>
                             <parserName>
-                                uk.gov.justice.generation.io.files.parser.SchemaDefinitionParser
+                                uk.gov.justice.generation.io.files.parser.SchemaDefinitionParserFactory
                             </parserName>
                             <basePackageName>uk.gov.justice.events.pojo</basePackageName>
                             <!-- Use if not checking the classpath -->

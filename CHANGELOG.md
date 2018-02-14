@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Changed
+- Update generator maven plugin to version 2.4.0
+
 ## [1.1.0] - 2018-01-08
 ### Added
 - Changed JsonToSchemaConverted to convert from both json Strings and JsonObject to a Schema Object

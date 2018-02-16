@@ -76,16 +76,26 @@ public class BuilderMethodFactory {
     public MethodSpec createTheBuildMethodWithAdditionalProperties(
             final List<Definition> fieldDefinitions,
             final ClassName pojoClassName) {
-        
+
         final String params = fieldDefinitions.stream()
                 .map(Definition::getFieldName)
                 .collect(joining(", "));
 
+        final String statementFormat = createStatementFormatWith(params);
+
         return MethodSpec.methodBuilder("build")
                 .addModifiers(PUBLIC)
-                .addStatement("return new $L(" + params + ", $N)", pojoClassName, ADDITIONAL_PROPERTIES_FIELD_NAME)
+                .addStatement(statementFormat, pojoClassName, ADDITIONAL_PROPERTIES_FIELD_NAME)
                 .returns(pojoClassName)
                 .build();
+    }
+
+    private String createStatementFormatWith(final String params) {
+        if (params.isEmpty()) {
+            return "return new $L($N)";
+        }
+
+        return "return new $L(" + params + ", $N)";
     }
 
     private MethodSpec generateWithMethod(

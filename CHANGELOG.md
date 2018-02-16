@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.3] - 2018-02-16
+### Fixed
+- Builder with only addtional properties present
+
 ## [1.3.2] - 2018-02-14
 ### Fixed
 - Array example and added example of using reference array item

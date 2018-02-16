@@ -59,7 +59,8 @@ public class AggregateWrapper {
 
     public void invokeMethod(final String methodName) throws Exception {
         final Method method = getMethod(aggregate.getClass(), methodName, Collections.emptySet());
-        method.invoke(aggregate);
+        final List<Object> newEvents = ((Stream<Object>) method.invoke(aggregate)).collect(toList());
+        generatedEvents.addAll(newEvents);
     }
 
     private Method getMethod(final Class<?> clazz, final String methodName, final Set<String> suppliedParamNames) {

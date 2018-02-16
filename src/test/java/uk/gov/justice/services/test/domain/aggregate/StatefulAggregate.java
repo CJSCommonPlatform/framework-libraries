@@ -33,7 +33,8 @@ public class StatefulAggregate implements Aggregate {
         return apply(Stream.of(new SomethingHappened(id), new SomethingHappened(id)));
     }
 
-    public void doNothing() {
+    public Stream<Object> doNothing() {
+        return Stream.empty();
     }
 
     @Override

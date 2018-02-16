@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
 import static com.squareup.javapoet.ClassName.get;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
@@ -44,7 +45,7 @@ public class BuilderMethodFactoryTest {
         final String expectedBuildMethod =
                 "public org.bloggs.fred.AlcubierreDrive build() {\n  " +
                         "return new org.bloggs.fred.AlcubierreDrive(fieldDefinition_1, fieldDefinition_2);\n" +
-                 "}\n";
+                        "}\n";
 
         assertThat(theBuildMethod.toString(), is(expectedBuildMethod));
     }
@@ -101,14 +102,14 @@ public class BuilderMethodFactoryTest {
         final String expectedWithMethod_1 =
                 "public org.bloggs.fred.AlcubierreDrive.Builder withFieldDefinition_1(" +
                         "final java.lang.String fieldDefinition_1) {\n  " +
-                            "this.fieldDefinition_1 = fieldDefinition_1;\n  " +
-                            "return this;\n" +
+                        "this.fieldDefinition_1 = fieldDefinition_1;\n  " +
+                        "return this;\n" +
                         "}\n";
         final String expectedWithMethod_2 =
                 "public org.bloggs.fred.AlcubierreDrive.Builder withFieldDefinition_2(" +
                         "final java.lang.Integer fieldDefinition_2) {\n  " +
-                            "this.fieldDefinition_2 = fieldDefinition_2;\n  " +
-                            "return this;\n" +
+                        "this.fieldDefinition_2 = fieldDefinition_2;\n  " +
+                        "return this;\n" +
                         "}\n";
 
         assertThat(withMethods.get(0).toString(), is(expectedWithMethod_1));
@@ -166,5 +167,22 @@ public class BuilderMethodFactoryTest {
         assertThat(withMethods.get(0).toString(), is(expectedWithMethod_1));
         assertThat(withMethods.get(1).toString(), is(expectedWithMethod_2));
         assertThat(withMethods.get(2).toString(), startsWith(expectedAdditionalPropertiesWithMethod));
+    }
+
+    @Test
+    public void shouldCreateTheBuildMethodWithOnlyAdditionalProperties() throws Exception {
+
+        final List<Definition> fieldDefinitions = emptyList();
+
+        final ClassName pojoClassName = get("org.bloggs.fred", "AlcubierreDrive");
+
+        final MethodSpec theBuildMethod = builderMethodFactory.createTheBuildMethodWithAdditionalProperties(fieldDefinitions, pojoClassName);
+
+        final String expectedBuildMethod =
+                "public org.bloggs.fred.AlcubierreDrive build() {\n  " +
+                        "return new org.bloggs.fred.AlcubierreDrive(additionalProperties);\n" +
+                        "}\n";
+
+        assertThat(theBuildMethod.toString(), is(expectedBuildMethod));
     }
 }

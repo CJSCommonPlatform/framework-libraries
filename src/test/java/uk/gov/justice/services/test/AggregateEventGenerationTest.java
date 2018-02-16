@@ -5,6 +5,7 @@ import org.junit.Test;
 import uk.gov.justice.services.test.domain.AggregateWrapper;
 import uk.gov.justice.services.test.domain.aggregate.GenericAggregate;
 import uk.gov.justice.services.test.domain.event.SthDoneWithIntArgEvent;
+import uk.gov.justice.services.test.domain.event.SthDoneWithNoArgsEvent;
 import uk.gov.justice.services.test.domain.event.SthDoneWithStringArgEvent;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -30,6 +31,14 @@ public class AggregateEventGenerationTest extends AggregateTestAssertions {
         assertThat(aggregateWrapper.generatedEvents(), hasSize(1));
         assertThat(generatedEventAsJsonNode(aggregateWrapper.generatedEvents().get(0)).get("strArg").asText(), is("stringFormFileABC"));
         assertGeneratedEvent(aggregateWrapper.generatedEvents().get(0), SthDoneWithStringArgEvent.class, "context.sth-done-with-string-arg");
+    }
+
+    @Test
+    public void shouldReturnInfoAboutGeneratedEventWithNoArgsInvocation() throws Exception {
+        aggregateWrapper.invokeMethod("doSthWithNoArgs");
+
+        assertThat(aggregateWrapper.generatedEvents(), hasSize(1));
+        assertGeneratedEvent(aggregateWrapper.generatedEvents().get(0), SthDoneWithNoArgsEvent.class, "context.sth-done-no-args");
     }
 
     @Test

@@ -5,10 +5,18 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [0.1.0] - 2018-01-17
+
+### Fixed
+- Fixed "occurred" typo. 
+
+### Added
+- More stateful aggregate tests.
+
 ## .0.1.0 - 2018-01-17
 
 ### Added
 - First release version
 
-[Unreleased]: https://github.com/CJSCommonPlatform/framework-api/compare/release-0.1.0...HEAD
-[0.1.0]: https://github.com/CJSCommonPlatform/framework-api/commits/release-0.1.0
+[Unreleased]: https://github.com/CJSCommonPlatform/domain-test-dsl/compare/release-0.1.0...HEAD
+[0.1.0]: https://github.com/CJSCommonPlatform/domain-test-dsl/commits/release-0.1.0

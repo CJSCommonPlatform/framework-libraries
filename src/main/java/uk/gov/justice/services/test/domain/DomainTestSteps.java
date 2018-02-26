@@ -58,7 +58,7 @@ public class DomainTestSteps {
         }
     }
 
-    @Then("^no events occured$")
+    @Then("^no events occurred$")
     public void assert_no_events_generated() {
         assertThat(aggregateWrapper.generatedEvents(), hasSize(0));
     }

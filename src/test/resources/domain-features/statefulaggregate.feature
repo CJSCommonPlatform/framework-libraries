@@ -6,7 +6,7 @@ Feature: StatefulAggregate
     When you doSomething to a StatefulAggregate using a argsA
     Then something happened
 
-  Scenario: Previous events are applied, so new event occurs
+  Scenario: Previous events are applied , so new event occurs
 
     Given something happened, something happened
     When you doSomething on a StatefulAggregate with an argsA
@@ -16,7 +16,7 @@ Feature: StatefulAggregate
 
     Given something happened
     When you doNothing on a StatefulAggregate
-    Then no events occured
+    Then no events occurred
 
   Scenario: Previous events are applied, so new event occurs with primitive arguments passed
 

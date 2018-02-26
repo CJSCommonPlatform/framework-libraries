@@ -14,7 +14,7 @@ Feature: StatelessAggregate
 
   Scenario: One previous event with qualifier
 
-    Given cake ordered with icing
+    Given cake ordered
     And something happened
     When you doSomething in a StatelessAggregate with an argsA
     Then something happened
@@ -29,7 +29,7 @@ Feature: StatelessAggregate
 
     Given something happened
     When you doNotDoSomething to a StatelessAggregate using a argsA
-    Then no events occured
+    Then no events occurred
 
   Scenario: Two new events
 

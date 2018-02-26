@@ -9,6 +9,7 @@ import static uk.gov.justice.services.test.DomainTest.generatedEventAsJsonNode;
 import static uk.gov.justice.services.test.DomainTest.jsonNodeWithoutMetadataFrom;
 import static uk.gov.justice.services.test.DomainTest.jsonNodesListFrom;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
+import static uk.gov.justice.services.test.domain.EventsChecker.compareEvents;
 
 import java.util.List;
 
@@ -49,13 +50,7 @@ public class DomainTestSteps {
 
     private void assert_events_generated(final String fileNames) {
         final List<JsonNode> jsonNodeList = jsonNodesListFrom(fileNames);
-        int index = 0;
-        for (JsonNode jsonNode : jsonNodeList) {
-            Object generatedEvent = aggregateWrapper.generatedEvents().get(index);
-            assertThat(eventNameFrom(generatedEvent), equalToIgnoringCase(eventNameFrom(jsonNode)));
-            assertThat(generatedEventAsJsonNode(generatedEvent), equalTo(jsonNodeWithoutMetadataFrom(jsonNode)));
-            index++;
-        }
+        compareEvents(jsonNodeList, aggregateWrapper.generatedEvents());
     }
 
     @Then("^no events occurred$")

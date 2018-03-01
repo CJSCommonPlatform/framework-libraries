@@ -1,12 +1,7 @@
 package uk.gov.justice.services.test.domain;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
-import static uk.gov.justice.services.test.DomainTest.eventNameFrom;
-import static uk.gov.justice.services.test.DomainTest.generatedEventAsJsonNode;
-import static uk.gov.justice.services.test.DomainTest.jsonNodeWithoutMetadataFrom;
 import static uk.gov.justice.services.test.DomainTest.jsonNodesListFrom;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 import static uk.gov.justice.services.test.domain.EventsChecker.compareEvents;

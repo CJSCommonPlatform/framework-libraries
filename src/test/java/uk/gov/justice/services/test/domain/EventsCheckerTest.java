@@ -3,8 +3,6 @@ package uk.gov.justice.services.test.domain;
 import static uk.gov.justice.services.test.DomainTest.eventsFromFileNames;
 import static uk.gov.justice.services.test.DomainTest.jsonNodesFrom;
 
-import uk.gov.justice.services.test.exception.EventException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +26,14 @@ public class EventsCheckerTest {
     }
 
     @Test
-    public void generatedEventListEmpty() throws Exception {
+    public void shouldFailWhenActualAndExpectedEventsAreNotEqual() throws Exception {
         List<JsonNode> expectedEvents = jsonNodesFrom("something happened");
         List<Object> actualEvents = new ArrayList<>();
 
-        expectedException.expect(EventException.class);
+        expectedException.expect(AssertionError.class);
         expectedException.expectMessage("Expected Events [ [{\"_metadata\":{\"name\":\"something-happened\"},\"id\":\"5c5a1d30-0414-11e7-93ae-92361f002671\"}] ]\n" +
-                "Generated Events [ ]");
+                "Actual Events [ ]");
+
         EventsChecker.compareEvents(expectedEvents, actualEvents);
     }
 
@@ -43,11 +42,10 @@ public class EventsCheckerTest {
         List<JsonNode> expectedEvents = jsonNodesFrom("something happened");
         List<Object> actualEvents = eventsFromFileNames("something-else-happened");
 
-
-        expectedException.expect(EventException.class);
-        expectedException.expectMessage("Event not found something-happened\n" +
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage("Event not found something-else-happened\n" +
                 "Expected Events [ [{\"_metadata\":{\"name\":\"something-happened\"},\"id\":\"5c5a1d30-0414-11e7-93ae-92361f002671\"}] ]\n" +
-                "Generated Events [ {\"id\":\"5c5a1d30-0414-11e7-93ae-92361f002671\"}]");
+                "Actual Events [ {\"id\":\"5c5a1d30-0414-11e7-93ae-92361f002671\"}]");
 
         EventsChecker.compareEvents(expectedEvents, actualEvents);
     }

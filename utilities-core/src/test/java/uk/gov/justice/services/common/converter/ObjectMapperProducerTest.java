@@ -5,6 +5,7 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Colour.BLUE;
@@ -12,6 +13,7 @@ import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -145,6 +147,66 @@ public class ObjectMapperProducerTest {
         assertThat(personWithAdditionalProperties.getAdditionalProperties().get("Test Number"), is(25));
     }
 
+    @Test
+    public void shouldReadAdditionalPropertiesWithAllPropertyTypes() throws Exception {
+
+        final String json = "{\n" +
+                "  \"booleanFalseProperty\": false,\n" +
+                "  \"nullProperty\": null,\n" +
+                "  \"intProperty\": 23,\n" +
+                "  \"booleanTrueProperty\": true,\n" +
+                "  \"stringProperty\": \"a String\",\n" +
+                "  \"floatProperty\": 23.23,\n" +
+                "  \"name\": \"a name\",\n" +
+                "  \"age\": 23\n" +
+                "}\n";
+
+        final PersonWithAdditionalProperties person = mapper.readValue(json, PersonWithAdditionalProperties.class);
+
+        assertThat(person.getAdditionalProperties().get("booleanFalseProperty"), is(false));
+        assertThat(person.getAdditionalProperties().get("nullProperty"), is(nullValue()));
+        assertThat(person.getAdditionalProperties().get("intProperty"), is(23));
+        assertThat(person.getAdditionalProperties().get("booleanTrueProperty"), is(true));
+        assertThat(person.getAdditionalProperties().get("stringProperty"), is("a String"));
+        assertThat(person.getAdditionalProperties().get("floatProperty"), is(23.23F));
+    }
+
+    @Test
+    public void shouldWriteAdditionalPropertiesWithAllPropertyTypes() throws Exception {
+
+        final HashMap<String, Object> additionalProperties = new HashMap<>();
+
+        final String stringProperty = "a String";
+        final int intProperty = 23;
+        final double floatProperty = 23.23;
+        final boolean booleanTrueProperty = true;
+        final boolean booleanFalseProperty = false;
+        final Object nullProperty = null;
+
+        additionalProperties.put("stringProperty", stringProperty);
+        additionalProperties.put("intProperty", intProperty);
+        additionalProperties.put("floatProperty", floatProperty);
+        additionalProperties.put("booleanTrueProperty", booleanTrueProperty);
+        additionalProperties.put("booleanFalseProperty", booleanFalseProperty);
+        additionalProperties.put("nullProperty", nullProperty);
+
+        final PersonWithAdditionalProperties person = new PersonWithAdditionalProperties(
+                "a name",
+                23,
+                additionalProperties
+        );
+
+        final String json = mapper.writeValueAsString(person);
+
+        with(json)
+                .assertThat("$.stringProperty", is(stringProperty))
+                .assertThat("$.intProperty", is(intProperty))
+                .assertThat("$.floatProperty", is(floatProperty))
+                .assertThat("$.booleanTrueProperty", is(booleanTrueProperty))
+                .assertThat("$.booleanFalseProperty", is(booleanFalseProperty))
+                .assertThat("$.nullProperty", is(nullValue()))
+        ;
+    }
 
     public static class DummyBeanWithSingleArgConstructor {
         private final String name;
@@ -219,10 +281,9 @@ public class ObjectMapperProducerTest {
 
     public static class PersonWithAdditionalProperties {
 
-        private  String name;
-        private  int age;
-        private  Map<String, Object> additionalProperties;
-
+        private String name;
+        private int age;
+        private Map<String, Object> additionalProperties;
 
 
         public PersonWithAdditionalProperties(final String name, final int age, final Map<String, Object> additionalProperties) {

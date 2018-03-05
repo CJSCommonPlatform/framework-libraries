@@ -79,6 +79,9 @@ public class AdditionalPropertiesDeserializer extends BeanDeserializer {
             case VALUE_FALSE:
                 obj = jsonParser.getValueAsBoolean();
                 break;
+            case VALUE_NULL:
+                obj = null;
+                break;
             default:
                 throw context.mappingException(this.handledType());
         }

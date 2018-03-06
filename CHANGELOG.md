@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.12.1] - 2018-03-06
+
+### Fixed
+- Exception thrown by ObjectMapper if additional properties contains a null value
+
 ## [1.12.0] - 2018-02-09
 
 ### Added

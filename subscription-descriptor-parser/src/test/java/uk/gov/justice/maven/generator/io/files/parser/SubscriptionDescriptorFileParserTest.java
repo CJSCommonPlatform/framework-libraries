@@ -14,38 +14,52 @@ import uk.gov.justice.domain.subscriptiondescriptor.Location;
 import uk.gov.justice.domain.subscriptiondescriptor.Subscription;
 import uk.gov.justice.domain.subscriptiondescriptor.SubscriptionDescriptor;
 
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import org.everit.json.schema.ValidationException;
 import org.junit.Test;
 
 public class SubscriptionDescriptorFileParserTest {
 
     final Path baseDir = get("src/test/resources/");
-    final SubscriptionDescriptorFileParser parser = new SubscriptionDescriptorFileParser();
-
 
     @Test
-    public void shouldFailOnIncorrectSubscriptionYaml() throws URISyntaxException {
-
-        final List<Path> paths = asList(get("incorrect-subscription.yaml"));
+    public void shouldThrowFileNotFoundException() {
+        final SubscriptionDescriptorFileParser subscriptionDescriptorFileParser = new SubscriptionDescriptorFileParserFactory().create();
+        final List<Path> paths = asList(get("no-subscription.yaml"));
         try {
-            final Collection<SubscriptionDescriptor> subscriptionDescriptors = parser.parse(baseDir, paths);
+            subscriptionDescriptorFileParser.parse(baseDir, paths);
             fail();
-        } catch (RuntimeException re) {
-            assertThat(re.getCause(), is(instanceOf(JsonMappingException.class)));
+        } catch (SubscriptionDescriptorException re) {
+            assertThat(re, is(instanceOf(SubscriptionDescriptorException.class)));
+            assertThat(re.getCause(), is(instanceOf(NoSuchFileException.class)));
         }
     }
 
     @Test
-    public void shouldParsePathsToYaml() throws URISyntaxException {
+    public void shouldFailOnIncorrectSubscriptionYaml() {
+        final SubscriptionDescriptorFileParser subscriptionDescriptorFileParser = new SubscriptionDescriptorFileParserFactory().create();
+
+        final List<Path> paths = asList(get("incorrect-subscription.yaml"));
+        try {
+            subscriptionDescriptorFileParser.parse(baseDir, paths);
+            fail();
+        } catch (SubscriptionDescriptorException re) {
+            assertThat(re, is(instanceOf(SubscriptionDescriptorException.class)));
+            assertThat(re.getCause(), is(instanceOf(ValidationException.class)));
+            assertThat(re.getCause().getMessage(), is("#/subscription_descriptor: required key [spec_version] not found"));
+        }
+    }
+
+    @Test
+    public void shouldParsePathsToYaml() {
+        final SubscriptionDescriptorFileParser subscriptionDescriptorFileParser = new SubscriptionDescriptorFileParserFactory().create();
 
         final List<Path> paths = asList(get("subscription.yaml"));
-        final Collection<SubscriptionDescriptor> subscriptionDescriptors = parser.parse(baseDir, paths);
+        final Collection<SubscriptionDescriptor> subscriptionDescriptors = subscriptionDescriptorFileParser.parse(baseDir, paths);
 
         assertThat(subscriptionDescriptors, hasSize(1));
         for (final SubscriptionDescriptor subscriptionDescriptor : subscriptionDescriptors) {
@@ -103,16 +117,5 @@ public class SubscriptionDescriptorFileParserTest {
         assertThat(events.get(0).getSchemaUri(), is("http://justice.gov.uk/json/schemas/domains/people/people.person-added.json"));
         assertThat(events.get(1).getName(), is("people.person-removed"));
         assertThat(events.get(1).getSchemaUri(), is("http://justice.gov.uk/json/schemas/domains/people/people.person-removed.json"));
-    }
-
-    @Test
-    public void shouldThrowFileNotFoundException() {
-        final List<Path> paths = asList(get("no-subscription.yaml"));
-        try {
-            final Collection<SubscriptionDescriptor> result = parser.parse(baseDir, paths);
-            fail();
-        } catch (RuntimeException re) {
-            assertThat(re.getCause(), is(instanceOf(FileNotFoundException.class)));
-        }
     }
 }

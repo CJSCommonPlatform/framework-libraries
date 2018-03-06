@@ -1,9 +1,8 @@
 ---
 subscription_descriptor:
-  spec_version: 1.0.0
   service: examplecontext
   service_component: EVENT_LISTENER
-  subscriptions1:
+  subscriptions:
     - name: subscription1
       events:
         - name: example.recipe-added

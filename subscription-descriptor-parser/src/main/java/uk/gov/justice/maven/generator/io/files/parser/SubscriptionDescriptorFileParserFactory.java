@@ -7,6 +7,6 @@ public class SubscriptionDescriptorFileParserFactory implements FileParserFactor
 
     @Override
     public SubscriptionDescriptorFileParser create() {
-        return new SubscriptionDescriptorFileParser();
+        return new SubscriptionDescriptorFileParser(new SubscriptionDescriptorFileValidator(new YamlFileToJsonObjectConverter()));
     }
 }

@@ -1,10 +1,11 @@
 package uk.gov.justice.services.test.domain;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.test.DomainTest.jsonNodesListFrom;
+import static uk.gov.justice.services.test.DomainTest.toJsonNodes;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
-import static uk.gov.justice.services.test.domain.EventsChecker.compareEvents;
+import static uk.gov.justice.services.test.matchers.HasEventsMatcher.hasEvents;
+import static uk.gov.justice.services.test.matchers.NoEventsMatcher.hasNoEvents;
 
 import java.util.List;
 
@@ -44,13 +45,17 @@ public class DomainTestSteps {
     }
 
     private void assert_events_generated(final String fileNames) {
-        final List<JsonNode> jsonNodeList = jsonNodesListFrom(fileNames);
-        compareEvents(jsonNodeList, aggregateWrapper.generatedEvents());
+
+        final List<JsonNode> actual = toJsonNodes(aggregateWrapper.generatedEvents());
+        final List<JsonNode> expected = jsonNodesListFrom(fileNames);
+
+        assertThat(actual, hasEvents(expected));
+
+        expected.forEach(jsonNode -> aggregateWrapper.generatedEvents().remove(0));
     }
 
     @Then("^no events occurred$")
     public void assert_no_events_generated() {
-        assertThat(aggregateWrapper.generatedEvents(), hasSize(0));
+        assertThat(toJsonNodes(aggregateWrapper.generatedEvents()), hasNoEvents());
     }
-
 }

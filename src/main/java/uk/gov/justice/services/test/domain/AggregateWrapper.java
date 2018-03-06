@@ -2,6 +2,7 @@ package uk.gov.justice.services.test.domain;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.justice.domain.aggregate.Aggregate;
+import uk.gov.justice.services.test.DomainTest;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -46,6 +47,7 @@ public class AggregateWrapper {
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     public void invokeMethod(final String methodName, final String fileContainingArguments) throws Exception {
 
         final JsonNode json = jsonNodesFrom(fileContainingArguments).get(0);
@@ -57,6 +59,7 @@ public class AggregateWrapper {
         generatedEvents.addAll(newEvents);
     }
 
+    @SuppressWarnings("unchecked")
     public void invokeMethod(final String methodName) throws Exception {
         final Method method = getMethod(aggregate.getClass(), methodName, Collections.emptySet());
         final List<Object> newEvents = ((Stream<Object>) method.invoke(aggregate)).collect(toList());

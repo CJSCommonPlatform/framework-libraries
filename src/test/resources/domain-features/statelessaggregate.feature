@@ -37,3 +37,9 @@ Feature: StatelessAggregate
     When you doSomethingTwice to a StatelessAggregate using a argsA
     Then something happened, something happened
 
+  Scenario: Two new events separated with AND
+
+    Given something happened
+    When you doSomethingTwice to a StatelessAggregate using a argsA
+    Then something happened
+    And something happened

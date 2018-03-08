@@ -74,4 +74,6 @@ public interface EventStream {
      */
     UUID getId();
 
+    long getSequenceNumber();
+
 }

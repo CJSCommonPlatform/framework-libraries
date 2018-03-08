@@ -3,6 +3,7 @@ package uk.gov.justice.services.eventsourcing.source.core;
 import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamException;
 
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * Source of event streams.
@@ -17,6 +18,13 @@ public interface EventSource {
      */
     EventStream getStreamById(final UUID streamId);
 
+
+    /**
+     * Get a streams Of eventStreams.
+     *
+     * @return the {@link EventStream}
+     */
+    Stream<EventStream> getEventStreamsBySequence(final long sequenceNumber);
 
     /**
      * Clones the stream into a new stream id.

@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [2.0.0] - 2018-03-09
+
 ## [2.0.0-M1] - 2018-02-14
 
 ### Added

@@ -12,7 +12,7 @@ subscription_descriptor:
       eventsource:
         name: examplecontext
         location:
-          jms_uri:  jms:topic:example.event?timeToLive=1000
+          jms_uri:  jms:topic:example.event
           rest_uri: http://localhost:8080/example/event-source-api/rest
     - name: subscription2
       events:
@@ -24,6 +24,6 @@ subscription_descriptor:
       eventsource:
           name: people
           location:
-           jms_uri:  jms:topic:people.event?timeToLive=1000
+           jms_uri:  jms:topic:people.event
            rest_uri: http://localhost:8080/people/event-source-api/rest
 ...

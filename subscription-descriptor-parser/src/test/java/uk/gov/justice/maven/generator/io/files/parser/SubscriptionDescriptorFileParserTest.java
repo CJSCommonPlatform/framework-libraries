@@ -2,6 +2,7 @@ package uk.gov.justice.maven.generator.io.files.parser;
 
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
@@ -17,6 +18,7 @@ import uk.gov.justice.domain.subscriptiondescriptor.SubscriptionDescriptor;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.everit.json.schema.ValidationException;
@@ -29,7 +31,7 @@ public class SubscriptionDescriptorFileParserTest {
     @Test
     public void shouldThrowFileNotFoundException() {
         final SubscriptionDescriptorFileParser subscriptionDescriptorFileParser = new SubscriptionDescriptorFileParserFactory().create();
-        final List<Path> paths = asList(get("no-subscription.yaml"));
+        final List<Path> paths = singletonList(get("no-subscription.yaml"));
         try {
             subscriptionDescriptorFileParser.parse(baseDir, paths);
             fail();
@@ -43,7 +45,7 @@ public class SubscriptionDescriptorFileParserTest {
     public void shouldFailOnIncorrectSubscriptionYaml() {
         final SubscriptionDescriptorFileParser subscriptionDescriptorFileParser = new SubscriptionDescriptorFileParserFactory().create();
 
-        final List<Path> paths = asList(get("incorrect-subscription.yaml"));
+        final List<Path> paths = singletonList(get("incorrect-subscription.yaml"));
         try {
             subscriptionDescriptorFileParser.parse(baseDir, paths);
             fail();
@@ -58,7 +60,7 @@ public class SubscriptionDescriptorFileParserTest {
     public void shouldParsePathsToYaml() {
         final SubscriptionDescriptorFileParser subscriptionDescriptorFileParser = new SubscriptionDescriptorFileParserFactory().create();
 
-        final List<Path> paths = asList(get("subscription.yaml"));
+        final List<Path> paths = singletonList(get("subscription.yaml"));
         final Collection<SubscriptionDescriptor> subscriptionDescriptors = subscriptionDescriptorFileParser.parse(baseDir, paths);
 
         assertThat(subscriptionDescriptors, hasSize(1));
@@ -82,7 +84,7 @@ public class SubscriptionDescriptorFileParserTest {
         final String name = eventsource.getName();
         assertThat(name, is("examplecontext"));
         final Location location = eventsource.getLocation();
-        assertThat(location.getJmsUri(), is("jms:topic:example.event?timeToLive=1000"));
+        assertThat(location.getJmsUri(), is("jms:topic:example.event"));
         assertThat(location.getRestUri(), is("http://localhost:8080/example/event-source-api/rest"));
     }
 
@@ -90,7 +92,7 @@ public class SubscriptionDescriptorFileParserTest {
         final String name = eventsource.getName();
         assertThat(name, is("people"));
         final Location location = eventsource.getLocation();
-        assertThat(location.getJmsUri(), is("jms:topic:people.event?timeToLive=1000"));
+        assertThat(location.getJmsUri(), is("jms:topic:people.event"));
         assertThat(location.getRestUri(), is("http://localhost:8080/people/event-source-api/rest"));
     }
 

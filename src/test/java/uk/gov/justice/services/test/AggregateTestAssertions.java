@@ -1,14 +1,5 @@
 package uk.gov.justice.services.test;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.hamcrest.Matcher;
-import uk.gov.justice.services.test.domain.AggregateWrapper;
-import uk.gov.justice.services.test.domain.aggregate.GenericAggregate;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.core.Is.is;
@@ -16,6 +7,16 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static uk.gov.justice.services.test.DomainTest.eventNameFrom;
+
+import uk.gov.justice.services.test.domain.AggregateWrapper;
+import uk.gov.justice.services.test.domain.aggregate.GenericAggregate;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.hamcrest.Matcher;
 
 class AggregateTestAssertions {
 

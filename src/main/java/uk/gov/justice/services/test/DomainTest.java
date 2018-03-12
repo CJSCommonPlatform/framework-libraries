@@ -1,14 +1,9 @@
 package uk.gov.justice.services.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.reflections.Reflections;
+import static java.lang.String.format;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.domain.Metadata;
@@ -17,17 +12,18 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static java.lang.String.format;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.Collectors.toList;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+import org.junit.runner.RunWith;
+import org.reflections.Reflections;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(strict = false, features = "src/test/resources/domain-features", format = {"pretty",
@@ -109,11 +105,10 @@ public class DomainTest {
     }
 
     public static List<JsonNode> generatedEventAsJsonNodeList(final List<Object> generatedEvent) {
-        final List<JsonNode> acutalEvents = new ArrayList<>();
-        for (Object event : generatedEvent) {
-            acutalEvents.add(OBJECT_MAPPER.valueToTree(event));
-        }
-        return acutalEvents;
+        return generatedEvent
+                .stream()
+                .map(event -> (JsonNode) OBJECT_MAPPER.valueToTree(event))
+                .collect(toList());
     }
 
     public static JsonNode generateEventNodeWithMetadata(final Object event) {
@@ -126,6 +121,6 @@ public class DomainTest {
     }
 
     public static List<JsonNode> toJsonNodes(final List<Object> jsonNodes) {
-        return jsonNodes.stream().map(event -> generateEventNodeWithMetadata(event)).collect(toList());
+        return jsonNodes.stream().map(DomainTest::generateEventNodeWithMetadata).collect(toList());
     }
 }

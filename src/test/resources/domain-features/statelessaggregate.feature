@@ -43,4 +43,3 @@ Feature: StatelessAggregate
     When you doSomethingTwice to a StatelessAggregate using a argsA
     Then something happened
     And something happened
-

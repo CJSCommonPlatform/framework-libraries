@@ -1,8 +1,12 @@
 package uk.gov.justice.services.test;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsSame.sameInstance;
+import static org.junit.Assert.assertThat;
+import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
+
 import uk.gov.justice.services.test.domain.AggregateWrapper;
 import uk.gov.justice.services.test.domain.aggregate.GenericAggregate;
 import uk.gov.justice.services.test.domain.event.InitialEventA;
@@ -10,12 +14,9 @@ import uk.gov.justice.services.test.domain.event.InitialEventB;
 
 import java.util.List;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.hamcrest.core.IsSame.sameInstance;
-import static org.junit.Assert.assertThat;
-import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class AggregateInitialisationTest extends AggregateTestAssertions {
 

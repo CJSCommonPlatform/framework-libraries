@@ -1,6 +1,5 @@
 package uk.gov.justice.services.test.domain.aggregate;
 
-import org.apache.commons.lang3.tuple.Pair;
 import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.justice.services.test.domain.arg.ComplexArgument;
 import uk.gov.justice.services.test.domain.event.SthDoneWithIntArgEvent;
@@ -12,6 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 
 public class GenericAggregate implements Aggregate {

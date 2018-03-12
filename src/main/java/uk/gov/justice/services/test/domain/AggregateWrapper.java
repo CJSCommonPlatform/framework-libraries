@@ -1,19 +1,27 @@
 package uk.gov.justice.services.test.domain;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import uk.gov.justice.domain.aggregate.Aggregate;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.*;
-import java.util.stream.Stream;
-
 import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
-import static uk.gov.justice.services.test.DomainTest.*;
+import static uk.gov.justice.services.test.DomainTest.UK_GOV_REFLECTIONS;
+import static uk.gov.justice.services.test.DomainTest.eventsFromFileNames;
+import static uk.gov.justice.services.test.DomainTest.getMethodArguments;
+import static uk.gov.justice.services.test.DomainTest.jsonNodesFrom;
+
+import uk.gov.justice.domain.aggregate.Aggregate;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class AggregateWrapper {
 
@@ -46,6 +54,7 @@ public class AggregateWrapper {
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     public void invokeMethod(final String methodName, final String fileContainingArguments) throws Exception {
 
         final JsonNode json = jsonNodesFrom(fileContainingArguments).get(0);
@@ -57,6 +66,7 @@ public class AggregateWrapper {
         generatedEvents.addAll(newEvents);
     }
 
+    @SuppressWarnings("unchecked")
     public void invokeMethod(final String methodName) throws Exception {
         final Method method = getMethod(aggregate.getClass(), methodName, Collections.emptySet());
         final List<Object> newEvents = ((Stream<Object>) method.invoke(aggregate)).collect(toList());

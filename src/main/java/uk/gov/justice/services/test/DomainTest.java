@@ -1,14 +1,12 @@
 package uk.gov.justice.services.test;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
-import org.junit.runner.RunWith;
-import org.reflections.Reflections;
+import static java.lang.String.format;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.test.domain.Metadata;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,9 +17,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static java.lang.String.format;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+import org.junit.runner.RunWith;
+import org.reflections.Reflections;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(strict = false, features = "src/test/resources/domain-features", format = {"pretty",
@@ -34,22 +36,23 @@ public class DomainTest {
     private static final Set<Class<?>> EVENT_ANNOTATED_CLASSES = UK_GOV_REFLECTIONS.getTypesAnnotatedWith(Event.class);
     private static final String NAME = "name";
 
-
     public static List<Object> eventsFromFileNames(final String fileNames) {
         return jsonNodesListFrom(fileNames).stream()
-                .map(jsonEvent -> {
-                    try {
-
-                        Class<?> clazz = EVENT_ANNOTATED_CLASSES.stream()
-                                .filter(annotatedClass -> annotatedClass.getAnnotation(Event.class).value().equalsIgnoreCase(eventNameFrom(jsonEvent)))
-                                .findAny()
-                                .orElseThrow(() -> new IllegalArgumentException("Error applying initial event. Event class not found"));
-                        return OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(jsonNodeWithoutMetadataFrom(jsonEvent)), clazz);
-                    } catch (IOException | IllegalArgumentException e) {
-                        throw new IllegalArgumentException(e.getLocalizedMessage(), e);
-                    }
-                })
+                .map(DomainTest::eventsFromFileNames)
                 .collect(toList());
+    }
+
+    private static Object eventsFromFileNames(final JsonNode jsonEvent) {
+        try {
+
+            Class<?> clazz = EVENT_ANNOTATED_CLASSES.stream()
+                    .filter(annotatedClass -> annotatedClass.getAnnotation(Event.class).value().equalsIgnoreCase(eventNameFrom(jsonEvent)))
+                    .findAny()
+                    .orElseThrow(() -> new IllegalArgumentException("Error applying initial event. Event class not found"));
+            return OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(jsonNodeWithoutMetadataFrom(jsonEvent)), clazz);
+        } catch (IOException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getLocalizedMessage(), e);
+        }
     }
 
     public static String eventNameFrom(JsonNode node) {
@@ -99,5 +102,25 @@ public class DomainTest {
 
     public static JsonNode generatedEventAsJsonNode(final Object generatedEvent) {
         return OBJECT_MAPPER.valueToTree(generatedEvent);
+    }
+
+    public static List<JsonNode> generatedEventAsJsonNodeList(final List<Object> generatedEvent) {
+        return generatedEvent
+                .stream()
+                .map(event -> (JsonNode) OBJECT_MAPPER.valueToTree(event))
+                .collect(toList());
+    }
+
+    public static JsonNode generateEventNodeWithMetadata(final Object event) {
+        final Metadata metadataForActualEvent = new Metadata(eventNameFrom(event));
+        final JsonNode actualEvent = generatedEventAsJsonNode(event);
+        final JsonNode jsonNode = OBJECT_MAPPER.createObjectNode();
+        ((ObjectNode)jsonNode).set("_metadata", OBJECT_MAPPER.valueToTree(metadataForActualEvent));
+        ((ObjectNode)jsonNode).setAll((ObjectNode)actualEvent);
+        return jsonNode;
+    }
+
+    public static List<JsonNode> toJsonNodes(final List<Object> jsonNodes) {
+        return jsonNodes.stream().map(DomainTest::generateEventNodeWithMetadata).collect(toList());
     }
 }

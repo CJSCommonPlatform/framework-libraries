@@ -1,16 +1,16 @@
 package uk.gov.justice.maven.generator.io.files.parser.io;
 
-import org.junit.Test;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+
+import org.junit.Test;
 
 /**
  * Unit tests for the {@link FileTreeScanner} class.

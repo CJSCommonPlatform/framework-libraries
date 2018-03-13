@@ -1,7 +1,6 @@
 package uk.gov.justice.maven.generator.io.files.parser;
 
 import static java.nio.file.Paths.get;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -18,7 +17,6 @@ import uk.gov.justice.domain.subscriptiondescriptor.SubscriptionDescriptor;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.everit.json.schema.ValidationException;

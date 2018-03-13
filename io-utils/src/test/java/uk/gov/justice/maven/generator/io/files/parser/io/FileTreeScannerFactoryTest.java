@@ -1,10 +1,10 @@
 package uk.gov.justice.maven.generator.io.files.parser.io;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Unit tests for the {@link FileTreeScannerFactory} class.

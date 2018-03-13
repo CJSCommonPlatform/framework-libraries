@@ -2,7 +2,6 @@ package uk.gov.justice.maven.generator.io.files.parser.it;
 
 
 import static org.apache.commons.lang.StringUtils.substringBefore;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 

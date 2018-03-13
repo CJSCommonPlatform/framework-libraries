@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [2.1.0] - 2018-03-13
+### Added
+- Retrieving Stream of EventStream
+
 ## [2.0.1] - 2018-03-09
 
 ## [2.0.0-M1] - 2018-02-14

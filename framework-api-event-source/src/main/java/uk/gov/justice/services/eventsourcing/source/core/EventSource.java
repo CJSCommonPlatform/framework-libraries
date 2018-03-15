@@ -11,26 +11,33 @@ import java.util.stream.Stream;
 public interface EventSource {
 
     /**
-     * Get a stream of events by stream id.
+     * Get an event stream by stream id.
      *
-     * @param streamId - the stream id of the stream to be retrieved
+     * @param streamId the id of the stream to be retrieved
      * @return the {@link EventStream}
      */
     EventStream getStreamById(final UUID streamId);
 
+    /**
+     * Get a stream of event streams.
+     *
+     * @return a stream of {@link EventStream}s
+     */
+    Stream<EventStream> getStreams();
 
     /**
-     * Get a streams Of eventStreams.
+     * Get a stream of event streams.
      *
-     * @return the {@link EventStream}
+     * @param position the position in the stream of streams to start from
+     * @return a stream of {@link EventStream}s
      */
-    Stream<EventStream> getEventStreamsBySequence(final long sequenceNumber);
+    Stream<EventStream> getStreamsFrom(final long position);
 
     /**
      * Clones the stream into a new stream id.
      *
-     * @param streamId - the stream id of the stream to be cloned
-     * @return the StreamId of the cloned stream.
+     * @param streamId the id of the stream to be cloned
+     * @return the id of the clone
      * @throws EventStreamException if the cloning of the stream fails
      */
     UUID cloneStream(final UUID streamId) throws EventStreamException;
@@ -38,7 +45,7 @@ public interface EventSource {
     /**
      * Clears all of the events from a stream id.
      *
-     * @param streamId - the streamId of the stream to be cleared
+     * @param streamId the id of the stream to be cleared
      */
     void clearStream(final UUID streamId) throws EventStreamException;
 }

@@ -7,6 +7,7 @@ import uk.gov.justice.services.test.domain.event.SthDoneWithNoArgsEvent;
 import uk.gov.justice.services.test.domain.event.SthDoneWithStringArgEvent;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -58,6 +59,17 @@ public class GenericAggregate implements Aggregate {
 
     public Stream<Object> doSthWithComplexArg(final ComplexArgument complexArgument) {
         methodInvocations.add(Pair.of("doSthWithComplexArg", new Object[]{complexArgument}));
+        return Stream.of(new SthDoneWithNoArgsEvent());
+    }
+
+    public Stream<Object> doSthWithComplexArgsList(final List<ComplexArgument> complexArgumentList) {
+        List<Object> argsList = new ArrayList<>();
+        complexArgumentList.forEach(complexArgument -> {
+            argsList.add(complexArgument.getIntArg());
+            argsList.add(complexArgument.getStringArg());
+            argsList.add(complexArgument.getBooleanArg());
+        });
+        methodInvocations.add(Pair.of("doSthWithComplexArgsList", argsList.toArray()));
         return Stream.of(new SthDoneWithNoArgsEvent());
     }
 

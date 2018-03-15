@@ -1,0 +1,14 @@
+{
+  "complexArgumentList": [
+    {
+      "stringArg": "first argument",
+      "intArg": 111,
+      "booleanArg": true
+    },
+    {
+      "stringArg": "second argument",
+      "intArg": 222,
+      "booleanArg": false
+    }
+  ]
+}

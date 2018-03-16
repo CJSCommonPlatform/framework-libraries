@@ -56,7 +56,7 @@ public interface Metadata {
     Optional<String> sessionId();
 
     /**
-     * Get the UUID of the stream this message belongs to, if one is specified.
+     * Get the id of the stream this message belongs to, if one is specified.
      *
      * @return the optional UUID
      */
@@ -66,9 +66,18 @@ public interface Metadata {
      * Get the sequence id (or version) that indicates where in the stream this message is
      * positioned, if one is specified.
      *
+     * @deprecated use {@link #position()} instead
      * @return the optional sequence id
      */
+    @Deprecated
     Optional<Long> version();
+
+    /**
+     * Get the position of this message within a stream, if this message belongs to a stream.
+     *
+     * @return the position
+     */
+    Optional<Long> position();
 
     /**
      * Return the whole metadata as a JsonObject.

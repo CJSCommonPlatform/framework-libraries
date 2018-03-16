@@ -62,10 +62,20 @@ public interface EventStream {
 
     /**
      * Get the current (current maximum) sequence id (version number) for a stream
-     *
+     * @deprecated use {@link #size()} instead
      * @return the latest sequence id for the provided steam. 0 when stream is empty.
      */
+    @Deprecated
     long getCurrentVersion();
+
+    /**
+     * Get the size of the event stream.
+     *
+     * Can be used to determine the position of the next event when appending to the stream
+     *
+     * @return the size of the steam; zero when stream is empty
+     */
+    long size();
 
     /**
      * Retrieve the id of this stream.
@@ -74,6 +84,10 @@ public interface EventStream {
      */
     UUID getId();
 
-    long getSequenceNumber();
+    /**
+     * Get the position of this event stream within the sequence of all streams.
+     * @return the position
+     */
+    long getPosition();
 
 }

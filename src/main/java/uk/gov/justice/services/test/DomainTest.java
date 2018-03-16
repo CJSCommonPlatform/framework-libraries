@@ -96,7 +96,9 @@ public class DomainTest {
 
     public static Object[] getMethodArguments(final JsonNode jsonNode, final Method target) {
         return stream(target.getParameters())
-                .map(p -> OBJECT_MAPPER.convertValue(jsonNode.get(p.getName()), p.getType()))
+                .map(p -> OBJECT_MAPPER
+                        .convertValue(jsonNode.get(p.getName()),
+                                OBJECT_MAPPER.getTypeFactory().constructType(p.getParameterizedType())))
                 .toArray();
     }
 

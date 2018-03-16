@@ -1,10 +1,7 @@
 package uk.gov.justice.services.test;
 
-import static org.hamcrest.Matchers.samePropertyValuesAs;
-import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
-import static org.junit.Assert.assertThat;
-import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
-
+import org.junit.Before;
+import org.junit.Test;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.test.domain.AggregateWrapper;
 import uk.gov.justice.services.test.domain.aggregate.GenericAggregate;
@@ -13,8 +10,10 @@ import uk.gov.justice.services.test.domain.arg.ComplexArgument;
 import java.time.ZoneId;
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
+import static org.junit.Assert.assertThat;
+import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 
 public class AggregateMethodInvocationTest extends AggregateTestAssertions {
 
@@ -95,5 +94,13 @@ public class AggregateMethodInvocationTest extends AggregateTestAssertions {
         assertMethodInvocations(aggregateWrapper, 1, "doSthWithComplexArg");
         assertThat(methodInvocationArgumentsOf(aggregateWrapper, 0)[0],
                 samePropertyValuesAs(new ComplexArgument("someString", 456, true)));
+    }
+
+    @Test
+    public void shouldCallMethodWithComplexArgsListFromFile() throws Exception {
+        aggregateWrapper.invokeMethod("doSthWithComplexArgsList", "list-of-complex-args");
+
+        assertMethodInvocations(aggregateWrapper, "doSthWithComplexArgsList", 1,
+                arrayContaining(111, "first argument", true, 222, "second argument", false));
     }
 }

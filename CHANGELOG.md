@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [2.5.0-M1] - 2018-03-19
+### Added
+- Update to milestone release
+
 ## [2.4.0] - 2018-02-13
 ### Added
 - Support for FileParser Factory

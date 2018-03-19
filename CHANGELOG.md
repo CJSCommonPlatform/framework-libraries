@@ -4,6 +4,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [3.0.0-M1] - 2018-03-19
+### Added
+- EventSource interface changed
+-   Stream<EventStream> getStreams();
+-   Stream<EventStream> getStreamsFrom(final long position);
+- EventStream interface changed
+-   deprecated long getCurrentVersion();
+-   added long size();
+-   added long getPosition();
+
 
 ## [2.1.0] - 2018-03-13
 ### Added

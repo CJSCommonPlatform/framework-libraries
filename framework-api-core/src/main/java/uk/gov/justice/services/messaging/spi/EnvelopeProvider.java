@@ -11,7 +11,7 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 /**
- * Abstract class for EnvelopeProvider implementations to provide methods for constructing
+ * Interface for EnvelopeProvider implementations to provide methods for constructing
  * {@link Envelope} and {@link MetadataBuilder} instances.
  *
  * Call the static method {@code EnvelopeProvider.provider()} to retrieve the

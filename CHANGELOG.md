@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## [2.5.0-M2] - 2018-03-28
+### Changed
+- Subscription generator plugin moved to the framework.
 
 ## [2.5.0-M1] - 2018-03-19
 ### Added

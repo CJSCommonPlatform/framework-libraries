@@ -66,8 +66,8 @@ public interface Metadata {
      * Get the sequence id (or version) that indicates where in the stream this message is
      * positioned, if one is specified.
      *
-     * @deprecated use {@link #position()} instead
      * @return the optional sequence id
+     * @deprecated use {@link #position()} instead
      */
     @Deprecated
     Optional<Long> version();

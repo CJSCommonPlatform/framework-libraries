@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.23.0] - 2018-04-09
+
+### Added
+- jglue-cdi-unit version 4.0.1
+- jboss.weld.se version 2.4.5.Final
+
 ## [1.22.0] - 2017-11-06
 
 ### Added

@@ -99,6 +99,8 @@
         <xbean.version>4.5</xbean.version>
         <johnzon.version>1.0.0</johnzon.version>
         <javax.mail.version>1.5.0</javax.mail.version>
+        <jglue-cdi-unit.version>4.0.1</jglue-cdi-unit.version>
+        <jboss.weld.se.version>2.4.5.Final</jboss.weld.se.version>
     </properties>
 
     <scm>
@@ -621,6 +623,16 @@
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-junit</artifactId>
                 <version>${hamcrest.junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jglue.cdi-unit</groupId>
+                <artifactId>cdi-unit</artifactId>
+                <version>${jglue-cdi-unit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se-core</artifactId>
+                <version>${jboss.weld.se.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jolokia</groupId>

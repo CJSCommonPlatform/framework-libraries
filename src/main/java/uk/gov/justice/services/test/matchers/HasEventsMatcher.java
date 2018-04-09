@@ -2,6 +2,8 @@ package uk.gov.justice.services.test.matchers;
 
 import static java.lang.System.lineSeparator;
 
+import uk.gov.justice.services.test.json.WildcardTextNodeSupport;
+
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,8 +15,10 @@ public class HasEventsMatcher extends TypeSafeDiagnosingMatcher<List<JsonNode>> 
 
     private final List<JsonNode> expectedEvents;
 
+
     public HasEventsMatcher(final List<JsonNode> expectedEvents) {
         this.expectedEvents = expectedEvents;
+        WildcardTextNodeSupport.enable(this.expectedEvents);
     }
 
     @Override
@@ -61,7 +65,7 @@ public class HasEventsMatcher extends TypeSafeDiagnosingMatcher<List<JsonNode>> 
     private boolean startsWith(final List<JsonNode> expectedEvents, final List<JsonNode> actualEvents) {
 
         for (int i = 0; i < expectedEvents.size(); i++) {
-            if (!actualEvents.get(i).equals(expectedEvents.get(i))) {
+            if (!expectedEvents.get(i).equals(actualEvents.get(i))) {
                 return false;
             }
         }

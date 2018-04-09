@@ -18,6 +18,7 @@ public abstract class JsonMetadata implements Metadata {
     public static final String STREAM_ID = "id";
     public static final String VERSION = "version";
     public static final String CAUSATION = "causation";
+    public static final String SOURCE = "source";
 
     protected static final String[] USER_ID_PATH = {CONTEXT, USER_ID};
     protected static final String[] CLIENT_CORRELATION_PATH = {CORRELATION, CLIENT_ID};

@@ -92,4 +92,11 @@ public interface Metadata {
      * @return the timestamp the matadata was created at
      */
     Optional<ZonedDateTime> createdAt();
+
+    /**
+     * Return the event-source name.
+     *
+     * @return the source
+     */
+    Optional<String> source();
 }

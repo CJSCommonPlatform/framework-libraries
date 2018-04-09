@@ -84,6 +84,14 @@ public interface MetadataBuilder {
     MetadataBuilder withVersion(final long version);
 
     /**
+     * Add a source to the metadata
+     *
+     * @param source the logical name of the event source
+     * @return the current instance of the MetadataBuilder
+     */
+    MetadataBuilder withSource(final String source);
+
+    /**
      * Build a {@link Metadata} instance from the added data.
      *
      * @return the {@link Metadata} instance

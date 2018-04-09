@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [3.0.0-M3] - 2018-04-09
+### Added
+- Metadata interface changed
+-   Optional<String> source();
+
 ## [3.0.0-M1] - 2018-03-19
 ### Added
 - EventSource interface changed

@@ -4,10 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## [3.0.0-M3] - 2018-04-09
+## [3.0.0-M4] - 2018-04-10
 ### Added
-- Metadata interface changed
--   added Optional<String> source();
+- Metadata interface changed added source
 
 ## [3.0.0-M2] - 2018-03-22
 ### Added

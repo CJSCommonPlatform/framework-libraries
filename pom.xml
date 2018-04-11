@@ -20,7 +20,7 @@
         <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
 
         <generator-maven-plugin.version>2.3.0</generator-maven-plugin.version>
-        <json-schema-catalog.version>1.1.0</json-schema-catalog.version>
+        <json-schema-catalog.version>1.2.1</json-schema-catalog.version>
 
         <cpp.repo.name>maven-framework-parent-pom</cpp.repo.name>
     </properties>

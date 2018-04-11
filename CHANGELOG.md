@@ -5,10 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [0.3.0] - 2018-04-11
+### Added
+- Support wildcard comparison
+
 ## [0.1.0] - 2018-01-17
 
 ### Fixed
-- Fixed "occurred" typo. 
+- Fixed "occurred" typo.
 
 ### Added
 - More stateful aggregate tests.

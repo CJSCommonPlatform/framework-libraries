@@ -12,12 +12,6 @@
 
     <artifactId>test-utils-core</artifactId>
 
-    <scm>
-        <connection>${cpp.scm.connection}</connection>
-        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
-        <url>${cpp.scm.url}</url>
-    </scm>
-
     <dependencies>
         <dependency>
             <groupId>org.glassfish</groupId>

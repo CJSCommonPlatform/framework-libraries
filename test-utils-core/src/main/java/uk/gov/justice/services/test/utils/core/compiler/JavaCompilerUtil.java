@@ -178,26 +178,31 @@ public class JavaCompilerUtil {
     private void compile() {
 
         final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-
         final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
-        final StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, Locale.getDefault(), null);
-        final List<JavaFileObject> javaObjects = scanRecursivelyForJavaObjects(codegenOutputDir, fileManager);
 
-        if (javaObjects.isEmpty()) {
-            throw new CompilationException(
-                    format("There are no source files to compile in {0}", codegenOutputDir.getAbsolutePath()));
-        }
-        final String[] compileOptions = new String[]{"-d", compilationOutputDir.getAbsolutePath()};
-        final Iterable<String> compilationOptions = Arrays.asList(compileOptions);
+        try (final StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, Locale.getDefault(), null)) {
 
-        final CompilationTask compilerTask = compiler.getTask(null, fileManager, diagnostics, compilationOptions, null,
-                javaObjects);
+            final List<JavaFileObject> javaObjects = scanRecursivelyForJavaObjects(codegenOutputDir, fileManager);
 
-        if (!compilerTask.call()) {
-            for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
-                LOG.error("Error on line {} in {}", diagnostic.getLineNumber(), diagnostic);
+            if (javaObjects.isEmpty()) {
+                throw new CompilationException(
+                        format("There are no source files to compile in {0}", codegenOutputDir.getAbsolutePath()));
             }
-            throw new CompilationException("Could not compile project");
+            final String[] compileOptions = new String[]{"-d", compilationOutputDir.getAbsolutePath()};
+            final Iterable<String> compilationOptions = Arrays.asList(compileOptions);
+
+            final CompilationTask compilerTask = compiler.getTask(null, fileManager, diagnostics, compilationOptions, null,
+                    javaObjects);
+
+            if (!compilerTask.call()) {
+                for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
+                    LOG.error("Error on line {} in {}", diagnostic.getLineNumber(), diagnostic);
+                }
+                throw new CompilationException("Could not compile project");
+            }
+
+        } catch (final IOException e) {
+            throw new CompilationException("Could not compile project", e);
         }
     }
 

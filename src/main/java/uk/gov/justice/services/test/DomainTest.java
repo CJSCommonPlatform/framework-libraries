@@ -45,7 +45,7 @@ public class DomainTest {
     private static Object eventsFromFileNames(final JsonNode jsonEvent) {
         try {
 
-            Class<?> clazz = EVENT_ANNOTATED_CLASSES.stream()
+            final Class<?> clazz = EVENT_ANNOTATED_CLASSES.stream()
                     .filter(annotatedClass -> annotatedClass.getAnnotation(Event.class).value().equalsIgnoreCase(eventNameFrom(jsonEvent)))
                     .findAny()
                     .orElseThrow(() -> new IllegalArgumentException("Error applying initial event. Event class not found"));
@@ -64,7 +64,7 @@ public class DomainTest {
     }
 
     public static List<JsonNode> jsonNodesListFrom(final String fileNames) {
-        List<JsonNode> jsonNodeList = new LinkedList<>();
+        final List<JsonNode> jsonNodeList = new LinkedList<>();
         Arrays.asList(fileNames.split(","))
                 .forEach(fileName -> jsonNodeList.addAll(jsonNodesFrom(fileName.trim())));
         return jsonNodeList;
@@ -72,11 +72,11 @@ public class DomainTest {
 
     public static List<JsonNode> jsonNodesFrom(final String fileName) {
         try {
-            List<JsonNode> jsonNodes = new LinkedList<>();
+            final List<JsonNode> jsonNodes = new LinkedList<>();
             File eventFile = new File(format("src/test/resources/json/%s.json", fileName));
             eventFile = eventFile.exists() ? eventFile : new File(format("src/test/resources/json/%s.json", fileName.replaceAll("\\s", "-")));
             eventFile = eventFile.exists() ? eventFile : new File(format("src/test/resources/json/%s.json", fileName.replaceAll("\\s", "_")));
-            JsonNode eventsJson = OBJECT_MAPPER.readTree(Files.readAllBytes(eventFile.toPath()));
+            final JsonNode eventsJson = OBJECT_MAPPER.readTree(Files.readAllBytes(eventFile.toPath()));
             if (eventsJson.isArray()) {
                 eventsJson.elements().forEachRemaining(jsonNodes::add);
             } else {
@@ -117,8 +117,8 @@ public class DomainTest {
         final Metadata metadataForActualEvent = new Metadata(eventNameFrom(event));
         final JsonNode actualEvent = generatedEventAsJsonNode(event);
         final JsonNode jsonNode = OBJECT_MAPPER.createObjectNode();
-        ((ObjectNode)jsonNode).set("_metadata", OBJECT_MAPPER.valueToTree(metadataForActualEvent));
-        ((ObjectNode)jsonNode).setAll((ObjectNode)actualEvent);
+        ((ObjectNode) jsonNode).set("_metadata", OBJECT_MAPPER.valueToTree(metadataForActualEvent));
+        ((ObjectNode) jsonNode).setAll((ObjectNode) actualEvent);
         return jsonNode;
     }
 

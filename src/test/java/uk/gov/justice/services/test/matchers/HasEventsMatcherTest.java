@@ -7,7 +7,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,9 +24,9 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldReturnTrueIfExpectedEventsMatchesExactlyTheActualEventList() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
-        final JsonNode event_3 = mock(JsonNode.class, "event_3");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
+        final JsonNode event_3 = create("event_3");
 
         final Description description = mock(Description.class);
 
@@ -39,9 +41,9 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldReturnTrueIfAllExpectedEventsAreInTheActualEventList() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
-        final JsonNode event_3 = mock(JsonNode.class, "event_3");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
+        final JsonNode event_3 = create("event_3");
 
         final Description description = mock(Description.class);
 
@@ -69,9 +71,9 @@ public class HasEventsMatcherTest {
 
     @Test
     public void shouldReturnFalseIfNotAllExpectedEventsAreInTheActualEventList() throws Exception {
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
-        final JsonNode event_3 = mock(JsonNode.class, "event_3");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
+        final JsonNode event_3 = create("event_3");
 
         final Description description = mock(Description.class);
 
@@ -86,9 +88,9 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldReturnFalseIfExpectedEventsAreInTheActualEventListInTheWrongOrder() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
-        final JsonNode event_3 = mock(JsonNode.class, "event_3");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
+        final JsonNode event_3 = create("event_3");
 
         final Description description = mock(Description.class);
 
@@ -103,9 +105,9 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldReturnFalseAndGiveCorrectMessageForNoActualEvents() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
-        final JsonNode event_3 = mock(JsonNode.class, "event_3");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
+        final JsonNode event_3 = create("event_3");
 
         final Description description = mock(Description.class);
 
@@ -122,9 +124,9 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldReturnFalseAndGiveCorrectMessageForOneActualEvent() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
-        final JsonNode event_3 = mock(JsonNode.class, "event_3");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
+        final JsonNode event_3 = create("event_3");
 
         final Description description = mock(Description.class);
 
@@ -141,9 +143,9 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldReturnFalseAndGiveCorrectMessageForMoreThanOneActualEvents() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
-        final JsonNode event_3 = mock(JsonNode.class, "event_3");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
+        final JsonNode event_3 = create("event_3");
 
         final Description description = mock(Description.class);
 
@@ -174,7 +176,7 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldHaveCorrectDescriptionForOneExpectedEvent() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
+        final JsonNode event_1 = create("event_1");
 
         final List<JsonNode> expectedEvents = singletonList(event_1);
 
@@ -190,8 +192,8 @@ public class HasEventsMatcherTest {
     @Test
     public void shouldHaveCorrectDescriptionForMoreThanOneExpectedEvent() throws Exception {
 
-        final JsonNode event_1 = mock(JsonNode.class, "event_1");
-        final JsonNode event_2 = mock(JsonNode.class, "event_2");
+        final JsonNode event_1 = create("event_1");
+        final JsonNode event_2 = create("event_2");
 
         final List<JsonNode> expectedEvents = asList(event_1, event_2);
 
@@ -202,5 +204,11 @@ public class HasEventsMatcherTest {
         hasEventsMatcher.describeTo(description);
 
         verify(description).appendText("these 2 events in stream:\n" + expectedEvents);
+    }
+
+    private JsonNode create(final String name) {
+        final JsonNode jsonNode = mock(JsonNode.class, name);
+        when(jsonNode.fieldNames()).thenReturn(mock(Iterator.class));
+        return jsonNode;
     }
 }

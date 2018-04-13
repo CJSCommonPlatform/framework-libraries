@@ -21,6 +21,8 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +31,9 @@ public class ObjectMapperProducerTest {
     private static final String JSON_OBJECT_STRING = "{\n" +
             "  \"id\": \"861c9430-7bc6-4bf0-b549-6534394b8d65\"\n" +
             "}";
+    private static final String YAML_AS_STRING = "---\n" +
+            "subscription_descriptor:\n" +
+            "  spec_version: 1.0.0\n";
 
     private ObjectMapper mapper;
 
@@ -208,6 +213,16 @@ public class ObjectMapperProducerTest {
         ;
     }
 
+    @Test
+    public void shouldConvertYamlToJsonObject() throws Exception {
+        final ObjectMapper yamlObjectMapper = new ObjectMapperProducer().objectMapperWith(new YAMLFactory());
+
+        final Object yamlObject = yamlObjectMapper.readValue(YAML_AS_STRING, Object.class);
+        final JSONObject yamlAsJsonObject = new JSONObject(mapper.writeValueAsString(yamlObject));
+
+        assertThat(yamlAsJsonObject.getJSONObject("subscription_descriptor").get("spec_version"), is("1.0.0"));
+    }
+
     public static class DummyBeanWithSingleArgConstructor {
         private final String name;
 
@@ -233,7 +248,7 @@ public class ObjectMapperProducerTest {
         }
     }
 
-    public static enum Colour {
+    public enum Colour {
         RED("Red"),
         GREEN("Green"),
         BLUE("Blue");

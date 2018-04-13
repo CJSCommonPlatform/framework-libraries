@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.24.0] - 2018-04-13
+
+### Added
+- jackson-dataformat-yaml 2.8.7 
+
 ## [1.23.0] - 2018-04-09
 
 ### Added

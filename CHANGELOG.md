@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.13.0] - 2018-04-13
+
 ### Added
 - ObjectMapperProducer method for creating and object mapper with a JmsFactory
 

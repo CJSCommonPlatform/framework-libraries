@@ -16,6 +16,6 @@ import javax.inject.Qualifier;
 @Target({TYPE,METHOD,FIELD})
 public @interface SubscriptionName {
 
-    @Nonbinding String value();
+    @Nonbinding String value() default "";
 }
 

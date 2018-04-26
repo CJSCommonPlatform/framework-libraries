@@ -9,8 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>framework-api-event-source</artifactId>
-
+    <artifactId>framework-api-subscription</artifactId>
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -19,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.framework-api</groupId>
-            <artifactId>framework-api-event-stream</artifactId>
+            <artifactId>framework-api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

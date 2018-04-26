@@ -1,4 +1,4 @@
-package uk.gov.justice.services.adapter.messaging;
+package uk.gov.justice.services.subscription;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 

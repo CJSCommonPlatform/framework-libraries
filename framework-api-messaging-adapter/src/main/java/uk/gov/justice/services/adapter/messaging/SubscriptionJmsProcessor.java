@@ -1,5 +1,7 @@
 package uk.gov.justice.services.adapter.messaging;
 
+import uk.gov.justice.services.subscription.SubscriptionManager;
+
 import javax.jms.Message;
 
 public interface SubscriptionJmsProcessor {

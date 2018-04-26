@@ -4,6 +4,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [3.0.0-M5] - 2018-04-26
+### Added
+- framework-api-subscription module
+- EventSourceName annotation
+- SubscriptionName annotation
+- SubscriptionManager interface and SubscriptionJmsProcessor interface
+
 ## [3.0.0-M4] - 2018-04-10
 ### Added
 - Metadata interface changed added source

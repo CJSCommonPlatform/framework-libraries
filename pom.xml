@@ -31,6 +31,7 @@
         <module>framework-api-direct-adapter</module>
         <module>framework-api-messaging-client</module>
         <module>framework-api-bom</module>
+        <module>framework-api-subscription</module>
     </modules>
 
     <scm>

@@ -27,5 +27,10 @@
             <artifactId>framework-api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.framework-api</groupId>
+            <artifactId>framework-api-subscription</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

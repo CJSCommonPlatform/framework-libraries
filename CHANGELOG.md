@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- JavaCompilerUtility to fix out of memory error
+
+### Changed
+- Deprecate JavaCompilerUtil and convert to use JavaCompilerUtility
+
 ## [1.16.2] - 2018-04-11
 
 ### Fixed

@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.16.3] - 2018-05-02
+
 ### Added
 - JavaCompilerUtility to fix out of memory error
 

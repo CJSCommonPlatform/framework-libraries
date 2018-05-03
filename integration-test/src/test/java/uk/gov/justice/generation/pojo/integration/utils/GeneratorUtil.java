@@ -23,6 +23,7 @@ import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.hashcode.SerialVersionUIDGenerator;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
@@ -63,6 +64,7 @@ public class GeneratorUtil {
 
     private List<String> ignoredClassNames = emptyList();
     private PojoGeneratorProperties generatorProperties = new PojoGeneratorProperties();
+    private SerialVersionUIDGenerator serialVersionUIDGenerator = new SerialVersionUIDGenerator();
 
     private List<ClassModifyingPlugin> classModifyingPlugins = new ArrayList<>();
     private List<TypeModifyingPlugin> typeModifyingPlugins = new ArrayList<>();
@@ -125,7 +127,8 @@ public class GeneratorUtil {
                 classNameFactory,
                 generationContext.getSourceFilename(),
                 classModifyingPlugins,
-                generatorProperties);
+                generatorProperties,
+                serialVersionUIDGenerator.generateHashCode(schema));
 
         final Visitable visitableSchema = visitableFactory.createWith(ROOT_FIELD_NAME, schema, acceptorService);
 

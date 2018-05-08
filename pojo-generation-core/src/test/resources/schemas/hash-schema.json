@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "objectProperty": {
+      "type": "object",
+      "properties": {
+        "stringProperty": {
+          "type": "string"
+        },
+        "myObject": {
+          "$ref": "http://json-schema.org/geo"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "http://json-schema.org/address"
+        },
+        {
+          "properties": {
+            "type": {
+              "enum": [
+                "residential",
+                "business"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

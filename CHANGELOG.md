@@ -4,6 +4,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [3.0.0-M6] - 2018-05-09
+### Updated
+- EventSource interface updated.
+-   UUID cloneStream(final UUID streamId) method removed
+-   void clearStream(final UUID streamId) method removed
+
 ## [3.0.0-M5] - 2018-04-26
 ### Added
 - framework-api-subscription module

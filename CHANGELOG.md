@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [3.0.0-M7] - 2018-05-11
+###Added
+- EventSourceTransformation interface for cloning and clearing a stream
+
 ## [3.0.0-M6] - 2018-05-09
 ### Updated
 - EventSource interface updated.

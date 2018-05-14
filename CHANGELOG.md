@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.0.0-M8] - 2018-05-14
+###Added
+- Add name to EventStream
+
 ## [3.0.0-M7] - 2018-05-11
 ###Added
 - EventSourceTransformation interface for cloning and clearing a stream

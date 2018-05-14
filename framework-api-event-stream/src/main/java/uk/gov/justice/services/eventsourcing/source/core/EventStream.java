@@ -90,4 +90,11 @@ public interface EventStream {
      */
     long getPosition();
 
+
+    /**
+     * Retrieve the name of this stream.
+     *
+     * @return the stream name.
+     */
+    String getName();
 }

@@ -42,7 +42,7 @@
 
     <properties>
         <cpp.repo.name>framework-api</cpp.repo.name>
-        <common-bom.version>1.22.0</common-bom.version>
+        <common-bom.version>1.25.0</common-bom.version>
     </properties>
 
     <dependencyManagement>

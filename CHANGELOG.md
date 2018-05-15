@@ -5,12 +5,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Updated common-bom version to 1.25.0 for Jackson version 2.9.5
+
 ## [3.0.0-M8] - 2018-05-14
-###Added
+### Added
 - Add name to EventStream
 
 ## [3.0.0-M7] - 2018-05-11
-###Added
+### Added
 - EventSourceTransformation interface for cloning and clearing a stream
 
 ## [3.0.0-M6] - 2018-05-09

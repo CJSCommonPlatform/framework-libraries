@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.25.0] - 2018-05-15
+
+### Changed
+- Updated Jackson version to 2.9.5
+
 ## [1.24.0] - 2018-04-13
 
 ### Added

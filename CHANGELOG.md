@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.17.0] - 2018-05-15
+## [1.17.1] - 2018-05-15
 
 ### Changed
 - Updated common-bom version to 1.25.0 for Jackson version 2.9.5

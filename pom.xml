@@ -22,7 +22,7 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.22.0</common-bom.version>
+        <common-bom.version>1.25.0</common-bom.version>
         <cpp.repo.name>test-utils</cpp.repo.name>
         <diff.utils.version>1.3.0</diff.utils.version>
     </properties>

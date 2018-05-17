@@ -13,9 +13,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>uk.gov.justice.services</groupId>
+            <groupId>uk.gov.justice.framework-api</groupId>
             <artifactId>framework-api-domain</artifactId>
-            <version>${framework-version}</version>
+            <version>${framework-api-version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -5,9 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.4] - 2018-05-17
+- Upgrade Jackson to 2.8.11 to fix Jackson security issues 
+
 ## [1.3.3] - 2018-02-16
 ### Fixed
-- Builder with only addtional properties present
+- Builder with only additional properties present
 
 ## [1.3.2] - 2018-02-14
 ### Fixed

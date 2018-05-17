@@ -5,14 +5,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.6.2] - 2018-05-17
+- Upgrade Jackson to 2.8.11 to fix Jackson security issues 
+
 ## [1.6.1] - 2017-11-01
 
 ## Added
-
 - Sonarcloud analysis
 
 ## Changed
-
 - Updated common-bom to version 1.21.0
 - Switched to common CI user
 

@@ -5,10 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [1.2.2] - 2018-04-05
-### Added
-- catalog-test-utils artifact
-- Schema catalog resolver test utility to load and resolve schema with $ref values 
+## [1.2.2] - 2018-05-17
+- Upgrade Jackson to 2.8.11 to fix Jackson security issues 
 
 ## [1.2.1] - 2018-04-05
 ### Added

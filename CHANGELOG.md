@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [2.5.0] - 2018-05-17
+- Upgrade Jackson to 2.8.11 to fix Jackson security issues 
+
 ## [2.5.0-M2] - 2018-03-28
 ### Changed
 - Subscription generator plugin moved to the framework.

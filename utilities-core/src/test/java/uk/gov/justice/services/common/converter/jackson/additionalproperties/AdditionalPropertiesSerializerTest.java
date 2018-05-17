@@ -1,6 +1,7 @@
 package uk.gov.justice.services.common.converter.jackson.additionalproperties;
 
 import static com.google.common.base.CharMatcher.any;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -13,6 +14,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -44,11 +46,11 @@ public class AdditionalPropertiesSerializerTest {
 
     @Before
     public void setup() {
-        additionalPropertiesSerializer
-                = new AdditionalPropertiesSerializer(dummySerializer,
-                new String[]{ADDITIONAL_PROPERTIES_NAME});
+        additionalPropertiesSerializer = new AdditionalPropertiesSerializer(
+                dummySerializer,
+                newHashSet(ADDITIONAL_PROPERTIES_NAME));
 
-        when(serializerProviderMock.mappingException(anyString(), anyObject())).thenReturn(new JsonMappingException(""));
+        when(serializerProviderMock.mappingException(anyString(), anyObject())).thenReturn(new JsonMappingException(null, ""));
     }
 
     @Test
@@ -96,7 +98,7 @@ public class AdditionalPropertiesSerializerTest {
 
         try {
             additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock);
-        } catch (final IOException ioex) {
+        } catch (final IOException expected) {
             // Expected
         }
 
@@ -111,7 +113,7 @@ public class AdditionalPropertiesSerializerTest {
 
         try {
             additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock);
-        } catch (final IOException ioex) {
+        } catch (final IOException expected) {
             // Expected
         }
 
@@ -125,7 +127,7 @@ public class AdditionalPropertiesSerializerTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldReturnUnsupportedOperationExceptionFromWithIgnorals() {
-        additionalPropertiesSerializer.withIgnorals(new String[0]);
+        additionalPropertiesSerializer.withIgnorals(new HashSet<>());
     }
 
     @Test(expected = UnsupportedOperationException.class)

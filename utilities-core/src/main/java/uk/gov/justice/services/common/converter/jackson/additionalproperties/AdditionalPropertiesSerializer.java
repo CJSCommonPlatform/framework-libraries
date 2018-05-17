@@ -5,16 +5,25 @@ import static uk.gov.justice.services.common.converter.jackson.additionalpropert
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.impl.ObjectIdWriter;
 import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
 
-
 public class AdditionalPropertiesSerializer extends BeanSerializerBase {
 
+
+    // deprecated as the super constructor is deprecated.
+    // TODO remove this constructor and use the non deprecated version
+    @Deprecated
     public AdditionalPropertiesSerializer(final BeanSerializerBase source, final String[] toIgnore) {
+        super(source, toIgnore);
+    }
+
+    // Use this constructor from now on
+    public AdditionalPropertiesSerializer(final BeanSerializerBase source, final Set<String> toIgnore) {
         super(source, toIgnore);
     }
 
@@ -24,7 +33,7 @@ public class AdditionalPropertiesSerializer extends BeanSerializerBase {
     }
 
     @Override
-    public BeanSerializerBase withIgnorals(final String[] toIgnore) {
+    public BeanSerializerBase withIgnorals(final Set<String> toIgnore) {
         throw new UnsupportedOperationException();
     }
 

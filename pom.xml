@@ -32,7 +32,7 @@
         <utilities.version>1.13.1</utilities.version>
         <test-utils.version>1.17.2</test-utils.version>
         <generator-maven-plugin.version>2.5.0</generator-maven-plugin.version>
-        <json-schema-catalog.version>1.2.1</json-schema-catalog.version>
+        <json-schema-catalog.version>1.2.2</json-schema-catalog.version>
 
         <cpp.repo.name>jsonschema-pojo-generator</cpp.repo.name>
     </properties>

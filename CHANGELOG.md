@@ -5,7 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.5] - 2018-05-17
+### Changed
+- Fix upgrade Jackson to 2.8.11
+
 ## [1.3.4] - 2018-05-17
+### Changed
 - Upgrade Jackson to 2.8.11 to fix Jackson security issues 
 
 ## [1.3.3] - 2018-02-16

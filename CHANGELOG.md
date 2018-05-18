@@ -5,7 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.12.2] - 2018-05-18
+### Changed
+- Fix upgrade Jackson to 2.8.11
+
 ## [1.12.1] - 2018-05-17
+###Changed
 - Upgrade Jackson to 2.8.11 to fix Jackson security issues 
 
 ## [1.12.0] - 2018-04-11

@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.0.0-M9] - 2018-05-21
+
 ### Changed
 - Updated common-bom version to 1.26.0 for Jackson version 2.8.11
 

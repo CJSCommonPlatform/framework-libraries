@@ -6,7 +6,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [Unreleased]
 
 ### Changed
-- Updated common-bom version to 1.25.0 for Jackson version 2.9.5
+- Updated common-bom version to 1.26.0 for Jackson version 2.8.11
 
 ## [3.0.0-M8] - 2018-05-14
 ### Added

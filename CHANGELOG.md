@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.0.0-M10] - 2018-05-29
+### Changed
+-  Remove default event source name from EventSourceName.
+
+
 ## [3.0.0-M9] - 2018-05-21
 
 ### Changed

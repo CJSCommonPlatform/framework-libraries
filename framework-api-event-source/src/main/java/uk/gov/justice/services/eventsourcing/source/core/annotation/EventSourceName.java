@@ -18,7 +18,5 @@ import javax.inject.Qualifier;
 @Target({TYPE, METHOD, FIELD, PARAMETER})
 public @interface EventSourceName {
 
-    String DEFAULT_EVENT_SOURCE_NAME = "defaultEventSource";
-
-    @Nonbinding String value() default DEFAULT_EVENT_SOURCE_NAME;
+    @Nonbinding String value() default "";
 }

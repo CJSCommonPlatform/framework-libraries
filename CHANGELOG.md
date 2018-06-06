@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.0.0-M11] - 2018-06-06
+### Changed
+-  Change SubscriptionJmsProcessor and SubscriptionManager interfaces.
+
 ## [3.0.0-M10] - 2018-05-29
 ### Changed
 -  Remove default event source name from EventSourceName.

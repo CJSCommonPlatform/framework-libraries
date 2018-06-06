@@ -29,3 +29,14 @@ Feature: StatefulAggregate
     Given multiple things happened
     When you doSomethingTwice on a StatefulAggregate using an argsA
     Then multiple things happened
+
+  Scenario: Multiple previous events from a single file are applied, many new events occur
+
+    Given multiple things happened
+    When you doSomethingReturningMultipleEvents on a StatefulAggregate using an argsA
+    Then something happened
+    And something happened
+    And something-else-happened
+    And something-with-bigdecimal-happened
+    And something-else-happened
+    And something-else-happened

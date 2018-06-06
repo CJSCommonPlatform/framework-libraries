@@ -103,7 +103,16 @@ public class DomainTest {
     }
 
     public static JsonNode generatedEventAsJsonNode(final Object generatedEvent) {
-        return OBJECT_MAPPER.valueToTree(generatedEvent);
+
+        try {
+            // We don't use OBJECT_MAPPER.valueToTree(generatedEvent) as this creates a Jackson ObjectNode (JsonNode) that
+            // doesn't allow us to compare to the JsonNodes created from resources/json/.json files when the event class
+            // contains BigDecimals
+            return  OBJECT_MAPPER.readTree(OBJECT_MAPPER.writeValueAsBytes(generatedEvent));
+        } catch (IOException e) {
+            throw new IllegalArgumentException(format("Error creating JsonNode from event object: %s", generatedEvent), e);
+        }
+
     }
 
     public static List<JsonNode> generatedEventAsJsonNodeList(final List<Object> generatedEvent) {

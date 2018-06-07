@@ -66,6 +66,7 @@ public class GenerateMojo extends BasicMojo {
 
             try {
                 FileUtils.forceMkdir(outputDirectory);
+                new ProjectDependencyLoader(project).loadProjectDependencies();
                 new GenerateGoalProcessor(
                         new MojoGeneratorFactory(),
                         new FileTreeScannerFactory(),
@@ -92,5 +93,4 @@ public class GenerateMojo extends BasicMojo {
                 sourcePaths);
 
     }
-
 }

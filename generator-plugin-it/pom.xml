@@ -136,12 +136,6 @@
                 <dependencies>
                     <dependency>
                         <groupId>uk.gov.justice.maven.generator</groupId>
-                        <artifactId>files-for-testing-io</artifactId>
-                        <version>${project.version}</version>
-                        <classifier>raml</classifier>
-                    </dependency>
-                    <dependency>
-                        <groupId>uk.gov.justice.maven.generator</groupId>
                         <artifactId>raml-generator-for-testing</artifactId>
                         <type>test-jar</type>
                         <version>${project.version}</version>
@@ -167,6 +161,12 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>uk.gov.justice.maven.generator</groupId>
+            <artifactId>files-for-testing-io</artifactId>
+            <version>${project.version}</version>
+            <classifier>raml</classifier>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

@@ -8,7 +8,9 @@ import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.justice.services.test.domain.event.CakeOrdered;
 import uk.gov.justice.services.test.domain.event.SomethingElseHappened;
 import uk.gov.justice.services.test.domain.event.SomethingHappened;
+import uk.gov.justice.services.test.domain.event.SomethingWithBigDecimalHappened;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -27,6 +29,12 @@ public class StatefulAggregate implements Aggregate {
         return apply(Stream.of(new SomethingHappened(id), new SomethingHappened(id)));
     }
 
+
+    public Stream<Object> doSomethingReturningMultipleEvents(final UUID id) {
+        return apply(Stream.of(new SomethingHappened(id), new SomethingHappened(id), new SomethingElseHappened(id), new SomethingWithBigDecimalHappened(id, new BigDecimal("500.3")), new SomethingElseHappened(id), new SomethingElseHappened(id)));
+    }
+
+
     public Stream<Object> doNothing() {
         return Stream.empty();
     }
@@ -36,6 +44,8 @@ public class StatefulAggregate implements Aggregate {
         return match(event).with(
                 when(SomethingHappened.class)
                         .apply(somethingHappenedEvent -> this.eventApplied = true),
+                when(SomethingWithBigDecimalHappened.class)
+                        .apply(somethingWithBigDecimalHappenedEvent -> this.eventApplied = true),
                 when(CakeOrdered.class)
                         .apply(cakeOrderedEvent -> doNothing()),
                 when(SomethingElseHappened.class)

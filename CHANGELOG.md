@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.0.1] - 2018-06-12
+
+### Fixed
+- Altered marshalling approach to fix problems comparing BigDecimal fields
+
 ## [0.3.0] - 2018-04-11
 ### Added
 - Support wildcard comparison
@@ -28,7 +33,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 - First release version
 
-[Unreleased]: https://github.com/CJSCommonPlatform/domain-test-dsl/compare/release-0.3.0...HEAD
+[Unreleased]: https://github.com/CJSCommonPlatform/domain-test-dsl/compare/release-0.3.1...HEAD
+[0.3.1]: https://github.com/CJSCommonPlatform/domain-test-dsl/compare/release-0.3.0...release-0.3.1
 [0.3.0]: https://github.com/CJSCommonPlatform/domain-test-dsl/compare/release-0.2.0...release-0.3.0
 [0.2.0]: https://github.com/CJSCommonPlatform/domain-test-dsl/compare/release-0.1.0...release-0.2.0
 [0.1.0]: https://github.com/CJSCommonPlatform/domain-test-dsl/commits/release-0.1.0

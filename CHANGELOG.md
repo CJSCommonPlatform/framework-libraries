@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.27.0] - 2018-06-20
+
+### Changed
+- Upgrade Apache Tika to 1.18
 
 ## [1.26.0] - 2018-05-16
 

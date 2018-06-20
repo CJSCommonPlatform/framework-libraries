@@ -9,6 +9,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 - Priority loading of EnveloperProvider if more than one provider on the classpath
 - Priority loading of EnvelopeProvider if more than one provider on the classpath
 - Priority loading of JsonEnvelopeProvider if more than one provider on the classpath
+- Add pageSize to the EventStream readFrom(...) method
 
 ## [3.0.0] - 2018-11-07
 ### Changed

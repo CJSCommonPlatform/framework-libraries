@@ -28,6 +28,15 @@ public interface EventStream {
     Stream<JsonEnvelope> readFrom(final long version);
 
     /**
+     * Get the stream of events from the given version.
+     *
+     * @param version the version of the stream
+     * @param pageSize the size of the page of the result set
+     * @return the stream of events
+     */
+    Stream<JsonEnvelope> readFrom(final long version, final int pageSize);
+
+    /**
      * Store a stream of events.
      *
      * @param events the stream of events to store

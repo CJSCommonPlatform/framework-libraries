@@ -28,7 +28,7 @@
     <properties>
         <apache.httpclient.version>4.5.1</apache.httpclient.version>
         <apache.commons-dbcp2.version>2.1</apache.commons-dbcp2.version>
-        <apache.tika.version>1.14</apache.tika.version>
+        <apache.tika.version>1.18</apache.tika.version>
         <artemis.jms.client.version>1.5.5</artemis.jms.client.version>
         <artemis.jms.version>1.5.5</artemis.jms.version>
         <awaitility.version>1.7.0</awaitility.version>

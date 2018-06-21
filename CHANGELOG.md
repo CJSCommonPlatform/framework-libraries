@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.6] - 2018-06-21
+### Changed
+- Updated common-bom version to 1.27.0 to fix apache tika security issues
+
 ## [1.3.5] - 2018-05-17
 ### Changed
 - Fix upgrade Jackson to 2.8.11

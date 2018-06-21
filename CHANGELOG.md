@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## [1.12.3] - 2018-06-21
+### Changed
+- Updated generator-maven-plugin version to 2.5.1 to fix apache tika security issues
+- Updated json-schema-catalog version to 1.2.3 to fix apache tika security issues
 
 ## [1.12.2] - 2018-05-18
 ### Changed

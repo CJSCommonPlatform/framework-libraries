@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.13.2] - 2018-06-20
+## [1.13.2] - 2018-06-21
 
 ### Changed
 - Updated common-bom version to 1.27.0 to fix apache tika security issues

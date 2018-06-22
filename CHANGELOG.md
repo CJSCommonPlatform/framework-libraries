@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Updated common-bom version to 1.27.0 to fix apache tika security issues
+
 ## [3.0.0-M12] - 2018-06-20
 ### Changed
 -  Remove InterceptorChainProcessor from SubscriptionJmsProcessor.

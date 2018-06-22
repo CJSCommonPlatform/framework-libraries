@@ -10,7 +10,7 @@
 
     <groupId>uk.gov.justice.framework-api</groupId>
     <artifactId>framework-api</artifactId>
-    <version>3.0.0-M13</version>
+    <version>3.0.0-M14-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modelVersion>4.0.0</modelVersion>

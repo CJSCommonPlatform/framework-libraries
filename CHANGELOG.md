@@ -5,13 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.0.0-M13] - 2018-06-22
 ### Changed
 - Updated common-bom version to 1.27.0 to fix apache tika security issues
 
 ## [3.0.0-M12] - 2018-06-20
 ### Changed
 -  Remove InterceptorChainProcessor from SubscriptionJmsProcessor.
-
 
 ## [3.0.0-M11] - 2018-06-06
 ### Changed
@@ -20,7 +20,6 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [3.0.0-M10] - 2018-05-29
 ### Changed
 -  Remove default event source name from EventSourceName.
-
 
 ## [3.0.0-M9] - 2018-05-21
 

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.2.4] - 2018-07-03
+
+### Changed
+- Added fix to generate schema with reference to another schema in the same source directory
+
 ## [1.2.3] - 2018-06-21
 
 ### Changed

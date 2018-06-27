@@ -104,7 +104,7 @@ public class CatalogObjectFactory {
      * @return a new instance of {@link CatalogUpdater}
      */
     public CatalogUpdater catalogUpdater() {
-        return new CatalogUpdater(getLogger(CatalogUpdater.class));
+        return new CatalogUpdater();
     }
 
     /**

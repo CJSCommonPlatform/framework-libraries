@@ -101,6 +101,13 @@ public class CatalogObjectFactory {
     }
 
     /**
+     * @return a new instance of {@link CatalogUpdater}
+     */
+    public CatalogUpdater catalogUpdater() {
+        return new CatalogUpdater(getLogger(CatalogUpdater.class));
+    }
+
+    /**
      * @return a new instance of {@link SchemaClientFactory}
      */
     public SchemaClientFactory schemaClientFactory() {
@@ -121,7 +128,7 @@ public class CatalogObjectFactory {
      * @return a new instance of {@link RawCatalog}
      */
     public RawCatalog rawCatalog() {
-        final RawCatalog rawCatalog = new RawCatalog(jsonSchemaFileLoader());
+        final RawCatalog rawCatalog = new RawCatalog(jsonSchemaFileLoader(), catalogUpdater());
         rawCatalog.initialize();
 
         return rawCatalog;

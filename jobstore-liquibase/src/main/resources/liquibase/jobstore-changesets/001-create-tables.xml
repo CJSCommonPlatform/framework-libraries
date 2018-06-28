@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns = "http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation = "http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="job-store-001" author="Tech Pod"
+               logicalFilePath="001-create-tables.xml">
+        <createTable tableName="job">
+            <column name="job_id" type="UUID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="worker_id" type="UUID"/>
+            <column name="worker_lock_time" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name = "next_task" type = "TEXT"/>
+            <column name="next_task_start_time" type="TIMESTAMP WITH TIME ZONE"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

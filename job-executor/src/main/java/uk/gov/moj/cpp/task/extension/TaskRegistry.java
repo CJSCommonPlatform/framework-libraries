@@ -1,7 +1,5 @@
 package uk.gov.moj.cpp.task.extension;
 
-import static java.lang.String.format;
-
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 
@@ -34,19 +32,19 @@ public class TaskRegistry {
         final Class taskClass = event.getClazz();
         final String taskName = ((Task) taskClass.getAnnotation(Task.class)).value();
 
-        LOGGER.info(format("Notified of Work Task [type=%s], [name=%s]", taskClass, taskName));
+        LOGGER.info("Notified of Work Task [type={}], [name={}]", taskClass, taskName);
 
         for (ExecutableTask taskProxy : taskBeanProxy) {
             final String proxyClassName = taskProxy.getClass().getName();
             if (proxyClassName.startsWith(taskClass.getName())) {
                 taskProxyByNameMap.putIfAbsent(taskName, taskProxy);
-                LOGGER.info(format("Registering Work Task proxy [type=%s], [name=%s]", taskProxy, taskName));
+                LOGGER.info("Registering Work Task proxy [type={}], [name={}]", taskProxy, taskName);
                 break;
             }
         }
 
-        if (taskProxyByNameMap.get(taskName).equals(null)) {
-            LOGGER.error(format("No Injected proxy class provided for task [%s]", taskClass));
+        if (taskProxyByNameMap.get(taskName) == null) {
+            LOGGER.error("No Injected proxy class provided for task [{}]", taskClass);
         }
 
     }

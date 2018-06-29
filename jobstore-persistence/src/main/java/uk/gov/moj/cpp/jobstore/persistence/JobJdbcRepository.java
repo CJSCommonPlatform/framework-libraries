@@ -111,7 +111,7 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void lockJobsFor(final UUID workerId, final int jobCountToLock) {
-        logger.debug("Locking jobs for worker: ", workerId);
+        logger.debug("Locking jobs for worker: {}", workerId);
 
         ZonedDateTime now = now();
         Timestamp oneHourAgo = toSqlTimestamp((now.minusHours(1)));

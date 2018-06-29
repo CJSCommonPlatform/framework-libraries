@@ -5,12 +5,11 @@ import static java.lang.Integer.parseInt;
 import static java.util.Optional.empty;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
-import uk.gov.justice.services.common.configuration.GlobalValue;
+import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 
 import java.time.ZonedDateTime;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -22,7 +21,7 @@ import javax.json.JsonObject;
 public class JobService {
 
     @Inject
-    @GlobalValue(key = "notify.email.worker.job.count", defaultValue = "10")
+    @Value(key = "worker.job.count", defaultValue = "10")
     protected String jobCount;
 
     @Inject

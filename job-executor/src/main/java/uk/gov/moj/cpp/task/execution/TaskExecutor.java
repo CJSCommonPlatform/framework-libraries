@@ -70,13 +70,13 @@ public class TaskExecutor implements Runnable {
             userTransaction.commit();
 
         } catch (Exception e) {
-            LOGGER.error(format("Unexpected exception during committing transaction for Job %s, attempting rollback...%s", this,  e));
+            LOGGER.error("Unexpected exception during committing transaction for Job {}, attempting rollback...{}", this, e);
 
             try {
                 userTransaction.rollback();
                 LOGGER.info("Transaction rolled back successfully", e);
             } catch (SystemException e1) {
-                LOGGER.error(format("Unexpected exception during transaction rollback, rollback maybe incomplete %s", this), e1);
+                LOGGER.error("Unexpected exception during transaction rollback, rollback maybe incomplete {}", this, e1);
             }
         }
 

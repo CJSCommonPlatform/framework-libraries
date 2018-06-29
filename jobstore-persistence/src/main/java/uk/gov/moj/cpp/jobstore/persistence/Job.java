@@ -53,11 +53,11 @@ public class Job {
         final StringBuilder sb = new StringBuilder("Job [");
 
         sb.append("jobId=").append(jobId)
-                .append(", workerId=").append(workerId.get())
-                .append(", workerLockTime=").append(workerLockTime.get())
+                .append(", workerId=").append(workerId.orElse(null))
+                .append(", workerLockTime=").append(workerLockTime.orElse(null))
                 .append(", nextTask='").append(nextTask).append("'\\")
                 .append(", nextTaskStartTime=").append(nextTaskStartTime)
-                .append(", jobStatus=").append(jobStatus.get())
+                .append(", jobStatus=").append( jobStatus.orElse(null))
                 .append("]");
 
         return sb.toString();

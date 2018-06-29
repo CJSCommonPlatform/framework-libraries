@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.task.execution;
 
 import static java.lang.Long.parseLong;
-import static java.lang.String.format;
 import static java.util.UUID.randomUUID;
 
 import uk.gov.justice.services.common.configuration.Value;
@@ -78,7 +77,7 @@ public class JobExecutor {
         timerConfig.setPersistent(false);
         timerConfig.setInfo(timerName());
 
-        LOGGER.info(format("Creating timer [%s]", timerName()));
+        LOGGER.info("Creating timer [{}]", timerName());
 
         timerService.createIntervalTimer(parseLong(timerStartWaitSeconds), parseLong(timerIntervalSeconds), timerConfig);
     }
@@ -103,7 +102,7 @@ public class JobExecutor {
 
         final UUID workerId = randomUUID();
 
-        LOGGER.info(format("Retrieving new work from jobstore for WorkerID [%s]", workerId));
+        LOGGER.info("Retrieving new work from jobstore for WorkerID [{}]", workerId);
 
         Stream<Job> unassignedJobs = null;
 

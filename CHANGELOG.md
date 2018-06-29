@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.7] - 2018-07-03
+### Changed
+- Added fix to generate schema with reference to another schema in the same source directory
+
 ## [1.3.6] - 2018-06-21
 ### Changed
 - Updated common-bom version to 1.27.0 to fix apache tika security issues

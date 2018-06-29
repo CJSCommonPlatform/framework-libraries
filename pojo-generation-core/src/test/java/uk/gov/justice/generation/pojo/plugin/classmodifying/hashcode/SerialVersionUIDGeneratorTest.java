@@ -32,6 +32,6 @@ public class SerialVersionUIDGeneratorTest {
         final JSONObject rawSchema = new JSONObject(new JSONTokener(new FileInputStream(schemaFile)));
         final Schema schema = SchemaLoader.load(rawSchema);
 
-        assertThat(serialVersionUIDGenerator.generateHashCode(schema), is(5023966668963605490L));
+        assertThat(serialVersionUIDGenerator.generateHashCode(schema), is(6493084779716519647L));
     }
 }

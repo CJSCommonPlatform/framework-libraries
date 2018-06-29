@@ -7,6 +7,7 @@ import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.maven.generator.io.files.parser.FileParser;
 import uk.gov.justice.maven.generator.io.files.parser.FileParserFactory;
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
+import uk.gov.justice.schema.catalog.RawCatalog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,10 @@ public class SchemaDefinitionParserFactory implements FileParserFactory<SchemaDe
 
         final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
 
+        final RawCatalog rawCatalog = catalogObjectFactory.rawCatalog();
+
         final SchemaCatalogResolver schemaCatalogResolver = new SchemaCatalogResolver(
-                catalogObjectFactory.rawCatalog(),
+                rawCatalog,
                 catalogObjectFactory.schemaClientFactory(),
                 catalogObjectFactory.jsonToSchemaConverter());
 
@@ -32,6 +35,7 @@ public class SchemaDefinitionParserFactory implements FileParserFactory<SchemaDe
         return new SchemaDefinitionParser(
                 resourceLoaderFactory,
                 schemaResolver,
+                rawCatalog,
                 resourceProvider,
                 logger
         );

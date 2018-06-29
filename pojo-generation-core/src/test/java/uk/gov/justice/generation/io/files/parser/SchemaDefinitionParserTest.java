@@ -12,9 +12,12 @@ import uk.gov.justice.generation.io.files.loader.ResourceLoader;
 import uk.gov.justice.generation.io.files.loader.ResourceLoaderFactory;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolverException;
+import uk.gov.justice.schema.catalog.RawCatalog;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.everit.json.schema.Schema;
@@ -33,6 +36,9 @@ public class SchemaDefinitionParserTest {
 
     @Mock
     private SchemaResolver schemaResolver;
+
+    @Mock
+    private RawCatalog rawCatalog;
 
     @Mock
     private ResourceProvider resourceProvider;

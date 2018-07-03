@@ -2,6 +2,8 @@ package uk.gov.justice.schema.catalog;
 
 import static java.util.Optional.ofNullable;
 
+import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -14,11 +16,17 @@ public class RawCatalog {
 
     private final JsonSchemaFileLoader jsonSchemaFileLoader;
 
+
+    private final CatalogUpdater catalogUpdater;
+
     private Map<String, String> schemaIdsToRawJsonSchemaCache = new HashMap<>();
 
-    public RawCatalog(final JsonSchemaFileLoader jsonSchemaFileLoader) {
+    public RawCatalog(final JsonSchemaFileLoader jsonSchemaFileLoader,
+                      final CatalogUpdater catalogUpdater) {
         this.jsonSchemaFileLoader = jsonSchemaFileLoader;
+        this.catalogUpdater = catalogUpdater;
     }
+
 
     /**
      * Initializes the cache of raw json schemas by scanning the classpath and
@@ -35,6 +43,16 @@ public class RawCatalog {
      * the specified id, if it exists.
      */
     public Optional<String> getRawJsonSchema(final String schemaId) {
+
         return ofNullable(schemaIdsToRawJsonSchemaCache.get(schemaId));
+    }
+
+    /**
+     * Updates the cache with raw json schemas required during pojo generation
+     * @param basePath
+     * @param paths
+     */
+    public void updateCatalogSchemaCache(final Path basePath, final Collection<Path> paths) {
+        catalogUpdater.updateRawCatalog(schemaIdsToRawJsonSchemaCache, basePath, paths);
     }
 }

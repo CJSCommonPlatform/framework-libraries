@@ -39,7 +39,7 @@ public class GenerateBuilderForClassPluginWithAdditionalPropertiesIT {
 
 
         final PojoGeneratorProperties generatorProperties = pojoGeneratorPropertiesBuilder()
-                .withRootClassName("StudentPojoWithBuilder")
+                .withRootClassName("StudentPojoWithBuilderAdditionalProperties")
                 .build();
 
         final List<Class<?>> newClasses = generatorUtil
@@ -55,9 +55,9 @@ public class GenerateBuilderForClassPluginWithAdditionalPropertiesIT {
 
         final Class<?> studentClass = newClasses.get(0);
 
-        final Object studentBuilder = studentClass.getMethod("studentPojoWithBuilder").invoke(null);
+        final Object studentBuilder = studentClass.getMethod("studentPojoWithBuilderAdditionalProperties").invoke(null);
 
-        assertThat(studentBuilder.getClass().getName(), is("uk.gov.justice.events.pojo.builder.StudentPojoWithBuilder$Builder"));
+        assertThat(studentBuilder.getClass().getName(), is("uk.gov.justice.events.pojo.builder.StudentPojoWithBuilderAdditionalProperties$Builder"));
 
         final String firstName = "Molly";
         final String lastName = "O'Golly";

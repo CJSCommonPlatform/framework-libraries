@@ -3,8 +3,6 @@ package uk.gov.justice.schema.service;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import uk.gov.justice.schema.catalog.CatalogProducer;
-
 import java.util.Optional;
 
 import javax.inject.Inject;

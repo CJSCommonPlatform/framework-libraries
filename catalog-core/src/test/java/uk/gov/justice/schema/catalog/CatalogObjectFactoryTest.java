@@ -94,6 +94,22 @@ public class CatalogObjectFactoryTest {
     }
 
     @Test
+    public void shouldCreateASchemaCatalogResolver() throws Exception {
+
+        final SchemaCatalogResolver schemaCatalogResolver = catalogObjectFactory.schemaCatalogResolver();
+        assertThat(schemaCatalogResolver, is(notNullValue()));
+
+        final RawCatalog rawCatalog = getPrivateField("rawCatalog", schemaCatalogResolver, RawCatalog.class);
+        assertThat(rawCatalog, is(notNullValue()));
+
+        final SchemaClientFactory schemaClientFactory = getPrivateField("schemaClientFactory", schemaCatalogResolver, SchemaClientFactory.class);
+        assertThat(schemaClientFactory, is(notNullValue()));
+
+        final JsonToSchemaConverter jsonToSchemaConverter = getPrivateField("jsonStringToSchemaConverter", schemaCatalogResolver, JsonToSchemaConverter.class);
+        assertThat(jsonToSchemaConverter, is(notNullValue()));
+    }
+
+    @Test
     public void shouldCreateCatalogToSchemaResolver() throws Exception {
 
         final CatalogToSchemaResolver catalogToSchemaResolver = catalogObjectFactory.catalogToSchemaResolver();

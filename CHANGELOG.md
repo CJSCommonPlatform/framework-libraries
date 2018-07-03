@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- Added schema catalog resolver to enable loading schemas from JSON objects
 
 ## [1.2.4] - 2018-07-03
 

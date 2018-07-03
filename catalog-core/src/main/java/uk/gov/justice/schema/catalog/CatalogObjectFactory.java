@@ -77,6 +77,19 @@ public class CatalogObjectFactory {
     }
 
     /**
+     * @return a new instance of {@link SchemaCatalogResolver}
+     */
+    public SchemaCatalogResolver schemaCatalogResolver() {
+
+        return new SchemaCatalogResolver(
+                rawCatalog(),
+                schemaClientFactory(),
+                jsonToSchemaConverter());
+    }
+
+
+
+    /**
      * @return a new instance of {@link CatalogToSchemaResolver}
      */
     public CatalogToSchemaResolver catalogToSchemaResolver() {

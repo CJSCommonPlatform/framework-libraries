@@ -12,6 +12,10 @@
 
     <artifactId>example-pojo-schema</artifactId>
 
+    <properties>
+        <skip.schema.pojo.generation>false</skip.schema.pojo.generation>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

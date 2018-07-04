@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.4.0] - 2018-07-04
+### Changed
+- Moved catalogue resolving and cache update functionality to json-schema-catalog repo
 
 ## [1.3.7] - 2018-07-03
 ### Changed

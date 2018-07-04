@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import uk.gov.justice.generation.io.files.loader.FileResourceLoader;
 import uk.gov.justice.generation.io.files.loader.InputStreamToJsonObjectConverter;
 import uk.gov.justice.generation.io.files.loader.Resource;
-import uk.gov.justice.generation.io.files.resolver.SchemaCatalogResolver;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.generation.pojo.core.UnsupportedSchemaException;
 import uk.gov.justice.generation.pojo.validation.SchemaValidatorVisitor;
@@ -17,6 +16,7 @@ import uk.gov.justice.generation.pojo.visitable.Visitable;
 import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
+import uk.gov.justice.schema.catalog.SchemaCatalogResolver;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
@@ -28,10 +28,7 @@ public class SchemaValidationIT {
 
     private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
 
-    private final SchemaCatalogResolver schemaCatalogResolver = new SchemaCatalogResolver(
-            catalogObjectFactory.rawCatalog(),
-            catalogObjectFactory.schemaClientFactory(),
-            catalogObjectFactory.jsonToSchemaConverter());
+    private final SchemaCatalogResolver schemaCatalogResolver = catalogObjectFactory.schemaCatalogResolver();
 
     private final InputStreamToJsonObjectConverter inputStreamToJsonObjectConverter = new InputStreamToJsonObjectConverter();
     private final SchemaResolver schemaResolver = new SchemaResolver(schemaCatalogResolver);

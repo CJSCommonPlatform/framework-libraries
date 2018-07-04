@@ -5,12 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [1.3.1] - 2018-08-04
+## [1.3.1] - 2018-07-04
 ### Added
 - updateCatalogSchemaCache method to SchemaCatalogResolver for easier updating of the RawCatalog 
 using resources that are not on the classpath
 
-## [1.3.0] - 2018-08-04
+## [1.3.0] - 2018-07-04
 ### Added
 - Schema catalog resolver to enable loading schemas from JSON objects
 

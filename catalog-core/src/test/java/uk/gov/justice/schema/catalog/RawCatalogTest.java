@@ -1,6 +1,7 @@
 package uk.gov.justice.schema.catalog;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
@@ -10,15 +11,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -110,33 +105,17 @@ public class RawCatalogTest {
     }
 
     @Test
-    public void testShouldUpdateCatalogSchemaWithPaths(){
-        final Map<String, String> schemaIdsToRawJsonSchemaCache = new HashMap<>();
+    public void shouldUpdateCatalogSchemaWithPaths() throws Exception {
         final Path basePath = Paths.get((""));
+        final Path aliasJsonPath = Paths.get(this.getClass().getClassLoader().getResource("json/schema/standards/example.events.alias.json").toURI());
+        final Path personJson = Paths.get(this.getClass().getClassLoader().getResource("json/schema/standards/example.events.person-updated.json").toURI());
+        final List<Path> paths = asList(aliasJsonPath, personJson);
 
+        final String expectedSchema = IOUtils.toString(personJson.toUri(), UTF_8);
         final String schemaId = "http://justice.gov.uk/standards/example.events.person-updated.json";
 
-        schemaIdsToRawJsonSchemaCache.put("http://justice.gov.uk/standards/address.json", "json schema" );
+        rawCatalog.updateCatalogSchemaCache(basePath, paths);
 
-        rawCatalog.initialize();
-        Collection<Path> paths = new ArrayList<>();
-
-        try {
-            final File aliasJson = new File(this.getClass().getClassLoader().getResource("json/schema/standards/example.events.alias.json").toURI());
-            final File personJson = new File(this.getClass().getClassLoader().getResource("json/schema/standards/example.events.person-updated.json").toURI());
-            paths.add(Paths.get(aliasJson.toURI()));
-            paths.add(Paths.get(personJson.toURI()));
-            rawCatalog.updateCatalogSchemaCache(basePath, paths);
-
-            final String schema = IOUtils.toString(personJson.toURI().toURL(), UTF_8);
-            assertThat(rawCatalog.getRawJsonSchema(schemaId), is(of(schema)));
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        assertThat(rawCatalog.getRawJsonSchema(schemaId), is(of(expectedSchema)));
     }
 }

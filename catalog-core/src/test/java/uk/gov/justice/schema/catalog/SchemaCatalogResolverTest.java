@@ -1,11 +1,17 @@
 package uk.gov.justice.schema.catalog;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.schema.catalog.client.SchemaClientFactory;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaClient;
@@ -43,5 +49,15 @@ public class SchemaCatalogResolverTest {
         final Schema resultSchema = schemaCatalogResolver.loadSchema(jsonSchema);
 
         assertThat(resultSchema, is(schema));
+    }
+
+    @Test
+    public void shouldUpdateRawCatalogWithPaths() {
+        final Path basePath = Paths.get("");
+        final List<Path> paths = singletonList(Paths.get("test/path"));
+
+        schemaCatalogResolver.updateCatalogSchemaCache(basePath, paths);
+
+        verify(rawCatalog).updateCatalogSchemaCache(basePath, paths);
     }
 }

@@ -18,14 +18,23 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Update a {@link RawCatalog} cache, to add resource paths that are not on the classpath.
+ */
 public class CatalogUpdater {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CatalogUpdater.class);
 
+    /**
+     * Updates the cache with raw json schemas that are not on the classpath
+     *
+     * @param basePath the base directory to load the resources from
+     * @param paths    the resources to parse
+     */
     public void updateRawCatalog(final Map<String, String> schemaIdsToRawJsonSchemaCache, final Path basePath, final Collection<Path> paths) {
 
-        paths.forEach(path ->{
-            final Path updatedPath = Paths.get(format("%s/%s",basePath.toString(),path.toString()));
+        paths.forEach(path -> {
+            final Path updatedPath = Paths.get(format("%s/%s", basePath.toString(), path.toString()));
 
             try {
                 final String schema = IOUtils.toString(updatedPath.toUri().toURL(), UTF_8);

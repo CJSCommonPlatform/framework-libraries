@@ -8,7 +8,6 @@ import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddFieldsAndM
 import uk.gov.justice.generation.io.files.loader.FileResourceLoader;
 import uk.gov.justice.generation.io.files.loader.InputStreamToJsonObjectConverter;
 import uk.gov.justice.generation.io.files.loader.Resource;
-import uk.gov.justice.generation.io.files.resolver.SchemaCatalogResolver;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.generation.pojo.core.ClassNameParser;
 import uk.gov.justice.generation.pojo.core.GenerationContext;
@@ -36,6 +35,7 @@ import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.visitor.StringFormatValueParser;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
+import uk.gov.justice.schema.catalog.SchemaCatalogResolver;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,10 +53,7 @@ public class GeneratorUtil {
 
     private final CatalogObjectFactory catalogObjectFactory = new CatalogObjectFactory();
 
-    private final SchemaCatalogResolver schemaCatalogResolver = new SchemaCatalogResolver(
-            catalogObjectFactory.rawCatalog(),
-            catalogObjectFactory.schemaClientFactory(),
-            catalogObjectFactory.jsonToSchemaConverter());
+    private final SchemaCatalogResolver schemaCatalogResolver = catalogObjectFactory.schemaCatalogResolver();
 
     private final InputStreamToJsonObjectConverter inputStreamToJsonObjectConverter = new InputStreamToJsonObjectConverter();
     private final SchemaResolver schemaResolver = new SchemaResolver(schemaCatalogResolver);

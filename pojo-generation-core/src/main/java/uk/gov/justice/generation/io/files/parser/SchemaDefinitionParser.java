@@ -8,8 +8,7 @@ import uk.gov.justice.generation.io.files.loader.ResourceLoader;
 import uk.gov.justice.generation.io.files.loader.ResourceLoaderFactory;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.maven.generator.io.files.parser.FileParser;
-import uk.gov.justice.schema.catalog.CatalogUpdater;
-import uk.gov.justice.schema.catalog.RawCatalog;
+import uk.gov.justice.schema.catalog.SchemaCatalogResolver;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -22,19 +21,19 @@ public class SchemaDefinitionParser implements FileParser<SchemaDefinition> {
 
     private final ResourceLoaderFactory resourceLoaderFactory;
     private final SchemaResolver schemaResolver;
-    private final RawCatalog rawCatalog;
+    private final SchemaCatalogResolver schemaCatalogResolver;
     private final ResourceProvider resourceProvider;
     private final Logger logger;
 
     public SchemaDefinitionParser(
             final ResourceLoaderFactory resourceLoaderFactory,
             final SchemaResolver schemaResolver,
-            final RawCatalog rawCatalog,
+            final SchemaCatalogResolver schemaCatalogResolver,
             final ResourceProvider resourceProvider,
             final Logger logger) {
         this.resourceLoaderFactory = resourceLoaderFactory;
         this.schemaResolver = schemaResolver;
-        this.rawCatalog = rawCatalog;
+        this.schemaCatalogResolver = schemaCatalogResolver;
         this.resourceProvider = resourceProvider;
         this.logger = logger;
     }
@@ -50,7 +49,7 @@ public class SchemaDefinitionParser implements FileParser<SchemaDefinition> {
     public Collection<SchemaDefinition> parse(final Path basePath, final Collection<Path> paths) {
         final ResourceLoader resourceLoader = resourceLoaderFactory.resourceLoaderFor(basePath);
 
-        rawCatalog.updateCatalogSchemaCache(basePath, paths);
+        schemaCatalogResolver.updateCatalogSchemaCache(basePath, paths);
 
         return paths.stream()
                 .map(path -> parse(basePath, path, resourceLoader))

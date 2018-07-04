@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.io.files.loader.Resource;
+import uk.gov.justice.schema.catalog.SchemaCatalogResolver;
 
 import org.everit.json.schema.Schema;
 import org.json.JSONObject;

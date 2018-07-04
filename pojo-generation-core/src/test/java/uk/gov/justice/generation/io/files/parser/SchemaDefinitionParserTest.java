@@ -12,12 +12,10 @@ import uk.gov.justice.generation.io.files.loader.ResourceLoader;
 import uk.gov.justice.generation.io.files.loader.ResourceLoaderFactory;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolver;
 import uk.gov.justice.generation.io.files.resolver.SchemaResolverException;
-import uk.gov.justice.schema.catalog.RawCatalog;
+import uk.gov.justice.schema.catalog.SchemaCatalogResolver;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.everit.json.schema.Schema;
@@ -38,7 +36,7 @@ public class SchemaDefinitionParserTest {
     private SchemaResolver schemaResolver;
 
     @Mock
-    private RawCatalog rawCatalog;
+    private SchemaCatalogResolver schemaCatalogResolver;
 
     @Mock
     private ResourceProvider resourceProvider;
@@ -56,6 +54,8 @@ public class SchemaDefinitionParserTest {
         final Path basePath = Paths.get("basePath");
         final Path path_1 = Paths.get("filename_1");
         final Path path_2 = Paths.get("filename_2");
+        final List<Path> paths = asList(path_1, path_2);
+
         final ResourceLoader resourceLoader = mock(ResourceLoader.class);
 
         final Resource resource_1 = mock(Resource.class);
@@ -72,7 +72,7 @@ public class SchemaDefinitionParserTest {
 
         when(resourceLoaderFactory.resourceLoaderFor(basePath)).thenReturn(resourceLoader);
 
-        final List<SchemaDefinition> schemaDefinitions = (List<SchemaDefinition>) schemaDefinitionParser.parse(basePath, asList(path_1, path_2));
+        final List<SchemaDefinition> schemaDefinitions = (List<SchemaDefinition>) schemaDefinitionParser.parse(basePath, paths);
 
         assertThat(schemaDefinitions.size(), is(2));
 
@@ -80,6 +80,7 @@ public class SchemaDefinitionParserTest {
         assertThat(schemaDefinitions.get(0).getSchema(), is(schema_1));
         assertThat(schemaDefinitions.get(1).getFilename(), is("filename_2"));
         assertThat(schemaDefinitions.get(1).getSchema(), is(schema_2));
+        verify(schemaCatalogResolver).updateCatalogSchemaCache(basePath, paths);
     }
 
     @Test

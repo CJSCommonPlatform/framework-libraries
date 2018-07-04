@@ -1,4 +1,7 @@
-package uk.gov.justice.schema.catalog;
+package uk.gov.justice.schema.service;
+
+import uk.gov.justice.schema.catalog.Catalog;
+import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

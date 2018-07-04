@@ -1,9 +1,12 @@
-package uk.gov.justice.schema.catalog;
+package uk.gov.justice.schema.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.schema.catalog.Catalog;
+import uk.gov.justice.schema.catalog.JsonToSchemaConverter;
+import uk.gov.justice.schema.catalog.RawCatalog;
 import uk.gov.justice.schema.catalog.client.SchemaClientFactory;
 
 import java.lang.reflect.Field;

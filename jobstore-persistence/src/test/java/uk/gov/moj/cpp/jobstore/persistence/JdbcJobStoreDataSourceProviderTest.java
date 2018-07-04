@@ -15,12 +15,12 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JdbcJobStoreDataSourceProviderTest {
@@ -30,12 +30,12 @@ public class JdbcJobStoreDataSourceProviderTest {
     @Mock
     private Context initialContextMock;
 
-    private JdbcJobStoreDataSourceProvider provider;
+    @Mock
+    private Logger logger;
 
-    @Before
-    public void initialise() throws NamingException {
-        provider = new JdbcJobStoreDataSourceProvider("test-event-processor", initialContextMock);
-    }
+    @InjectMocks
+    private JdbcJobStoreDataSourceProvider provider = new JdbcJobStoreDataSourceProvider("test-event-processor", initialContextMock);;
+
 
     @Test
     public void shouldReturnDatasource() throws NamingException {
@@ -51,7 +51,7 @@ public class JdbcJobStoreDataSourceProviderTest {
 
     @Test
     public void shouldGetInitialContext() throws NamingException {
-        final Context initialContext = provider.getInitialContext();
+        final Context initialContext = provider.initialContext;
         assertThat(initialContext, notNullValue());
     }
 

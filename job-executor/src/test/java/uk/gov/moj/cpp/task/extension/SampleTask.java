@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.task.extension;
 
 import static java.util.Optional.of;
+import static uk.gov.moj.cpp.jobstore.persistence.Job.job;
 import static uk.gov.moj.cpp.jobstore.persistence.JobStatus.SUCCESSFUL;
 
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
@@ -12,7 +13,9 @@ public class SampleTask implements ExecutableTask {
 
     @Override
     public Job execute(final Job job) {
-        return new Job(job, of(SUCCESSFUL));
+        return job().from(job)
+                    .withJobStatus(of(SUCCESSFUL))
+                    .build();
     }
 
 }

@@ -28,6 +28,7 @@
         <module>jobstore-persistence</module>
         <module>jobstore-liquibase</module>
         <module>jobstore-api</module>
+        <module>example</module>
     </modules>
 	
 	<properties>
@@ -78,14 +79,11 @@
                 <artifactId>test-utils-parent</artifactId>
                 <version>${cpp.test-utils.version}</version>
                 <scope>import</scope>
-                <!--<type>pom</type>-->
             </dependency>
 			<dependency>
                 <groupId>uk.gov.justice.utils</groupId>
                 <artifactId>test-utils-logging-simple</artifactId>
                 <version>${cpp.test-utils.version}</version>
-                <!--<scope>import</scope>-->
-                <!--<type>pom</type>-->
             </dependency>
         </dependencies>
     </dependencyManagement>

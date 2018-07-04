@@ -32,22 +32,6 @@ public class Job {
         this.jobStatus = jobStatus;
     }
 
-    public Job(final Job job, final Optional<JobStatus> jobStatus) {
-        this(job.getJobId(), job.getJobData(), job.getNextTask(), job.getNextTaskStartTime(), job.getWorkerId(), job.getWorkerLockTime(), jobStatus);
-    }
-
-    public Job(final Job job, final JsonObject jobData) {
-        this(job, jobData, job.getNextTaskStartTime(), job.getJobStatus());
-    }
-
-    public Job(final Job job, final ZonedDateTime nextTaskStartTime) {
-        this(job, job.getJobData(), nextTaskStartTime, job.getJobStatus());
-    }
-
-    public Job(final Job job, final JsonObject jobData, final ZonedDateTime nextTaskStartTime, final Optional<JobStatus> jobStatus) {
-        this(job.getJobId(), jobData, job.getNextTask(), nextTaskStartTime, job.getWorkerId(), job.getWorkerLockTime(), jobStatus);
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Job [");
@@ -89,5 +73,73 @@ public class Job {
 
     public Optional<JobStatus> getJobStatus() {
         return jobStatus;
+    }
+
+
+    public static Builder job() {
+        return new Builder();
+    }
+    
+    public static class Builder {
+
+        private UUID jobId;
+        private JsonObject jobData;
+        private Optional<UUID> workerId;
+        private Optional<ZonedDateTime> workerLockTime;
+        private String nextTask;
+        private ZonedDateTime nextTaskStartTime;
+        private Optional<JobStatus> jobStatus;
+
+        private Builder(){}
+
+        public Builder from(final Job job) {
+            this.jobId = job.jobId;
+            this.jobData = job.jobData;
+            this.workerId = job.workerId;
+            this.workerLockTime = job.workerLockTime;
+            this.nextTask = job.nextTask;
+            this.nextTaskStartTime = job.nextTaskStartTime;
+            this.jobStatus = job.jobStatus;
+            return this;
+        }
+
+        public Job build() {
+            return new Job(jobId, jobData, nextTask, nextTaskStartTime, workerId, workerLockTime, jobStatus);
+        }
+
+        public Builder withJobId(final UUID jobId) {
+            this.jobId = jobId;
+            return this;
+        }
+
+        public Builder withJobData(final JsonObject jobData) {
+            this.jobData = jobData;
+            return this;
+        }
+
+        public Builder withWorkerId(final Optional<UUID> workerId) {
+            this.workerId = workerId;
+            return this;
+        }
+
+        public Builder withWorkerLockTime(final Optional<ZonedDateTime> workerLockTime) {
+            this.workerLockTime = workerLockTime;
+            return this;
+        }
+
+        public Builder withNextTask(final String nextTask) {
+            this.nextTask = nextTask;
+            return this;
+        }
+
+        public Builder withNextTaskStartTime(final ZonedDateTime nextTaskStartTime) {
+            this.nextTaskStartTime = nextTaskStartTime;
+            return this;
+        }
+
+        public Builder withJobStatus(final Optional<JobStatus> jobStatus) {
+            this.jobStatus = jobStatus;
+            return this;
+        }
     }
 }

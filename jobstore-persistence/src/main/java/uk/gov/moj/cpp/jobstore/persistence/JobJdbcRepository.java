@@ -67,6 +67,7 @@ public class JobJdbcRepository implements JobRepository {
         dataSource = jdbcJobStoreDataSourceProvider.getDataSource();
     }
 
+
     @Override
     public void createJob(final Job job) {
         try (final PreparedStatementWrapper ps = jdbcRepositoryHelper.preparedStatementWrapperOf(dataSource, jobSqlProvider.getInsertSql())) {

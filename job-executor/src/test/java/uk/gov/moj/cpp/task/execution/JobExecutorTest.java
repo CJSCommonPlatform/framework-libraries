@@ -57,7 +57,7 @@ public class JobExecutorTest {
     private JobExecutor jobExecutor;
 
     @Test
-    public void testExecutedFetchedJobs() {
+    public void shouldExecuteFetchedJobs() {
         when(jobService.getUnassignedJobsFor(any(UUID.class))).thenReturn(Stream.of(job));
 
         jobExecutor.fetchUnassignedTasks();
@@ -66,7 +66,7 @@ public class JobExecutorTest {
     }
 
     @Test
-    public void testNoTasksExecutedwithEmptyStream() {
+    public void shouldNotAttemptToExecuteEmptyStreamOfJobs() {
         when(jobService.getUnassignedJobsFor(any(UUID.class))).thenReturn(Stream.of());
 
         jobExecutor.fetchUnassignedTasks();

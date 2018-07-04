@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.task.extension;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
@@ -18,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaskRegistryTest {
@@ -28,13 +28,17 @@ public class TaskRegistryTest {
     @Mock
     private TaskFoundEvent taskFoundEventMock;
 
+    @Mock
+    private Logger logger;
+
+
     @InjectMocks
     private TaskRegistry taskRegistry;
 
     private SampleTaskCdiProxy sampleTaskCdiProxy = new SampleTaskCdiProxy();
 
     @Test
-    public void testTaskAddedToRegistry() {
+    public void shouldAddTaskToRegistry() {
         when(taskFoundEventMock.getClazz()).thenReturn((Class) SampleTask.class);
 
         when(taskBeanProxyMock.iterator()).thenReturn(new TestIterator());

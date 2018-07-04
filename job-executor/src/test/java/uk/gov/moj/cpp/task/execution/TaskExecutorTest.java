@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.cpp.jobstore.persistence.JobStatus.NEXT_STEP;
 import static uk.gov.moj.cpp.jobstore.persistence.JobStatus.PERMANENT_FAILURE;
 import static uk.gov.moj.cpp.jobstore.persistence.JobStatus.SUCCESSFUL;
 import static uk.gov.moj.cpp.jobstore.persistence.JobStatus.TEMPORARY_FAILURE;
@@ -39,6 +40,7 @@ public class TaskExecutorTest {
 
     @Mock
     private Job job;
+
     @Mock
     private TaskRegistry taskRegistry;
     @Mock
@@ -65,7 +67,7 @@ public class TaskExecutorTest {
         when(job.getNextTask()).thenReturn("taskName");
         when(job.getNextTaskStartTime()).thenReturn(nextTaskStartTime);
 
-        TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
+        final TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
         taskExecutor.run();
 
         verify(sampleTask).execute(eq(job));
@@ -88,7 +90,7 @@ public class TaskExecutorTest {
         when(job.getJobStatus()).thenReturn(of(SUCCESSFUL));
         when(job.getJobId()).thenReturn(jobId);
 
-        TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
+        final TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
         taskExecutor.run();
 
         verify(sampleTask).execute(eq(job));
@@ -112,7 +114,7 @@ public class TaskExecutorTest {
         when(job.getJobStatus()).thenReturn(of(PERMANENT_FAILURE));
         when(job.getJobId()).thenReturn(jobId);
 
-        TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
+        final TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
         taskExecutor.run();
 
         verify(sampleTask).execute(eq(job));
@@ -124,6 +126,33 @@ public class TaskExecutorTest {
     }
 
 
+    @Test
+    public void shouldDeleteJobAndCreateNextJobViaJobServiceWhenJobStatusIsNextStep() {
+
+        final UUID jobId = randomUUID();
+        final JsonObject jobData = mock(JsonObject.class);
+        final ZonedDateTime nextTaskStartTime = now();
+
+        when(job.getNextTask()).thenReturn("taskName");
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
+        when(sampleTask.execute(job)).thenReturn(job);
+        when(job.getJobStatus()).thenReturn(of(NEXT_STEP));
+        when(job.getJobId()).thenReturn(jobId);
+
+        final TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
+        taskExecutor.run();
+
+        verify(sampleTask).execute(eq(job));
+        verify(jobService, never()).updateJobTaskData(any(), any());
+        verify(jobService, never()).updateNextTaskDetails(any(), any(), any());
+        verify(jobService, never()).releaseJob(any());
+        verify(jobService).createJob(any());
+        verify(jobService).deleteJob(jobId);
+
+    }
+
+
+
 
     @Test
     public void shouldInvokeExecuteOnExecuteTaskWhenProvidedFromRegistry() {
@@ -132,7 +161,7 @@ public class TaskExecutorTest {
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
         when(sampleTask.execute(job)).thenReturn(job);
         when(job.getJobStatus()).thenReturn(empty());
-        TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
+        final TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
         taskExecutor.run();
 
         verify(sampleTask).execute(eq(job));
@@ -144,7 +173,7 @@ public class TaskExecutorTest {
         when(job.getJobId()).thenReturn(jobId);
         when(job.getNextTask()).thenReturn("taskName");
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
-        TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
+        final TaskExecutor taskExecutor = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
         taskExecutor.run();
 
         verify(sampleTask, never()).execute(eq(job));

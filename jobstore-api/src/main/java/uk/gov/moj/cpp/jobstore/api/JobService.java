@@ -22,10 +22,10 @@ public class JobService {
 
     @Inject
     @Value(key = "worker.job.count", defaultValue = "10")
-    protected String jobCount;
+    String jobCount;
 
     @Inject
-    private JobRepository jobRepository;
+    JobRepository jobRepository;
 
     public void lockJobsFor(final UUID jobId, final int count) {
         jobRepository.lockJobsFor(jobId, count);

@@ -13,12 +13,12 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class TaskRegistry {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TaskRegistry.class);
+    @Inject
+    private  Logger logger;
 
     private final Map<String, ExecutableTask> taskProxyByNameMap = new HashMap<>();
 
@@ -32,19 +32,19 @@ public class TaskRegistry {
         final Class taskClass = event.getClazz();
         final String taskName = ((Task) taskClass.getAnnotation(Task.class)).value();
 
-        LOGGER.info("Notified of Work Task [type={}], [name={}]", taskClass, taskName);
+        logger.info("Notified of Work Task [type={}], [name={}]", taskClass, taskName);
 
-        for (ExecutableTask taskProxy : taskBeanProxy) {
+        for (final ExecutableTask taskProxy : taskBeanProxy) {
             final String proxyClassName = taskProxy.getClass().getName();
             if (proxyClassName.startsWith(taskClass.getName())) {
                 taskProxyByNameMap.putIfAbsent(taskName, taskProxy);
-                LOGGER.info("Registering Work Task proxy [type={}], [name={}]", taskProxy, taskName);
+                logger.info("Registering Work Task proxy [type={}], [name={}]", taskProxy, taskName);
                 break;
             }
         }
 
         if (taskProxyByNameMap.get(taskName) == null) {
-            LOGGER.error("No Injected proxy class provided for task [{}]", taskClass);
+            logger.error("No Injected proxy class provided for task [{}]", taskClass);
         }
 
     }

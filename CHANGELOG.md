@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.18.0] - 2018-07-10
+
+### Added
+- ARTEMIS\_URI system property support added for configuring Artemis test connections. ARTEMIS\_HOST\_KEY is ignored if URI is present
+
 ## [1.17.3] - 2018-06-20
 
 ### Changed

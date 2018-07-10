@@ -18,6 +18,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class QueueUriProviderTest {
 
+    private static final String ARTEMIS_URI = "ARTEMIS_URI";
+
     @InjectMocks
     private QueueUriProvider queueUriProvider;
 
@@ -26,10 +28,11 @@ public class QueueUriProviderTest {
     public void clearSystemProperty() {
         System.clearProperty(INTEGRATION_HOST_KEY);
         System.clearProperty(ARTEMIS_HOST_KEY);
+        System.clearProperty(ARTEMIS_URI);
     }
 
     @Test
-    public void shouldGetLocalhostUriByDefault() throws Exception {
+    public void shouldGetLocalhostUriByDefault() {
 
         final String localhostUri = "tcp://localhost:61616";
 
@@ -38,7 +41,7 @@ public class QueueUriProviderTest {
     }
 
     @Test
-    public void shouldGetTheRemoteUriIfTheSystemPropertyIsSet() throws Exception {
+    public void shouldGetTheRemoteUriIfTheSystemPropertyIsSet() {
 
         System.setProperty(INTEGRATION_HOST_KEY, "my.host.com");
 
@@ -49,7 +52,7 @@ public class QueueUriProviderTest {
     }
 
     @Test
-    public void shouldGetLocalhostUriByDefaultForArtemis() throws Exception {
+    public void shouldGetLocalhostUriByDefaultForArtemis() {
 
         final String localhostUri = "tcp://localhost:61616";
 
@@ -57,9 +60,18 @@ public class QueueUriProviderTest {
         assertThat(artemisQueueUri(), is(localhostUri));
     }
 
+    @Test
+    public void shouldGetArtemisUriFromSystemProperty() {
+
+        final String userDefinedUri = "tcp://myServer:61616?debug=true";
+        System.setProperty(ARTEMIS_URI, userDefinedUri);
+
+        assertThat(queueUriProvider.getArtemisQueueUri(), is(userDefinedUri));
+        assertThat(artemisQueueUri(), is(userDefinedUri));
+    }
 
     @Test
-    public void shouldGetTheRemoteUriForArtemisIfTheSystemPropertyIsSet() throws Exception {
+    public void shouldGetTheRemoteUriForArtemisIfTheSystemPropertyIsSet() {
 
         System.setProperty(ARTEMIS_HOST_KEY, "my.host.com");
 

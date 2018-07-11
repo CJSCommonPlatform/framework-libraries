@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.3.2] - 2018-07-11
+### Changed
+- Upgrade generator maven plugin to version 2.6.0
+
 ## [1.3.1] - 2018-07-04
 ### Added
 - updateCatalogSchemaCache method to SchemaCatalogResolver for easier updating of the RawCatalog 

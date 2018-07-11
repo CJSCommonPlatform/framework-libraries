@@ -6,6 +6,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## Unreleased
 
 ## [2.6.0] - 2018-07-11
+
+### Added
 - Handle source and classpath directory in generator-maven-plugin
 
 ## [2.5.1] - 2018-06-21

@@ -30,6 +30,8 @@
     <properties>
         <common-bom.version>1.27.0</common-bom.version>
         <cpp.repo.name>generator-maven-plugin</cpp.repo.name>
+        <useSourcePathAndClassPath>false</useSourcePathAndClassPath>
+        <useClassPath>false</useClassPath>
     </properties>
 
     <scm>

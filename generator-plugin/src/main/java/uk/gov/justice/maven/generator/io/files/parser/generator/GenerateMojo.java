@@ -1,5 +1,6 @@
 package uk.gov.justice.maven.generator.io.files.parser.generator;
 
+import static java.lang.String.format;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
 import uk.gov.justice.maven.generator.io.files.parser.common.BasicMojo;
@@ -52,6 +53,12 @@ public class GenerateMojo extends BasicMojo {
     @Parameter(property = "skipGeneration", defaultValue = "false")
     private boolean skip = false;
 
+    public enum GenerationPath {CLASSPATH, SOURCE_AND_CLASS_PATH}
+
+    @Parameter(property = "generationPath", required = false)
+    private GenerationPath generationPath;
+
+
     @Override
     public void execute() throws MojoExecutionException {
         if (!skip) {
@@ -66,11 +73,14 @@ public class GenerateMojo extends BasicMojo {
 
             try {
                 FileUtils.forceMkdir(outputDirectory);
-                new ProjectDependencyLoader(project).loadProjectDependencies();
+                final ProjectDependencyLoader projectDependencyLoader = new ProjectDependencyLoader(project);
+                projectDependencyLoader.loadProjectDependencies();
                 new GenerateGoalProcessor(
+
                         new MojoGeneratorFactory(),
                         new FileTreeScannerFactory(),
-                        new FileParserInstanceFactory().newInstanceOf(parserName))
+                        new FileParserInstanceFactory().newInstanceOf(parserName)
+                        )
                         .generate(configuration(sourcePaths));
             } catch (Exception e) {
                 throw new MojoExecutionException("Failed to apply generator to source file", e);
@@ -90,7 +100,7 @@ public class GenerateMojo extends BasicMojo {
                 includes,
                 excludes,
                 generatorProperties,
-                sourcePaths);
-
+                sourcePaths,
+                generationPath);
     }
 }

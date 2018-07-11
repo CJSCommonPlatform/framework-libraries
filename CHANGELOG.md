@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.4.2] - 2018-07-11
+### Changed
+- Upgraded framework api to version 2.2.0
+- Upgraded generator maven plugin to version 2.6.0
+- Upgraded json schema catalog to version 1.3.2
+
 ## [1.4.1] - 2018-07-04
 ### Changed
 - Moved catalogue resolving and cache update functionality to json-schema-catalog repo

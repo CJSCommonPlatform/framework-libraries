@@ -1,8 +1,11 @@
 package uk.gov.justice.maven.generator.io.files.parser.generator;
 
+
 import static java.nio.file.Files.exists;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
@@ -19,6 +22,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -43,7 +47,6 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         mojo.execute();
         List<Pair<Raml, GeneratorConfig>> capturedGeneratorArgs = DummyGeneratorCaptor.getInstance().capturedArgs();
         assertThat(capturedGeneratorArgs, hasSize(1));
-
 
         Raml raml = capturedGeneratorArgs.get(0).getLeft();
         assertThat(raml.getTitle(), equalTo("example.raml"));
@@ -123,6 +126,7 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
     //WARNING: This test will fail in Intellij, as everything is on the one classpath in Intellij
     @SuppressWarnings("unchecked")
     public void testShouldIncludeRamlFilesFromTheClasspath() throws Exception {
+
         File pom = getTestFile("src/test/resources/includes-excludes-external/pom.xml");
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
@@ -145,5 +149,54 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
         List<Pair<Raml, GeneratorConfig>> capturedGeneratorArgs = DummyGeneratorCaptor.getInstance().capturedArgs();
         assertThat(capturedGeneratorArgs, hasSize(0));
+    }
+
+
+    public void testShouldIncludeRamlFilesWhenSourcePathOrClassPathSpecified() throws Exception {
+        final File pom = getTestFile("src/test/resources/generate-using-source-and-classpath/pom.xml");
+
+        final GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
+
+        mojo.execute();
+        final List<Pair<Raml, GeneratorConfig>> capturedGeneratorArgs = DummyGeneratorCaptor.getInstance().capturedArgs();
+
+        assertThat(capturedGeneratorArgs.size(), greaterThan(5));
+
+        final Path expectedSourceDirectory = Paths.get(project.getBasedir().toString(), "src", "raml");
+        final Path expectedOutputDirectory = Paths.get(project.getBasedir().toString(), "target", "generated-sources");
+
+        final GeneratorConfig config = capturedGeneratorArgs.get(0).getRight();
+        assertThat(config.getSourceDirectory(), equalTo(expectedSourceDirectory));
+        assertThat(config.getOutputDirectory(), equalTo(expectedOutputDirectory));
+        assertThat(config.getBasePackageName(), equalTo("uk.gov.justice.api"));
+
+        final TestGeneratorProperties customGeneratorProperties = (TestGeneratorProperties) config.getGeneratorProperties();
+        assertThat(customGeneratorProperties.getProperty1(), equalTo("propertyValueABC"));
+        assertThat(customGeneratorProperties.getProperty2(), equalTo("propertyValueDDD"));
+
+        final List<Raml> capturedRamls = DummyGeneratorCaptor.getInstance().capturedRamls();
+        final List<String> capturedRamlTitles = capturedRamls.stream().map(capturedRamlTitle-> capturedRamlTitle.getTitle())
+                .collect(Collectors.toList());
+
+        assertThat(capturedRamlTitles, hasItem("external7.raml"));
+        assertThat(capturedRamlTitles, hasItem("external8.raml"));
+    }
+
+    public void testShouldIncludeRamlFilesWhenClassPathSpecifiedAndSubDirectorySetInPom() throws Exception {
+        final File pom = getTestFile("src/test/resources/generate-using-classpath/pom.xml");
+
+        final GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
+
+        mojo.execute();
+        final List<Pair<Raml, GeneratorConfig>> capturedGeneratorArgs = DummyGeneratorCaptor.getInstance().capturedArgs();
+        assertThat(capturedGeneratorArgs.size(), greaterThan(5));
+
+        final List<Raml> capturedRamls = DummyGeneratorCaptor.getInstance().capturedRamls();
+        final List<String> capturedRamlTitles = capturedRamls.stream().map(capturedRamlTitle-> capturedRamlTitle.getTitle())
+                .collect(Collectors.toList());
+
+        assertThat(capturedRamlTitles, hasItem("example.raml"));
+        assertThat(capturedRamlTitles, hasItem("external7.raml"));
+        assertThat(capturedRamlTitles, hasItem("external8.raml"));
     }
 }

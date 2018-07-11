@@ -9,9 +9,11 @@
 
     <properties>
         <cpp.service-component>UNKNOWN_SERVICE_COMPONENT</cpp.service-component>
+        <generationPath>SOURCE_AND_CLASS_PATH</generationPath>
     </properties>
 
     <build>
+
         <plugins>
             <plugin>
                <artifactId>generator-plugin</artifactId>
@@ -21,6 +23,12 @@
                     </generatorName>
                     <parserName>uk.gov.justice.maven.generator.io.files.parser.RamlFileParser</parserName>
                     <basePackageName>uk.gov.justice.api</basePackageName>
+                    <includes>
+                        <include>**/ex*.raml</include>
+                    </includes>
+                    <excludes>
+                        <exclude>invalid-raml/**/ex*.raml</exclude>
+                    </excludes>
                     <sourceDirectory>${basedir}/src/raml</sourceDirectory>
                     <generatorProperties implementation="uk.gov.justice.maven.generator.io.files.parser.generator.property.TestGeneratorProperties">
                         <property1>propertyValueABC</property1>
@@ -32,9 +40,13 @@
                             <property>test3</property>
                         </nestedProperty>
                     </generatorProperties>
+
                 </configuration>
+
             </plugin>
         </plugins>
     </build>
+
+
 
 </project>

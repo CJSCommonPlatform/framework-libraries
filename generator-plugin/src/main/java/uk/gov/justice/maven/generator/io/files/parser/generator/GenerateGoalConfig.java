@@ -21,6 +21,8 @@ public class GenerateGoalConfig extends BasicGoalConfig {
 
     private final List<Path> sourcePaths;
 
+    private final GenerateMojo.GenerationPath generationPath;
+
     public GenerateGoalConfig(final String generatorName,
                               final Path sourceDirectory,
                               final Path outputDirectory,
@@ -28,13 +30,15 @@ public class GenerateGoalConfig extends BasicGoalConfig {
                               final List<String> includes,
                               final List<String> excludes,
                               final GeneratorProperties properties,
-                              final List<Path> sourcePaths) {
+                              final List<Path> sourcePaths,
+                              final GenerateMojo.GenerationPath generationPath) {
         super(sourceDirectory, includes, excludes);
         this.generatorName = generatorName;
         this.outputDirectory = outputDirectory;
         this.basePackageName = basePackageName;
         this.properties = properties;
         this.sourcePaths = sourcePaths;
+        this.generationPath = generationPath;
     }
 
     public String getGeneratorName() {
@@ -55,5 +59,14 @@ public class GenerateGoalConfig extends BasicGoalConfig {
 
     public List<Path> getSourcePaths() {
         return sourcePaths;
+    }
+
+    public GenerateMojo.GenerationPath getGenerationPath() { return generationPath; }
+
+    @Override
+    public String toString() {
+        return "GenerateGoalConfig{" +
+                "generationPath=" + generationPath  +
+                '}';
     }
 }

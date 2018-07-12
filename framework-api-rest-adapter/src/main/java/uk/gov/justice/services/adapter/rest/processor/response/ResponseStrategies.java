@@ -13,6 +13,12 @@ final public class ResponseStrategies {
     public static final String ACCEPTED_STATUS_NO_ENTITY_RESPONSE_STRATEGY = "AcceptedStatusNoEntityResponseStrategy";
 
     /**
+     * Strategy to return a {@link Response} with Accepted status, with resulting JsonEnvelope
+     * payload as the returned entity.
+     */
+    public static final String ACCEPTED_STATUS_ENVELOPE_ENTITY_RESPONSE_STRATEGY = "AcceptedStatusEnvelopeEntityResponseStrategy";
+
+    /**
      * Strategy to return a {@link Response} with OK status, with resulting JsonEnvelope as the
      * returned entity.
      */

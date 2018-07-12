@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [3.0.0-M14] - 2018-07-12
+### Added
+- Accepted Status With Envelope Entity Response Strategy name
 
 ## [3.0.0-M13] - 2018-06-22
 ### Changed
@@ -65,10 +68,30 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 -   added long size();
 -   added long getPosition();
 
+## [2.2.0] - 2018-07-10
 
-## [2.1.0] - 2018-03-13
 ### Added
-- Retrieving Stream of EventStream
+- Accepted Status With Envelope Entity Response Strategy name
+
+## [2.1.2] - 2018-06-20
+
+### Changed
+- Update common bom to 1.27.0 to fix apache tika security issues
+
+## [2.1.1] - 2018-06-20
+
+### Added
+- Add pageSize to the EventStream readFrom(...) method
+
+## [2.0.3] - 2018-05-16
+
+### Changed
+- Downgraded Jackson version to 2.8.11 to fix bug with single argument constructors
+
+## [2.0.2] - 2018-05-15
+
+### Changed
+- Updated common-bom version to 1.25.0 for Jackson version 2.9.5
 
 ## [2.0.1] - 2018-03-09
 

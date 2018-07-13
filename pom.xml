@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-framework-parent-pom</artifactId>
+        <version>1.12.2</version>
+    </parent>
+
+    <groupId>uk.gov.justice.services</groupId>
+    <artifactId>job-manager</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+	<name>Job Manager</name>
+    <description>Stateful job execution engine</description>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+	
+    <modules>
+        <module>job-executor</module>
+        <module>jobstore-persistence</module>
+        <module>jobstore-liquibase</module>
+        <module>jobstore-api</module>
+        <module>example</module>
+    </modules>
+	
+	<properties>
+        <cpp.repo.name>job-manager</cpp.repo.name>
+        <common-bom.version>1.27.0</common-bom.version>
+		<test-utils.version>1.16.0</test-utils.version>
+		<cpp.framework.version>4.0.3</cpp.framework.version>
+		<cpp.utilities.version>1.13.1</cpp.utilities.version>
+        <cpp.test-utils.version>4.1.2</cpp.test-utils.version>
+		<cpp.persistance.version>4.1.2</cpp.persistance.version>
+	</properties>
+	
+	<build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>${argLine} -Xmx64m</argLine>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+	<dependencyManagement>
+	    <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+			<dependency>
+                <groupId>uk.gov.justice.utils</groupId>
+                <artifactId>test-utils-parent</artifactId>
+                <version>${cpp.test-utils.version}</version>
+                <scope>import</scope>
+            </dependency>
+			<dependency>
+                <groupId>uk.gov.justice.utils</groupId>
+                <artifactId>test-utils-logging-simple</artifactId>
+                <version>${cpp.test-utils.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

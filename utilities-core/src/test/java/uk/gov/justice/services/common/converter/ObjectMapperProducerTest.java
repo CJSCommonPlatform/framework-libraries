@@ -10,6 +10,8 @@ import static org.junit.Assert.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Colour.BLUE;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.util.Collections;
@@ -75,6 +77,14 @@ public class ObjectMapperProducerTest {
         final String json = mapper.writeValueAsString(source);
 
         assertEquals(JSON_OBJECT_STRING, json, true);
+    }
+
+    @Test
+    public void shouldTolerateAdditionalPropertiesFromJsonObjects() throws Exception {
+
+        final String json = "{\"name\":\"Fred\",\"age\":42,\"favouriteColour\":\"Blue\", \"something\": \"else\"}";
+
+        mapper.readValue(json, Person.class);
     }
 
     @Test
@@ -299,7 +309,6 @@ public class ObjectMapperProducerTest {
         private String name;
         private int age;
         private Map<String, Object> additionalProperties;
-
 
         public PersonWithAdditionalProperties(final String name, final int age, final Map<String, Object> additionalProperties) {
             this.name = name;

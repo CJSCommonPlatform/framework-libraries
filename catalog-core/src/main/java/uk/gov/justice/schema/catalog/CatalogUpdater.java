@@ -49,7 +49,7 @@ public class CatalogUpdater {
                 LOGGER.warn(format("Failed to generate catalog. Schema '%s' has no id", path.toUri().toURL()));
 
             } catch (IOException e) {
-                LOGGER.error(e.getMessage());
+                LOGGER.warn("Unable to read schema file", e);
             }
         });
     }

@@ -58,7 +58,7 @@ public class ClasspathCatalogLoader {
     private List<URL> listAllCatalogsFromClasspath() {
         final String catalogFullPath = catalogContext.getCatalogFullPath();
         try {
-            return classpathResourceLoader.getResources(getClass(), catalogFullPath);
+            return classpathResourceLoader.getResources(catalogFullPath);
         } catch (final IOException e) {
             throw new SchemaCatalogException(format("Failed to load the catalogs from the classpath for location '%s'", catalogFullPath), e);
         }

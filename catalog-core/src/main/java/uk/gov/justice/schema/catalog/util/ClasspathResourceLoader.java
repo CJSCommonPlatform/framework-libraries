@@ -1,5 +1,6 @@
 package uk.gov.justice.schema.catalog.util;
 
+import static java.lang.Thread.currentThread;
 import static java.util.Collections.list;
 
 import java.io.IOException;
@@ -13,12 +14,11 @@ public class ClasspathResourceLoader {
 
 
     /**
-     * @param clazz A class from which to get its classloader
      * @param resourceName The name of the resource on the classpath
      * @return a {@link URL} to the resource
      * @throws IOException If the get fails
      */
-    public List<URL> getResources(final Class<?> clazz, final String resourceName) throws IOException {
-        return list(clazz.getClassLoader().getResources(resourceName));
+    public List<URL> getResources( final String resourceName) throws IOException {
+        return list(currentThread().getContextClassLoader().getResources(resourceName));
     }
 }

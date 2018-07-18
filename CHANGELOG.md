@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- Load catalog resources from Thread context class loader
 
 ## [1.3.2] - 2018-07-11
 ### Changed

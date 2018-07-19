@@ -49,7 +49,7 @@ public class ClasspathCatalogLoaderTest {
         final URL url = new URL("file://src/code/my-file.txt");
         final URI uri = url.toURI();
 
-        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "META-INF/schema_catalog.json")).thenReturn(singletonList(url));
+        when(classpathResourceLoader.getResources( "META-INF/schema_catalog.json")).thenReturn(singletonList(url));
         when(urlConverter.toUri(url)).thenReturn(uri);
         when(objectMapper.readValue(url, Catalog.class)).thenThrow(ioException);
 
@@ -67,7 +67,7 @@ public class ClasspathCatalogLoaderTest {
 
         final IOException ioException = new IOException("Ooops");
 
-        when(classpathResourceLoader.getResources(ClasspathCatalogLoader.class, "META-INF/schema_catalog.json")).thenThrow(ioException);
+        when(classpathResourceLoader.getResources("META-INF/schema_catalog.json")).thenThrow(ioException);
 
         try {
             classpathCatalogLoader.getCatalogs();

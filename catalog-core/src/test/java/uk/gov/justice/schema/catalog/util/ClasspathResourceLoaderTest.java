@@ -17,7 +17,7 @@ public class ClasspathResourceLoaderTest {
     public void shouldLoadResourcesFromTheClasspath() throws Exception {
 
         final String filename = "json/random-classpath-resource.txt";
-        final List<URL> resources = classpathResourceLoader.getResources(getClass(), filename);
+        final List<URL> resources = classpathResourceLoader.getResources(filename);
 
         assertThat(resources.size(), is(1));
         assertThat(resources.get(0).toString(), endsWith(filename));

@@ -86,8 +86,12 @@ public class GenerateGoalProcessor {
     private void parseSourceDirectory(final GenerateGoalConfig config, final GeneratorConfig generatorConfig,
                                       final Collection<Path> paths, boolean isPathFromClasspath) {
         parser
-                .parse((isPathFromClasspath?Paths.get(format("%s/%s",config.getSourceDirectory().toString(),CLASSPATH)):config.getSourceDirectory()), paths)
+                .parse((isPathFromClasspath? getRequiredPath(config) :config.getSourceDirectory()), paths)
                 .forEach(file -> mojoGeneratorFactory.instanceOf(config.getGeneratorName()).run(file, generatorConfig));
+    }
+
+    private Path getRequiredPath(final GenerateGoalConfig config) {
+        return config.getSourceDirectory().toString().contains(CLASSPATH)? config.getSourceDirectory():Paths.get(format("%s/%s",config.getSourceDirectory().toString(),CLASSPATH));
     }
 
     private boolean isPathFromClasspath(final Path baseDir, final GenerateMojo.GenerationPath generationPath){

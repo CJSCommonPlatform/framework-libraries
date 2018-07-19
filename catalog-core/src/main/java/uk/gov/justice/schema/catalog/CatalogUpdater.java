@@ -25,6 +25,7 @@ public class CatalogUpdater {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CatalogUpdater.class);
 
+    private static final String CLASSPATH = "CLASSPATH";
     /**
      * Updates the cache with raw json schemas that are not on the classpath
      *
@@ -37,15 +38,18 @@ public class CatalogUpdater {
             final Path updatedPath = Paths.get(format("%s/%s", basePath.toString(), path.toString()));
 
             try {
-                final String schema = IOUtils.toString(updatedPath.toUri().toURL(), UTF_8);
-                try (final JsonReader reader = createReader(new StringReader(schema))) {
-                    final JsonObject jsonObject = reader.readObject();
+                if(!updatedPath.toString().contains(CLASSPATH)){
+                    final String schema = IOUtils.toString(updatedPath.toUri().toURL(), UTF_8);
+                    try (final JsonReader reader = createReader(new StringReader(schema))) {
+                        final JsonObject jsonObject = reader.readObject();
 
-                    if (jsonObject.containsKey("id")) {
-                        final String id = jsonObject.getString("id");
-                        schemaIdsToRawJsonSchemaCache.put(id, schema);
+                        if (jsonObject.containsKey("id")) {
+                            final String id = jsonObject.getString("id");
+                            schemaIdsToRawJsonSchemaCache.put(id, schema);
+                        }
                     }
                 }
+
                 LOGGER.warn(format("Failed to generate catalog. Schema '%s' has no id", path.toUri().toURL()));
 
             } catch (IOException e) {

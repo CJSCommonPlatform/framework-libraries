@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.14.0] - 2018-07-20
+
+### Changed
+- Configured object mapper to ignore unexpected properties, to support additionalProperties = true
+
 ## [1.13.2] - 2018-06-21
 
 ### Changed

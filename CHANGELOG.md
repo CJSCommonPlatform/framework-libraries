@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Add Integer based enum capability for serialisation and deserialization of Json 
+
 ## [1.14.0] - 2018-07-20
 
 ### Changed

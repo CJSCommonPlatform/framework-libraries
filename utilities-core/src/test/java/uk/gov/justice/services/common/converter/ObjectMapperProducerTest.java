@@ -8,10 +8,10 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
+import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Age.THIRTY;
 import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Colour.BLUE;
+import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Colour.RED;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.util.Collections;
@@ -126,6 +126,39 @@ public class ObjectMapperProducerTest {
         final String json = "{\"name\":\"Fred\",\"age\":42,\"favouriteColour\":\"Blue\"}";
 
         final Person person = mapper.readValue(json, Person.class);
+
+        assertThat(person.getName(), is(name));
+        assertThat(person.getAge(), is(age));
+        assertThat(person.getFavouriteColour(), is(favouriteColour));
+    }
+
+    @Test
+    public void shouldParseAnIntegerEnumIntoJson() throws Exception {
+
+        final String name = "Fred";
+        final Age age = Age.FOURTY;
+        final Colour favouriteColour = BLUE;
+
+        final PersonWithAgeAsEnum fred = new PersonWithAgeAsEnum(name, age, favouriteColour);
+
+        final String json = mapper.writeValueAsString(fred);
+
+        with(json)
+                .assertThat("$.name", is(name))
+                .assertThat("age", is(40))
+                .assertThat("$.favouriteColour", is("Blue"));
+    }
+
+    @Test
+    public void shouldParseJsonIntoAnIntegerEnum() throws Exception {
+
+        final String name = "Fred";
+        final Age age = THIRTY;
+        final Colour favouriteColour = RED;
+
+        final String json = "{\"name\":\"Fred\",\"age\":30,\"favouriteColour\":\"Red\"}";
+
+        final PersonWithAgeAsEnum person = mapper.readValue(json, PersonWithAgeAsEnum.class);
 
         assertThat(person.getName(), is(name));
         assertThat(person.getAge(), is(age));
@@ -258,26 +291,6 @@ public class ObjectMapperProducerTest {
         }
     }
 
-    public enum Colour {
-        RED("Red"),
-        GREEN("Green"),
-        BLUE("Blue");
-
-        private final String name;
-
-        Colour(final String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
 
     public static class Person {
 
@@ -329,4 +342,64 @@ public class ObjectMapperProducerTest {
             return additionalProperties;
         }
     }
+
+    public static class PersonWithAgeAsEnum {
+
+        private final String name;
+        private final Age age;
+        private final Colour favouriteColour;
+
+        public PersonWithAgeAsEnum(final String name, final Age age, final Colour favouriteColour) {
+            this.name = name;
+            this.age = age;
+            this.favouriteColour = favouriteColour;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Age getAge() {
+            return age;
+        }
+
+        public Colour getFavouriteColour() {
+            return favouriteColour;
+        }
+    }
+
+    public enum Age {
+        ONE(1),
+        TWO(2),
+        THIRTY(30),
+        FOURTY(40);
+
+        private final Integer age;
+
+        private Age(Integer age) {
+            this.age = age;
+        }
+    }
+
+    public enum Colour {
+        RED("Red"),
+        GREEN("Green"),
+        BLUE("Blue");
+
+        private final String name;
+
+        Colour(final String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
 }

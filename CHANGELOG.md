@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### Changed
+- Update Jackson dataformat YAML to Jackson version 2.8.11
+
 ## [1.27.0] - 2018-06-20
 
 ### Changed

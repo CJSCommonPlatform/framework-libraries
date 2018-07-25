@@ -102,7 +102,6 @@
         <javax.mail.version>1.5.0</javax.mail.version>
         <jglue-cdi-unit.version>4.0.1</jglue-cdi-unit.version>
         <jboss.weld.se.version>2.4.5.Final</jboss.weld.se.version>
-        <jackson-dataformat-yaml.version>2.8.7</jackson-dataformat-yaml.version>
     </properties>
 
     <scm>
@@ -255,7 +254,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>${jackson-dataformat-yaml.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
 
             <dependency>

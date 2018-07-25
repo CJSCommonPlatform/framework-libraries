@@ -58,6 +58,24 @@ public class EnumGeneratorTest {
     }
 
     @Test
+    public void shouldGenerateTypeSpecForIntegerEnumValue() {
+        final ClassName className = get(Pojo.class);
+
+        when(enumDefinition.getEnumValues()).thenReturn(singletonList(1));
+        when(classNameFactory.createTypeNameFrom(enumDefinition, pluginContext)).thenReturn(className);
+        when(classNameFactory.createClassNameFrom(enumDefinition)).thenReturn(className);
+
+        final TypeSpec typeSpec = enumGenerator.generate();
+
+        assertThat(typeSpec.name, is("Pojo"));
+        assertThat(typeSpec.enumConstants.keySet(), hasItem("NUMBER_1"));
+        assertThat(typeSpec.modifiers.size(), is(1));
+        assertThat(typeSpec.modifiers, hasItem(PUBLIC));
+        assertThat(typeSpec.fieldSpecs.size(), is(1));
+        assertThat(typeSpec.methodSpecs.size(), is(3));
+    }
+
+    @Test
     public void shouldGenerateTypeSpecForMultiWordEnumValue() {
         final ClassName className = get(Pojo.class);
 

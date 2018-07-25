@@ -15,7 +15,7 @@ public class EnumDefinitionTest {
     @Test
     public void shouldConstructEnumDefinition() throws Exception {
         final String fieldName = "fieldName";
-        final List<String> enumValues = emptyList();
+        final List<Object> enumValues = emptyList();
         final String id = "id";
 
         final EnumDefinition enumDefinition = new EnumDefinition(fieldName, enumValues, id);

@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/events/pojo/enums/person-with-integer-enum.json",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "favouriteNumber": {
+      "type": "integer",
+      "enum": [
+        21,
+        42
+      ]
+    }
+  },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "age",
+        "favouriteNumber"
+      ]
+    }

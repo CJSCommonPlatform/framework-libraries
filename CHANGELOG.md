@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.28.0] - 2018-07-25
+
 ### Changed
 - Update Jackson dataformat YAML to Jackson version 2.8.11
 

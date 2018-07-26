@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2018-07-26
 ### Changed
 - Added integer enum support.
 - Upgraded common bom to version 1.28.0

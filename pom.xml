@@ -29,8 +29,8 @@
     </scm>
 
     <properties>
-        <common-bom.version>1.27.0</common-bom.version>
-        <cpp.utilities.version>1.13.2</cpp.utilities.version>
+        <common-bom.version>1.28.0</common-bom.version>
+        <cpp.utilities.version>1.15.0</cpp.utilities.version>
         <cpp.test.utilities.version>1.17.3</cpp.test.utilities.version>
 
         <cpp.repo.name>file-service</cpp.repo.name>

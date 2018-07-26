@@ -14,6 +14,7 @@ import static java.util.TimeZone.getTimeZone;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.ISO_8601;
 
 import uk.gov.justice.services.common.converter.jackson.additionalproperties.AdditionalPropertiesModule;
+import uk.gov.justice.services.common.converter.jackson.integerenum.IntegerEnumModule;
 import uk.gov.justice.services.common.converter.jackson.jsr353.InclusionAwareJSR353Module;
 
 import java.time.ZonedDateTime;
@@ -50,6 +51,7 @@ public class ObjectMapperProducer {
                 .registerModule(new ParameterNamesModule(PROPERTIES))
                 .registerModule(new InclusionAwareJSR353Module())
                 .registerModule(new AdditionalPropertiesModule())
+                .registerModule(new IntegerEnumModule())
                 .configure(WRITE_DATES_AS_TIMESTAMPS, false)
                 .configure(WRITE_DATES_WITH_ZONE_ID, false)
                 .configure(WRITE_NULL_MAP_VALUES, false)

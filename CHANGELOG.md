@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Added integer enum support.
+- Upgraded common bom to version 1.28.0
+- Upgraded utilities to version 1.15.0
+- Upgraded generator maven plugin to version 2.6.1
+- Upgraded json schema catalog to version 1.4.0
+
 ## [1.4.2] - 2018-07-11
 ### Changed
 - Upgraded framework api to version 2.2.0

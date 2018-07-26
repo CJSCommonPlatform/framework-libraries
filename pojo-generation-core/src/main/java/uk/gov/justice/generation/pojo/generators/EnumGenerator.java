@@ -15,6 +15,7 @@ import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import java.util.Optional;
 
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -30,10 +31,13 @@ public class EnumGenerator implements ClassGeneratable {
     private static final String BLANK_ENUM_NAME = "BLANK";
     private static final String SPACE = " ";
     private static final String UNDERSCORE = "_";
+    private static final String NUMBER = "NUMBER";
 
     private final EnumDefinition enumDefinition;
     private final ClassNameFactory classNameFactory;
     private final PluginContext pluginContext;
+
+    private boolean isNumericEnum;
 
     public EnumGenerator(final EnumDefinition definition,
                          final ClassNameFactory classNameFactory,
@@ -49,16 +53,19 @@ public class EnumGenerator implements ClassGeneratable {
         final Builder enumBuilder = enumBuilder(getClassName()).addModifiers(PUBLIC);
 
         enumDefinition.getEnumValues().forEach(enumValue -> {
+
+            isNumericEnum = enumValue instanceof Integer;
+
             final String enumName = constructEnumNameFrom(enumValue);
 
-            enumBuilder.addEnumConstant(enumName, anonymousClassBuilder("$S", enumValue)
+            enumBuilder.addEnumConstant(enumName, anonymousClassBuilder(isNumericEnum ? "$L" : "$S", enumValue)
                     .build());
         });
 
         return enumBuilder
-                .addField(String.class, VALUE_VARIABLE_NAME, PRIVATE, FINAL)
+                .addField(getClassType(), VALUE_VARIABLE_NAME, PRIVATE, FINAL)
                 .addMethod(constructorBuilder()
-                        .addParameter(String.class, VALUE_VARIABLE_NAME)
+                        .addParameter(getClassType(), VALUE_VARIABLE_NAME)
                         .addStatement("this.$L = $L", VALUE_VARIABLE_NAME, VALUE_VARIABLE_NAME)
                         .build())
                 .addMethod(buildToStringMethod())
@@ -71,7 +78,7 @@ public class EnumGenerator implements ClassGeneratable {
                 .addAnnotation(Override.class)
                 .addModifiers(PUBLIC)
                 .returns(String.class)
-                .addStatement("return $L", VALUE_VARIABLE_NAME)
+                .addCode(addToStringReturnStatement())
                 .build();
     }
 
@@ -82,7 +89,7 @@ public class EnumGenerator implements ClassGeneratable {
 
         final MethodSpec.Builder methodBuilder = methodBuilder("valueFor")
                 .addModifiers(PUBLIC, STATIC)
-                .addParameter(String.class, VALUE_VARIABLE_NAME, FINAL)
+                .addParameter(getClassType(), VALUE_VARIABLE_NAME, FINAL)
                 .returns(optionalEnumTypeName);
 
         enumDefinition.getEnumValues().forEach(enumValue -> {
@@ -99,6 +106,17 @@ public class EnumGenerator implements ClassGeneratable {
         return methodBuilder.build();
     }
 
+    private CodeBlock addToStringReturnStatement() {
+        return CodeBlock
+                .builder()
+                .addStatement("return $L", isNumericEnum ? generateStringFromNumber() : VALUE_VARIABLE_NAME)
+                .build();
+    }
+
+    private String generateStringFromNumber() {
+        return "String.valueOf(".concat(VALUE_VARIABLE_NAME).concat(")");
+    }
+
     @Override
     public String getSimpleClassName() {
         return getClassName().simpleName();
@@ -109,11 +127,19 @@ public class EnumGenerator implements ClassGeneratable {
         return getClassName().packageName();
     }
 
-    private String constructEnumNameFrom(final String enumValue) {
-        return enumValue.isEmpty() ? BLANK_ENUM_NAME : enumValue.toUpperCase().replace(SPACE, UNDERSCORE);
+
+    private String constructEnumNameFrom(final Object enumValue) {
+        if (isNumericEnum) {
+            return NUMBER.concat(UNDERSCORE).concat(enumValue.toString());
+        }
+        return enumValue.toString().isEmpty() ? BLANK_ENUM_NAME : enumValue.toString().toUpperCase().replace(SPACE, UNDERSCORE);
     }
 
     private ClassName getClassName() {
         return classNameFactory.createClassNameFrom(enumDefinition);
+    }
+
+    private Class<?> getClassType() {
+        return isNumericEnum ? Integer.class : String.class;
     }
 }

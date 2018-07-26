@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.pojo.visitor;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.ARRAY;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.BOOLEAN;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
@@ -19,7 +19,6 @@ import uk.gov.justice.generation.pojo.dom.ReferenceDefinition;
 import uk.gov.justice.generation.pojo.dom.StringDefinition;
 
 import java.io.StringReader;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -89,9 +88,8 @@ public class DefaultDefinitionFactory implements DefinitionFactory {
 
         if (schema instanceof EnumSchema) {
             final Set<Object> possibleValues = ((EnumSchema) schema).getPossibleValues();
-            final List<String> enumValues = possibleValues.stream().map(Object::toString).collect(toList());
 
-            return new EnumDefinition(fieldName, enumValues, schema.getId());
+            return new EnumDefinition(fieldName, newArrayList(possibleValues), schema.getId());
         }
 
         if (schema instanceof StringSchema) {

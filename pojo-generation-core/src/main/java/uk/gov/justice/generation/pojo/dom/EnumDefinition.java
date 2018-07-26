@@ -43,9 +43,9 @@ import java.util.List;
  */
 public class EnumDefinition extends ClassDefinition {
 
-    private final List<String> enumValues;
+    private final List<Object> enumValues;
 
-    public EnumDefinition(final String fieldName, final List<String> enumValues, final String id) {
+    public EnumDefinition(final String fieldName, final List<Object> enumValues, final String id) {
         super(ENUM, fieldName, id);
         this.enumValues = enumValues;
     }
@@ -55,7 +55,7 @@ public class EnumDefinition extends ClassDefinition {
      * 
      * @return The list of enumerated values
      */
-    public List<String> getEnumValues() {
+    public List<Object> getEnumValues() {
         return enumValues;
     }
 }

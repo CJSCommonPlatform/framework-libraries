@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "id": "http://justice.gov.uk/events/pojo/enums/person-with-enum.json",
+  "id": "http://justice.gov.uk/events/pojo/enums/person-with-string-enum.json",
   "properties": {
     "name": {
       "type": "string"

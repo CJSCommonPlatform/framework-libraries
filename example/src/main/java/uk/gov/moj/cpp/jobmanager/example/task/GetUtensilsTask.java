@@ -4,7 +4,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.moj.cpp.jobmanager.example.task.data.Utensils;
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
-import uk.gov.moj.cpp.jobstore.persistence.Job;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -25,15 +25,15 @@ public class GetUtensilsTask implements ExecutableTask {
     private JobUtil jobUtil;
 
     @Override
-    public Job execute(Job job) {
+    public ExecutionInfo execute(final ExecutionInfo executionInfo) {
 
-        logger.info("Getting utensils for cake [job {}]", job);
+        logger.info("Getting utensils for cake [executionInfo {}]", executionInfo);
 
-        final Utensils utensils = jsonObjectConverter.convert(job.getJobData(), Utensils.class);
+        final Utensils utensils = jsonObjectConverter.convert(executionInfo.getJobData(), Utensils.class);
 
         logger.info("Retrieved utensils and placed on kitchen surfaces [{}]", utensils.getUtensilsList());
 
 
-        return jobUtil.nextJob(job);
+        return jobUtil.nextJob(executionInfo);
     }
 }

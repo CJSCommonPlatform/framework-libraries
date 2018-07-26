@@ -1,6 +1,7 @@
-package uk.gov.moj.cpp.jobstore.api;
+package uk.gov.moj.cpp.jobstore.service;
 
 import static java.time.ZonedDateTime.now;
+import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static javax.json.Json.createReader;
@@ -68,11 +69,11 @@ public class JobServiceTest {
         final UUID jobId = randomUUID();
         final String startTask = "startTask";
         final ZonedDateTime startTime = ZonedDateTime.now();
-        final JobRequest mockJob = new JobRequest(jobId, jobData, startTask, startTime);
+        final Job mockJob = new Job(jobId, jobData, startTask, startTime, empty(), empty());
 
 
-        jobService.createJob(mockJob);
-        verify(jobRepository).createJob(jobArgumentCaptor.capture());
+        jobService.insertJob(mockJob);
+        verify(jobRepository).insertJob(jobArgumentCaptor.capture());
 
 
         assertThat(jobArgumentCaptor.getValue().getJobId(), is(jobId));
@@ -124,4 +125,5 @@ public class JobServiceTest {
     private JsonObject jobData(final String json) {
         return createReader(new StringReader(json)).readObject();
     }
+
 }

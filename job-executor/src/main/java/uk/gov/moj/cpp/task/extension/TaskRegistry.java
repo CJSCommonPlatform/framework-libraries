@@ -25,8 +25,6 @@ public class TaskRegistry {
     @Inject
     private Instance<ExecutableTask> taskBeanProxy;
 
-
-
     public void register(@Observes final TaskFoundEvent event) {
 
         final Class taskClass = event.getClazz();

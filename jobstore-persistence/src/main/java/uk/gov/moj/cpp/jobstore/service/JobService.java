@@ -1,8 +1,7 @@
-package uk.gov.moj.cpp.jobstore.api;
+package uk.gov.moj.cpp.jobstore.service;
 
 
 import static java.lang.Integer.parseInt;
-import static java.util.Optional.empty;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
 import uk.gov.justice.services.common.configuration.Value;
@@ -38,9 +37,8 @@ public class JobService {
         return jobRepository.findJobsLockedTo(workerId);
     }
 
-    public void createJob(final JobRequest jobRequest) {
-        jobRepository.createJob(new Job(jobRequest.getJobId(), jobRequest.getJobData(),
-                jobRequest.getStartTask(), jobRequest.getStartTime(), empty(), empty(), empty()));
+    public void insertJob(final Job job) {
+        jobRepository.insertJob(job);
     }
 
     public void updateJobTaskData(final UUID jobId, final JsonObject data) {

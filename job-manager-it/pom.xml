@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>example</artifactId>
+    <artifactId>job-manager-it</artifactId>
     <dependencies>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
@@ -21,14 +21,6 @@
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>jobstore-persistence</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <!-- IT -->
-        <dependency>
-            <groupId>uk.gov.justice.services</groupId>
-            <artifactId>job-manager-it</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- TEST -->
@@ -56,11 +48,6 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
-            <artifactId>test-utils-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.services</groupId>
             <artifactId>jobstore-liquibase</artifactId>
             <scope>test</scope>
             <version>${project.version}</version>
@@ -76,7 +63,18 @@
             <artifactId>commons-logging</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>uk.gov.justice.utils</groupId>
+            <artifactId>test-utils-core</artifactId>
+            <version>${test-utils.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.services</groupId>
+            <artifactId>test-utils-common</artifactId>
+            <version>${cpp.test-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

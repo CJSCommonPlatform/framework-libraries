@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.jobstore.persistence;
 import static java.lang.Long.valueOf;
 import static java.lang.String.format;
 import static java.time.ZonedDateTime.now;
-import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
 import static javax.json.Json.createReader;
@@ -52,13 +51,13 @@ public class JobJdbcRepository implements JobRepository {
     JobSqlProvider jobSqlProvider;
 
     @Inject
-    Logger logger;
+    protected Logger logger;
 
     @Inject
     JdbcJobStoreDataSourceProvider jdbcJobStoreDataSourceProvider;
 
     @Inject
-    JdbcRepositoryHelper jdbcRepositoryHelper;
+    protected JdbcRepositoryHelper jdbcRepositoryHelper;
 
     protected DataSource dataSource;
 
@@ -69,7 +68,7 @@ public class JobJdbcRepository implements JobRepository {
 
 
     @Override
-    public void createJob(final Job job) {
+    public void insertJob(final Job job) {
         try (final PreparedStatementWrapper ps = jdbcRepositoryHelper.preparedStatementWrapperOf(dataSource, jobSqlProvider.getInsertSql())) {
             ps.setObject(1, job.getJobId());
             ps.setObject(2, job.getWorkerId().orElse(null));
@@ -177,7 +176,7 @@ public class JobJdbcRepository implements JobRepository {
 
     }
 
-    private Function<ResultSet, Job> entityFromFunction() {
+    protected Function<ResultSet, Job> entityFromFunction() {
         return resultSet -> {
             try {
                 return new Job(
@@ -186,20 +185,19 @@ public class JobJdbcRepository implements JobRepository {
                         resultSet.getString("next_task"),
                         getZoneDateTime(resultSet, "next_task_start_time"),
                         of(getUUID(resultSet, "worker_id")),
-                        of(getZoneDateTime(resultSet, "worker_lock_time")),
-                        empty());
+                        of(getZoneDateTime(resultSet, "worker_lock_time")));
             } catch (final SQLException e) {
                 throw new JdbcRepositoryException("Unexpected SQLException mapping ResultSet to Job instance", e);
             }
         };
     }
 
-    private ZonedDateTime getZoneDateTime(final ResultSet resultSet, final String column) throws SQLException {
+    protected ZonedDateTime getZoneDateTime(final ResultSet resultSet, final String column) throws SQLException {
         final Timestamp timestamp = resultSet.getTimestamp(column);
         return timestamp == null ? null : fromSqlTimestamp(timestamp);
     }
 
-    private UUID getUUID(final ResultSet resultSet, final String column) throws SQLException {
+    protected UUID getUUID(final ResultSet resultSet, final String column) throws SQLException {
         final String uuid = resultSet.getString(column);
         return uuid == null ? null : UUID.fromString(uuid);
     }

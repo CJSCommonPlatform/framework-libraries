@@ -28,13 +28,14 @@
         <module>jobstore-persistence</module>
         <module>jobstore-liquibase</module>
         <module>jobstore-api</module>
+        <module>job-manager-it</module>
         <module>example</module>
     </modules>
 	
 	<properties>
         <cpp.repo.name>job-manager</cpp.repo.name>
         <common-bom.version>1.27.0</common-bom.version>
-		<test-utils.version>1.16.0</test-utils.version>
+        <test-utils.version>1.17.2</test-utils.version>
 		<cpp.framework.version>4.0.3</cpp.framework.version>
 		<cpp.utilities.version>1.13.1</cpp.utilities.version>
         <cpp.test-utils.version>4.1.2</cpp.test-utils.version>
@@ -76,14 +77,14 @@
             </dependency>
 			<dependency>
                 <groupId>uk.gov.justice.utils</groupId>
-                <artifactId>test-utils-parent</artifactId>
-                <version>${cpp.test-utils.version}</version>
-                <scope>import</scope>
-            </dependency>
-			<dependency>
-                <groupId>uk.gov.justice.utils</groupId>
                 <artifactId>test-utils-logging-simple</artifactId>
+                <version>${test-utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.services</groupId>
+                <artifactId>test-utils-core</artifactId>
                 <version>${cpp.test-utils.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

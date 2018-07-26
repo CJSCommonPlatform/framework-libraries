@@ -1,17 +1,17 @@
 package uk.gov.moj.cpp.jobmanager.example.task;
 
 import static uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow.CAKE_MADE;
-import static uk.gov.moj.cpp.jobstore.persistence.Job.job;
-import static uk.gov.moj.cpp.jobstore.persistence.JobStatus.COMPLETED;
-import static uk.gov.moj.cpp.jobstore.persistence.JobStatus.NEXT_STEP;
+import static uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow.nextTask;
+import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
+import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
+import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.INPROGRESS;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow;
-import uk.gov.moj.cpp.jobstore.persistence.Job;
-import uk.gov.moj.cpp.jobstore.persistence.JobStatus;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
 
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -21,29 +21,30 @@ public class JobUtil {
     ObjectToJsonObjectConverter objectConverter;
 
 
-    public Job nextJob(final Job lastJob) {
+    public ExecutionInfo nextJob(final ExecutionInfo prevExecutionInfo) {
 
-        final MakeCakeWorkflow nextStep = MakeCakeWorkflow.nextTask(MakeCakeWorkflow.valueOf(lastJob.getNextTask()));
+        final MakeCakeWorkflow nextStep = nextTask(MakeCakeWorkflow.valueOf(prevExecutionInfo.getNextTask()));
 
-        final JobStatus nextJobStatus = MakeCakeWorkflow.valueOf(lastJob.getNextTask()) == CAKE_MADE ? COMPLETED : NEXT_STEP;
+        final ExecutionStatus nextExecutionStatus = MakeCakeWorkflow.valueOf(prevExecutionInfo.getNextTask()) == CAKE_MADE ? COMPLETED : INPROGRESS;
 
-        return job().from(lastJob)
+        return executionInfo().from(prevExecutionInfo)
                 .withJobData(objectConverter.convert(nextStep.getTaskData()))
                 .withNextTask(nextStep.toString())
                 .withNextTaskStartTime(ZonedDateTime.now())
-                .withJobStatus(Optional.of(nextJobStatus))
+                .withExecutionStatus(nextExecutionStatus)
+
                 .build();
 
 
     }
 
-    public Job sameJob(final Job lastJob, final JobStatus jobStatus, final Object jobData, final ZonedDateTime nextTaskStartTime) {
+    public ExecutionInfo sameJob(final ExecutionInfo prevExecutionInfo, final ExecutionStatus executionStatus, final Object jobData, final ZonedDateTime nextTaskStartTime) {
 
-        return job().withJobId(lastJob.getJobId())
+        return executionInfo()
                 .withJobData(objectConverter.convert(jobData))
-                .withNextTask(lastJob.getNextTask())
+                .withNextTask(prevExecutionInfo.getNextTask())
                 .withNextTaskStartTime(nextTaskStartTime)
-                .withJobStatus(Optional.of(jobStatus))
+                .withExecutionStatus(executionStatus)
                 .build();
 
     }

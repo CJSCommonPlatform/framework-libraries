@@ -5,6 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [2.6.1] - 2018-07-26
+
+### Fixed
+- Classpath processing issue in GenerateGoalProcessor
+
+### Changed
+- Updated common-bom version to 1.28.0
+
 ## [2.6.0] - 2018-07-11
 
 ### Added

@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 ### Changed
+- Updated common-bom-version to 1.28.0
+- Updated utilities version to 1.15.0
+- Updated generator maven plugin to version to 2.6.1
 - Load catalog resources from Thread context class loader
 
 ## [1.3.2] - 2018-07-11

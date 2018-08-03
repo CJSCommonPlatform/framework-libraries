@@ -43,7 +43,6 @@
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>test-utils-core</artifactId>
-			<version>${cpp.test-utils.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -68,6 +67,12 @@
             <artifactId>hamcrest-core</artifactId>
             <scope>test</scope>
         </dependency>
-     </dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.22</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>

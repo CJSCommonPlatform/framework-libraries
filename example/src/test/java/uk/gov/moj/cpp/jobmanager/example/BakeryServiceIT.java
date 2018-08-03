@@ -1,10 +1,7 @@
 package uk.gov.moj.cpp.jobmanager.example;
 
 
-import static uk.gov.moj.cpp.jobmanager.example.util.OpenEjbConfigurationBuilder.createOpenEjbConfigurationBuilder;
-
-
-//import static uk.gov.justice.services.core.h2.OpenEjbConfigurationBuilder.createOpenEjbConfigurationBuilder;
+import static uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder.createOpenEjbConfigurationBuilder;
 
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -20,16 +17,17 @@ import uk.gov.moj.cpp.jobmanager.example.task.JobUtil;
 import uk.gov.moj.cpp.jobmanager.example.task.MixIngredientsTask;
 import uk.gov.moj.cpp.jobmanager.example.task.SliceAndEatCakeTask;
 import uk.gov.moj.cpp.jobmanager.example.task.SwitchOvenOnTask;
-import uk.gov.moj.cpp.jobmanager.example.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobmanager.example.util.PropertiesFileValueProducer;
-import uk.gov.moj.cpp.jobstore.api.JobService;
+import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
+import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.persistence.AnsiJobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.InitialContextProducer;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;
-import uk.gov.moj.cpp.task.execution.JobExecutor;
+import uk.gov.moj.cpp.jobstore.service.JobService;
+import uk.gov.moj.cpp.task.execution.JobScheduler;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
 import java.util.Properties;
@@ -59,7 +57,7 @@ import org.junit.runner.RunWith;
 public class BakeryServiceIT {
 
     @Inject
-    private OpenEjbJobJdbcRepository repository;
+    private uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository repository;
 
     @Inject
     private BakeryService bakeryService;
@@ -70,9 +68,10 @@ public class BakeryServiceIT {
     @Module
     @Classes(cdi = true, value = {
             JobService.class,
+            ExecutionService.class,
             JobRepository.class,
             TaskRegistry.class,
-            JobExecutor.class,
+            JobScheduler.class,
             SwitchOvenOnTask.class,
             JobUtil.class,
             ExecutableTask.class,

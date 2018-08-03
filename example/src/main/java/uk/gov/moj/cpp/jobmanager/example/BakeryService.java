@@ -1,11 +1,11 @@
 package uk.gov.moj.cpp.jobmanager.example;
 
 import static java.time.ZonedDateTime.now;
-import static java.util.UUID.randomUUID;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.moj.cpp.jobstore.api.JobRequest;
-import uk.gov.moj.cpp.jobstore.api.JobService;
+import uk.gov.moj.cpp.jobstore.api.ExecutionService;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
 
 import javax.inject.Inject;
 import javax.transaction.Status;
@@ -23,7 +23,7 @@ public class BakeryService {
     ObjectToJsonObjectConverter objectConverter;
 
     @Inject
-    JobService jobService;
+    ExecutionService executionService;
 
     @Inject
     UserTransaction userTransaction;
@@ -32,11 +32,11 @@ public class BakeryService {
 
         final MakeCakeWorkflow firstTask = MakeCakeWorkflow.firstTask();
 
-        final JobRequest startCakeJobRequest = new JobRequest(randomUUID(), objectConverter.convert(firstTask.getTaskData()), firstTask.toString(), now());
+        final ExecutionInfo startCakeExecutionInfo = new ExecutionInfo(objectConverter.convert(firstTask.getTaskData()), firstTask.toString(), now(), ExecutionStatus.STARTED);
 
         try {
             userTransaction.begin();
-            jobService.createJob(startCakeJobRequest);
+            executionService.executeWith(startCakeExecutionInfo);
             userTransaction.commit();
 
         } catch (Exception ex) {

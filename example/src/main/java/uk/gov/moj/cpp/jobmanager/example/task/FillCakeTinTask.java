@@ -5,7 +5,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.moj.cpp.jobmanager.example.task.data.Instruction;
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
-import uk.gov.moj.cpp.jobstore.persistence.Job;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,15 +26,15 @@ public class FillCakeTinTask implements ExecutableTask {
     private JobUtil jobUtil;
 
     @Override
-    public Job execute(Job job) {
+    public ExecutionInfo execute(final ExecutionInfo executionInfo) {
 
-        logger.info("Getting instructions for cake [job {}]", job);
+        logger.info("Getting instructions for cake [executionInfo {}]", executionInfo);
 
-        final Instruction instruction = jsonObjectConverter.convert(job.getJobData(), Instruction.class);
+        final Instruction instruction = jsonObjectConverter.convert(executionInfo.getJobData(), Instruction.class);
 
         logger.info("Filling cake tin according to instructions [{}]", instruction.getInstructionList());
 
 
-        return jobUtil.nextJob(job);
+        return jobUtil.nextJob(executionInfo);
     }
 }

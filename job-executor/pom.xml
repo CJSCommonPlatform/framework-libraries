@@ -19,7 +19,7 @@
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
-	    <dependency>
+        <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>jobstore-api</artifactId>
             <version>${project.version}</version>
@@ -58,5 +58,27 @@
             <artifactId>awaitility</artifactId>
             <scope>test</scope>
         </dependency>
-     </dependencies>
+        <dependency>
+            <groupId>org.apache.tomee</groupId>
+            <artifactId>openejb-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- integration test -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.services</groupId>
+            <artifactId>test-utils-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.services</groupId>
+            <artifactId>jobstore-liquibase</artifactId>
+            <scope>test</scope>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

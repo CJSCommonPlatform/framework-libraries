@@ -4,7 +4,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.moj.cpp.jobmanager.example.task.data.OvenSettings;
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
-import uk.gov.moj.cpp.jobstore.persistence.Job;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ public class SwitchOvenOnTask implements ExecutableTask {
     private JobUtil jobUtil;
 
     @Override
-    public Job execute(Job job) {
+    public ExecutionInfo execute(ExecutionInfo job) {
 
         logger.info("Switching on oven [job {}]", job);
 

@@ -86,9 +86,9 @@ public class JobJdbcRepositoryTest {
     @Test
     public void shouldAddEmailNotificationWithMandatoryDataOnly() {
 
-        final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty(), empty());
+        final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty());
 
-        jdbcRepository.createJob(job);
+        jdbcRepository.insertJob(job);
 
         final int jobsCount = jobsCount();
         assertThat(jobsCount, is(1));
@@ -100,12 +100,12 @@ public class JobJdbcRepositoryTest {
         final UUID jobId1 = randomUUID();
         final UUID jobId2 = randomUUID();
 
-        final Job job1 = new Job(jobId1, jobData(JOB_DATA_JSON), "nextTask", now(), of(randomUUID()), of(now()), empty());
+        final Job job1 = new Job(jobId1, jobData(JOB_DATA_JSON), "nextTask", now(), of(randomUUID()), of(now()));
 
-        jdbcRepository.createJob(job1);
+        jdbcRepository.insertJob(job1);
 
-        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), of(randomUUID()), of(now()), empty());
-        jdbcRepository.createJob(job2);
+        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), of(randomUUID()), of(now()));
+        jdbcRepository.insertJob(job2);
 
         final int jobsCount = jobsCount();
         assertThat(jobsCount, is(2));
@@ -119,9 +119,9 @@ public class JobJdbcRepositoryTest {
         final String jobDataBeforeUpdate = "{\"some\": \"json before update\"}";
         final String jobDataAfterUpdate = "{\"some\": \"json after update\"}";
         final UUID workerId = randomUUID();
-        final Job job1 = new Job(jobId, jobData(jobDataBeforeUpdate), "nextTask", now(), of(workerId), of(now()), empty());
+        final Job job1 = new Job(jobId, jobData(jobDataBeforeUpdate), "nextTask", now(), of(workerId), of(now()));
 
-        jdbcRepository.createJob(job1);
+        jdbcRepository.insertJob(job1);
         jdbcRepository.updateJobData(jobId, jobData(jobDataAfterUpdate));
 
         final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).collect(toList());
@@ -141,9 +141,9 @@ public class JobJdbcRepositoryTest {
         final ZonedDateTime nextTaskStartTimeAfterUpdate = new UtcClock().now();
 
         final Optional<UUID> workerId = of(randomUUID());
-        final Job job1 = new Job(jobId, jobData(JOB_DATA_JSON), nextTaskBeforeUpdate, nextTaskStartTimeBeforeUpdate, workerId, of(now()), empty());
+        final Job job1 = new Job(jobId, jobData(JOB_DATA_JSON), nextTaskBeforeUpdate, nextTaskStartTimeBeforeUpdate, workerId, of(now()));
 
-        jdbcRepository.createJob(job1);
+        jdbcRepository.insertJob(job1);
         jdbcRepository.updateNextTaskDetails(jobId, nextTaskAfterUpdate, toSqlTimestamp(nextTaskStartTimeAfterUpdate));
 
         final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).collect(Collectors.toList());
@@ -168,15 +168,15 @@ public class JobJdbcRepositoryTest {
         final UUID jobId = randomUUID();
         final Optional<UUID> worker = of(randomUUID());
 
-        final Job job = new Job(jobId, jobData(JOB_DATA_JSON), "nextTask", now(), worker, of(now()), empty());
+        final Job job = new Job(jobId, jobData(JOB_DATA_JSON), "nextTask", now(), worker, of(now()));
 
-        jdbcRepository.createJob(job);
+        jdbcRepository.insertJob(job);
 
         final UUID jobId2 = randomUUID();
 
-        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty(), empty());
+        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty());
 
-        jdbcRepository.createJob(job2);
+        jdbcRepository.insertJob(job2);
 
         jdbcRepository.lockJobsFor(worker.get(), 10);
 
@@ -193,12 +193,12 @@ public class JobJdbcRepositoryTest {
         final UUID jobId1 = randomUUID();
         final Optional<UUID> workerId = of(randomUUID());
 
-        final Job job1 = new Job(jobId1, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()), empty());
-        jdbcRepository.createJob(job1);
+        final Job job1 = new Job(jobId1, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()));
+        jdbcRepository.insertJob(job1);
         final UUID jobId2 = randomUUID();
 
-        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()), empty());
-        jdbcRepository.createJob(job2);
+        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()));
+        jdbcRepository.insertJob(job2);
         jdbcRepository.releaseJob(jobId1);
 
         final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).collect(toList());
@@ -216,13 +216,13 @@ public class JobJdbcRepositoryTest {
 
         final UUID jobId1 = randomUUID();
         final Optional<UUID> workerId = of(randomUUID());
-        final Job job1 = new Job(jobId1, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()), empty());
+        final Job job1 = new Job(jobId1, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()));
 
-        jdbcRepository.createJob(job1);
+        jdbcRepository.insertJob(job1);
 
         final UUID jobId2 = randomUUID();
-        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()), empty());
-        jdbcRepository.createJob(job2);
+        final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), workerId, of(now()));
+        jdbcRepository.insertJob(job2);
         jdbcRepository.deleteJob(jobId1);
 
         final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).collect(toList());
@@ -239,7 +239,7 @@ public class JobJdbcRepositoryTest {
         final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
         when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.jdbcRepositoryHelper = mockDatasource;
-        jdbcRepository.createJob(mock(Job.class));
+        jdbcRepository.insertJob(mock(Job.class));
     }
 
     @Test(expected = JdbcRepositoryException.class)
@@ -294,8 +294,8 @@ public class JobJdbcRepositoryTest {
         int i = 0;
         while (i < count) {
 
-            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty(), empty());
-            jdbcRepository.createJob(job);
+            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty());
+            jdbcRepository.insertJob(job);
             i++;
 
         }

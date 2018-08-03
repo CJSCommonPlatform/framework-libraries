@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.jobmanager.example.util;
+package uk.gov.moj.cpp.jobmanager.it.util;
 
 
 

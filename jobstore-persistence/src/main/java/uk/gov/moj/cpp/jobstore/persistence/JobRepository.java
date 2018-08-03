@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import javax.json.JsonObject;
 
 public interface JobRepository {
-    void createJob(final Job notificationJob);
+    void insertJob(final Job notificationJob);
 
     void updateJobData(final UUID id, final JsonObject taskData);
 

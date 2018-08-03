@@ -1,158 +1,92 @@
 package uk.gov.moj.cpp.task.execution;
 
-import static java.lang.Long.parseLong;
-import static java.util.UUID.randomUUID;
-import static java.util.stream.Collectors.toList;
+import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
 
-import uk.gov.justice.services.common.configuration.Value;
-import uk.gov.moj.cpp.jobstore.api.JobService;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
+import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
+import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
-import javax.ejb.TimerConfig;
-import javax.ejb.TimerService;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.enterprise.concurrent.ManagedExecutorService;
-import javax.inject.Inject;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
-import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Singleton
-@Startup
-@TransactionManagement(TransactionManagementType.BEAN)
-public class JobExecutor {
+public class JobExecutor implements Runnable {
 
-    @Inject
-    private Logger logger;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobExecutor.class);
 
+    private final Job job;
 
-    @Resource(lookup="java:module/ModuleName")
-    String moduleName;
+    private final TaskRegistry taskRegistry;
 
-    @Resource
-    TimerService timerService;
+    private final JobService jobService;
 
-    @Resource
-    ManagedExecutorService executorService;
+    private final UserTransaction userTransaction;
 
-    @Inject
-    JobService jobService;
-
-    @Inject
-    TaskRegistry taskRegistry;
-
-
-    @Inject
-    @Value(key = "jobstore.timer.start.wait.seconds", defaultValue = "20000")
-    String timerStartWaitSeconds;
-
-    @Inject
-    @Value(key = "jobstore.timer.interval.seconds", defaultValue = "20000")
-    String timerIntervalSeconds;
-
-    @Inject
-    UserTransaction userTransaction;
-
-    private String timerName;
-
-    @PostConstruct
-    public void init() {
-        cancelExistingTimer();
-        createIntervalTimer();
+    public JobExecutor(final Job jobData,
+                       final TaskRegistry taskRegistry,
+                       final JobService jobService,
+                       final UserTransaction userTransaction) {
+        this.job = jobData;
+        this.taskRegistry = taskRegistry;
+        this.jobService = jobService;
+        this.userTransaction = userTransaction;
     }
 
-    private void createIntervalTimer() {
-        final TimerConfig timerConfig = new TimerConfig();
-        timerConfig.setPersistent(false);
-        timerConfig.setInfo(timerName());
-
-        logger.info("Creating timer [{}]", timerName);
-
-        timerService.createIntervalTimer(parseLong(timerStartWaitSeconds), parseLong(timerIntervalSeconds), timerConfig);
-    }
-
-    private void cancelExistingTimer() {
-        timerService.getAllTimers().stream().filter(t -> timerName().equals(t.getInfo())).forEach(Timer::cancel);
-    }
-
-    private String timerName() {
-        if (timerName == null) {
-            final String timerModulePrefix = moduleName != null ? moduleName : "local";
-            timerName = timerModulePrefix + ".job-manager.job.timer";
-        }
-
-        return timerName;
-    }
-
-
-    @Timeout
-    public void fetchUnassignedTasks() {
-
-        final UUID workerId = randomUUID();
-
-        logger.info("Retrieving new work from jobstore for WorkerID [{}]", workerId);
-
-        Stream<Job> unassignedJobs = null;
+    @Override
+    @SuppressWarnings("squid:S3457")
+    public void run() {
+        final String taskName = job.getNextTask();
+        LOGGER.info("Invoking {} task: ", taskName);
+        final Optional<ExecutableTask> task = taskRegistry.getTask(taskName);
 
         try {
             userTransaction.begin();
 
-            // Collect into List and forward to execute() method as a new Stream.
-            // (as userTransaction.commit() will close the DB cursor/resultset)
-            unassignedJobs = jobService.getUnassignedJobsFor(workerId);
-            final List<Job> jobList = unassignedJobs.collect(toList());
+            if (task.isPresent()) {
+                final ExecutionInfo executionInfo = executionInfo().fromJob(job).build();
+                final ExecutionInfo responseJob = task.get().execute(executionInfo);
+
+                if (responseJob.getExecutionStatus().equals(ExecutionStatus.INPROGRESS)) {
+                    jobService.updateJobTaskData(job.getJobId(), responseJob.getJobData());
+                    jobService.updateNextTaskDetails(job.getJobId(), responseJob.getNextTask(), responseJob.getNextTaskStartTime());
+                    jobService.releaseJob(job.getJobId());
+                } else if (responseJob.getExecutionStatus().equals(ExecutionStatus.COMPLETED)) {
+                    jobService.deleteJob(job.getJobId());
+                }
+            }else {
+                LOGGER.error("No task registered to process this job {}", job.getJobId());
+                jobService.releaseJob(job.getJobId());
+            }
 
             userTransaction.commit();
 
-            execute(jobList.stream());
-
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
 
-            logger.error("Unexpected exception during transaction, attempting rollback...", e);
+            LOGGER.error("Unexpected exception during transaction for Job {}, attempting rollback...{}", this, e);
 
             try {
-                if (userTransaction.getStatus() != Status.STATUS_NO_TRANSACTION) {
-                    userTransaction.rollback();
-                    logger.info("Transaction rolled back successfully", e);
-                }
-
-            } catch(SystemException e1){
-                logger.error("Unexpected exception during transaction rollback, rollback maybe incomplete", e1);
-            }
-
-        } finally {
-            if (unassignedJobs != null) {
-                unassignedJobs.close();
+                userTransaction.rollback();
+                LOGGER.info("Transaction rolled back successfully", e);
+            } catch (SystemException e1) {
+                LOGGER.error("Unexpected exception during transaction rollback, rollback maybe incomplete {}", this, e1);
             }
         }
-
-
     }
-
-    private void execute(Stream<Job> jobsToDo) {
-        logger.info("Trigger task execution:");
-        jobsToDo.forEach(job -> {
-            final TaskExecutor task = new TaskExecutor(job, taskRegistry, jobService, userTransaction);
-            executorService.submit(task);
-        });
-        logger.info("Invocation of Task complete");
+    @Override
+    public String toString() {
+        return new StringBuilder("JobExecutor[ ")
+                .append("job=").append(job)
+                .append("]").toString();
     }
 }

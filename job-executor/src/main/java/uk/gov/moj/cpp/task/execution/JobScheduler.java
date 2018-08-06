@@ -61,11 +61,11 @@ public class JobScheduler {
 
 
     @Inject
-    @Value(key = "jobstore.timer.start.wait.seconds", defaultValue = "20000")
+    @Value(key = "jobstore.timer.start.wait.milliseconds", defaultValue = "20000")
     String timerStartWaitSeconds;
 
     @Inject
-    @Value(key = "jobstore.timer.interval.seconds", defaultValue = "20000")
+    @Value(key = "jobstore.timer.interval.milliseconds", defaultValue = "20000")
     String timerIntervalSeconds;
 
     @Inject

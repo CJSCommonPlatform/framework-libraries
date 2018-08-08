@@ -1,10 +1,12 @@
 package uk.gov.justice.schema.catalog;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.schema.catalog.domain.Catalog;
@@ -49,7 +51,7 @@ public class ClasspathCatalogLoaderTest {
         final URL url = new URL("file://src/code/my-file.txt");
         final URI uri = url.toURI();
 
-        when(classpathResourceLoader.getResources( "META-INF/schema_catalog.json")).thenReturn(singletonList(url));
+        when(classpathResourceLoader.getResources("META-INF/schema_catalog.json")).thenReturn(singletonList(url));
         when(urlConverter.toUri(url)).thenReturn(uri);
         when(objectMapper.readValue(url, Catalog.class)).thenThrow(ioException);
 
@@ -77,5 +79,23 @@ public class ClasspathCatalogLoaderTest {
             assertThat(expected.getMessage(), startsWith("Failed to load the catalogs from the classpath for location 'META-INF/schema_catalog.json'"));
 
         }
+    }
+
+    @Test
+    public void shouldNotThrowExceptionIfDuplicateKeyAdded() throws Exception {
+
+        final URL url = new URL("file://src/code/my-file.txt");
+        final URI uri = url.toURI();
+
+        when(classpathResourceLoader.getResources("META-INF/schema_catalog.json")).thenReturn(asList(url, url));
+        when(urlConverter.toUri(url)).thenReturn(uri);
+        when(objectMapper.readValue(url, Catalog.class)).thenReturn(mock(Catalog.class));
+
+        try {
+            classpathCatalogLoader.getCatalogs();
+        } catch (final Exception notExpected) {
+            fail("Should not have thrown any exception");
+        }
+
     }
 }

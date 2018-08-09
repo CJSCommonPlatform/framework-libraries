@@ -76,6 +76,17 @@ public class AdditionalPropertiesSerializerTest {
     }
 
     @Test
+    public void shouldNotInvokeJsonGeneratorWriteObjectFieldWhenAdditionalPropertiesIsNull() throws Exception {
+
+        final TestPerson person = new TestPerson("TEST", "PERSON", 21, null);
+
+        additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock);
+
+        verify(jsonGeneratorMock, times(1)).writeStartObject();
+        verify(jsonGeneratorMock, times(1)).writeEndObject();
+    }
+
+    @Test
     public void shouldNotInvokeJsonGeneratorWriteObjectFieldWhenProvidedObjectWithEmptyAdditionalProperties() throws Exception {
 
         final Map<String, Object> additionalPropertiesMap = new HashMap<>();

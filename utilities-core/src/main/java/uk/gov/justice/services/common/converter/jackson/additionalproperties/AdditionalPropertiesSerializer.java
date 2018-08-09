@@ -54,9 +54,12 @@ public class AdditionalPropertiesSerializer extends BeanSerializerBase {
         try {
             final Field apField = bean.getClass().getDeclaredField(ADDITIONAL_PROPERTIES_NAME);
             apField.setAccessible(true);
-            Map<String, Object> apMap = (Map<String, Object>) apField.get(bean);
 
-            setAdditionalPropertiesMap(jsonGenerator, apMap);
+            final Map<String, Object> apMap = (Map<String, Object>) apField.get(bean);
+
+            if (apMap != null && !apMap.isEmpty()) {
+                setAdditionalPropertiesMap(jsonGenerator, apMap);
+            }
 
         } catch (final NoSuchFieldException | IllegalAccessException | IOException e) {
             throw provider.mappingException("Could not serialize object with additional properties ", e);

@@ -256,6 +256,27 @@ public class ObjectMapperProducerTest {
         ;
     }
 
+
+    @Test
+    public void shouldNotWriteAdditionalPropertiesWhenNullPassed() throws Exception {
+
+        final int age = 23;
+        final String name = "name";
+
+        final PersonWithAdditionalProperties person = new PersonWithAdditionalProperties(
+                "name",
+                23,
+                null
+        );
+
+        final String json = mapper.writeValueAsString(person);
+
+        with(json)
+                .assertThat("$.name", is(name))
+                .assertThat("$.age", is(age));
+    }
+
+
     @Test
     public void shouldConvertYamlToJsonObject() throws Exception {
         final ObjectMapper yamlObjectMapper = new ObjectMapperProducer().objectMapperWith(new YAMLFactory());

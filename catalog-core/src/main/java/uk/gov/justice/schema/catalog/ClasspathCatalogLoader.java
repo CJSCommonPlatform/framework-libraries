@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BinaryOperator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,8 +44,9 @@ public class ClasspathCatalogLoader {
      * @return All found {@link Catalog}s mapped by their URIs
      */
     public Map<URI, Catalog> getCatalogs() {
+        final BinaryOperator<Catalog> duplicateKeyMapper = (c1, c2) -> c1;
         return listAllCatalogsFromClasspath().stream()
-                .collect(toMap(urlConverter::toUri, this::loadCatalog));
+                .collect(toMap(urlConverter::toUri, this::loadCatalog, duplicateKeyMapper));
     }
 
     private Catalog loadCatalog(final URL catalogUrl) {

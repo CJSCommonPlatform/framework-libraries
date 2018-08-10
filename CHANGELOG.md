@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.3.4] - 2018-08-10
+
+### Changed
+- Update utilities version to 1.15.1
+
 ## [1.3.3] - 2018-07-26
 ### Changed
 - Updated common-bom-version to 1.28.0

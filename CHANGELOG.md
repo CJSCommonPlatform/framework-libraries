@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.1] - 2018-08-10
+### Fixed
+- Optionals plugin ordering
+
 ## [1.5.0] - 2018-07-26
 ### Changed
 - Added integer enum support.

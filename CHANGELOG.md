@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.2] - 2018-08-10
+### Changed
+- Upgraded utilities to version 1.15.1
+- Upgraded json schema catalog to version 1.4.1
+
 ## [1.5.1] - 2018-08-10
 ### Fixed
 - Optionals plugin ordering

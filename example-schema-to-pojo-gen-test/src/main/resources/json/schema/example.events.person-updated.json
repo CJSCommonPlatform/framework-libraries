@@ -25,14 +25,13 @@
       "type": "boolean"
     },
     "signedInCount": {
-      "type": "integer"
+      "$ref": "#/definitions/uuid"
     },
     "ratio": {
       "type": "number"
     },
     "startDate": {
-      "type": "string",
-      "format": "date-time"
+      "$ref": "#/definitions/date"
     },
     "aliases": {
       "type": "array",
@@ -48,9 +47,13 @@
     "firstName",
     "lastName",
     "required",
-    "signedInCount",
     "ratio",
-    "startDate",
     "alias"
-  ]
+  ],
+  "definitions": {
+    "date": {
+      "type": "string",
+      "pattern": "^[1|2][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\.[0-9]{3}Z$"
+    }
+  }
 }

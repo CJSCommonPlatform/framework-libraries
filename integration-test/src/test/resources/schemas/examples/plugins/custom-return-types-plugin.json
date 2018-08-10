@@ -24,7 +24,6 @@
     "employeeId",
     "firstName",
     "lastName",
-    "salary",
     "startDate"
   ],
   "definitions": {

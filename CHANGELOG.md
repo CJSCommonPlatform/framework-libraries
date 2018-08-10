@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.15.1] - 2018-08-10
+- Fix additional properties NullPointer exception.
+
 ## [1.15.0] - 2018-07-26
 
 ### Changed

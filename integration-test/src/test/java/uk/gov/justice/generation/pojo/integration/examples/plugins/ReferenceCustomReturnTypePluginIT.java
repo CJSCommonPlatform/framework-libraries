@@ -10,6 +10,7 @@ import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.integration.utils.ClassInstantiator;
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
+import uk.gov.justice.generation.pojo.plugin.typemodifying.SupportJavaOptionalsPlugin;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,7 +54,9 @@ public class ReferenceCustomReturnTypePluginIT {
 
         final List<Class<?>> classes = generatorUtil
                 .withGeneratorProperties(generatorProperties)
+                .withTypeModifyingPlugin(new SupportJavaOptionalsPlugin())
                 .withTypeModifyingPlugin(customReturnTypePlugin())
+
                 .generateAndCompileJavaSource(
                         JSON_SCHEMA_FILE,
                         packageName,
@@ -61,7 +65,7 @@ public class ReferenceCustomReturnTypePluginIT {
         final UUID employeeId = randomUUID();
         final String firstName = "firstName";
         final String lastName = "lastName";
-        final BigInteger salary = new BigInteger("1000000000");
+        final Optional<BigInteger> salary = Optional.of(new BigInteger("1000000000"));
         final ZonedDateTime startDate = ZonedDateTimes.fromString("2016-03-18T00:46:54.700Z");
 
         final Class<?> employeeClass = classes.get(0);
@@ -80,7 +84,7 @@ public class ReferenceCustomReturnTypePluginIT {
                 .assertThat("$.employeeId", is(employeeId.toString()))
                 .assertThat("$.firstName", is(firstName))
                 .assertThat("$.lastName", is(lastName))
-                .assertThat("$.salary", is(salary.intValue()))
+                .assertThat("$.salary", is(salary.get().intValue()))
                 .assertThat("$.startDate", is("2016-03-18T00:46:54.700Z"))
         ;
 

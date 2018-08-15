@@ -20,7 +20,7 @@ before_install:
 - ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
 - ln -sfT ${PWD}/target/travis-settings/mvnw mvnw
 - ln -sft ${PWD} ${PWD}/target/travis-settings/.mvn
-install: "${PWD}/target/travis-settings/java/install.sh -DexcludeGroupIds=uk.gov.justice.utils"
+install: "${PWD}/target/travis-settings/java/install.sh"
 script: "${PWD}/target/travis-settings/java/script-install.sh coveralls:report sonar:sonar"
 after_success: "${PWD}/target/travis-settings/java/after_success.sh"
 notifications:

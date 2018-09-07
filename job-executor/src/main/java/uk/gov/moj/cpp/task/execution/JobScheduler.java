@@ -108,7 +108,7 @@ public class JobScheduler {
 
         final UUID workerId = randomUUID();
 
-        logger.info("Retrieving new work from jobstore for WorkerID [{}]", workerId);
+        logger.debug("Retrieving new work from jobstore for WorkerID [{}]", workerId);
 
         Stream<Job> unassignedJobs = null;
 
@@ -146,11 +146,11 @@ public class JobScheduler {
     }
 
     private void execute(Stream<Job> jobsToDo) {
-        logger.info("Trigger task execution:");
         jobsToDo.forEach(job -> {
+            logger.trace("Trigger task execution:");
             final JobExecutor task = new JobExecutor(job, taskRegistry, jobService, userTransaction);
             executorService.submit(task);
+            logger.trace("Invocation of Task complete");
         });
-        logger.info("Invocation of Task complete");
     }
 }

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
@@ -56,6 +57,9 @@ public class JobSchedulerTest {
 
     @Mock
     private UserTransaction userTransaction;
+
+    @Mock
+    private UtcClock clock;
 
     @Captor
     private ArgumentCaptor<TimerConfig> timerConfigArgumentCaptor;

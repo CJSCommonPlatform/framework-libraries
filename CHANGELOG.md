@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Changed
+- Task is only run if the next start time is after or equal to the current time
+
 ## [2.0.2]
 
 ### Changed

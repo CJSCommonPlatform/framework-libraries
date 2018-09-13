@@ -10,6 +10,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
@@ -34,20 +35,29 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-
+import org.slf4j.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobExecutorTest {
 
     @Mock
     private TaskRegistry taskRegistry;
+
     @Mock
     private JobService jobService;
+
     @Mock
     private SampleTask sampleTask;
+
     @Mock
     private UserTransaction userTransaction;
+
+    @Mock
+    private UtcClock clock;
+
+    @Mock
+    private Logger logger;
+
 
     @Test
     public void shouldUpdateJobViaJobServiceWhenExecutionStatusIsInProgress() {
@@ -59,10 +69,9 @@ public class JobExecutorTest {
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
         when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
+        when(clock.now()).thenReturn(nextTaskStartTime);
 
-        final JobExecutor jobExecutor = new JobExecutor(job, taskRegistry, jobService, userTransaction);
-
-        jobExecutor.run();
+        createJobExecutor(job).run();
 
         verify(sampleTask).execute(any(ExecutionInfo.class));
         verify(jobService).updateJobTaskData(jobId, jobData);
@@ -70,7 +79,6 @@ public class JobExecutorTest {
         verify(jobService).releaseJob(jobId);
         verify(jobService, never()).deleteJob(any());
     }
-
 
     @Test
     public void shouldDeleteJobViaJobServiceWhenExecutionStatusIsCompleted() {
@@ -82,17 +90,15 @@ public class JobExecutorTest {
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
         when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
+        when(clock.now()).thenReturn(nextTaskStartTime);
 
-        final JobExecutor jobExecutor = new JobExecutor(job, taskRegistry, jobService, userTransaction);
-
-        jobExecutor.run();
+        createJobExecutor(job).run();
 
         verify(sampleTask).execute(any(ExecutionInfo.class));
         verify(jobService, never()).updateJobTaskData(any(), any());
         verify(jobService, never()).updateNextTaskDetails(any(), any(), any());
         verify(jobService, never()).releaseJob(any());
         verify(jobService).deleteJob(jobId);
-
     }
 
     @Test
@@ -105,9 +111,9 @@ public class JobExecutorTest {
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
         when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
+        when(clock.now()).thenReturn(nextTaskStartTime);
 
-        final JobExecutor jobExecutor = new JobExecutor(job, taskRegistry, jobService, userTransaction);
-        jobExecutor.run();
+        createJobExecutor(job).run();
 
         verify(sampleTask).execute(any(ExecutionInfo.class));
     }
@@ -120,8 +126,7 @@ public class JobExecutorTest {
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
 
-        final JobExecutor jobExecutor = new JobExecutor(job, taskRegistry, jobService, userTransaction);
-        jobExecutor.run();
+        createJobExecutor(job).run();
 
         verify(sampleTask, never()).execute(any(ExecutionInfo.class));
         verify(jobService).releaseJob(jobId);
@@ -131,15 +136,101 @@ public class JobExecutorTest {
     public void shouldRollbackTransactionWhenExceptionThrown() throws SystemException, NotSupportedException {
         final UUID jobId = randomUUID();
         final JsonObject jobData = mock(JsonObject.class);
+        final NotSupportedException notSupportedException = new NotSupportedException();
         final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty());
+        final JobExecutor jobExecutor = createJobExecutor(job);
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
-        doThrow(new NotSupportedException()).when(userTransaction).begin();
+        doThrow(notSupportedException).when(userTransaction).begin();
 
-        final JobExecutor jobExecutor = new JobExecutor(job, taskRegistry, jobService, userTransaction);
         jobExecutor.run();
 
+        verify(logger).error("Unexpected exception during transaction for Job {}, attempting rollback...{}", jobExecutor, notSupportedException);
         verify(userTransaction).rollback();
+    }
+
+    @Test
+    public void shouldLogErrorIfRollbackTransactionFails() throws SystemException, NotSupportedException {
+        final UUID jobId = randomUUID();
+        final JsonObject jobData = mock(JsonObject.class);
+        final NotSupportedException notSupportedException = new NotSupportedException();
+        final SystemException systemException = new SystemException();
+        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty());
+        final JobExecutor jobExecutor = createJobExecutor(job);
+
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
+        doThrow(notSupportedException).when(userTransaction).begin();
+        doThrow(systemException).when(userTransaction).rollback();
+
+        jobExecutor.run();
+
+        verify(logger).error("Unexpected exception during transaction for Job {}, attempting rollback...{}", jobExecutor, notSupportedException);
+        verify(logger).error("Unexpected exception during transaction rollback, rollback maybe incomplete {}", jobExecutor, systemException);
+    }
+
+    @Test
+    public void shouldUpdateJobViaJobServiceIfNextStartTimeIsBeforeNow() {
+        final UUID jobId = randomUUID();
+        final JsonObject jobData = mock(JsonObject.class);
+        final ZonedDateTime nextTaskStartTime = now();
+        final Job job = job(jobId, jobData, nextTaskStartTime);
+        final ExecutionInfo responseExecutionInfo = executionInfo().fromJob(job).withExecutionStatus(INPROGRESS).build();
+        final ZonedDateTime currentTime = nextTaskStartTime.plusSeconds(10L);
+
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
+        when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
+        when(clock.now()).thenReturn(currentTime);
+
+        createJobExecutor(job).run();
+
+        verify(sampleTask).execute(any(ExecutionInfo.class));
+        verify(jobService).updateJobTaskData(jobId, jobData);
+        verify(jobService).updateNextTaskDetails(jobId, "taskName", nextTaskStartTime);
+        verify(jobService).releaseJob(jobId);
+        verify(jobService, never()).deleteJob(any());
+    }
+
+    @Test
+    public void shouldUpdateJobViaJobServiceIfNextStartTimeIsEqualToNow() {
+        final UUID jobId = randomUUID();
+        final JsonObject jobData = mock(JsonObject.class);
+        final ZonedDateTime nextTaskStartTime = now();
+        final Job job = job(jobId, jobData, nextTaskStartTime);
+        final ExecutionInfo responseExecutionInfo = executionInfo().fromJob(job).withExecutionStatus(INPROGRESS).build();
+        final ZonedDateTime currentTime = nextTaskStartTime;
+
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
+        when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
+        when(clock.now()).thenReturn(currentTime);
+
+        createJobExecutor(job).run();
+
+        verify(sampleTask).execute(any(ExecutionInfo.class));
+        verify(jobService).updateJobTaskData(jobId, jobData);
+        verify(jobService).updateNextTaskDetails(jobId, "taskName", nextTaskStartTime);
+        verify(jobService).releaseJob(jobId);
+        verify(jobService, never()).deleteJob(any());
+    }
+
+    @Test
+    public void shouldNotInvokeExecuteOnExecuteTaskIfNextStartTimeIsAfterNow() {
+        final UUID jobId = randomUUID();
+        final JsonObject jobData = mock(JsonObject.class);
+        final ZonedDateTime nextTaskStartTime = now();
+        final Job job = job(jobId, jobData, nextTaskStartTime);
+        final ZonedDateTime currentTime = nextTaskStartTime.minusSeconds(10L);
+
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(ofNullable(sampleTask));
+        when(clock.now()).thenReturn(currentTime);
+
+        createJobExecutor(job).run();
+
+        verifyZeroInteractions(sampleTask);
+        verifyZeroInteractions(jobService);
+    }
+
+    private JobExecutor createJobExecutor(final Job job) {
+        return new JobExecutor(job, taskRegistry, jobService, userTransaction, clock, logger);
     }
 
     private Job job(final UUID jobId,
@@ -149,6 +240,7 @@ public class JobExecutorTest {
                 .withJobId(jobId)
                 .withJobData(jobData)
                 .withNextTaskStartTime(nextTaskStartTime)
-                .withNextTask("taskName").build();
+                .withNextTask("taskName")
+                .build();
     }
 }

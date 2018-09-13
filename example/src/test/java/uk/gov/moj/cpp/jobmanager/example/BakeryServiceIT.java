@@ -7,6 +7,7 @@ import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameP
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.cdi.LoggerProducer;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
 import uk.gov.moj.cpp.jobmanager.example.task.BakeCakeTask;
@@ -95,7 +96,8 @@ public class BakeryServiceIT {
             Persistence.class,
             PersistenceUnit.class,
             ObjectMapperProducer.class,
-            InitialContextProducer.class
+            InitialContextProducer.class,
+            UtcClock.class
     },
             cdiAlternatives = {AnsiJobSqlProvider.class}
     )
@@ -109,7 +111,7 @@ public class BakeryServiceIT {
 
     @Configuration
     public Properties configuration() {
-        Properties props =  createOpenEjbConfigurationBuilder()
+        Properties props = createOpenEjbConfigurationBuilder()
                 .addInitialContext()
                 .addHttpEjbPort(8080)
                 .addh2ViewStore()

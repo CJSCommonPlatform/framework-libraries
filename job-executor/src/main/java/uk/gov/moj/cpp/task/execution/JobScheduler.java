@@ -3,8 +3,10 @@ package uk.gov.moj.cpp.task.execution;
 import static java.lang.Long.parseLong;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import uk.gov.justice.services.common.configuration.Value;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
@@ -44,7 +46,7 @@ public class JobScheduler {
     private Logger logger;
 
 
-    @Resource(lookup="java:module/ModuleName")
+    @Resource(lookup = "java:module/ModuleName")
     String moduleName;
 
     @Resource
@@ -59,6 +61,8 @@ public class JobScheduler {
     @Inject
     TaskRegistry taskRegistry;
 
+    @Inject
+    UtcClock clock;
 
     @Inject
     @Value(key = "jobstore.timer.start.wait.milliseconds", defaultValue = "20000")
@@ -124,7 +128,7 @@ public class JobScheduler {
 
             execute(jobList.stream());
 
-        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
+        } catch (final NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
 
             logger.error("Unexpected exception during transaction, attempting rollback...", e);
 
@@ -134,7 +138,7 @@ public class JobScheduler {
                     logger.info("Transaction rolled back successfully", e);
                 }
 
-            } catch(SystemException e1){
+            } catch (final SystemException e1) {
                 logger.error("Unexpected exception during transaction rollback, rollback maybe incomplete", e1);
             }
 
@@ -148,8 +152,15 @@ public class JobScheduler {
     private void execute(Stream<Job> jobsToDo) {
         jobsToDo.forEach(job -> {
             logger.trace("Trigger task execution:");
-            final JobExecutor task = new JobExecutor(job, taskRegistry, jobService, userTransaction);
-            executorService.submit(task);
+
+            executorService.submit(new JobExecutor(
+                    job,
+                    taskRegistry,
+                    jobService,
+                    userTransaction,
+                    clock,
+                    getLogger(JobExecutor.class)));
+
             logger.trace("Invocation of Task complete");
         });
     }

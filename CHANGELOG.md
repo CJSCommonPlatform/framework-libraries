@@ -8,7 +8,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [2.1.0]
 
 ### Changed
-- Task is only run if the next start time is after or equal to the current time
+- Task is only run if the next start time is before or equal to the current time
 
 ## [2.0.2]
 

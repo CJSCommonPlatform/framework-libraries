@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.16.0] - 2018-11-05
+
+### Added
+- Moved in CDI producers from Framework and JobManager
 
 ## [1.15.1] - 2018-08-10
 - Fix additional properties NullPointer exception.

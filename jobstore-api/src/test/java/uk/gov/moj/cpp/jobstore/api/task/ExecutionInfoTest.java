@@ -2,7 +2,7 @@ package uk.gov.moj.cpp.jobstore.api.task;
 
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.services.common.util.UtcClock;

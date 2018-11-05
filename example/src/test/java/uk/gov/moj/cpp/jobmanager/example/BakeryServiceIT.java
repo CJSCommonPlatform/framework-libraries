@@ -3,12 +3,13 @@ package uk.gov.moj.cpp.jobmanager.example;
 
 import static uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder.createOpenEjbConfigurationBuilder;
 
+import uk.gov.justice.services.cdi.InitialContextProducer;
+import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.common.util.UtcClock;
-import uk.gov.justice.services.core.cdi.LoggerProducer;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
 import uk.gov.moj.cpp.jobmanager.example.task.BakeCakeTask;
 import uk.gov.moj.cpp.jobmanager.example.task.FillCakeTinTask;
@@ -23,7 +24,6 @@ import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.persistence.AnsiJobSqlProvider;
-import uk.gov.moj.cpp.jobstore.persistence.InitialContextProducer;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;

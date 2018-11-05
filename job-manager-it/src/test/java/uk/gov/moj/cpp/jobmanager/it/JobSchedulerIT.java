@@ -3,6 +3,8 @@ package uk.gov.moj.cpp.jobmanager.it;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.services.cdi.InitialContextProducer;
+import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.GlobalValueProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.common.configuration.ValueProducer;
@@ -18,12 +20,10 @@ import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.logging.DefaultTraceLogger;
 import uk.gov.justice.services.test.utils.common.envelope.EnvelopeRecordingInterceptor;
 import uk.gov.justice.services.test.utils.common.reflection.ReflectionUtils;
-import uk.gov.moj.cpp.jobmanager.it.util.LoggerProducer;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.persistence.AnsiJobSqlProvider;
-import uk.gov.moj.cpp.jobstore.persistence.InitialContextProducer;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
@@ -176,7 +176,7 @@ public class JobSchedulerIT {
         final CyclicBarrier gate = new CyclicBarrier(4);
         IntStream.range(0, 3)
                 .mapToObj(threadNo -> getThreadCurrentImpl(gate))
-                 .forEach(t -> t.start());
+                .forEach(t -> t.start());
         gate.await();
         Thread.sleep(3000);
         userTransaction.commit();

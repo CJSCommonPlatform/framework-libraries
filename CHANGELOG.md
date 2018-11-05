@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## Changed
+- Update utilities to version 1.16.0
+
+## Removed
+- LoggerProducer and InitialContextProducer
+
 ## [2.1.0]
 
 ### Changed

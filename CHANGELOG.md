@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [3.0.0-M14] - 2018-11-07
+### Updated
+- First release of Framework Api 3.0.0
+
 ## [3.0.0-M14] - 2018-07-12
 ### Added
 - Accepted Status With Envelope Entity Response Strategy name

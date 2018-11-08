@@ -6,6 +6,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [Unreleased]
 
 ## [1.17.1] - 2018-11-09
+
+## Changed
 - Update utilities to version 1.16.1
 - Update test-utils to version 1.18.1
 

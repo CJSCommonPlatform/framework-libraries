@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [1.16.1] - 2018-11-08
+
+### Changed
+- Updated test-utils to 1.18.1
+
 ## [1.16.0] - 2018-11-05
 
 ### Added

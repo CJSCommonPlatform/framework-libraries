@@ -1,10 +1,12 @@
 package uk.gov.justice.services.messaging.spi;
 
+import static java.lang.Integer.MAX_VALUE;
+import static java.util.ServiceLoader.load;
+
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.messaging.MetadataBuilder;
 
-import java.util.Iterator;
 import java.util.ServiceLoader;
 
 import javax.json.JsonObject;
@@ -29,14 +31,8 @@ public interface JsonEnvelopeProvider {
      *                                               are found
      */
     static JsonEnvelopeProvider provider() {
-        final ServiceLoader<JsonEnvelopeProvider> loader = ServiceLoader.load(JsonEnvelopeProvider.class);
-        final Iterator<JsonEnvelopeProvider> iterator = loader.iterator();
-
-        if (iterator.hasNext()) {
-            return iterator.next();
-        }
-
-        throw new JsonEnvelopeProviderNotFoundException("No JsonEnvelopeProvider implementation found");
+        return new JsonEnvelopeProviderSelector()
+                .selectFrom(load(JsonEnvelopeProvider.class).spliterator());
     }
 
     /**
@@ -92,4 +88,14 @@ public interface JsonEnvelopeProvider {
      */
     MetadataBuilder metadataFrom(final JsonObject jsonObject);
 
+    /**
+     * Return the priority level for the envelope provider implementation.
+     * 0                 - Highest priority
+     * Integer.MAX_VALUE - Lowest priority - Default
+     *
+     * @return MAX_VALUE - Default lowest priority
+     */
+    default int priority() {
+        return MAX_VALUE;
+    }
 }

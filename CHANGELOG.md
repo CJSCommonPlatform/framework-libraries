@@ -5,8 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [3.0.0-M14] - 2018-11-07
-### Updated
+### Added
+- Priority loading of EnveloperProvider if more than one provider on the classpath
+- Priority loading of EnvelopeProvider if more than one provider on the classpath
+- Priority loading of JsonEnvelopeProvider if more than one provider on the classpath
+
+## [3.0.0] - 2018-11-07
+### Changed
 - First release of Framework Api 3.0.0
 
 ## [3.0.0-M14] - 2018-07-12

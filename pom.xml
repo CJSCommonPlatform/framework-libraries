@@ -29,7 +29,7 @@
 
     <properties>
         <common-bom.version>1.28.0</common-bom.version>
-        <framework-api-version>3.0.0</framework-api-version>
+        <framework-api-version>3.0.1</framework-api-version>
         <utilities.version>1.16.1</utilities.version>
         <test-utils.version>1.18.1</test-utils.version>
         <generator-maven-plugin.version>2.6.1</generator-maven-plugin.version>

@@ -5,6 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.0.1] - 2018-11-15
 ### Added
 - Priority loading of EnveloperProvider if more than one provider on the classpath
 - Priority loading of EnvelopeProvider if more than one provider on the classpath

@@ -4,8 +4,10 @@ import static java.time.ZonedDateTime.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
+import static java.util.stream.IntStream.range;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.services.cdi.InitialContextProducer;
 import uk.gov.justice.services.cdi.LoggerProducer;
@@ -13,7 +15,6 @@ import uk.gov.justice.services.common.configuration.GlobalValueProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.common.configuration.ValueProducer;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
-import uk.gov.justice.services.test.utils.common.reflection.ReflectionUtils;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
@@ -36,7 +37,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.Resource;
@@ -106,10 +106,10 @@ public class JobServiceIT {
 
     @Before
     public void setup() throws Exception {
-        InitialContext initialContext = new InitialContext();
+        final InitialContext initialContext = new InitialContext();
         initialContext.bind("java:/app/JobServiceIT/DS.jobstore", dataSource);
         initEventDatabase();
-        ReflectionUtils.setField(jobService, "jobCount", "10");
+        setField(jobService, "jobCount", "10");
     }
 
     @Configuration
@@ -131,7 +131,7 @@ public class JobServiceIT {
 
         eventStoreLiquibase.update("");
 
-        ReflectionUtils.setField(jobService, "jobRepository", testJobJdbcRepository);
+        setField(jobService, "jobRepository", testJobJdbcRepository);
     }
 
     @Test
@@ -185,9 +185,11 @@ public class JobServiceIT {
         userTransaction.commit();
 
         final CyclicBarrier gate = new CyclicBarrier(21);
-        IntStream.range(0, 20)
+
+        range(0, 20)
                 .mapToObj(threadNo -> getThreadCurrentImpl(gate))
-                .forEach(t -> t.start());
+                .forEach(Thread::start);
+
         gate.await();
 
         detectDuplicates();
@@ -228,7 +230,7 @@ public class JobServiceIT {
 
 
     private void detectDuplicates() throws InterruptedException {
-        final Set<UUID> jobs = new HashSet();
+        final Set<UUID> jobs = new HashSet<>();
         final List<UUID> duplicates = new ArrayList<>();
 
         final Poller poller = new Poller(10, 100L);

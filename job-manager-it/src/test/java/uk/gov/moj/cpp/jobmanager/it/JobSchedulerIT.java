@@ -1,7 +1,10 @@
 package uk.gov.moj.cpp.jobmanager.it;
 
+import static java.lang.Thread.sleep;
+import static java.util.stream.IntStream.range;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.services.cdi.InitialContextProducer;
 import uk.gov.justice.services.cdi.LoggerProducer;
@@ -19,7 +22,6 @@ import uk.gov.justice.services.messaging.DefaultJsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.logging.DefaultTraceLogger;
 import uk.gov.justice.services.test.utils.common.envelope.EnvelopeRecordingInterceptor;
-import uk.gov.justice.services.test.utils.common.reflection.ReflectionUtils;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
@@ -44,7 +46,6 @@ import java.util.UUID;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.Resource;
@@ -68,7 +69,6 @@ import org.apache.openejb.testing.Application;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Configuration;
 import org.apache.openejb.testing.Module;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -137,10 +137,10 @@ public class JobSchedulerIT {
 
     @Before
     public void setup() throws Exception {
-        InitialContext initialContext = new InitialContext();
+        final InitialContext initialContext = new InitialContext();
         initialContext.bind("java:/app/JobSchedulerIT/DS.jobstore", dataSource);
         initEventDatabase();
-        ReflectionUtils.setField(jobService, "jobCount", "10");
+        setField(jobService, "jobCount", "10");
     }
 
     @Configuration
@@ -162,7 +162,7 @@ public class JobSchedulerIT {
 
         eventStoreLiquibase.update("");
 
-        ReflectionUtils.setField(jobService, "jobRepository", testJobJdbcRepository);
+        setField(jobService, "jobRepository", testJobJdbcRepository);
     }
 
     @Test
@@ -173,15 +173,19 @@ public class JobSchedulerIT {
         userTransaction.commit();
 
         userTransaction.begin();
+
         final CyclicBarrier gate = new CyclicBarrier(4);
-        IntStream.range(0, 3)
+
+        range(0, 3)
                 .mapToObj(threadNo -> getThreadCurrentImpl(gate))
-                .forEach(t -> t.start());
+                .forEach(Thread::start);
+
         gate.await();
-        Thread.sleep(3000);
+
+        sleep(3000);
         userTransaction.commit();
 
-        assertThat(testJobJdbcRepository.jobsNotProcessed(), CoreMatchers.is(20));
+        assertThat(testJobJdbcRepository.jobsNotProcessed(), is(20));
     }
 
 
@@ -192,7 +196,7 @@ public class JobSchedulerIT {
                 userTransaction.begin();
 
                 jobScheduler.fetchUnassignedJobs();
-                assertExpectedJobAssigments();
+                assertExpectedJobAssignments();
 
                 userTransaction.commit();
 
@@ -204,10 +208,10 @@ public class JobSchedulerIT {
         });
     }
 
-    private void assertExpectedJobAssigments() throws SQLException {
+    private void assertExpectedJobAssignments() throws SQLException {
         final Stream<Job> jobStream = testJobJdbcRepository.getProcessedRecords();
         final Map<UUID, List<Job>> jobByWorkerIdMap = jobStream.collect(Collectors.groupingBy(x -> x.getWorkerId().get()));
-        final Set<UUID> jobs = new HashSet();
+        final Set<UUID> jobs = new HashSet<>();
         final List<UUID> duplicates = new ArrayList<>();
 
         testJobJdbcRepository.collectDuplicates(jobs, duplicates, jobByWorkerIdMap);

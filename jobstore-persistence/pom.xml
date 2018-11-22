@@ -21,7 +21,7 @@
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>persistence-jdbc</artifactId>
-            <version>${framework-version}</version>
+            <version>${framework.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
@@ -48,9 +48,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.services</groupId>
+            <groupId>uk.gov.justice.event-store</groupId>
             <artifactId>test-utils-persistence</artifactId>
-            <version>${framework-version}</version>
+            <version>${event-store.version}</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>

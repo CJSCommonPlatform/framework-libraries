@@ -5,12 +5,18 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [3.0.0] - 2018-11-22
+
+### Changed
+- Update to framework version 5.0.4
+- Use event-store version 1.0.4
+
 ## [2.2.0] - 2018-11-05
 
-## Changed
+### Changed
 - Update utilities to version 1.16.0
 
-## Removed
+### Removed
 - LoggerProducer and InitialContextProducer
 
 ## [2.1.0]

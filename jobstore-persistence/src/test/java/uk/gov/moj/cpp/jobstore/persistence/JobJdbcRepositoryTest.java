@@ -34,7 +34,6 @@ import javax.json.JsonObject;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 
@@ -159,30 +158,32 @@ public class JobJdbcRepositoryTest {
         assertThat(jobs.size(), is(4));
     }
 
-    @Ignore("TODO: This test is flip flopping when run with all the tests, needs to be investigated")
     @Test
     public void shouldFindLockedJobsToWorker() throws Exception {
         final UUID jobId = randomUUID();
-        final Optional<UUID> worker = of(randomUUID());
-
-        final Job job = new Job(jobId, jobData(JOB_DATA_JSON), "nextTask", now(), worker, of(now()));
-
-        jdbcRepository.insertJob(job);
-
         final UUID jobId2 = randomUUID();
+        final UUID worker = randomUUID();
 
+        final Job job = new Job(jobId, jobData(JOB_DATA_JSON), "nextTask", now(), of(worker), of(now()));
         final Job job2 = new Job(jobId2, jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty());
 
+        jdbcRepository.insertJob(job);
         jdbcRepository.insertJob(job2);
 
-        jdbcRepository.lockJobsFor(worker.get(), 10);
+        assertThat(jobsCount(), is(2));
 
-        final List<Job> jobs = jdbcRepository.findJobsLockedTo(worker.get()).collect(toList());
+        final List<Job> preTestJobs = jdbcRepository.findJobsLockedTo(worker).collect(toList());
+        assertThat(preTestJobs.size(), is(1));
+
+        jdbcRepository.lockJobsFor(worker, 10);
+
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(worker).collect(toList());
+
         assertThat(jobs.size(), is(2));
 
-        assertThat(jobs.get(0).getWorkerId(), is(worker));
+        assertThat(jobs.get(0).getWorkerId(), is(of(worker)));
 
-        assertThat(jobs.get(1).getWorkerId(), is(worker));
+        assertThat(jobs.get(1).getWorkerId(), is(of(worker)));
     }
 
     @Test

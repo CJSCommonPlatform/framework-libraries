@@ -99,4 +99,18 @@ public interface Metadata {
      * @return the source
      */
     Optional<String> source();
+
+    /**
+     * Return the event number if this is metadata for an event.
+     *
+     * @return the event number
+     */
+    Optional<Long> eventNumber();
+
+    /**
+     * Return the previous event number if the is metadata for an event.
+     *
+     * @return the previous event number
+     */
+    Optional<Long> previousEventNumber();
 }

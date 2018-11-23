@@ -26,6 +26,7 @@
 
     <properties>
         <wildfly-maven-plugin.version>1.0.2.MoJ.Fork</wildfly-maven-plugin.version>
+        <cpp.repo.name>wiremock-service</cpp.repo.name>
     </properties>
 
     <scm>

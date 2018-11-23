@@ -7,6 +7,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Added
 - eventNumber to Metadata interface
 - previousEventNumber to Metadata interface
+- Path to JsonMetadata for eventNumber and previousEventNumber
+- event methods to MetadataBuilder
 
 ## [3.0.1] - 2018-11-15
 ### Added

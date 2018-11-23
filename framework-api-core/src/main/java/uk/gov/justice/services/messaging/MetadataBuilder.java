@@ -80,8 +80,19 @@ public interface MetadataBuilder {
      * @param version sequence id (or version) that indicates where in the stream this message is
      *                positioned
      * @return the current instance of the MetadataBuilder
+     * @deprecated Use {@link #withPosition(long)}
      */
+    @Deprecated
     MetadataBuilder withVersion(final long version);
+
+    /**
+     * Add a position to the metadata
+     *
+     * @param position sequence id (or version) that indicates where in the stream this message is
+     *                 positioned
+     * @return the current instance of the MetadataBuilder
+     */
+    MetadataBuilder withPosition(final long position);
 
     /**
      * Add a source to the metadata
@@ -90,6 +101,22 @@ public interface MetadataBuilder {
      * @return the current instance of the MetadataBuilder
      */
     MetadataBuilder withSource(final String source);
+
+    /**
+     * Add an event number to the metadata
+     *
+     * @param eventNumber the event number if this is an event.
+     * @return the current instance of the MetadataBuilder
+     */
+    MetadataBuilder withEventNumber(final long eventNumber);
+
+    /**
+     * Add a previous event number to the metadata
+     *
+     * @param previousEventNumber the previous event number if this is an event.
+     * @return the current instance of the MetadataBuilder
+     */
+    MetadataBuilder withPreviousEventNumber(final long previousEventNumber);
 
     /**
      * Build a {@link Metadata} instance from the added data.

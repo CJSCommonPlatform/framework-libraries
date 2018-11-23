@@ -19,10 +19,15 @@ public abstract class JsonMetadata implements Metadata {
     public static final String VERSION = "version";
     public static final String CAUSATION = "causation";
     public static final String SOURCE = "source";
+    public static final String EVENT = "event";
+    public static final String EVENT_NUMBER = "eventNumber";
+    public static final String PREVIOUS_EVENT_NUMBER = "previousEventNumber";
 
     protected static final String[] USER_ID_PATH = {CONTEXT, USER_ID};
     protected static final String[] CLIENT_CORRELATION_PATH = {CORRELATION, CLIENT_ID};
     protected static final String[] VERSION_PATH = {STREAM, VERSION};
     protected static final String[] SESSION_ID_PATH = {CONTEXT, SESSION_ID};
     protected static final String[] STREAM_ID_PATH = {STREAM, STREAM_ID};
+    protected static final String[] EVENT_NUMBER_PATH = {EVENT, EVENT_NUMBER};
+    protected static final String[] PREVIOUS_EVENT_NUMBER_PATH = {EVENT, PREVIOUS_EVENT_NUMBER};
 }

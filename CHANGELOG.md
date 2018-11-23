@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [3.1.0-M1] 2018-11-23
 ### Added
 - eventNumber to Metadata interface
 - previousEventNumber to Metadata interface

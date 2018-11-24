@@ -7,7 +7,6 @@
   <listener>
   	<display-name>wiremock-startup-listener</display-name>
   	<listener-class>com.github.tomakehurst.wiremock.servlet.WireMockWebContextListener</listener-class>
-  	<description>Loads WireMock and populates the servlet context with its services</description>
   </listener>
   
   <context-param>
@@ -33,7 +32,7 @@
   	<servlet-name>wiremock-mock-service-handler-servlet</servlet-name>
   	<url-pattern>/*</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
   	<servlet-name>wiremock-admin-handler-servlet</servlet-name>
   	<servlet-class>com.github.tomakehurst.wiremock.servlet.WireMockHandlerDispatchingServlet</servlet-class>
@@ -46,7 +45,7 @@
   	<servlet-name>wiremock-admin-handler-servlet</servlet-name>
   	<url-pattern>/__admin/*</url-pattern>
   </servlet-mapping>
-  
+
   <welcome-file-list>
   	<welcome-file>index.json</welcome-file>
   	<welcome-file>index.xml</welcome-file>

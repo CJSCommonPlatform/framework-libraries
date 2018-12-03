@@ -1,10 +1,12 @@
 package uk.gov.justice.services.eventsourcing.source.core;
 
+import uk.gov.justice.services.messaging.JsonEnvelope;
+
 import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
- * Source of event streams.
+ * Source of event streams and Events.
  */
 public interface EventSource {
 
@@ -30,4 +32,13 @@ public interface EventSource {
      * @return a stream of {@link EventStream}s
      */
     Stream<EventStream> getStreamsFrom(final long position);
+
+    /**
+     * returns a (Java) stream of all events since the provided event number.
+     * That is all events who's eventNumber is greater than the provided event number
+     *
+     * @param eventNumber An event number to search from
+     * @return a Java Stream of Events
+     */
+    Stream<JsonEnvelope> findEventsSince(final long eventNumber);
 }

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+
+## [3.1.0-M2] 2018-12-03
+### Added
+- findEventsSince(...) method to the EventSource interface
+
 ## [3.1.0-M1] 2018-11-23
 ### Added
 - eventNumber to Metadata interface

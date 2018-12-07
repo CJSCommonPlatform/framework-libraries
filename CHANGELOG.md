@@ -7,6 +7,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ### Changed
 - Update common-bom to version 1.28.0
+- Removed Optional from ReflectionUtil field accessors
 
 ## [1.18.0] - 2018-07-10
 

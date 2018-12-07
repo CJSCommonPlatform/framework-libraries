@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
@@ -67,17 +68,18 @@ public class ReflectionUtilTest {
     public void shouldGetAndSetFieldValues() throws Exception {
         final TestClass testClass = new TestClass();
 
-        final Optional<Object> fieldValue = ReflectionUtil.fieldValue(testClass, "field1");
+        final Field field = ReflectionUtil.getField(((Object) testClass).getClass(), "field1");
+        field.setAccessible(true);
 
-        assertThat(fieldValue.isPresent(), is(true));
-        assertThat(fieldValue.get(), is(instanceOf(String.class)));
-        assertThat(fieldValue.get(), is("value1"));
+        final Object fieldValue = field.get(testClass);
+
+        assertThat(fieldValue, is(instanceOf(String.class)));
+        assertThat(fieldValue, is("value1"));
 
         ReflectionUtil.setField(testClass, "field1", "new value");
-        final Optional<String> resultValue = ReflectionUtil.fieldValueAs(testClass, "field1", String.class);
+        final String resultValue = ReflectionUtil.getValueOfField(testClass, "field1", String.class);
 
-        assertThat(resultValue.isPresent(), is(true));
-        assertThat(resultValue.get(), is("new value"));
+        assertThat(resultValue, is("new value"));
     }
 
     @Documented

@@ -68,7 +68,6 @@ import uk.gov.justice.services.event.buffer.core.repository.streambuffer.EventBu
 import uk.gov.justice.services.event.buffer.core.repository.streambuffer.EventBufferJdbcRepository;
 import uk.gov.justice.services.event.buffer.core.repository.subscription.Subscription;
 import uk.gov.justice.services.event.buffer.core.repository.subscription.SubscriptionJdbcRepository;
-import uk.gov.justice.services.event.buffer.core.service.BufferInitialisationStrategyProducer;
 import uk.gov.justice.services.event.buffer.core.service.ConsecutiveEventBufferService;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
 import uk.gov.justice.services.jdbc.persistence.ViewStoreJdbcDataSourceProvider;
@@ -176,7 +175,6 @@ public class EventBufferIT {
             PolicyEvaluator.class,
 
             ConsecutiveEventBufferService.class,
-            BufferInitialisationStrategyProducer.class,
             LoggerProducer.class,
             EmptySystemUserProvider.class,
             SystemUserUtil.class,

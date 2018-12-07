@@ -1,6 +1,7 @@
 package uk.gov.justice.services.test.utils.core.reflection;
 
 
+import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -71,15 +72,15 @@ public final class ReflectionUtil {
      * @param object     - object to modify
      * @param fieldName  - name of the field belonging to the object
      * @param fieldValue - value of the field to be set
-     * @throws IllegalAccessException if unable to access field
      */
-    public static void setField(final Object object, final String fieldName, final Object fieldValue)
-            throws IllegalAccessException {
-        final Optional<Field> field = fieldOf(object.getClass(), fieldName);
+    public static void setField(final Object object, final String fieldName, final Object fieldValue) {
 
-        if (field.isPresent()) {
-            field.get().setAccessible(true);
-            field.get().set(object, fieldValue);
+        try {
+            final Field field = getField(object.getClass(), fieldName);
+            field.setAccessible(true);
+            field.set(object, fieldValue);
+        } catch (final IllegalAccessException e) {
+            throw new ReflectionException(format("Unable to access field '%s' on class %s", fieldName, object.getClass().getName()), e);
         }
     }
 
@@ -90,44 +91,33 @@ public final class ReflectionUtil {
      * @param fieldName      - name of field in class
      * @return - field belonging to the given classWithField with the given fieldName
      */
-    public static Optional<Field> fieldOf(final Class<?> classWithField, final String fieldName) {
+    public static Field getField(final Class<?> classWithField, final String fieldName) {
         return stream(classWithField.getDeclaredFields())
                 .filter(f -> f.getName().equals(fieldName))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new ReflectionException(format("No field named '%s' found on class %s", fieldName, classWithField.getName())));
     }
 
     /**
      * Get the value of a field from an Object
      *
-     * @param object          - object to find value from
-     * @param fieldName       - name of field in class
-     * @param returnClassType - defines the return field value class type
-     * @param <T>             the class type to return
-     * @return the field value returned cast to the class type defined by the returnClassType
+     * @param object         - object to find value from
+     * @param fieldName      - name of field in class
+     * @param fieldClassType - defines the return field value class type
+     * @param <T>            the class type to return
+     * @return the field value returned cast to the fieldClassType
      */
-    public static <T> Optional<T> fieldValueAs(final Object object,
-                                               final String fieldName,
-                                               final Class<T> returnClassType) throws IllegalAccessException {
-        return fieldValue(object, fieldName)
-                .map(returnClassType::cast);
-    }
+    public static <T> T getValueOfField(
+            final Object object,
+            final String fieldName,
+            final Class<T> fieldClassType) {
 
-    /**
-     * Get the value of a field from an Object
-     *
-     * @param object    - object to find value from
-     * @param fieldName - name of field in class
-     * @return - field belonging to the given clazz with the given fieldName
-     */
-    public static Optional<Object> fieldValue(final Object object, final String fieldName) throws IllegalAccessException {
-        final Optional<Field> field = fieldOf(object.getClass(), fieldName);
-
-        if (field.isPresent()) {
-            field.get().setAccessible(true);
-
-            return Optional.ofNullable(field.get().get(object));
+        try {
+            final Field field = getField(object.getClass(), fieldName);
+            field.setAccessible(true);
+            return fieldClassType.cast(field.get(object));
+        } catch (final IllegalAccessException e) {
+            throw new ReflectionException(format("Unable to access field '%s' on class %s", fieldName, object.getClass().getName()), e);
         }
-
-        return Optional.empty();
     }
 }

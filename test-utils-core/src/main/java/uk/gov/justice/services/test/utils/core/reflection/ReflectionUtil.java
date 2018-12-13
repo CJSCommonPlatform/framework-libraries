@@ -75,8 +75,8 @@ public final class ReflectionUtil {
      */
     public static void setField(final Object object, final String fieldName, final Object fieldValue) {
 
+        final Field field = getField(object.getClass(), fieldName);
         try {
-            final Field field = getField(object.getClass(), fieldName);
             field.setAccessible(true);
             field.set(object, fieldValue);
         } catch (final IllegalAccessException e) {
@@ -87,15 +87,23 @@ public final class ReflectionUtil {
     /**
      * Searches for a field in the given class by reflection
      *
-     * @param classWithField - class type
-     * @param fieldName      - name of field in class
+     * @param aClass    - class type
+     * @param fieldName - name of field in class
      * @return - field belonging to the given classWithField with the given fieldName
      */
-    public static Field getField(final Class<?> classWithField, final String fieldName) {
-        return stream(classWithField.getDeclaredFields())
-                .filter(f -> f.getName().equals(fieldName))
-                .findFirst()
-                .orElseThrow(() -> new ReflectionException(format("No field named '%s' found on class %s", fieldName, classWithField.getName())));
+    @SuppressWarnings("CatchMayIgnoreException")
+    public static Field getField(final Class<?> aClass, final String fieldName) {
+
+        for (Class<?> currentClass = aClass; currentClass != Object.class; currentClass = currentClass.getSuperclass()) {
+            if (hasField(fieldName, currentClass)) {
+                try {
+                    return currentClass.getDeclaredField(fieldName);
+                } catch (final NoSuchFieldException thisWillNeverHappen) {
+                }
+            }
+        }
+
+        throw new ReflectionException(format("No field named '%s' found on class %s", fieldName, aClass.getName()));
     }
 
     /**
@@ -119,5 +127,16 @@ public final class ReflectionUtil {
         } catch (final IllegalAccessException e) {
             throw new ReflectionException(format("Unable to access field '%s' on class %s", fieldName, object.getClass().getName()), e);
         }
+    }
+
+    private static boolean hasField(final String fieldName, final Class<?> aClass) {
+        final Field[] declaredFields = aClass.getDeclaredFields();
+
+        if (declaredFields == null) {
+            return false;
+        }
+
+        return stream(declaredFields)
+                .anyMatch(field -> field.getName().equals(fieldName));
     }
 }

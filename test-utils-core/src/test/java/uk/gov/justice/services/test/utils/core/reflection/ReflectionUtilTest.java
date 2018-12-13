@@ -6,6 +6,7 @@ import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClas
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -82,6 +83,21 @@ public class ReflectionUtilTest {
         assertThat(resultValue, is("new value"));
     }
 
+    @Test
+    public void shouldFindFieldInSuperClass() throws Exception {
+        assertThat(ReflectionUtil.getValueOfField(new ExtendedClass(), "field1", String.class), is("value1"));
+    }
+
+    @Test
+    public void shouldThrowReflectionExceptionIfFieldNotFoundInClass() throws Exception {
+        try {
+            ReflectionUtil.getValueOfField(new ExtendedClass(), "missingField", String.class);
+            fail();
+        } catch (final ReflectionException expected) {
+            assertThat(expected.getMessage(), is("No field named 'missingField' found on class uk.gov.justice.services.test.utils.core.reflection.ReflectionUtilTest$ExtendedClass"));
+        }
+    }
+
     @Documented
     @Target(METHOD)
     @Retention(RUNTIME)
@@ -99,6 +115,8 @@ public class ReflectionUtilTest {
             return true;
         }
     }
+
+    private class ExtendedClass extends TestClass {}
 
     private class AnnotatedTestClass {
 

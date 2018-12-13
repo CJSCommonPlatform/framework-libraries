@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.19.1] - 2018-12-13
+
+### Fixed
+- ReflectionUtil now handles fields in super class
+
 ## [1.19.0] - 2018-12-07
 
 ### Changed

@@ -67,7 +67,7 @@ import uk.gov.justice.services.core.sender.SenderProducer;
 import uk.gov.justice.services.event.buffer.core.repository.streambuffer.EventBufferEvent;
 import uk.gov.justice.services.event.buffer.core.repository.streambuffer.EventBufferJdbcRepository;
 import uk.gov.justice.services.event.buffer.core.repository.subscription.Subscription;
-import uk.gov.justice.services.event.buffer.core.repository.subscription.SubscriptionJdbcRepository;
+import uk.gov.justice.services.event.buffer.core.repository.subscription.StreamStatusJdbcRepository;
 import uk.gov.justice.services.event.buffer.core.service.ConsecutiveEventBufferService;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
 import uk.gov.justice.services.jdbc.persistence.ViewStoreJdbcDataSourceProvider;
@@ -124,7 +124,7 @@ public class EventBufferIT {
     private EventBufferJdbcRepository jdbcStreamBufferRepository;
 
     @Inject
-    private SubscriptionJdbcRepository statusRepository;
+    private StreamStatusJdbcRepository statusRepository;
 
     @Before
     public void setup() throws Exception {
@@ -189,7 +189,7 @@ public class EventBufferIT {
             JdbcRepositoryHelper.class,
             ViewStoreJdbcDataSourceProvider.class,
             EventBufferJdbcRepository.class,
-            SubscriptionJdbcRepository.class,
+            StreamStatusJdbcRepository.class,
 
             SchemaCatalogAwareJsonSchemaValidator.class,
             PayloadExtractor.class,

@@ -23,7 +23,7 @@ import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.components.event.listener.interceptors.EventBufferInterceptor;
 import uk.gov.justice.services.components.event.listener.interceptors.EventFilterInterceptor;
 import uk.gov.justice.services.components.event.listener.interceptors.it.util.repository.EventBufferOpenEjbAwareJdbcRepository;
-import uk.gov.justice.services.components.event.listener.interceptors.it.util.repository.SubscriptionOpenEjbAwareJdbcRepository;
+import uk.gov.justice.services.components.event.listener.interceptors.it.util.repository.StreamStatusOpenEjbAwareJdbcRepository;
 import uk.gov.justice.services.core.accesscontrol.AccessControlFailureMessageGenerator;
 import uk.gov.justice.services.core.accesscontrol.AllowAllPolicyEvaluator;
 import uk.gov.justice.services.core.accesscontrol.DefaultAccessControlService;
@@ -174,7 +174,7 @@ public class EventBufferAndFilterChainIT {
             JdbcRepositoryHelper.class,
             ViewStoreJdbcDataSourceProvider.class,
             EventBufferOpenEjbAwareJdbcRepository.class,
-            SubscriptionOpenEjbAwareJdbcRepository.class,
+            StreamStatusOpenEjbAwareJdbcRepository.class,
 
             SchemaCatalogAwareJsonSchemaValidator.class,
             PayloadExtractor.class,

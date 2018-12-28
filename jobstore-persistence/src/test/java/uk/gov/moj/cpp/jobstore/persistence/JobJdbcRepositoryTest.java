@@ -18,9 +18,11 @@ import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryException;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
 import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapper;
+import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 
 import java.io.StringReader;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -31,8 +33,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.json.JsonObject;
+import javax.sql.DataSource;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -43,20 +45,24 @@ public class JobJdbcRepositoryTest {
     private static final String JOBS_COUNT = "SELECT COUNT(*) FROM job";
     private static final String JOB_DATA_JSON = "{\"some\": \"json\"}";
 
+    private final DataSource eventStoreDataSource = new PostgresDataSourceFactory().createJobStoreDataSource();
     private final JobJdbcRepository jdbcRepository = new JobJdbcRepository();
 
     @Before
-    public void initialize() {
-        try {
-            jdbcRepository.dataSource = new TestDataSourceFactory(LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML).createDataSource();
-            jdbcRepository.logger = mock(Logger.class);
-            jdbcRepository.jdbcRepositoryHelper = new JdbcRepositoryHelper();
-            jdbcRepository.jobSqlProvider = new AnsiJobSqlProvider();
-            checkIfReady();
-        } catch (final Exception e) {
-            e.printStackTrace();
-            fail("Job store construction failed");
+    public void runLiquibase() throws Exception {
+        try (final Connection connection = eventStoreDataSource.getConnection()) {
+            new LiquibaseDatabaseBootstrapper().bootstrap(LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML, connection);
         }
+    }
+
+    @Before
+    public void createJdbcRepository() throws Exception {
+
+        jdbcRepository.dataSource = eventStoreDataSource;
+        jdbcRepository.logger = mock(Logger.class);
+        jdbcRepository.jdbcRepositoryHelper = new JdbcRepositoryHelper();
+        jdbcRepository.jobSqlProvider = new PostgresJobSqlProvider();
+        checkIfReady();
     }
 
     private void checkIfReady() {
@@ -72,11 +78,6 @@ public class JobJdbcRepositoryTest {
                 return empty();
             }
         });
-    }
-
-    @After
-    public void after() throws SQLException {
-        jdbcRepository.dataSource.getConnection().close();
     }
 
     @Test

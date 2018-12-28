@@ -21,12 +21,8 @@ public class OpenEjbConfigurationBuilder {
         return this;
     }
 
-    public OpenEjbConfigurationBuilder addH2EventStore() {
-        return this.getH2Config("eventStore");
-    }
-
-    public OpenEjbConfigurationBuilder addh2ViewStore() {
-        return this.getH2Config("viewStore");
+    public OpenEjbConfigurationBuilder addPostgresViewStore() {
+        return this.getPostgresqlConfig("viewStore");
     }
 
     public OpenEjbConfigurationBuilder addPostgresqlEventStore() {
@@ -35,10 +31,6 @@ public class OpenEjbConfigurationBuilder {
 
     public OpenEjbConfigurationBuilder addPostgresqlJobStore() {
         return this.getPostgresqlConfig("jobStore");
-    }
-
-    public OpenEjbConfigurationBuilder addH2JobStore() {
-        return this.getH2Config("jobStore");
     }
 
     public OpenEjbConfigurationBuilder addHttpEjbPort(int port) {
@@ -50,29 +42,13 @@ public class OpenEjbConfigurationBuilder {
         return this.configuration;
     }
 
-    private OpenEjbConfigurationBuilder getH2Config(String dbName) {
-        this.configuration.put(dbName, "new://Resource?type=DataSource");
-        this.configuration.put(String.format("%s.JdbcDriver", dbName), "org.h2.Driver");
-        this.configuration.put(String.format("%s.JdbcUrl", dbName), "jdbc:h2:mem:test;MV_STORE=FALSE;MVCC=FALSE");
-        this.configuration.put(String.format("%s.JtaManaged", dbName), "true");
-        this.configuration.put(String.format("%s.UserName", dbName), "sa");
-        this.configuration.put(String.format("%s.Password", dbName), "sa");
-        this.configuration.put(String.format("%s.defaultAutoCommit", dbName), false);
-        this.configuration.put(String.format("%s.poolPreparedStatements", dbName), true);
-        this.configuration.put(String.format("%s.InitialSize", dbName), 10);
-        this.configuration.put(String.format("%s.MaxTotal", dbName), -1);
-        this.configuration.put(String.format("%s.LogSql", dbName), false);
-
-        return this;
-    }
-
     private OpenEjbConfigurationBuilder getPostgresqlConfig(String dbName) {
         this.configuration.put(dbName, "new://Resource?type=DataSource");
         this.configuration.put(String.format("%s.JdbcDriver", dbName), "org.postgresql.Driver");
-        this.configuration.put(String.format("%s.JdbcUrl", dbName), "jdbc:postgresql://localhost:5432/notificationnotifyjobstore");
+        this.configuration.put(String.format("%s.JdbcUrl", dbName), "jdbc:postgresql://localhost:5432/frameworkjobstore");
         this.configuration.put(String.format("%s.JtaManaged", dbName), true);
-        this.configuration.put(String.format("%s.UserName", dbName), "notificationnotify");
-        this.configuration.put(String.format("%s.Password", dbName), "notificationnotify");
+        this.configuration.put(String.format("%s.UserName", dbName), "framework");
+        this.configuration.put(String.format("%s.Password", dbName), "framework");
         this.configuration.put(String.format("%s.defaultAutoCommit", dbName), false);
         this.configuration.put(String.format("%s.InitialSize", dbName), 10);
         this.configuration.put(String.format("%s.MaxTotal", dbName), -1);

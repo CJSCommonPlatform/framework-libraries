@@ -19,17 +19,6 @@ public class JobSqlProviderProducerTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldReturnAnsiJobSqlProvider() {
-
-        final JobSqlProviderProducer jobSqlProviderProducer = new JobSqlProviderProducer();
-        jobSqlProviderProducer.strategyClass = "uk.gov.moj.cpp.jobstore.persistence.AnsiJobSqlProvider";
-        jobSqlProviderProducer.logger = mock(Logger.class);
-
-        final JobSqlProvider jobSqlProvider = jobSqlProviderProducer.jobSqlProvider();
-        assertThat(jobSqlProvider, instanceOf(AnsiJobSqlProvider.class));
-    }
-
-    @Test
     public void shouldReturnPostgresJobSqlProvider() {
 
         final JobSqlProviderProducer jobSqlProviderProducer = new JobSqlProviderProducer();

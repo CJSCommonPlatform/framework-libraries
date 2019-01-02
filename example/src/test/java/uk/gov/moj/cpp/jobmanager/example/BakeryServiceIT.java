@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.jobmanager.example;
 
-
 import static uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder.createOpenEjbConfigurationBuilder;
 
 import uk.gov.justice.services.cdi.InitialContextProducer;
@@ -23,10 +22,10 @@ import uk.gov.moj.cpp.jobmanager.example.util.PropertiesFileValueProducer;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
-import uk.gov.moj.cpp.jobstore.persistence.AnsiJobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;
+import uk.gov.moj.cpp.jobstore.persistence.PostgresJobSqlProvider;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.execution.JobScheduler;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
@@ -99,7 +98,7 @@ public class BakeryServiceIT {
             InitialContextProducer.class,
             UtcClock.class
     },
-            cdiAlternatives = {AnsiJobSqlProvider.class}
+            cdiAlternatives = {PostgresJobSqlProvider.class}
     )
 
     public WebApp war() {
@@ -108,17 +107,13 @@ public class BakeryServiceIT {
                 .addServlet("ServiceApp", Application.class.getName());
     }
 
-
     @Configuration
     public Properties configuration() {
-        Properties props = createOpenEjbConfigurationBuilder()
+        return createOpenEjbConfigurationBuilder()
                 .addInitialContext()
                 .addHttpEjbPort(8080)
-                .addh2ViewStore()
+                .addPostgresViewStore()
                 .build();
-
-        return props;
-
     }
 
     @Before
@@ -129,12 +124,11 @@ public class BakeryServiceIT {
     }
 
     public void initJobStoreDatabase() throws Exception {
-
-        final Liquibase eventStoreLiquibase = new Liquibase("liquibase/jobstore-db-changelog.xml",
-                new ClassLoaderResourceAccessor(), new JdbcConnection(dataSource.getConnection()));
-
-        eventStoreLiquibase.update("");
-
+        new Liquibase(
+                "liquibase/jobstore-db-changelog.xml",
+                new ClassLoaderResourceAccessor(),
+                new JdbcConnection(dataSource.getConnection()))
+                .update("");
     }
 
     @Test
@@ -143,6 +137,4 @@ public class BakeryServiceIT {
         bakeryService.makeCake();
         repository.waitForAllJobsToBeProcessed();
     }
-
-
 }

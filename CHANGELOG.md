@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## [1.4.3] - 2019-01-08
+
+### Changed
+- Update utilities version to 1.16.2
+
 ## [1.4.2] - 2018-11-09
 
 ### Changed

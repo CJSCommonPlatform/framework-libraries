@@ -23,7 +23,7 @@
     <properties>
         <cpp.repo.name>utilities</cpp.repo.name>
         <common-bom.version>1.28.0</common-bom.version>
-        <test-utils.version>1.18.1</test-utils.version>
+        <test-utils.version>1.19.1</test-utils.version>
     </properties>
 
     <scm>

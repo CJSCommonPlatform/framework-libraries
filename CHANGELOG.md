@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.17.2] - 2019-01-08
+
+## Changed
+- Update utilities to version 1.16.2
+- Update test-utils to version 1.19.1
+
 ## [1.17.1] - 2018-11-09
 
 ## Changed

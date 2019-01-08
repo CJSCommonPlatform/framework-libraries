@@ -3,9 +3,12 @@ package uk.gov.justice.generation.provider;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.fieldValue;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
 
 import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
+import uk.gov.justice.generation.pojo.visitor.DefinitionFactory;
+import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
+import uk.gov.justice.generation.pojo.visitor.StringFormatValueParser;
 
 import org.junit.Test;
 
@@ -25,10 +28,10 @@ public class DefinitionBuilderVisitorProviderTest {
     public void shouldCreateInjectedDependencies() throws Exception {
         final DefinitionBuilderVisitor definitionBuilderVisitor = new DefinitionBuilderVisitorProvider().create();
 
-        final Object definitionFactory = fieldValue(definitionBuilderVisitor, "definitionFactory");
+        final DefinitionFactory definitionFactory = getValueOfField(definitionBuilderVisitor, "definitionFactory", DefinitionFactory.class);
 
         assertThat(definitionFactory, notNullValue());
-        assertThat(fieldValue(definitionFactory, "referenceValueParser"), notNullValue());
-        assertThat(fieldValue(definitionFactory, "stringFormatValueParser"), notNullValue());
+        assertThat(getValueOfField(definitionFactory, "referenceValueParser", ReferenceValueParser.class), notNullValue());
+        assertThat(getValueOfField(definitionFactory, "stringFormatValueParser", StringFormatValueParser.class), notNullValue());
     }
 }

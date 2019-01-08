@@ -3,13 +3,14 @@ package uk.gov.justice.generation.pojo.plugin.typemodifying;
 import static java.lang.reflect.Modifier.isStatic;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.INTEGER;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.annotatedMethod;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.fieldValueAs;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
 
 import uk.gov.justice.generation.pojo.core.TypeMapping;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -110,7 +111,6 @@ public class FormatCustomReturnTypePluginTest {
         assertThat(typeName, is(originalTypeName));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void shouldHaveAnnotatedFactoryMethodForInstantiation() throws Exception {
         final Optional<Method> factoryMethod = annotatedMethod(FormatCustomReturnTypePlugin.class, FactoryMethod.class);
@@ -124,18 +124,16 @@ public class FormatCustomReturnTypePluginTest {
 
         assertThat(plugin, is(instanceOf(FormatCustomReturnTypePlugin.class)));
 
-        final Optional<CustomReturnTypeMapper> customReturnTypeMapper = fieldValueAs(
+        final CustomReturnTypeMapper customReturnTypeMapper = getValueOfField(
                 plugin,
                 "customReturnTypeMapper",
                 CustomReturnTypeMapper.class);
 
-        assertThat(customReturnTypeMapper.isPresent(), is(true));
-
-        final Optional<FullyQualifiedNameToClassNameConverter> fullyQualifiedNameToClassNameConverter = fieldValueAs(
-                customReturnTypeMapper.get(),
+        final FullyQualifiedNameToClassNameConverter fullyQualifiedNameToClassNameConverter = getValueOfField(
+                customReturnTypeMapper,
                 "fullyQualifiedNameToClassNameConverter",
                 FullyQualifiedNameToClassNameConverter.class);
 
-        assertThat(fullyQualifiedNameToClassNameConverter.isPresent(), is(true));
+        assertThat(fullyQualifiedNameToClassNameConverter, is(notNullValue()));
     }
 }

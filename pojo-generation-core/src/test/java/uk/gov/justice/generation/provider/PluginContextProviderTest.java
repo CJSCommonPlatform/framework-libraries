@@ -1,10 +1,9 @@
 package uk.gov.justice.generation.provider;
 
-import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.fieldValue;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
@@ -37,10 +36,10 @@ public class PluginContextProviderTest {
                         generatorProperties,
                         serialVersionUID);
 
-        assertThat(fieldValue(pluginContext, "generatorFactory"), is(of(javaGeneratorFactory)));
-        assertThat(fieldValue(pluginContext, "sourceFilename"), is(of(sourceFilename)));
-        assertThat(fieldValue(pluginContext, "classModifyingPlugins"), is(of(classModifyingPlugins)));
-        assertThat(fieldValue(pluginContext, "generatorProperties"), is(of(generatorProperties)));
-        assertThat(fieldValue(pluginContext, "serialVersionUID"), is(of(serialVersionUID)));
+        assertThat(getValueOfField(pluginContext, "generatorFactory", JavaGeneratorFactory.class), is(javaGeneratorFactory));
+        assertThat(getValueOfField(pluginContext, "sourceFilename", String.class), is(sourceFilename));
+        assertThat(getValueOfField(pluginContext, "classModifyingPlugins", List.class), is(classModifyingPlugins));
+        assertThat(getValueOfField(pluginContext, "generatorProperties", PojoGeneratorProperties.class), is(generatorProperties));
+        assertThat(getValueOfField(pluginContext, "serialVersionUID", Long.class), is(serialVersionUID));
     }
 }

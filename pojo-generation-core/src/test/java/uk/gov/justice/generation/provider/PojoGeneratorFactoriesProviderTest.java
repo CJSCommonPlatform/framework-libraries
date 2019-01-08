@@ -4,14 +4,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.fieldValue;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
+import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
-
-import java.util.Optional;
+import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class PojoGeneratorFactoriesProviderTest {
 
         final JavaGeneratorFactory javaGeneratorFactory = new PojoGeneratorFactoriesProvider().createJavaGeneratorFactory(classNameFactory);
 
-        assertThat(fieldValue(javaGeneratorFactory, "classNameFactory"), is(Optional.of(classNameFactory)));
+        assertThat(getValueOfField(javaGeneratorFactory, "classNameFactory", ClassNameFactory.class), is(classNameFactory));
     }
 
     @Test
@@ -35,12 +35,10 @@ public class PojoGeneratorFactoriesProviderTest {
 
         assertThat(classNameFactory, notNullValue());
 
-        final Optional<Object> typeNameProvider = fieldValue(classNameFactory, "typeNameProvider");
-        assertThat(typeNameProvider.isPresent(), is(true));
-        assertThat(fieldValue(typeNameProvider.get(), "generationContext"), is(Optional.of(generationContext)));
+        final TypeNameProvider typeNameProvider = getValueOfField(classNameFactory, "typeNameProvider", TypeNameProvider.class);
+        assertThat(getValueOfField(typeNameProvider, "generationContext", GenerationContext.class), is(generationContext));
 
-        final Optional<Object> typeNamePluginProcessor = fieldValue(classNameFactory, "typeNamePluginProcessor");
-        assertThat(typeNamePluginProcessor.isPresent(), is(true));
-        assertThat(fieldValue(typeNamePluginProcessor.get(), "pluginProvider"), is(Optional.of(pluginProvider)));
+        final TypeNamePluginProcessor typeNamePluginProcessor = getValueOfField(classNameFactory, "typeNamePluginProcessor", TypeNamePluginProcessor.class);
+        assertThat(getValueOfField(typeNamePluginProcessor, "pluginProvider", PluginProvider.class), is(pluginProvider));
     }
 }

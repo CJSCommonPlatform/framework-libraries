@@ -5,11 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [3.1.0] - 2019-01-10
+## [3.1.1] - 2019-01-16
 
 ### Changed
 - Update to framework version 5.1.0
-- Use event-store version 1.1.0
+- Use event-store version 1.1.1
 
 ## [3.0.0] - 2018-11-22
 

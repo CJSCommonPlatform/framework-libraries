@@ -40,7 +40,7 @@
         <test-utils.version>1.19.1</test-utils.version>
         <utilities.version>1.16.2</utilities.version>
         <framework.version>5.1.0</framework.version>
-        <event-store.version>1.1.1</event-store.version>
+        <event-store.version>1.1.2</event-store.version>
     </properties>
 
     <build>

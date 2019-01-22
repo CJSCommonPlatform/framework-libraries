@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [3.1.2] - 2019-01-22
+
+### Changed
+- Use event-store version 1.1.2
+
 ## [3.1.1] - 2019-01-16
 
 ### Changed

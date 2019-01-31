@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -57,6 +58,13 @@ class JsonObjectBuilderWrapper {
         }
     }
 
+    void add(final JsonArray value, final String... name) {
+        final JsonObjectBuilder jsonObject = addOrReturnNestedJsonObject(value, name);
+        if (jsonObject != null) {
+            jsonObject.add(name[1], value);
+        }
+    }
+
     void add(final JsonObject value, final String... name) {
         final JsonObjectBuilder jsonObject = addOrReturnNestedJsonObject(value, name);
         if (jsonObject != null) {
@@ -99,22 +107,25 @@ class JsonObjectBuilderWrapper {
         entryMap.forEach((name, value) -> {
             ValueType type = ValueType.valueOf(value.getClass());
             switch (type) {
-                case JsonObjectBuilder:
+                case JSONOBJECTBUILDER:
                     jsonObjectBuilder.add(name, ((JsonObjectBuilder) value).build());
                     break;
-                case JsonArrayBuilder:
+                case JSONARRAYBUILDER:
                     jsonObjectBuilder.add(name, ((JsonArrayBuilder) value).build());
                     break;
-                case BigDecimal:
+                case BIGDECIMAL:
                     jsonObjectBuilder.add(name, (BigDecimal) value);
                     break;
-                case Integer:
+                case INTEGER:
                     jsonObjectBuilder.add(name, (Integer) value);
                     break;
-                case JsonObject:
+                case JSONOBJECT:
                     jsonObjectBuilder.add(name, (JsonObject) value);
                     break;
-                case Boolean:
+                case JSONARRAY:
+                    jsonObjectBuilder.add(name, (JsonArray) value);
+                    break;
+                case BOOLEAN:
                     jsonObjectBuilder.add(name, (Boolean) value);
                     break;
                 default:
@@ -125,7 +136,7 @@ class JsonObjectBuilderWrapper {
     }
 
     enum ValueType {
-        String, BigDecimal, Integer, Boolean, JsonObject, JsonObjectBuilder, JsonArrayBuilder;
+        STRING, BIGDECIMAL, INTEGER, BOOLEAN, JSONARRAY, JSONOBJECT, JSONOBJECTBUILDER, JSONARRAYBUILDER;
 
         static ValueType valueOf(Class<?> clazz) {
             final String className = clazz.getSimpleName();
@@ -143,7 +154,7 @@ class JsonObjectBuilderWrapper {
 
         private static ValueType valueTypeOf(final String className) {
             for (ValueType t : ValueType.values()) {
-                if (t.name().equals(className)) {
+                if (t.name().equalsIgnoreCase(className)) {
                     return t;
                 }
             }

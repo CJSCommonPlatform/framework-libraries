@@ -42,7 +42,7 @@
         <commons.testing.version>1.0.1</commons.testing.version>
         <commons.validator.version>1.5.1</commons.validator.version>
         <cpp.repo.name>maven-common-bom</cpp.repo.name>
-        <deltaspike.version>1.6.1</deltaspike.version>
+        <deltaspike.version>1.7.0</deltaspike.version>
         <drools.version>6.4.0.Final</drools.version>
         <elasticsearch.version>5.2.2</elasticsearch.version>
         <expiringmap.version>0.5.7</expiringmap.version>

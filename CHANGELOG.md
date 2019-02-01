@@ -4,6 +4,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## [1.4.4] - 2019-02-01
+
+### Changed
+- Updated common-bom-version to 1.29.0
+- Updated utilities version to 1.16.3
+- Updated generator maven plugin to version to 2.6.2
+
 ## [1.4.3] - 2019-01-08
 
 ### Changed

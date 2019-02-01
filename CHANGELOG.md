@@ -4,6 +4,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.16.3] - 2019-02-01
+
+### Changed
+- Updated test-utils to 1.21.0
+- Updated common bom to 1.29.0
+
 ## [1.16.2] - 2019-01-08
 
 ### Changed

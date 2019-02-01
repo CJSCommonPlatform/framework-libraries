@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.29.0] - 2019-02-01
+               
+## Changed
+- Update Deltaspike version 1.7.0
+
 ## [1.28.0] - 2018-07-25
 
 ### Changed

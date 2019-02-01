@@ -5,6 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.6] - 2019-02-01
+### Changed
+- Upgraded common-bom to version 1.29.0
+- Upgraded framework-api to version 3.2.0
+- Upgraded utilities to version 1.16.3
+- Upgraded test-utils to version 1.21.0
+- Upgraded generator maven plugin to version 2.6.2
+- Upgraded json-schema-catalog to version 1.4.4
+
 ## [1.5.5] - 2019-01-08
 ### Changed
 - Upgraded framework-api to version 3.1.0

@@ -5,12 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.21.0] - 2019-02-01
+## [1.22.0] - 2019-02-04
 
 ### Changed
 - Update common-bom to version 1.29.0
 
-## [1.20.0] - 2019-01-31
+## [1.21.0] - 2019-01-31
 
 ### Added
 - JsonObjectBuilderWrapper now supports adding JsonArray attribute

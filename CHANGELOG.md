@@ -4,6 +4,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Added pojo compatible methods to Sender and Requester interfaces
 
 ## [3.2.0] - 2019-02-01
 ### Changed

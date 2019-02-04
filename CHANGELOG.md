@@ -5,6 +5,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [3.1.3] - 2019-02-04
+
+### Changed
+- Update to common-bomn version 1.29.0
+- Update to test-utils version 1.22.0
+- Update to utilities version 1.16.4
+- Update to framework version 5.1.1
+- Use event-store version 1.1.3
+
 ## [3.1.2] - 2019-01-22
 
 ### Changed

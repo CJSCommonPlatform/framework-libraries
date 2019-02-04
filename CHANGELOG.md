@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.7] - 2019-02-04
+### Changed
+- Upgraded utilities to version 1.16.4
+- Upgraded test-utils to version 1.22.0
+- Upgraded json-schema-catalog to version 1.4.5
+
 ## [1.5.6] - 2019-02-01
 ### Changed
 - Upgraded common-bom to version 1.29.0

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.30.0] - 2019-02-07
+               
+## Added
+- io.github.classgraph:classgraph:4.6.32
+
 ## [1.29.0] - 2019-02-01
                
 ## Changed

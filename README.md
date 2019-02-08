@@ -44,4 +44,4 @@ Sample configuration to generate validation report for a specific annotation (e.
 
 ## Further work
 
-* Refector plugin to separate out framework specific validation logic
+* Refactor plugin to separate out framework specific validation logic

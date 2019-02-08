@@ -20,6 +20,7 @@
 
     <properties>
         <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
+        <maven-test-utils.version>1.0.0</maven-test-utils.version>
     </properties>
 
     <build>
@@ -160,8 +161,8 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>raml-maven-test-utils</artifactId>
-            <version>${project.version}</version>
+            <artifactId>maven-test-utils</artifactId>
+            <version>${maven-test-utils.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

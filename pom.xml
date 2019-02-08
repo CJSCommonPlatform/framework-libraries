@@ -22,7 +22,6 @@
         <module>raml-maven-plugin-it</module>
         <module>raml-generator-for-testing</module>
         <module>lint-checker-core</module>
-        <module>raml-maven-test-utils</module>
     </modules>
 
     <properties>

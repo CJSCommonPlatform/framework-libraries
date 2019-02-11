@@ -12,26 +12,18 @@
             <plugin>
                 <groupId>uk.gov.justice.maven</groupId>
                 <artifactId>annotation-validator-maven-plugin</artifactId>
-                <version>1.6.6-SNAPSHOT</version>
+                <version>1.0.0-SNAPSHOT</version>
                 <configuration>
                     <!-- this property takes precedence over everything else-->
                     <validationSkip>true</validationSkip>
                     <generateReport>true</generateReport>
                     <failBuildOnError>true</failBuildOnError>
-                    <serviceName>structure</serviceName>
                     <annotations>
-                        <annotation>uk.gov.justice.domain.annotation.Event</annotation>
+                        <annotation>uk.gov.justice.plugin.domain.TestAnnotation</annotation>
                     </annotations>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>uk.gov.justice.framework-api</groupId>
-            <artifactId>framework-api-domain</artifactId>
-            <version>2.0.3</version>
-        </dependency>
-    </dependencies>
 
 </project>

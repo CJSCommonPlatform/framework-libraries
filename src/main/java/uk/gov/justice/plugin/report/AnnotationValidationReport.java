@@ -17,7 +17,7 @@ public class AnnotationValidationReport extends AbstractValidationReport {
     @Override
     protected String getFileContents(final ReportConfig reportConfig) {
 
-        List<String> csvRows = newArrayList();
+        final List<String> csvRows = newArrayList();
         reportConfig.getValidationResults().forEach(vr -> {
             csvRows.add(on(",").join(new Object[]{vr.getClassWithAnnotation(), vr.getValidationText(), vr.isValidationPassed()}));
         });

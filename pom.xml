@@ -22,9 +22,9 @@
 
     <properties>
         <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
-        <framework-api-domain.version>2.2.0</framework-api-domain.version>
         <common-bom.version>1.30.0</common-bom.version>
-        <maven-test-utils.version>1.0.0-SNAPSHOT</maven-test-utils.version>
+        <cpp.repo.name>annotation-validator-maven-plugin</cpp.repo.name>
+        <maven-test-utils.version>1.0.0</maven-test-utils.version>
     </properties>
 
     <dependencyManagement>
@@ -110,11 +110,6 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.framework-api</groupId>
-            <artifactId>framework-api-domain</artifactId>
-            <version>${framework-api-domain.version}</version>
         </dependency>
 
         <!-- Test dependencies -->

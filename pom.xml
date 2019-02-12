@@ -21,6 +21,7 @@
 
     <properties>
         <common-bom.version>1.30.0</common-bom.version>
+        <cpp.repo.name>maven-test-utils</cpp.repo.name>
     </properties>
 
     <dependencyManagement>

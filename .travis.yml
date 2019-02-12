@@ -4,7 +4,7 @@ language: java
 jdk:
 - oraclejdk8
 git:
-  cache: 3
+  depth: 3
 cache:
   directories:
   - "$HOME/.m2"
@@ -18,7 +18,7 @@ addons:
 before_install:
 - git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
 - ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
-install: "${PWD}/target/travis-settings/java/install.sh -e -q -DexcludeGroupIds=uk.gov.justice.service,uk.gov.justice.services"
+install: "${PWD}/target/travis-settings/java/install.sh -e -q -DexcludeGroupIds=uk.gov.justice.maven"
 script: "${PWD}/target/travis-settings/java/script-install.sh coveralls:report sonar:sonar"
 after_success: "${PWD}/target/travis-settings/java/after_success.sh"
 env:

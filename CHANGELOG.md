@@ -5,4 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-Java library to allow for easy testing of Maven MOJO classes
+## [1.0.0] - 2019-02-12
+
+### Added
+
+- Initial release of java library enabling easy testing of Maven MOJO classes

@@ -4,4 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-Maven plugin to perform validation on annotation classes
+
+## [1.0.0] - 2019-02-12
+
+### Added
+- Initial release of maven plugin to perform validation on annotation classes

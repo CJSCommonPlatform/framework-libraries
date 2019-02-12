@@ -4,11 +4,8 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.maven.test.utils.BetterAbstractMojoTestCase;
 import uk.gov.justice.raml.maven.lintchecker.LintCheckerException;
-import uk.gov.justice.raml.maven.lintchecker.rules.FailingLintCheckRule;
-import uk.gov.justice.raml.maven.lintchecker.rules.LintCheckMojo;
-import uk.gov.justice.raml.maven.lintchecker.rules.SucceedingLintCheckRule;
-import uk.gov.justice.raml.maven.test.utils.BetterAbstractMojoTestCase;
 
 import java.io.File;
 

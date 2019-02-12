@@ -1,15 +1,10 @@
-package uk.gov.justice.plugin.annotations;
+package uk.gov.justice.plugin.annotation;
 
-import com.google.common.collect.ImmutableList;
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfoList;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import uk.gov.justice.domain.annotation.Event;
+import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.Class.forName;
+import static java.lang.Thread.currentThread;
+import static uk.gov.justice.plugin.validator.AnnotationValidatorFactory.getValidator;
+
 import uk.gov.justice.plugin.domain.ReportConfig;
 import uk.gov.justice.plugin.domain.ValidationResult;
 import uk.gov.justice.plugin.report.AnnotationValidationReport;
@@ -20,12 +15,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
+import java.util.Map;
 
-import static com.google.common.collect.ImmutableMap.of;
-import static com.google.common.collect.Lists.newArrayList;
-import static java.lang.Class.forName;
-import static java.lang.Thread.currentThread;
-import static uk.gov.justice.plugin.validator.AnnotationValidatorFactory.getValidator;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 @Mojo(name = "check-annotations", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 public class AnnotationCheckMojo extends AbstractMojo {
@@ -55,10 +54,11 @@ public class AnnotationCheckMojo extends AbstractMojo {
     private boolean failBuildOnError;
 
     /**
-     * Property denoting the microservice against which the plugin is being executed
+     * Map property to support flexible configuration of providing additional parameters for
+     * implementations of {@link AnnotationValidator}
      */
-    @Parameter(property = "serviceName")
-    private String serviceName;
+    @Parameter(property = "validatorProperties")
+    private Map<String, String> validatorProperties;
 
     /**
      * Boolean property to turn of plugins validation check
@@ -77,7 +77,7 @@ public class AnnotationCheckMojo extends AbstractMojo {
         }
 
         getLog().info(String.format("Executing plugin for project '%s'", project.getName()));
-        configureDefaultPropertyValues();
+        initialiseClassLoader();
 
         final List<ValidationResult> globalValidationResults = newArrayList();
         for (String annotationClass : annotations) {
@@ -96,12 +96,12 @@ public class AnnotationCheckMojo extends AbstractMojo {
     private List<ValidationResult> processAnnotation(final URLClassLoader classLoader, final String annotationClass) throws MojoFailureException {
 
         final List<ValidationResult> annotationValidationResults = newArrayList();
-        final ClassInfoList classesWithAnnotation = new ClassGraph().enableAnnotationInfo().scan().getClassesWithAnnotation(annotationClass);
-        final AnnotationValidator annotationValidator = getValidator(annotationClass);
-        getLog().info("Found " + classesWithAnnotation.getNames().size() + " classes for annotation '" + annotationClass + "'");
-        for (String noa : classesWithAnnotation.getNames()) {
+        final ClassInfoList annotationClasses = new ClassGraph().enableAnnotationInfo().scan().getClassesWithAnnotation(annotationClass);
+        final AnnotationValidator annotationValidator = getValidator(classLoader, annotationClass);
+        getLog().info("Found " + annotationClasses.getNames().size() + " classes for annotation '" + annotationClass + "'");
+        for (String nameOfAnnotation : annotationClasses.getNames()) {
             try {
-                annotationValidationResults.add(annotationValidator.validate(forName(noa, false, classLoader), of("serviceName", serviceName)));
+                annotationValidationResults.add(annotationValidator.validate(forName(nameOfAnnotation, false, classLoader), validatorProperties));
             } catch (final ClassNotFoundException e) {
                 reportError("Cannot find class - " + e.getMessage());
             }
@@ -111,14 +111,6 @@ public class AnnotationCheckMojo extends AbstractMojo {
             new AnnotationValidationReport().generateReport(new ReportConfig(annotationClass, project.getBasedir().getAbsolutePath(), annotationValidationResults));
         }
         return annotationValidationResults;
-    }
-
-    private void configureDefaultPropertyValues() throws MojoFailureException {
-        if (annotations.isEmpty()) {
-            annotations = ImmutableList.of(Event.class.getName());
-        }
-
-        initialiseClassLoader();
     }
 
     private void initialiseClassLoader() throws MojoFailureException {

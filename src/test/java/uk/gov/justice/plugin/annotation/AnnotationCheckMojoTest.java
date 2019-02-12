@@ -1,31 +1,42 @@
-package uk.gov.justice.plugin.annotations;
-
-import org.apache.maven.plugin.MojoFailureException;
-import org.junit.After;
-import uk.gov.justice.domain.annotation.Event;
-import uk.gov.justice.maven.test.utils.BetterAbstractMojoTestCase;
-import uk.gov.justice.plugin.domain.ClassWithInvalidEventAnnotation;
-import uk.gov.justice.plugin.domain.ClassWithValidEventAnnotation;
-import uk.gov.justice.plugin.domain.TestAnnotation;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+package uk.gov.justice.plugin.annotation;
 
 import static com.google.common.base.Joiner.on;
 import static org.apache.commons.io.FileUtils.readLines;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import uk.gov.justice.maven.test.utils.BetterAbstractMojoTestCase;
+import uk.gov.justice.plugin.domain.AnotherTestAnnotation;
+import uk.gov.justice.plugin.domain.ClassWithInvalidEventAnnotation;
+import uk.gov.justice.plugin.domain.ClassWithValidEventAnnotation;
+import uk.gov.justice.plugin.domain.TestAnnotation;
+import uk.gov.justice.plugin.domain.TestAnnotationWithoutValidator;
+import uk.gov.justice.plugin.exception.ValidatorNotFoundException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.maven.plugin.MojoFailureException;
+import org.junit.After;
+
 /**
- * The tests below rely on a dummy java project with compiled source code which can be found in the following location
- * /src/test/resources/annotation-plugin
+ * The tests below rely on a dummy java project with compiled source code which can be found in the
+ * following location /src/test/resources/annotation-plugin
  * <p>
- * The project has been compiled and the target directory with compiled classes preserved for running these tests
+ * The project has been compiled and the target directory with compiled classes preserved for
+ * running these tests
  */
 public class AnnotationCheckMojoTest extends BetterAbstractMojoTestCase {
+
+    /**
+     * NOTE: Any changes to the plugin will require an update to the version of plugin under the
+     * test POMs present under src/test/resources/annotation-plugin folder.  The plugin version
+     * should match the project's POM version
+     */
 
     private static final String PLUGIN_VALIDATION_RESULT_PREFIX = "annotation-plugin-validation-result-";
     private static final String PROJECT_BASE_DIR = "src/test/resources/annotation-plugin";
@@ -42,13 +53,15 @@ public class AnnotationCheckMojoTest extends BetterAbstractMojoTestCase {
     }
 
     public void testShouldScanClassesWithAnnotationsAndGenerateReportWithoutFailingBuild() throws Exception {
+        this.getClass().getPackage().getImplementationVersion();
+
         final File pom = new File(PROJECT_BASE_DIR + "/pom-generate-report.xml");
         final AnnotationCheckMojo mojo = (AnnotationCheckMojo) lookupConfiguredMojo(pom, MAVEN_GOAL_CHECK_ANNOTATIONS);
 
         mojo.execute();
 
         // assert report generation and content
-        verifyReport();
+        verifyReport("");
     }
 
     public void testShouldScanClassesWithAnnotationsAndGenerateReportWhilstFailingBuild() throws Exception {
@@ -61,7 +74,7 @@ public class AnnotationCheckMojoTest extends BetterAbstractMojoTestCase {
         } catch (MojoFailureException e) {
 
             // assert report generation and content
-            verifyReport();
+            verifyReport("");
         }
 
     }
@@ -81,19 +94,43 @@ public class AnnotationCheckMojoTest extends BetterAbstractMojoTestCase {
 
         mojo.execute();
 
-        verifyReportGenerated(Event.class);
         verifyReportGenerated(TestAnnotation.class);
+        verifyReportGenerated(AnotherTestAnnotation.class);
     }
 
-    private void verifyReport() throws IOException {
-        final List<String> reportLines = readLines(new File(getQualifiedPathForReport(Event.class)));
+    public void testShouldScanClassesWithAnnotationsAndGenerateReportUsingAdditionalProperty() throws Exception {
+        final File pom = new File(PROJECT_BASE_DIR + "/pom-generate-report-with-additional-validator-properties.xml");
+        final AnnotationCheckMojo mojo = (AnnotationCheckMojo) lookupConfiguredMojo(pom, MAVEN_GOAL_CHECK_ANNOTATIONS);
+
+        mojo.execute();
+
+        // assert report generation and content
+        verifyReport("dummy message");
+    }
+
+
+    public void testShouldThrowExceptionAsUsedAnnotationHasNoValidator() throws Exception {
+        final File pom = new File(PROJECT_BASE_DIR + "/pom-fail-annotation-with-no-validator.xml");
+        final AnnotationCheckMojo mojo = (AnnotationCheckMojo) lookupConfiguredMojo(pom, MAVEN_GOAL_CHECK_ANNOTATIONS);
+
+        try {
+            mojo.execute();
+            fail("Exception should be thrown");
+        } catch (ValidatorNotFoundException e) {
+            assertThat(e.getMessage(), containsString(TestAnnotationWithoutValidator.class.getName()));
+        }
+
+    }
+
+    private void verifyReport(final String validationFailureMessageText) throws IOException {
+        final List<String> reportLines = readLines(new File(getQualifiedPathForReport(TestAnnotation.class)));
         assertThat(reportLines, hasSize(2));
-        assertThat(reportLines, hasItem(getCsvLine(ClassWithValidEventAnnotation.class.getName(), "structure.events.valid", true)));
-        assertThat(reportLines, hasItem(getCsvLine(ClassWithInvalidEventAnnotation.class.getName(), "structure.invalid", false)));
+        assertThat(reportLines, hasItem(getCsvLine(ClassWithValidEventAnnotation.class.getName(), "events.valid", true)));
+        assertThat(reportLines, hasItem(getCsvLine(ClassWithInvalidEventAnnotation.class.getName(), validationFailureMessageText, false)));
     }
 
     private void verifyReportNotGenerated() {
-        final File file = new File(getQualifiedPathForReport(Event.class));
+        final File file = new File(getQualifiedPathForReport(TestAnnotation.class));
         assertThat(file.exists(), is(false));
     }
 

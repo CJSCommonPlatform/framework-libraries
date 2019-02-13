@@ -32,6 +32,7 @@
         <module>framework-api-messaging-client</module>
         <module>framework-api-bom</module>
         <module>framework-api-subscription</module>
+        <module>framework-api-validator</module>
     </modules>
 
     <scm>
@@ -43,6 +44,7 @@
     <properties>
         <cpp.repo.name>framework-api</cpp.repo.name>
         <common-bom.version>1.29.0</common-bom.version>
+        <annotation-validator-core.version>1.0.1</annotation-validator-core.version>
     </properties>
 
     <dependencyManagement>

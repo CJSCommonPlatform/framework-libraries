@@ -17,6 +17,23 @@ of a CSV report.  This report is generated per annotation on which validation is
 | _validationSkip_        | (Boolean) Skips annotation validation in its entirety if set to true|
 | _annotations.annotation_| (List) fully qualified class names for annotations|
 
+
+## Extending plugin usage
+
+The module provides the API for implementing validators for specific annotation classes.
+
+The following dependency will need to included
+```xml
+<dependency>
+    <groupId>uk.gov.justice.maven</groupId>
+    <artifactId>annotation-validator-core</artifactId>
+    <version>LATEST</version>
+</dependency>
+```
+
+Create an implementation of `uk.gov.justice.maven.annotation.validator.AnnotationValidator` interface.  This is a typed interface which is tied a specific annotation class type.  
+
+
 ## Usage
 
 Sample configuration to generate validation report for a specific annotation (e.g., `uk.gov.justice.domain.annotation.Event`:

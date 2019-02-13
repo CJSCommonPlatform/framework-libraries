@@ -4,7 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [3.3.0] - 2019-02-13
+### Changed
 - Added pojo compatible methods to Sender and Requester interfaces
+- Initial implementation of validator for Event annotation class
 
 ## [3.2.0] - 2019-02-01
 ### Changed

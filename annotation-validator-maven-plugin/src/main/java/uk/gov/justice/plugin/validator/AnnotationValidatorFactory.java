@@ -27,7 +27,7 @@ public class AnnotationValidatorFactory {
                 LOGGER.info("Processing class '{}'", implementingClassName);
                 final Class<?> validatorClass = forName(implementingClassName, false, classLoader);
                 final AnnotationValidator validatorImplementation = (AnnotationValidator) validatorClass.newInstance();
-                if (StringUtils.equals(validatorImplementation.getApplicableAnnotationName(), annotationClass)) {
+                if (StringUtils.equals(validatorImplementation.getApplicableAnnotationName().getName(), annotationClass)) {
                     return validatorImplementation;
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {

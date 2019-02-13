@@ -5,7 +5,6 @@ import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import uk.gov.justice.maven.annotation.domain.ValidationResult;
-import uk.gov.justice.maven.annotation.exception.ValidationException;
 import uk.gov.justice.maven.annotation.validator.AnnotationValidator;
 import uk.gov.justice.plugin.domain.TestAnnotation;
 
@@ -14,7 +13,7 @@ import java.util.Map;
 public class TestAnnotationValidator implements AnnotationValidator<TestAnnotation> {
 
     @Override
-    public ValidationResult validate(final Class<?> classWithAnnotation, final Map<String, String> validationProperties) throws ValidationException {
+    public ValidationResult validate(final Class<?> classWithAnnotation, final Map<String, String> validationProperties) {
         final TestAnnotation annotation = classWithAnnotation.getAnnotation(TestAnnotation.class);
 
         final String annotationValue = annotation.value();
@@ -24,6 +23,11 @@ public class TestAnnotationValidator implements AnnotationValidator<TestAnnotati
         }
 
         return new ValidationResult(classWithAnnotation.getName(), true, annotationValue);
+    }
+
+    @Override
+    public Class<TestAnnotation> getApplicableAnnotationName() {
+        return TestAnnotation.class;
     }
 
 }

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.0.1] - 2019-02-13
+
+### Changed
+- Modularised repo to hava separation across plugin and core services
+
 ## [1.0.0] - 2019-02-12
 
 ### Added

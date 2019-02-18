@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.5.0] - 2019-02-18
+
+### Changed
+- Surfacing filename responsible for JSON parsing error
+
 ## [1.4.5] - 2019-02-05
 
 ### Changed

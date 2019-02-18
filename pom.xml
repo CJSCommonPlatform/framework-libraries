@@ -33,6 +33,7 @@
         <module>framework-api-bom</module>
         <module>framework-api-subscription</module>
         <module>framework-api-validator</module>
+        <module>framework-api-jmx</module>
     </modules>
 
     <scm>

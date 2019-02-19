@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Upgraded json-schema-catalog to version 1.5.0
 
 ## [1.5.7] - 2019-02-04
 ### Changed

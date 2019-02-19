@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.4.0-M1] - 2019-02-19
+### Added
+- Shuttering, catchup and jmx interfaces
+
 ## [3.3.0] - 2019-02-13
 ### Changed
 - Added pojo compatible methods to Sender and Requester interfaces

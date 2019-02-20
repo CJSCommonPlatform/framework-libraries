@@ -48,14 +48,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.event-store</groupId>
-            <artifactId>test-utils-persistence</artifactId>
-            <version>${event-store.version}</version>
+            <groupId>org.apache.tomee</groupId>
+            <artifactId>openejb-core</artifactId>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>uk.gov.justice.utils</groupId>
-                    <artifactId>test-utils-core</artifactId>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils-core</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

@@ -88,6 +88,11 @@
                 <artifactId>framework-api-subscription</artifactId>
                 <version>${cpp.framework-api.version}</version>
             </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.framework-api</groupId>
+                <artifactId>framework-api-jmx</artifactId>
+                <version>${cpp.framework-api.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

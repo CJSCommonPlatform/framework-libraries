@@ -49,7 +49,6 @@ import uk.gov.justice.services.core.interceptor.InterceptorChainEntryProvider;
 import uk.gov.justice.services.core.interceptor.InterceptorChainObserver;
 import uk.gov.justice.services.core.interceptor.InterceptorChainProcessor;
 import uk.gov.justice.services.core.interceptor.InterceptorChainProcessorProducer;
-import uk.gov.justice.services.core.json.BackwardsCompatibleJsonSchemaValidator;
 import uk.gov.justice.services.core.json.FileBasedJsonSchemaValidator;
 import uk.gov.justice.services.core.json.JsonSchemaLoader;
 import uk.gov.justice.services.core.json.PayloadExtractor;
@@ -71,6 +70,7 @@ import uk.gov.justice.services.messaging.jms.DefaultEnvelopeConverter;
 import uk.gov.justice.services.messaging.jms.DefaultJmsEnvelopeSender;
 import uk.gov.justice.services.messaging.logging.DefaultTraceLogger;
 import uk.gov.justice.services.test.utils.common.envelope.TestEnvelopeRecorder;
+import uk.gov.justice.services.test.utils.common.validator.DummyJsonSchemaValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +174,7 @@ public class EventFilterIT {
             EnvelopeValidator.class,
             EnvelopeInspector.class,
             RequesterProducer.class,
-            BackwardsCompatibleJsonSchemaValidator.class,
+            DummyJsonSchemaValidator.class,
 
             MediaTypesMappingCacheInitialiser.class,
             SchemaIdMappingCacheInitialiser.class

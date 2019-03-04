@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [3.4.0-M2] - 2019-03-04
+### Added
+- JMX dependency to framework-api-bom
+
 ## [3.4.0-M1] - 2019-02-19
 ### Added
 - Shuttering, catchup and jmx interfaces

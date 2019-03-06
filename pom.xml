@@ -34,6 +34,7 @@
         <module>framework-api-subscription</module>
         <module>framework-api-validator</module>
         <module>framework-api-jmx</module>
+        <module>event-buffer-api</module>
     </modules>
 
     <scm>

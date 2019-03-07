@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M1] - 2019-03-07
+### Added
+- Merged in event-buffer-api from event-store as framework-api-event-store
+- Merged in event-listener-interceptors from event-store as framework-api-event-listener-interceptors
+
 ## [3.4.0-M2] - 2019-03-04
 ### Added
 - JMX dependency to framework-api-bom

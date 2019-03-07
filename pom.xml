@@ -34,6 +34,8 @@
         <module>framework-api-subscription</module>
         <module>framework-api-validator</module>
         <module>framework-api-jmx</module>
+        <module>framework-api-event-buffer</module>
+        <module>framework-api-interceptors</module>
     </modules>
 
     <scm>
@@ -46,6 +48,7 @@
         <cpp.repo.name>framework-api</cpp.repo.name>
         <common-bom.version>1.29.0</common-bom.version>
         <annotation-validator-core.version>1.0.1</annotation-validator-core.version>
+        <test-utils.version>1.22.0</test-utils.version>
     </properties>
 
     <dependencyManagement>

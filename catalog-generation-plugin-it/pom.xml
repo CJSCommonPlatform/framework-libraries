@@ -14,9 +14,9 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>generator-plugin</artifactId>
-                <groupId>uk.gov.justice.maven.generator</groupId>
-                <version>${generator-maven-plugin.version}</version>
+                <groupId>uk.gov.justice.schema</groupId>
+                <artifactId>catalog-generation-plugin</artifactId>
+                <version>${project.version}</version>
                 <executions>
                     <execution>
                         <id>internal-jsons</id>
@@ -42,7 +42,7 @@
                             </generatorProperties>
                         </configuration>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>generate-schema-catalog</goal>
                         </goals>
                         <phase>generate-sources</phase>
                     </execution>
@@ -54,6 +54,34 @@
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${plugins.maven.enforcer.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-rules</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>${enforcer.java.version.range}</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${enforcer.maven.version.range}</version>
+                                </requireMavenVersion>
+                                <requirePluginVersions>
+                                    <message>Please define plugin versions</message>
+                                    <banSnapshots>false</banSnapshots>
+                                </requirePluginVersions>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

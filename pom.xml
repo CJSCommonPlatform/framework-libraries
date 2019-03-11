@@ -24,6 +24,7 @@
         <module>schema-service</module>
         <module>schema-example-context</module>
         <module>catalog-test-utils</module>
+        <module>catalog-generation-plugin</module>
     </modules>
 
     <properties>

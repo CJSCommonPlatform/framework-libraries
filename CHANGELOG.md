@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.6.0] - 2019-03-11
+
+### Added
+- Maven Mojo which allows independent dependency setting
+
 ## [1.5.0] - 2019-02-18
 
 ### Changed

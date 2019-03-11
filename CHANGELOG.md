@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2019-03-11
+### Added
+- Maven Mojo which allows independent dependency setting
+
+### Changed
+- Upgraded json-schema-catalog to version 1.6.0
+
 ## [1.5.8] - 2019-02-19
 ### Changed
 - Upgraded json-schema-catalog to version 1.5.0

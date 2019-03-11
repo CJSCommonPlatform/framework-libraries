@@ -25,6 +25,7 @@
         <module>standard-test-catalog</module>
         <module>example-pojo-schema</module>
         <module>example-schema-to-pojo-gen-test</module>
+        <module>pojo-generation-plugin</module>
     </modules>
 
     <properties>
@@ -33,7 +34,7 @@
         <utilities.version>1.16.4</utilities.version>
         <test-utils.version>1.22.0</test-utils.version>
         <generator-maven-plugin.version>2.6.2</generator-maven-plugin.version>
-        <json-schema-catalog.version>1.5.0</json-schema-catalog.version>
+        <json-schema-catalog.version>1.6.0</json-schema-catalog.version>
 
         <cpp.repo.name>jsonschema-pojo-generator</cpp.repo.name>
     </properties>

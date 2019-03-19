@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- Add support for syncing linked events after stream transformation with transformed events
+
 ## [4.0.0-M1] - 2019-03-07
 ### Added
 - Merged in event-buffer-api from event-store as framework-api-event-store

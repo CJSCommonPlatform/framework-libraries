@@ -5,6 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M2] - 2019-03-19
 ### Added
 - Add support for syncing linked events after stream transformation with transformed events
 

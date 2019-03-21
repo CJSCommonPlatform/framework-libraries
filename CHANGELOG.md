@@ -5,14 +5,21 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [3.1.3] - 2019-02-04
+## [3.1.4] - 2019-03-21
 
 ### Changed
-- Update to common-bomn version 1.29.0
+- Revert common-bom back to version 1.28.0
+- Revert test-utils back to version 1.19.1
+- Revert utilities back to version 1.16.2
+- Update framework version to 5.1.2
+
+## [3.1.3] - Bad Release - 2019-02-04
+
+### Changed
+- Update to common-bom version 1.29.0
 - Update to test-utils version 1.22.0
 - Update to utilities version 1.16.4
 - Update to framework version 5.1.1
-- Use event-store version 1.1.3
 
 ## [3.1.2] - 2019-01-22
 

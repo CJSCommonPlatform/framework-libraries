@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [4.0.0-M4] - 2019-03-27
+### Added
+- Removed ApplicationController and moved to jee eventing
+
 ## [4.0.0-M3] - 2019-03-26
 ### Added
 - Catchup for Subscription event for informing the app of the cathcup lifecycle of a subscription

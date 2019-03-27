@@ -1,4 +1,4 @@
-package uk.gov.justice.services.core.lifecycle.catchup.events;
+package uk.gov.justice.services.core.lifecycle.events.catchup;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;

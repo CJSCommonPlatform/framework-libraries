@@ -1,6 +1,4 @@
-package uk.gov.justice.services.core.lifecycle.shuttering.events;
-
-import uk.gov.justice.services.core.lifecycle.shuttering.Shutterable;
+package uk.gov.justice.services.core.lifecycle.events.shuttering;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;

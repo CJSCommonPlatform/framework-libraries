@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [4.0.0-M5] - 2019-03-29
+### Changed
+- Change caller/shutterable to a simple String in the event classes
 
 ## [4.0.0-M4] - 2019-03-27
 ### Added

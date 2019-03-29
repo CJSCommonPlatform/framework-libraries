@@ -4,16 +4,16 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class CatchupRequestedEvent {
-    private final Object caller;
+    private final String initiatedBy;
     private final ZonedDateTime catchupRequestedAt;
 
-    public CatchupRequestedEvent(final Object caller, final ZonedDateTime catchupRequestedAt) {
-        this.caller = caller;
+    public CatchupRequestedEvent(final String initiatedBy, final ZonedDateTime catchupRequestedAt) {
+        this.initiatedBy = initiatedBy;
         this.catchupRequestedAt = catchupRequestedAt;
     }
 
-    public Object getCaller() {
-        return caller;
+    public String getInitiatedBy() {
+        return initiatedBy;
     }
 
     public ZonedDateTime getCatchupRequestedAt() {
@@ -25,19 +25,19 @@ public class CatchupRequestedEvent {
         if (this == o) return true;
         if (!(o instanceof CatchupRequestedEvent)) return false;
         final CatchupRequestedEvent that = (CatchupRequestedEvent) o;
-        return Objects.equals(caller, that.caller) &&
+        return Objects.equals(initiatedBy, that.initiatedBy) &&
                 Objects.equals(catchupRequestedAt, that.catchupRequestedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(caller, catchupRequestedAt);
+        return Objects.hash(initiatedBy, catchupRequestedAt);
     }
 
     @Override
     public String toString() {
         return "CatchupRequestedEvent{" +
-                "caller=" + caller +
+                "initiatedBy='" + initiatedBy + '\'' +
                 ", catchupRequestedAt=" + catchupRequestedAt +
                 '}';
     }

@@ -5,16 +5,16 @@ import java.util.Objects;
 
 public class UnshutteringRequestedEvent {
 
-    private final Object caller;
+    private final String initiatedBy;
     private final ZonedDateTime unshutteringRequestedAt;
 
-    public UnshutteringRequestedEvent(final Object caller, final ZonedDateTime unshutteringRequestedAt) {
-        this.caller = caller;
+    public UnshutteringRequestedEvent(final String initiatedBy, final ZonedDateTime unshutteringRequestedAt) {
+        this.initiatedBy = initiatedBy;
         this.unshutteringRequestedAt = unshutteringRequestedAt;
     }
 
-    public Object getCaller() {
-        return caller;
+    public String getInitiatedBy() {
+        return initiatedBy;
     }
 
     public ZonedDateTime getUnshutteringRequestedAt() {
@@ -26,19 +26,19 @@ public class UnshutteringRequestedEvent {
         if (this == o) return true;
         if (!(o instanceof UnshutteringRequestedEvent)) return false;
         final UnshutteringRequestedEvent that = (UnshutteringRequestedEvent) o;
-        return Objects.equals(caller, that.caller) &&
+        return Objects.equals(initiatedBy, that.initiatedBy) &&
                 Objects.equals(unshutteringRequestedAt, that.unshutteringRequestedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(caller, unshutteringRequestedAt);
+        return Objects.hash(initiatedBy, unshutteringRequestedAt);
     }
 
     @Override
     public String toString() {
         return "UnshutteringRequestedEvent{" +
-                "caller=" + caller +
+                "initiatedBy='" + initiatedBy + '\'' +
                 ", unshutteringRequestedAt=" + unshutteringRequestedAt +
                 '}';
     }

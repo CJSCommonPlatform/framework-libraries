@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M7] - 2019-04-12
+## Changed 
+- LinkedEventSourceTransformation interface to PublishedEventSourceTransformation
+- LinkedEventException to PublishedEventException
+
 ## [4.0.0-M6] - 2019-04-12
 ### Added
 - PublishedEventSource for accessing published events

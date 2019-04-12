@@ -4,6 +4,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [4.0.0-M6] - 2019-04-12
+### Added
+- PublishedEventSource for accessing published events
+
+### Changed
+- Moved findEventsSince method from EventSource to PublishedEventSource
+
 ## [4.0.0-M5] - 2019-03-29
 ### Changed
 - Change caller/shutterable to a simple String in the event classes

@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [4.0.0-M8] - 2019-04-16
+## Changed 
+- Renamed method names in PublishedEventSourceTransformation
 
 ## [4.0.0-M7] - 2019-04-12
 ## Changed 

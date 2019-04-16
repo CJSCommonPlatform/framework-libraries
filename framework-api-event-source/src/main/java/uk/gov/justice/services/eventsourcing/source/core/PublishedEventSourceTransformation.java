@@ -8,13 +8,13 @@ import uk.gov.justice.services.eventsourcing.source.core.exception.PublishedEven
 public interface PublishedEventSourceTransformation {
 
     /**
-     * Truncates the Published event log
+     * Deletes all PublishedEvents in the published_event table
      */
-    void truncate() throws PublishedEventException;
+    void deleteAllPublishedEvents() throws PublishedEventException;
 
     /**
-     * Populates Published event log
+     * Populates PublishedEvents into the published_event table
      */
-    void populate() throws PublishedEventException;
+    void populatePublishedEvents() throws PublishedEventException;
 
 }

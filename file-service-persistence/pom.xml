@@ -47,7 +47,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-
         <!-- Test dependencies -->
         <dependency>
             <groupId>uk.gov.justice.services</groupId>

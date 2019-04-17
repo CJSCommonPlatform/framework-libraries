@@ -9,7 +9,8 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.common.util.UtcClock;
-import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
+import uk.gov.justice.services.jdbc.persistence.JdbcResultSetStreamer;
+import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobmanager.example.task.BakeCakeTask;
 import uk.gov.moj.cpp.jobmanager.example.task.FillCakeTinTask;
 import uk.gov.moj.cpp.jobmanager.example.task.GetIngredientsTask;
@@ -82,7 +83,8 @@ public class BakeryServiceIT {
             BakeCakeTask.class,
             SliceAndEatCakeTask.class,
             JdbcJobStoreDataSourceProvider.class,
-            JdbcRepositoryHelper.class,
+            PreparedStatementWrapperFactory.class,
+            JdbcResultSetStreamer.class,
             JobSqlProvider.class,
             LoggerProducer.class,
             OpenEjbJobJdbcRepository.class,

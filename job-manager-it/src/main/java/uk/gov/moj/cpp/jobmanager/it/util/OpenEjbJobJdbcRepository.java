@@ -50,7 +50,7 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
         poller.pollUntilFound(() -> {
             final PreparedStatementWrapper ps;
             try {
-                ps = jdbcRepositoryHelper.preparedStatementWrapperOf(dataSource, "SELECT COUNT(*) FROM job");
+                ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, "SELECT COUNT(*) FROM job");
                 final ResultSet rs = ps.executeQuery();
                 return rs.next() ? Optional.empty() : Optional.of(true);
             } catch (SQLException e) {
@@ -77,17 +77,17 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public int jobsProcessed() throws SQLException {
-            final PreparedStatementWrapper ps = jdbcRepositoryHelper.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_COUNT);
-            ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
-            final ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_COUNT);
+        ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
+        final ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
         return 0;
     }
 
     public int jobsNotProcessed() throws SQLException {
-        final PreparedStatementWrapper ps = jdbcRepositoryHelper.preparedStatementWrapperOf(dataSource, JOBS_NOTPROCESSED_COUNT);
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_NOTPROCESSED_COUNT);
         final ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return rs.getInt(1);
@@ -96,17 +96,17 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public Stream<Job> getProcessedRecords() throws SQLException {
-            final PreparedStatementWrapper ps = jdbcRepositoryHelper.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED);
-            ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
-            ps.executeQuery();
-            return jdbcRepositoryHelper.streamOf(ps, entityFromFunction());
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED);
+        ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
+        ps.executeQuery();
+        return jdbcResultSetStreamer.streamOf(ps, entityFromFunction());
     }
 
     public Stream<Job> getProcessedRecords(final UUID workerId) throws SQLException {
-            final PreparedStatementWrapper ps = jdbcRepositoryHelper.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_FOR_WORKER);
-            ps.setObject(1, workerId);
-            ps.executeQuery();
-            return jdbcRepositoryHelper.streamOf(ps, entityFromFunction());
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_FOR_WORKER);
+        ps.setObject(1, workerId);
+        ps.executeQuery();
+        return jdbcResultSetStreamer.streamOf(ps, entityFromFunction());
     }
 
     public void createJobs(final int count) {

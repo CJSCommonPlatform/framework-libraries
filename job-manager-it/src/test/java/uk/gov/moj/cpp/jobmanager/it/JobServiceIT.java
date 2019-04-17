@@ -14,7 +14,8 @@ import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.GlobalValueProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.common.configuration.ValueProducer;
-import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
+import uk.gov.justice.services.jdbc.persistence.JdbcResultSetStreamer;
+import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapperFactory;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
@@ -80,7 +81,8 @@ public class JobServiceIT {
             JobService.class,
             JobRepository.class,
             JdbcJobStoreDataSourceProvider.class,
-            JdbcRepositoryHelper.class,
+            PreparedStatementWrapperFactory.class,
+            JdbcResultSetStreamer.class,
             JobSqlProvider.class,
             LoggerProducer.class,
             OpenEjbJobJdbcRepository.class,

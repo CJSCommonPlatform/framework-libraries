@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.6.1-M2] - 2019-04-17
+
+### Changed
+- Remove deprecated github_token entry from travis.yml
+- Updated incorrect changelog detail
+
 ## [1.6.1-M1] - 2019-04-16
 - Remove deprecated github_token entry from travis.yml 
 

@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M10] - 2019-04-23
+## Added
+- EventStoreDefaultDataSourceProvider interface to framework-api-event-source module
+
 ## [4.0.0-M9] - 2019-04-17
 ## Changed 
 - Remove deprecated github_token entry from travis.yml

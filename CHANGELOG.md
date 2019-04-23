@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M11] - 2019-04-23
+## Added
+- add INDEXER component
+- add SEARCH APIs
+
 ## [4.0.0-M10] - 2019-04-23
 ## Added
 - EventStoreDefaultDataSourceProvider interface to framework-api-event-source module

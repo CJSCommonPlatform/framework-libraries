@@ -1,0 +1,3 @@
+uk/gov/justice/json/jolt/JsonHelper.class
+uk/gov/justice/json/jolt/JoltTransformerTest.class
+uk/gov/justice/json/jolt/ProsecutionCaseToCaseDetailsConverter.class

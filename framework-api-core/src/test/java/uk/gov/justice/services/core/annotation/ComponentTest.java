@@ -11,6 +11,7 @@ import static uk.gov.justice.services.core.annotation.Component.COMMAND_CONTROLL
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_API;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_INDEXER;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
 import static uk.gov.justice.services.core.annotation.Component.contains;
@@ -37,6 +38,7 @@ public class ComponentTest {
         assertThat(valueOf("command", "handler"), is(COMMAND_HANDLER));
         assertThat(valueOf("event", "listener"), is(EVENT_LISTENER));
         assertThat(valueOf("event", "processor"), is(EVENT_PROCESSOR));
+        assertThat(valueOf("event", "indexer"), is(EVENT_INDEXER));
         assertThat(valueOf("query", "api"), is(QUERY_API));
         assertThat(valueOf("event", "api"), is(EVENT_API));
     }
@@ -67,6 +69,7 @@ public class ComponentTest {
         assertTrue(contains("COMMAND_HANDLER"));
         assertTrue(contains("EVENT_LISTENER"));
         assertTrue(contains("EVENT_PROCESSOR"));
+        assertTrue(contains("EVENT_INDEXER"));
         assertTrue(contains("QUERY_API"));
         assertTrue(contains("QUERY_CONTROLLER"));
         assertTrue(contains("QUERY_VIEW"));

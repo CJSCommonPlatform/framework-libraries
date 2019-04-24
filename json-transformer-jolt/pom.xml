@@ -11,27 +11,15 @@
 
     <artifactId>json-transformer-jolt</artifactId>
 
-    <properties>
-        <jolt.version>0.1.1</jolt.version>
-        <javaee.version>7.0</javaee.version>
-        <javax.json.version>1.0</javax.json.version>
-        <glassfish-json.version>1.0.2</glassfish-json.version>
-        <junit.version>4.12</junit.version>
-        <slf4j.version>1.7.10</slf4j.version>
-        <utilities.verison>1.15.0</utilities.verison>
-        <mockito.version>2.22.0</mockito.version>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>${javaee.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.json</groupId>
             <artifactId>javax.json-api</artifactId>
-            <version>${javax.json.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
@@ -55,12 +43,15 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
-            <version>${glassfish-json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.json</groupId>
+            <artifactId>json-transformer-api</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.bazaarvoice.jolt</groupId>
@@ -68,21 +59,14 @@
             <version>${jolt.version}</version>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.json</groupId>
-            <artifactId>json-transformer-api</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.bazaarvoice.jolt</groupId>
             <artifactId>json-utils</artifactId>
             <version>${jolt.version}</version>
-
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-            <version>${junit.version}</version>
         </dependency>
     </dependencies>
 </project>

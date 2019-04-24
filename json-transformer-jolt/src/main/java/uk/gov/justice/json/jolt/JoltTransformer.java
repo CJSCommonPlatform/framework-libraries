@@ -16,12 +16,8 @@ import javax.json.JsonObject;
 
 import com.bazaarvoice.jolt.Chainr;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JoltTransformer implements TransformerApi {
-
-    Logger LOGGER = LoggerFactory.getLogger(JoltTransformer.class);
 
     @Override
     public JsonObject transformWithJolt(final JsonArray operations,
@@ -41,7 +37,7 @@ public class JoltTransformer implements TransformerApi {
     private void validate(final JsonArray specJson, final JsonObject inputJson) {
 
 
-        if (specJson == null) {
+        if (null == specJson) {
             throw new IllegalArgumentException("Input specification is empty");
         }
 

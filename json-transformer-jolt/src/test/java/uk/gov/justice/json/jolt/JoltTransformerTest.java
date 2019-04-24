@@ -2,6 +2,7 @@ package uk.gov.justice.json.jolt;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static uk.gov.justice.json.jolt.JsonHelper.readJson;
 
 import java.io.FileNotFoundException;
@@ -13,7 +14,7 @@ import org.junit.Test;
 
 public class JoltTransformerTest {
 
-    private JoltTransformer joltTransformer = new JoltTransformer();
+    private final JoltTransformer joltTransformer = new JoltTransformer();
 
     @Test
     public void shouldValidateAndThrowExceptionIfSpecDoesNotContainAnyOperations() throws FileNotFoundException {
@@ -23,12 +24,11 @@ public class JoltTransformerTest {
         try {
             final JsonArray operations = specJson.getJsonArray("operations");
             joltTransformer.transformWithJolt(operations, inputJson);
+            fail("Input contains operations, expecting no operations!");
         } catch (final IllegalArgumentException e) {
-            System.out.println(e);
             assertThat(e.getMessage(), is("Input specification does not contain any operations"));
         }
     }
-
 
     @Test
     public void shouldValidateAndThrowExceptionIfEmptySpecJson() throws FileNotFoundException {
@@ -38,8 +38,8 @@ public class JoltTransformerTest {
         try {
             final JsonArray operations = specJson.getJsonArray("operations");
             joltTransformer.transformWithJolt(operations, inputJson);
+            fail("Input specification is not empty, expecting empty specification!");
         } catch (final IllegalArgumentException e) {
-            System.out.println(e);
             assertThat(e.getMessage(), is("Input specification is empty"));
         }
     }
@@ -52,8 +52,8 @@ public class JoltTransformerTest {
         try {
             final JsonArray operations = specJson.getJsonArray("operations");
             joltTransformer.transformWithJolt(operations, inputJson);
+            fail("Input Json is not empty");
         } catch (final IllegalArgumentException e) {
-            System.out.println(e);
             assertThat(e.getMessage(), is("Input JSON is empty"));
         }
     }

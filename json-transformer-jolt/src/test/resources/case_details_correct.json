@@ -1,0 +1,33 @@
+{
+  "caseId": "2279b2c3-b0d3-4889-ae8e-1ecc20c39e27",
+  "caseReference": "TFL12345",
+  "prosecutingAuthority": "TFL",
+  "_is_charging": "J",
+  "parties": [
+    {
+      "organisationName": "McDonalds",
+      "_party_type": "Defendant"
+    },
+    {
+      "title": "MR",
+      "firstName": "Harry",
+      "middleName": "Jack",
+      "lastName": "Kane Junior",
+      "dateOfBirth": "2010-01-01",
+      "gender": "MALE",
+      "addressLines": "\"22\",\"Acacia Avenue\",\"Acacia Town\",\"Acacia City\",\"Acacia Country\"",
+      "postCode": "GIR 0AA",
+      "pncId": "1234567",
+      "aliases": [
+        "johnny robber",
+        "jack the knife"
+      ],
+      "arrestSummonsNumber": "arrest123",
+      "_party_type": "Defendant"
+    }
+  ],
+  "_case_type": "CC",
+  "_is_sjp": true,
+  "_is_magistrates": true,
+  "_is_crown": false
+}

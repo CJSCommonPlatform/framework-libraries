@@ -11,6 +11,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
@@ -19,11 +20,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JoltTransformer implements TransformerApi {
 
+    @Inject
+    private JsonAgainstSchemaValidator jsonAgainstSchemaValidator;
+
     @Override
     public JsonObject transformWithJolt(final JsonArray operations,
                                         final JsonObject inputJson) {
 
-        validate(operations, inputJson);
+        validateArguments(operations, inputJson);
 
         final List chainrSpecJSON = jsonToList(operations.toString());
 
@@ -34,8 +38,13 @@ public class JoltTransformer implements TransformerApi {
         return convert(transform);
     }
 
-    private void validate(final JsonArray specJson, final JsonObject inputJson) {
+    @Override
+    public List<String> validate(final String jsonSchemaFileName,
+                                 final String transformedJson) {
+        return jsonAgainstSchemaValidator.validateAgainstSchema(jsonSchemaFileName, transformedJson);
+    }
 
+    private void validateArguments(final JsonArray specJson, final JsonObject inputJson) {
 
         if (null == specJson) {
             throw new IllegalArgumentException("Input specification is empty");

@@ -1,0 +1,25 @@
+dist: trusty
+sudo: false
+language: java
+jdk:
+- oraclejdk8
+git:
+  cache: 3
+cache:
+  directories:
+  - "$HOME/.m2"
+addons:
+  sonarcloud:
+    organization: cjscommonplatform
+    token:
+      secure: Gbay3sDnzlRxjrOeQ6j+vr4TXkLwCEZfwS0UKgf3gER+EtkKa4yRGiBl0FtJQM/g7PcytwtT5tkAxq1QkMzfLxTrXgzo8sqW/LxEeWilY2mdSjH/p/yGcriHU25E44zkvi+B1HMa+z8tOLV2A5FrzQVSfsg8iTQf0+A0lUBr7v3evUKQYDttaAaXhUtXnIhf5EgyQy09eZTKYh/SmSCpC4SxtyofhsMOM8SlykfDRvBD4EYg9xdGo4NzaG6/10n+AWpBNDSyGcOT/cnnnupsYo73A2GdFZh1z+el8vOoMGB949PtR/FoWIkniBfpkwlJfbQw81iKMLy6FJ6d9IGvzDk76X4OnGCuD9EGgoKakz9uA6Nw29xUYcVMDyrIDBT4lw8IO0FC0sP1vfcZ3MIHP1xBgLilNsrOnlbwDlPwDZ8q6J5hxHcv1wII/s3qJmgU2ykcxrUkvwyoRE1gB5NB/u0PhCzT6UAiaR4Mav3N9UB/1kqsVN9x/bl4FJP64p76fWQZPFOji30N2RXTNoSG6cFH8Nc+R+j5gqc/6j/EU1v3NyKiBMJlycgArWvT2wq2WLuo3oUFjHhyWjBlpGKmN/gWZ5vZ1uhVpISDNq/9XVq3cwoCWAYiegdJZ8MfmipayovafgPHoNkTtJMhBPqDqNlIuyD/T4X6VYRXArIyw7E=
+before_install:
+- git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
+- ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
+install: "${PWD}/target/travis-settings/java/install.sh -e -q -DexcludeGroupIds=uk.gov.justice.service,uk.gov.justice.services"
+script: "${PWD}/target/travis-settings/java/script-install.sh coveralls:report sonar:sonar"
+after_success: "${PWD}/target/travis-settings/java/after_success.sh"
+env:
+  global:
+  - secure: QYSIZ76Niw7rJlsz6Ak4BDoI6WQvoibyfLZWvIQY24jJ+45vMgee74NGA6G6+nTwU+0II0rjktjNiEQ0AYEZRmKhVaAT2XWimuulWa1386YuPAkkYeYxHrovLd+GNKbhpOp17PT4CTaNElJqHPzhMb4/vgAFYZ2gtrbnahQvUnp0jcfSQs/lPogd+AgH6GXhTMSE4j/BKL9WQN36UQcHLgGNWYvcN93rJi3yvgIWTzIIbERKb+CaeB//Po5Yjj36hrjsMtQ/b7rjHaQ6P2yYklg4HHXZv/BkRODg8VVTXB29ct4GU6dzVJ+GR+OwOgoEz+cuNtaq+RYmHjrtR5S66CBJkJMTtG2NR8GrHSIMwnQCY8F8WjdVafVJwIjKOkjtByfyS2B7sQhZFBqw6VGjWennkfeVPjMMH9sXOn8xITT6T2++fBMF+YB3HxtZtIotDmE7MnttN8DL4okzqHSPwBiyKaPe5H9cXULMVk0RbGebp5xORLN32rPw1odQv759z5res9WHl9+UcU2+tbXpcuuzUvJieaSIA3O254/WoN0UZ3AmoX+WWJInNafxOyHuo7d7SrbcsSDvDZv4RN83k/FBWWZ3RTiG49NhCVOais1dk56Mfew072ZUyOoMOBAAcS67N4ih47FXzQ92u/mGpg7SA4W5zjaXoZ5l11EuCVI=
+  - secure: H6PvxEJqfTUG4oFCKgzJPW4/ixPDz+8gB5ihqEOFk9L2m7+zh0kNvAabeZFuGI91tRiSeGJRsHBStxOckSKUsYyqbp0qQoBWKfxdxHji1WrckOQPFkHvvP+EGbCXjL8rR7Z/jyhZK9KSWSkP5beDddB3velPr7l3riBLMfWnYpNj2MR4PR1Fe+IrJO9YJ6M4TFdX8mRlkTPLprtP/rCMor4HdsHkr4bVsiL8xc5X0sAFtBUvhyJsfz9hWYp89xaAzWbY3jwCk8Fk0koGDwNgdS6muYw29ZxSSl0QiUVqJ7orHWhM+1v6oFtiQ+CTlkdStWZsxo/hOh93vRmlzlvAXZlZlpbtOwIzR6BRxwMPVIGkPbErbIvAy6o24n0wPrIsZ1JwGXrWuHLOuUCIQxbaveaGl8zIi3WPPuRGo2hgdaatcd4UTKNqDS9ZKxT3SJ8Wh6rX1gKaOl4qhNOYxTQbhu7b/U4JymzuYArWWZ2ZaqksWn4ZEGx7q9apzc7avWsKz9ntbLiVmlidH8OTDdQaRRJjBgV7fj5eXt2nb+HhoJLjy/33RiRj17vVIWAQv9qqn3jvM2FhosLLZwOjHPwSou0brn2gZ0bQU/xD8LwJvs5HAw5Fv9+bFQSwNOxEqLKrf+clI3x4Ffre4I4RtPZz+8o/ZOYEgDoAKRG6nOZ1Dhs=

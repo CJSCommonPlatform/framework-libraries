@@ -70,14 +70,6 @@ public interface EventStream {
     long appendAfter(final Stream<JsonEnvelope> events, final long version) throws EventStreamException;
 
     /**
-     * Get the current (current maximum) sequence id (version number) for a stream
-     * @deprecated use {@link #size()} instead
-     * @return the latest sequence id for the provided steam. 0 when stream is empty.
-     */
-    @Deprecated
-    long getCurrentVersion();
-
-    /**
      * Get the size of the event stream.
      *
      * Can be used to determine the position of the next event when appending to the stream

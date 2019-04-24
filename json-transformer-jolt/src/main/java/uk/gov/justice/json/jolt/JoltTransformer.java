@@ -35,8 +35,6 @@ public class JoltTransformer implements TransformerApi {
 
         final Object transform = chainr.transform(inputJson);
 
-        LOGGER.debug("f");
-
         return convert(transform);
     }
 
@@ -60,14 +58,13 @@ public class JoltTransformer implements TransformerApi {
     public JsonObject convert(final Object source) {
         try {
             final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-            JsonObject jsonObject = objectMapper.readValue(objectMapper.writeValueAsString(source), JsonObject.class);
-            if (jsonObject == null) {
+            final JsonObject jsonObject = objectMapper.readValue(objectMapper.writeValueAsString(source), JsonObject.class);
+            if (null == jsonObject) {
                 throw new ConverterException(format("Failed to convert %s to JsonObject", source));
-            } else {
-                return jsonObject;
             }
-        } catch (IOException var3) {
-            throw new IllegalArgumentException(format("Error while converting %s toJsonObject", source), var3);
+            return jsonObject;
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(format("Error while converting %s toJsonObject", source), exception);
         }
     }
 }

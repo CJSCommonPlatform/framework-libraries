@@ -19,15 +19,4 @@ public class JsonHelper {
             throw new UncheckedIOException(e);
         }
     }
-
-
-
-    public static String readJsonAsString(String filePath) {
-        try (final InputStream inputStream = JsonHelper.class.getResourceAsStream(filePath);
-             final JsonReader jsonReader = createReader(inputStream)) {
-            return jsonReader.readObject().toString();
-        } catch (final IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
 }

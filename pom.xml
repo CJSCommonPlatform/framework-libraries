@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>1.7.1</version>
+    </parent>
+
+    <groupId>uk.gov.justice.json</groupId>
+    <artifactId>json-transformer</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <description>Json Schema to POJO generator</description>
+
+    <modules>
+        <module>json-transformer-api</module>
+        <module>json-transformer-jolt</module>
+    </modules>
+
+    <properties>
+        <common-bom.version>1.27.0</common-bom.version>
+        <jolt.version>0.1.1</jolt.version>
+        <utilities.verison>1.15.0</utilities.verison>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.services</groupId>
+                <artifactId>test-utils-core</artifactId>
+                <version>${cpp.test-utils.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

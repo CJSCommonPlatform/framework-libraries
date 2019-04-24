@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M12] - 2019-04-24
+## Changed 
+- Add method for getting alternative DataSources from EventStoreDataSourceProvider
+
 ## [4.0.0-M11] - 2019-04-23
 ## Added
 - add INDEXER component

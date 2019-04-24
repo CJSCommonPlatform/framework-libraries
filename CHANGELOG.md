@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M13] - 2019-04-24
+### Deleted
+- Removed deprecated classes and methods
+
 ## [4.0.0-M12] - 2019-04-24
 ## Changed 
 - Add method for getting alternative DataSources from EventStoreDataSourceProvider

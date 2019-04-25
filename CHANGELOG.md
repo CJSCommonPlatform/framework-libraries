@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+## [1.7.1] - 2019-06-13
+
+### Changed
+- Changed annoying message warning about duplicate schemas to debug level
 
 ## [1.7.0] - 2019-05-03
 

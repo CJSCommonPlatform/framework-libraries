@@ -101,6 +101,6 @@ public class CatalogToSchemaResolverTest {
         assertThat(schemaLocations.containsKey("schemaId"), is(true));
         assertThat(schemaLocations.get("schemaId").toString(), is("file:/src/main/resources/some/path/to.json"));
 
-        verify(logger).warn("Found duplicate schema id 'schemaId' for schemaLocations 'file:/src/main/resources/some/path/to.json' and 'file:/src/main/resources/some/other/path/to.json'");
+        verify(logger).debug("Found duplicate schema id 'schemaId' for schemaLocations 'file:/src/main/resources/some/path/to.json' and 'file:/src/main/resources/some/other/path/to.json'");
     }
 }

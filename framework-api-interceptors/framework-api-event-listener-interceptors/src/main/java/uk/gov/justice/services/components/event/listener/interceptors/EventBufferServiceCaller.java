@@ -21,7 +21,7 @@ public class EventBufferServiceCaller {
 
         final JsonEnvelope inputEnvelope = interceptorContext.inputEnvelope();
 
-        return eventBufferService.currentOrderedEventsWith(inputEnvelope)
+        return eventBufferService.currentOrderedEventsWith(inputEnvelope, interceptorContext.getComponentName())
                 .map(interceptorContext::copyWithInput);
     }
 }

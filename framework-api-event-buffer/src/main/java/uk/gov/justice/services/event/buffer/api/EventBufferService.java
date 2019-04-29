@@ -6,5 +6,5 @@ import java.util.stream.Stream;
 
 public interface EventBufferService {
 
-    Stream<JsonEnvelope> currentOrderedEventsWith(final JsonEnvelope incomingEvent);
+    Stream<JsonEnvelope> currentOrderedEventsWith(final JsonEnvelope incomingEvent, final String component);
 }

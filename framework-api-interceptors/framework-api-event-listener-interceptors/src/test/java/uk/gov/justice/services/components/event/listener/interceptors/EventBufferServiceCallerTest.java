@@ -2,21 +2,10 @@ package uk.gov.justice.services.components.event.listener.interceptors;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.hasItem;
-
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 import uk.gov.justice.services.core.interceptor.InterceptorContext;
 import uk.gov.justice.services.event.buffer.api.EventBufferService;
@@ -24,6 +13,12 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import java.util.List;
 import java.util.stream.Stream;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventBufferServiceCallerTest {
@@ -46,7 +41,7 @@ public class EventBufferServiceCallerTest {
         final InterceptorContext copiedInterceptorContext_2 = mock(InterceptorContext.class);
 
         when(inputInterceptorContext.inputEnvelope()).thenReturn(inputEnvelope);
-        when(eventBufferService.currentOrderedEventsWith(inputEnvelope)).thenReturn(Stream.of(orderedEvent_1, orderedEvent_2));
+        when(eventBufferService.currentOrderedEventsWith(inputEnvelope, inputInterceptorContext.getComponentName())).thenReturn(Stream.of(orderedEvent_1, orderedEvent_2));
         when(inputInterceptorContext.copyWithInput(orderedEvent_1)).thenReturn(copiedInterceptorContext_1);
         when(inputInterceptorContext.copyWithInput(orderedEvent_2)).thenReturn(copiedInterceptorContext_2);
 

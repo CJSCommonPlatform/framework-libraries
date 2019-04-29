@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M14] - 2019-04-29
+### Changed
+- Update parameters for method currentOrderedEventsWith in EventBufferService
+
 ## [4.0.0-M13] - 2019-04-24
 ### Deleted
 - Removed deprecated classes and methods

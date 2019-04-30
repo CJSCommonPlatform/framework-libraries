@@ -44,7 +44,6 @@
         <cpp.repo.name>maven-common-bom</cpp.repo.name>
         <deltaspike.version>1.7.0</deltaspike.version>
         <drools.version>6.4.0.Final</drools.version>
-        <elasticsearch.version>5.2.2</elasticsearch.version>
         <expiringmap.version>0.5.7</expiringmap.version>
         <findbugs.version>3.0.0</findbugs.version>
         <glassfish-json.version>1.0.2</glassfish-json.version>
@@ -857,21 +856,6 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.driver.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>rest</artifactId>
-                <version>${elasticsearch.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch</groupId>
-                <artifactId>elasticsearch</artifactId>
-                <version>${elasticsearch.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch.plugin</groupId>
-                <artifactId>transport-netty4-client</artifactId>
-                <version>${elasticsearch.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>

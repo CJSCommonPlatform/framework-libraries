@@ -5,13 +5,17 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [2.0.0] - 2019-05-01
+
+### Changed
+- Revert Deltaspike version to 1.6.1, due to issues with Deltaspike when testing
+
 ## [1.31.0] - 2019-04-30
 
 ## Removed
 - org.elasticsearch.client:rest:5.2.2
 - org.elasticsearch:elasticsearch:5.2.2
 - org.elasticsearch.plugin:transport-netty4-client:5.2.2
-
 
 ## [1.30.0] - 2019-02-07
                

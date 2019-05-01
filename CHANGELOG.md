@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [2.0.0] - 2019-05-01
+## [2.0.1] - 2019-05-01
 
 ### Changed
 - Revert Deltaspike version to 1.6.1, due to issues with Deltaspike when testing

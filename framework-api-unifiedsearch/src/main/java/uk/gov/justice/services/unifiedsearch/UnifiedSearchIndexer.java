@@ -1,4 +1,4 @@
-package uk.gov.justice.services.core.unifiedsearch;
+package uk.gov.justice.services.unifiedsearch;
 
 import javax.json.JsonObject;
 

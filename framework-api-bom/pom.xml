@@ -98,6 +98,11 @@
                 <artifactId>event-buffer-api</artifactId>
                 <version>${cpp.framework-api.version}</version>
             </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.framework-api</groupId>
+                <artifactId>framework-api-unifiedsearch</artifactId>
+                <version>${cpp.framework-api.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.22.0-M3] - 2019-05-02
+
+### Fixed
+- SCUS-86 ElasticSearch Dependency Hell fix
+
 ## [1.22.0-M1] - 2019-04-16
 
 ### Removed

@@ -7,8 +7,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [4.0.0-M16] - 2019-05-02
 ### Changed
-- SCUS- Fixed ElasticSearch dependency hell
-- Downgraded DletaSpike
+- Fixed ElasticSearch dependency hell
+- Downgraded DeltaSpike
 
 ## [4.0.0-M14] - 2019-04-29
 ### Changed

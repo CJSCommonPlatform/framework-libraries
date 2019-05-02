@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M17] - 2019-05-02
+### Changed
+- Add unified-search module to bom
+
 ## [4.0.0-M16] - 2019-05-02
 ### Changed
 - Fixed ElasticSearch dependency hell

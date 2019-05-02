@@ -24,6 +24,8 @@ import javax.enterprise.inject.Produces;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
@@ -42,6 +44,11 @@ public class ObjectMapperProducer {
 
     public ObjectMapper objectMapperWith(final JsonFactory jsonFactory) {
         return configureObjectMapper(new ObjectMapper(jsonFactory));
+    }
+
+    public ObjectMapper yamlObjectMapper() {
+        return configureObjectMapper(new ObjectMapper(new YAMLFactory()))
+                .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     }
 
     private ObjectMapper configureObjectMapper(final ObjectMapper objectMapper) {

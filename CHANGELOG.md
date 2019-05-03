@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.18.0] - 2019-05-03
+## [1.17.5] - 2019-05-03
 
 ## Changed
 - Update common-bom to version 2.0.2

@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.17.0-M3] - 2019-05-03
+
+### Added
+- Yaml parser
+- Updated bom-config
+
 ## [1.17.0-M2] - 2019-04-16
 
 ### Changed

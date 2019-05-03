@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.18.0] - 2019-05-03
+
+### Changed
+- Updated test-utils version in parent pom to 1.23.0
+
 ## [1.17.0-M3] - 2019-05-03
 
 ### Added

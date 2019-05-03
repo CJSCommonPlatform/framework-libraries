@@ -28,7 +28,7 @@
     </modules>
 
     <properties>
-        <common-bom.version>1.29.0</common-bom.version>
+        <common-bom.version>2.0.2</common-bom.version>
         <cpp.repo.name>generator-maven-plugin</cpp.repo.name>
         <useSourcePathAndClassPath>false</useSourcePathAndClassPath>
         <useClassPath>false</useClassPath>

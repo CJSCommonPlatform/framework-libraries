@@ -5,7 +5,6 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-
 ## [1.6.7] - 2019-05-03
 
 ### Changed

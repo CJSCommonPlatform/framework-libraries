@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [1.7.0] - 2019-05-03
+## [1.6.1] - 2019-05-03
 ### Changed
 - common-bom.version -> 2.0.2
 - framework-api-version -> 4.0.0-M18

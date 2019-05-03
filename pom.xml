@@ -26,6 +26,7 @@
         <common-bom.version>1.27.0</common-bom.version>
         <jolt.version>0.1.1</jolt.version>
         <utilities.verison>1.15.0</utilities.verison>
+        <test.utils.core.version>1.23.0</test.utils.core.version>
     </properties>
 
     <dependencyManagement>
@@ -36,12 +37,6 @@
                 <version>${common-bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>uk.gov.justice.services</groupId>
-                <artifactId>test-utils-core</artifactId>
-                <version>${cpp.test-utils.version}</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

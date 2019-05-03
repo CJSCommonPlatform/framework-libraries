@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M18] - 2019-05-03
+### Changed
+- Update test-utils version to 1.23.0
+
 ## [4.0.0-M17] - 2019-05-02
 ### Changed
 - Add unified-search module to bom

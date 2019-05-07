@@ -7,9 +7,5 @@ import javax.json.JsonObject;
 
 public interface TransformerApi {
 
-    JsonObject transformWithJolt(final JsonArray joltOperations,
-                                 final JsonObject inputJson);
-
-    List<String> validate(final String transformedJsonSchemaFileName,
-                          final String transformedJson);
+    JsonObject transformWithJolt(final String joltOperations, final JsonObject inputJson);
 }

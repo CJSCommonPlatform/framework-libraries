@@ -1,0 +1,51 @@
+{
+  "operations": [{
+    "operation": "shift",
+    "spec": {
+      "hearing": {
+        "*": {
+          "id": "hearings[&1].courtId",
+          "type": "hearings[&1].hearingType",
+          "courtRoomName": "hearings[&1].courtCentreName",
+          "jurisdictionType": "hearings[&1].jurisdictionType",
+          "hearingDays": {
+            "0": "hearings[&2].startHearingDate",
+            "1": "hearings[&2].endHearingDate"
+          }
+        }
+      }
+    },
+    "context": {
+      "photo": {
+        "label": {
+          "thumbnail": "thumbnail photo"
+        }
+      }
+    }
+  },
+    {
+      "operation": "modify-overwrite-beta",
+      "spec": {
+        "\\_case_type": "=toString('CC')",
+        "\\_is_sjp": [
+          "=toBoolean",
+          true
+        ],
+        "\\_is_magistrates": [
+          "=toBoolean",
+          true
+        ],
+        "\\_is_crown": [
+          "=toBoolean",
+          false
+        ],
+        "parties": {
+          "*": {
+            "\\_party_type": "Defendant",
+            "addressLines": "=join(',',@(1,addressLines))"
+          }
+        }
+      }
+    }
+  ]
+}

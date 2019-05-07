@@ -3,8 +3,10 @@ package uk.gov.justice.json.jolt;
 import static com.bazaarvoice.jolt.Chainr.fromSpec;
 import static com.bazaarvoice.jolt.JsonUtils.jsonToList;
 import static java.lang.String.format;
+import static javax.json.Json.createArrayBuilder;
 
 import uk.gov.justice.json.api.TransformerApi;
+import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -14,6 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 
 import com.bazaarvoice.jolt.Chainr;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,15 +24,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JoltTransformer implements TransformerApi {
 
     @Inject
-    private JsonAgainstSchemaValidator jsonAgainstSchemaValidator;
+    private StringToJsonObjectConverter stringToJsonObjectConverter;
+
 
     @Override
-    public JsonObject transformWithJolt(final JsonArray operations,
-                                        final JsonObject inputJson) {
+    public JsonObject transformWithJolt(final String operationsString, final JsonObject inputJson) {
 
-        validateArguments(operations, inputJson);
+        validateArguments(operationsString, inputJson);
 
-        final List chainrSpecJSON = jsonToList(operations.toString());
+        final JsonObject operations = stringToJsonObjectConverter.convert(operationsString);
+
+        final JsonArray operationsArray = operations.getJsonArray("operations");
+
+        final List chainrSpecJSON = jsonToList(operationsArray.toString());
 
         final Chainr chainr = fromSpec(chainrSpecJSON);
 
@@ -38,19 +45,15 @@ public class JoltTransformer implements TransformerApi {
         return convert(transform);
     }
 
-    @Override
-    public List<String> validate(final String jsonSchemaFileName,
-                                 final String transformedJson) {
-        return jsonAgainstSchemaValidator.validateAgainstSchema(jsonSchemaFileName, transformedJson);
-    }
 
-    private void validateArguments(final JsonArray specJson, final JsonObject inputJson) {
+    private void validateArguments(final String specJson, final JsonObject inputJson) {
+        final JsonObject operations = stringToJsonObjectConverter.convert(specJson);
 
-        if (null == specJson) {
+        if (null == operations.get("operations") ) {
             throw new IllegalArgumentException("Input specification is empty");
         }
 
-        if (specJson.size() == 0) {
+        if (operations.getJsonArray("operations").size() == 0) {
             throw new IllegalArgumentException("Input specification does not contain any operations");
         }
 
@@ -68,7 +71,7 @@ public class JoltTransformer implements TransformerApi {
                 throw new ConverterException(format("Failed to convert %s to JsonObject", source));
             }
             return jsonObject;
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new IllegalArgumentException(format("Error while converting %s toJsonObject", source), exception);
         }
     }

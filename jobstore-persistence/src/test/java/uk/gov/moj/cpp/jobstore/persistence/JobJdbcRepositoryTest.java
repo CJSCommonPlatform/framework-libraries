@@ -16,8 +16,9 @@ import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimes
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryException;
-import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
+import uk.gov.justice.services.jdbc.persistence.JdbcResultSetStreamer;
 import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapper;
+import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapperFactory;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 
@@ -60,7 +61,8 @@ public class JobJdbcRepositoryTest {
 
         jdbcRepository.dataSource = eventStoreDataSource;
         jdbcRepository.logger = mock(Logger.class);
-        jdbcRepository.jdbcRepositoryHelper = new JdbcRepositoryHelper();
+        jdbcRepository.preparedStatementWrapperFactory = new PreparedStatementWrapperFactory();
+        jdbcRepository.jdbcResultSetStreamer = new JdbcResultSetStreamer();
         jdbcRepository.jobSqlProvider = new PostgresJobSqlProvider();
         checkIfReady();
     }
@@ -235,57 +237,57 @@ public class JobJdbcRepositoryTest {
 
     @Test(expected = JdbcRepositoryException.class)
     public void shouldThrowJdbcRepositoryExceptionWhenCreating() throws SQLException {
-        final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
-        when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-        jdbcRepository.jdbcRepositoryHelper = mockDatasource;
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         jdbcRepository.insertJob(mock(Job.class));
     }
 
     @Test(expected = JdbcRepositoryException.class)
     public void shouldThrowJdbcRepositoryExceptionWhenDeleting() throws SQLException {
-        final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
-        when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-        jdbcRepository.jdbcRepositoryHelper = mockDatasource;
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         jdbcRepository.deleteJob(randomUUID());
     }
 
     @Test(expected = JdbcRepositoryException.class)
     public void shouldThrowJdbcRepositoryExceptionWhenUpdatingJobData() throws SQLException {
-        final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
-        when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-        jdbcRepository.jdbcRepositoryHelper = mockDatasource;
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         jdbcRepository.updateJobData(randomUUID(), mock(JsonObject.class));
     }
 
     @Test(expected = JdbcRepositoryException.class)
     public void shouldThrowJdbcRepositoryExceptionWhenUpdatingNextTaskDetails() throws SQLException {
-        final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
-        when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-        jdbcRepository.jdbcRepositoryHelper = mockDatasource;
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         jdbcRepository.updateNextTaskDetails(randomUUID(), "string", mock(Timestamp.class));
     }
 
     @Test(expected = JdbcRepositoryException.class)
     public void shouldThrowJdbcRepositoryExceptionWhenLocingJobs() throws SQLException {
-        final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
-        when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-        jdbcRepository.jdbcRepositoryHelper = mockDatasource;
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         jdbcRepository.lockJobsFor(randomUUID(), 2);
     }
 
     @Test(expected = JdbcRepositoryException.class)
     public void shouldThrowJdbcRepositoryExceptionWheoFindingJobsLockedTo() throws SQLException {
-        final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
-        when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-        jdbcRepository.jdbcRepositoryHelper = mockDatasource;
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         jdbcRepository.findJobsLockedTo(randomUUID());
     }
 
     @Test(expected = JdbcRepositoryException.class)
     public void shouldThrowJdbcRepositoryExceptionWhenReleaseingJob() throws SQLException {
-        final JdbcRepositoryHelper mockDatasource = mock(JdbcRepositoryHelper.class);
-        when(mockDatasource.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-        jdbcRepository.jdbcRepositoryHelper = mockDatasource;
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         jdbcRepository.releaseJob(randomUUID());
     }
 
@@ -303,7 +305,7 @@ public class JobJdbcRepositoryTest {
     private int jobsCount() {
         int jobsCount = 0;
         try {
-            final PreparedStatementWrapper ps = jdbcRepository.jdbcRepositoryHelper.preparedStatementWrapperOf(jdbcRepository.dataSource, JOBS_COUNT);
+            final PreparedStatementWrapper ps = jdbcRepository.preparedStatementWrapperFactory.preparedStatementWrapperOf(jdbcRepository.dataSource, JOBS_COUNT);
             final ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 jobsCount = rs.getInt(1);

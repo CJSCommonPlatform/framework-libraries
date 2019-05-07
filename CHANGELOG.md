@@ -5,6 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Changed
+- Update to framework version 6.0.0-M22
+- Replace JdbcRepositoryHelper with PreparedStatementWrapperFactory and JdbcResultSetStreamer
+- Update to common-bom version 2.0.2
+- Update to test-utils version 1.23.0
+- Update to utilities version 1.18.0
+
 ## [3.1.4] - 2019-03-21
 
 ### Changed

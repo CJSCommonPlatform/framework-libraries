@@ -17,7 +17,8 @@ import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.mapping.NameToMediaTypeConverter;
 import uk.gov.justice.services.core.mapping.SchemaIdMappingCache;
-import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryHelper;
+import uk.gov.justice.services.jdbc.persistence.JdbcResultSetStreamer;
+import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapperFactory;
 import uk.gov.justice.services.messaging.DefaultJsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.logging.DefaultTraceLogger;
@@ -87,7 +88,8 @@ public class JobSchedulerIT {
             ExecutionService.class,
             JobRepository.class,
             JdbcJobStoreDataSourceProvider.class,
-            JdbcRepositoryHelper.class,
+            PreparedStatementWrapperFactory.class,
+            JdbcResultSetStreamer.class,
             JobSqlProvider.class,
             OpenEjbJobJdbcRepository.class,
             JobScheduler.class,

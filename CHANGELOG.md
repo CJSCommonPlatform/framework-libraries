@@ -5,6 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.17.7] - 2019-05-07
+
+## Changed
+- Generated new token travis keys
+- Update common-bom to version 2.0.2
+- Update utilities to version 1.18.0
+- Update test-utils to version 1.23.0
+
 ## [1.17.6] - 2019-05-07
 
 ## Changed

@@ -12,7 +12,7 @@
 
     <groupId>uk.gov.justice.json</groupId>
     <artifactId>json-transformer</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <description>Json Schema to POJO generator</description>

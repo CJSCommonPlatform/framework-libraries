@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M19] - 2019-05-10
+### Changed
+- Refactor: Moved TransformerApi from json-transformer project in here
+
+
 ## [4.0.0-M18] - 2019-05-03
 ### Changed
 - Update test-utils version to 1.23.0

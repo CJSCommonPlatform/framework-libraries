@@ -3,24 +3,24 @@ package uk.gov.justice.json.jolt;
 import static com.bazaarvoice.jolt.Chainr.fromSpec;
 import static com.bazaarvoice.jolt.JsonUtils.jsonToList;
 import static java.lang.String.format;
-import static javax.json.Json.createArrayBuilder;
 
-import uk.gov.justice.json.api.TransformerApi;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.unifiedsearch.TransformerApi;
 
 import java.io.IOException;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 
 import com.bazaarvoice.jolt.Chainr;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@ApplicationScoped
 public class JoltTransformer implements TransformerApi {
 
     @Inject

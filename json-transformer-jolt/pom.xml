@@ -74,6 +74,11 @@
             <version>${test.utils.core.version}</version>
         </dependency>
         <dependency>
+            <groupId>uk.gov.justice.framework-api</groupId>
+            <artifactId>framework-api-unifiedsearch</artifactId>
+            <version>${framework-api.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
             <scope>test</scope>

@@ -18,15 +18,15 @@
     <description>Json Schema to POJO generator</description>
 
     <modules>
-        <module>json-transformer-api</module>
         <module>json-transformer-jolt</module>
     </modules>
 
     <properties>
-        <common-bom.version>1.27.0</common-bom.version>
+        <common-bom.version>2.0.2</common-bom.version>
         <jolt.version>0.1.1</jolt.version>
-        <utilities.verison>1.15.0</utilities.verison>
+        <utilities.verison>1.18.0</utilities.verison>
         <test.utils.core.version>1.23.0</test.utils.core.version>
+        <framework-api.version>4.0.0-M19</framework-api.version>
     </properties>
 
     <dependencyManagement>

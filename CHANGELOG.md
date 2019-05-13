@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [2.2.0] - 2019-05-13
+
+### Changed
+- Updated apache tika to version 1.20
+
 ## [2.1.0] - 2019-05-13
 
 ### Changed

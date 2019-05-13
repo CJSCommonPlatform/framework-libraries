@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>maven-common-bom</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.2.0</version>
     <packaging>pom</packaging>
     <description>Bill of materials defining standard versions for dependencies of the Microservices
         framework

@@ -1,5 +1,7 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.codehaus.groovy.runtime.InvokerHelper.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.INTEGRATION_HOST_KEY;
@@ -7,6 +9,7 @@ import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.AR
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.artemisQueueUri;
 
+import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,8 +59,8 @@ public class QueueUriProviderTest {
 
         final String localhostUri = "tcp://localhost:61616";
 
-        assertThat(queueUriProvider.getArtemisQueueUri(), is(localhostUri));
-        assertThat(artemisQueueUri(), is(localhostUri));
+        assertThat(queueUriProvider.getArtemisQueueUri(), is(asList(localhostUri)));
+        assertThat(artemisQueueUri(), is(asList(localhostUri)));
     }
 
     @Test
@@ -66,8 +69,20 @@ public class QueueUriProviderTest {
         final String userDefinedUri = "tcp://myServer:61616?debug=true";
         System.setProperty(ARTEMIS_URI, userDefinedUri);
 
-        assertThat(queueUriProvider.getArtemisQueueUri(), is(userDefinedUri));
-        assertThat(artemisQueueUri(), is(userDefinedUri));
+        assertThat(queueUriProvider.getArtemisQueueUri(), is(asList(userDefinedUri)));
+        assertThat(artemisQueueUri(), is(asList(userDefinedUri)));
+    }
+
+    @Test
+    public void shouldGetArtemisUriFromSystemPropertyAfterSplittingTheEntries() {
+
+        final String userDefinedUri1 = "tcp://myServer2:61616?debug=true";
+        final String userDefinedUri2 = "tcp://myServer2:61616?debug=true";
+        final String userDefinedUri = userDefinedUri1 + ","+ userDefinedUri2;
+        System.setProperty(ARTEMIS_URI, userDefinedUri);
+
+        assertThat(queueUriProvider.getArtemisQueueUri(), is(newArrayList(userDefinedUri1, userDefinedUri2)));
+        assertThat(artemisQueueUri(), is(newArrayList(userDefinedUri1, userDefinedUri2)));
     }
 
     @Test
@@ -77,7 +92,7 @@ public class QueueUriProviderTest {
 
         final String remoteUri = "tcp://my.host.com:61616";
 
-        assertThat(queueUriProvider.getArtemisQueueUri(), is(remoteUri));
-        assertThat(artemisQueueUri(), is(remoteUri));
+        assertThat(queueUriProvider.getArtemisQueueUri(), is(asList(remoteUri)));
+        assertThat(artemisQueueUri(), is(asList(remoteUri)));
     }
 }

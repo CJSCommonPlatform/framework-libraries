@@ -1,32 +1,34 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
-
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.QueueBrowser;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
-
 import org.hamcrest.collection.IsMapContaining;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.Queue;
+import javax.jms.QueueBrowser;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.json.JsonObject;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeadLetterQueueBrowserTest {
@@ -35,7 +37,7 @@ public class DeadLetterQueueBrowserTest {
     private Session session;
 
     @Mock
-    private javax.jms.Queue dlqQueue;
+    private Queue dlqQueue;
 
     @Mock
     private MessageConsumer dlqMessageConsumer;
@@ -49,16 +51,20 @@ public class DeadLetterQueueBrowserTest {
     @Mock
     private JmsSessionFactory jmsSessionFactory;
 
-    @InjectMocks
     private DeadLetterQueueBrowser deadLetterQueueBrowser;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Before
+    public void setup() {
+        deadLetterQueueBrowser = new DeadLetterQueueBrowser(dlqQueue, newArrayList(session), newArrayList(jmsSessionFactory), consumerClient);
+    }
+
     @Test
     public void shouldRemoveMessages() throws JMSException {
 
-        when(session.createConsumer(Mockito.any(javax.jms.Queue.class))).thenReturn(dlqMessageConsumer);
+        when(session.createConsumer(any(Queue.class))).thenReturn(dlqMessageConsumer);
 
         deadLetterQueueBrowser.removeMessages();
 
@@ -66,12 +72,12 @@ public class DeadLetterQueueBrowserTest {
     }
 
     @Test
-    public void shouldbeAbleToBrowseAsJson() throws JMSException {
-        TextMessage textMessage_1 = mock(TextMessage.class);
-        when(textMessage_1.getText()).thenReturn("{\"urn1\": \"urn1\"}", "{\"urn2\": \"urn2\"}");
-        Vector<TextMessage> textmessages = new Vector<>(Arrays.asList(textMessage_1, textMessage_1));
+    public void shouldBeAbleToBrowseAsJson() throws JMSException {
+        TextMessage textMessage = mock(TextMessage.class);
+        when(textMessage.getText()).thenReturn("{\"urn1\": \"urn1\"}", "{\"urn2\": \"urn2\"}");
+        Vector<TextMessage> textMessages = new Vector<>(Arrays.asList(textMessage, textMessage));
         when(session.createBrowser(dlqQueue)).thenReturn(dlqBrowser);
-        when(dlqBrowser.getEnumeration()).thenReturn(textmessages.elements());
+        when(dlqBrowser.getEnumeration()).thenReturn(textMessages.elements());
 
         List<JsonObject> result = deadLetterQueueBrowser.browseAsJson();
 
@@ -80,12 +86,12 @@ public class DeadLetterQueueBrowserTest {
     }
 
     @Test
-    public void shouldbeAbleToBrowse() throws JMSException {
-        TextMessage textMessage_1 = mock(TextMessage.class);
-        when(textMessage_1.getText()).thenReturn("abc", "def");
-        Vector<TextMessage> textmessages = new Vector<>(Arrays.asList(textMessage_1, textMessage_1));
+    public void shouldBeAbleToBrowse() throws JMSException {
+        TextMessage textMessage = mock(TextMessage.class);
+        when(textMessage.getText()).thenReturn("abc", "def");
+        Vector<TextMessage> textMessages = new Vector<>(Arrays.asList(textMessage, textMessage));
         when(session.createBrowser(dlqQueue)).thenReturn(dlqBrowser);
-        when(dlqBrowser.getEnumeration()).thenReturn(textmessages.elements());
+        when(dlqBrowser.getEnumeration()).thenReturn(textMessages.elements());
 
         List<String> result = deadLetterQueueBrowser.browse();
 
@@ -95,9 +101,9 @@ public class DeadLetterQueueBrowserTest {
 
     @Test
     public void shouldReturnEmptyListWhenNoElementsInDlq() throws JMSException {
-        Vector<TextMessage> textmessages = new Vector<>();
+        Vector<TextMessage> textMessages = new Vector<>();
         when(session.createBrowser(dlqQueue)).thenReturn(dlqBrowser);
-        when(dlqBrowser.getEnumeration()).thenReturn(textmessages.elements());
+        when(dlqBrowser.getEnumeration()).thenReturn(textMessages.elements());
 
         List<String> result = deadLetterQueueBrowser.browse();
 
@@ -107,7 +113,7 @@ public class DeadLetterQueueBrowserTest {
     @Test
     public void shouldThrowExceptionWhenBrowsing() throws JMSException {
         thrown.expect(MessageConsumerException.class);
-        thrown.expectMessage("Fatal error getting messges from DLQ");
+        thrown.expectMessage("Fatal error getting messages from DLQ");
         when(session.createBrowser(dlqQueue)).thenReturn(dlqBrowser);
         when(dlqBrowser.getEnumeration()).thenThrow(JMSException.class);
 
@@ -118,8 +124,8 @@ public class DeadLetterQueueBrowserTest {
     public void shouldThrowExceptionWhenCleaningQueue() throws JMSException {
         thrown.expect(MessageConsumerException.class);
         thrown.expectMessage("Fatal error cleaning messges from DLQ");
-        when(session.createConsumer(Mockito.any(javax.jms.Queue.class))).thenReturn(dlqMessageConsumer);
-        Mockito.doThrow(JMSException.class).when(consumerClient).cleanQueue(dlqMessageConsumer);
+        when(session.createConsumer(any(Queue.class))).thenReturn(dlqMessageConsumer);
+        doThrow(JMSException.class).when(consumerClient).cleanQueue(dlqMessageConsumer);
 
         deadLetterQueueBrowser.removeMessages();
     }
@@ -127,6 +133,7 @@ public class DeadLetterQueueBrowserTest {
     @Test
     public void shouldClose() {
         deadLetterQueueBrowser.close();
+
         verify(jmsSessionFactory).close();
     }
 

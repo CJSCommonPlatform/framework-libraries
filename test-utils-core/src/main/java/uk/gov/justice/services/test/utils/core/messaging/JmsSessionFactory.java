@@ -36,7 +36,9 @@ public class JmsSessionFactory {
             try {
                 closeable.close();
             } catch (final Exception ignored) {
+                // do nothing
             }
+
         }
     }
 

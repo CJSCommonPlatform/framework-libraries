@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.3] - 2019-05-14
+### Changed
+- removed unnecessary dependency on json-transformer-api
+
 ## [1.0.2] - 2019-05-10
 ### Changed
 - Refactor: Moved TransformerApi into framework-api

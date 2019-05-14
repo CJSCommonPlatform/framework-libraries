@@ -45,11 +45,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.json</groupId>
-            <artifactId>json-transformer-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.bazaarvoice.jolt</groupId>
             <artifactId>jolt-core</artifactId>
             <version>${jolt.version}</version>

@@ -47,7 +47,7 @@
 
     <properties>
         <cpp.repo.name>framework-api</cpp.repo.name>
-        <common-bom.version>2.0.2</common-bom.version>
+        <common-bom.version>2.2.0</common-bom.version>
         <annotation-validator-core.version>1.0.1</annotation-validator-core.version>
         <test-utils.version>1.23.0</test-utils.version>
     </properties>

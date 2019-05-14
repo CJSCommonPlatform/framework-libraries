@@ -5,10 +5,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M20] - 2019-05-14
+### Changed
+- Updated common-bom to version 2.2.0
+
+### Deleted
+- Removed send method that takes a Destination, from JmsEnvelopeSender interface
+
 ## [4.0.0-M19] - 2019-05-10
 ### Changed
 - Refactor: Moved TransformerApi from json-transformer project in here
-
 
 ## [4.0.0-M18] - 2019-05-03
 ### Changed

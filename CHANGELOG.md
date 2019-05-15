@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.4] - 2019-05-15
+### Changed
+- changing test-utils-core scope to test
+
 ## [1.0.3] - 2019-05-14
 ### Changed
 - removed unnecessary dependency on json-transformer-api

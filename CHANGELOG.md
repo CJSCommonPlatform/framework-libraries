@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.24.0] - 2019-05-15
+
+### Added
+- Enabling ability to browse and delete messages across multiple artemis brokers.  System property ARTEMIS_URI takes a comma separated list of broker host values.
+
 ## [1.23.0] - 2019-05-03
 
 ### Changed

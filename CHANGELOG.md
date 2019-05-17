@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- Added rebuild JMX MBean and Rebuild events
+
 ## [4.0.0-M20] - 2019-05-14
 ### Changed
 - Updated common-bom to version 2.2.0

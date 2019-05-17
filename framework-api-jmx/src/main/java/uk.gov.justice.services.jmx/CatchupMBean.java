@@ -4,5 +4,6 @@ import javax.management.MXBean;
 
 @MXBean
 public interface CatchupMBean {
+
     void doCatchupRequested();
 }

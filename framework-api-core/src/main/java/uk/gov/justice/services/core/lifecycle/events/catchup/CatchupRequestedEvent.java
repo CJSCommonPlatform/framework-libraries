@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class CatchupRequestedEvent {
+
     private final String initiatedBy;
     private final ZonedDateTime catchupRequestedAt;
 

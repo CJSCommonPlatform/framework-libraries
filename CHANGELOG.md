@@ -5,8 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [4.0.0-M21] - 2019-05-17
+## [4.0.0-M22] - 2019-06-04
+### Removed
+- JMX MBeans and lifecycle events
 
+## [4.0.0-M21] - 2019-05-17
 ### Added
 - Added rebuild JMX MBean and Rebuild events
 

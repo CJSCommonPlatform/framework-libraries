@@ -33,7 +33,6 @@
         <module>framework-api-bom</module>
         <module>framework-api-subscription</module>
         <module>framework-api-validator</module>
-        <module>framework-api-jmx</module>
         <module>framework-api-event-buffer</module>
         <module>framework-api-interceptors</module>
         <module>framework-api-unifiedsearch</module>

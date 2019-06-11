@@ -1,4 +1,4 @@
-package uk.gov.justice.services.core.util;
+package uk.gov.justice.services.core.annotation;
 
 
 import java.lang.annotation.Annotation;

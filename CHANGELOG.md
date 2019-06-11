@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.0-M23] - 2019-06-11
+### Changed
+- framework-api-core annotations moved to framework-api-common
+
 ## [4.0.0-M22] - 2019-06-04
 ### Removed
 - JMX MBeans and lifecycle events

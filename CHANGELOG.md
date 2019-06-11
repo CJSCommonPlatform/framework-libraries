@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [4.0.0-M23] - 2019-06-11
+## [4.0.0-M24] - 2019-06-11
 ### Changed
 - framework-api-core annotations moved to framework-api-common
 

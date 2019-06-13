@@ -56,7 +56,7 @@ public class CatalogToSchemaResolver {
 
                     if (schemaLocations.containsKey(schemaId)) {
                         final URL otherLocation = schemaLocations.get(schemaId);
-                        logger.warn(format("Found duplicate schema id '%s' for schemaLocations '%s' and '%s'", schemaId, otherLocation, schemaLocationUrl));
+                        logger.debug(format("Found duplicate schema id '%s' for schemaLocations '%s' and '%s'", schemaId, otherLocation, schemaLocationUrl));
                     } else {
                         schemaLocations.put(schemaId, schemaLocationUrl);
                     }

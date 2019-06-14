@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [4.0.0-M25] - 2019-06-14
 ### Added
 - JmsCommandHandlerDestinationNameProvider interface, the implementation will be generated for command handlers
 

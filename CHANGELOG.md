@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Added
+- Poller and MultiIteratingPoller classes
+
 ## [1.18.0] - 2019-05-03
 
 ### Changed

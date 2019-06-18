@@ -5,8 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.17.2] - 2019-06-18
+
 ### Changed
 - Updated common-bom version to 2.2.0 to fix apache tika security issues
+- Update utilities to version 1.19.0
+- Update test-utils to version 1.24.0
 
 ## [1.17.7] - 2019-05-07
 

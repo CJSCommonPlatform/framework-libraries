@@ -5,116 +5,26 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [4.0.0-M25] - 2019-06-14
+## [4.0.0] - 2019-06-20
 ### Added
 - JmsCommandHandlerDestinationNameProvider interface, the implementation will be generated for command handlers
-
-## [4.0.0-M24] - 2019-06-11
-### Changed
-- framework-api-core annotations moved to framework-api-common
-
-## [4.0.0-M22] - 2019-06-04
-### Removed
-- JMX MBeans and lifecycle events
-
-## [4.0.0-M21] - 2019-05-17
-### Added
-- Added rebuild JMX MBean and Rebuild events
-
-## [4.0.0-M20] - 2019-05-14
-### Changed
-- Updated common-bom to version 2.2.0
-
-### Deleted
-- Removed send method that takes a Destination, from JmsEnvelopeSender interface
-
-## [4.0.0-M19] - 2019-05-10
-### Changed
-- Refactor: Moved TransformerApi from json-transformer project in here
-
-## [4.0.0-M18] - 2019-05-03
-### Changed
-- Update test-utils version to 1.23.0
-
-## [4.0.0-M17] - 2019-05-02
-### Changed
-- Add unified-search module to bom
-
-## [4.0.0-M16] - 2019-05-02
-### Changed
-- Fixed ElasticSearch dependency hell
-- Downgraded DeltaSpike
-
-## [4.0.0-M14] - 2019-04-29
-### Changed
-- Update parameters for method currentOrderedEventsWith in EventBufferService
-
-## [4.0.0-M13] - 2019-04-24
-### Deleted
-- Removed deprecated classes and methods
-
-## [4.0.0-M12] - 2019-04-24
-## Changed 
+- Add EVENT_INDEXER component
+- Add Unified Search APIs
 - Add method for getting alternative DataSources from EventStoreDataSourceProvider
-
-## [4.0.0-M11] - 2019-04-23
-## Added
-- add INDEXER component
-- add SEARCH APIs
-
-## [4.0.0-M10] - 2019-04-23
-## Added
-- EventStoreDefaultDataSourceProvider interface to framework-api-event-source module
-
-## [4.0.0-M9] - 2019-04-17
-## Changed 
-- Remove deprecated github_token entry from travis.yml
-- Update test-utils to 1.22.0-M1
-
-## [4.0.0-M8] - 2019-04-16
-## Changed 
-- Renamed method names in PublishedEventSourceTransformation
-
-## [4.0.0-M7] - 2019-04-12
-## Changed 
-- LinkedEventSourceTransformation interface to PublishedEventSourceTransformation
-- LinkedEventException to PublishedEventException
-
-## [4.0.0-M6] - 2019-04-12
-### Added
+- EventStoreDataSourceProvider interface to framework-api-event-source module
 - PublishedEventSource for accessing published events
 
 ### Changed
+- Updated common-bom to version 2.2.0
+- Update test-utils version to 1.24.1
+- Update parameters for method currentOrderedEventsWith in EventBufferService by adding component
+- Renamed method names in PublishedEventSourceTransformation
+- Renamed LinkedEventSourceTransformation interface to PublishedEventSourceTransformation
+- Renamed LinkedEventException to PublishedEventException
 - Moved findEventsSince method from EventSource to PublishedEventSource
 
-## [4.0.0-M5] - 2019-03-29
-### Changed
-- Change caller/shutterable to a simple String in the event classes
-
-## [4.0.0-M4] - 2019-03-27
-### Added
-- Removed ApplicationController and moved to jee eventing
-
-## [4.0.0-M3] - 2019-03-26
-### Added
-- Catchup for Subscription event for informing the app of the cathcup lifecycle of a subscription
-
-## [4.0.0-M2] - 2019-03-19
-### Added
-- Add support for syncing linked events after stream transformation with transformed events
-
-## [4.0.0-M1] - 2019-03-07
-### Added
-- Merged in event-buffer-api from event-store as framework-api-event-store
-- Merged in event-listener-interceptors from event-store as framework-api-event-listener-interceptors
-
-## [3.4.0-M2] - 2019-03-04
-### Added
-- JMX dependency to framework-api-bom
-
-## [3.4.0-M1] - 2019-02-19
-### Added
-- Shuttering, catchup and jmx interfaces
+### Removed
+- Removed send method that takes a Destination, from JmsEnvelopeSender interface
 
 ## [3.3.0] - 2019-02-13
 ### Changed

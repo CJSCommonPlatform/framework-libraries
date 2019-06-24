@@ -124,10 +124,12 @@
                 </handlers>
             </root-logger>
             <formatter name="PATTERN">
-                <pattern-formatter pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{1}] %X{frameworkRequestData} %s%e%n"/>
+                <pattern-formatter
+                        pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{1}] %X{frameworkRequestData} %s%e%n"/>
             </formatter>
             <formatter name="COLOR-PATTERN">
-                <pattern-formatter pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c{1}] %X{frameworkRequestData} %s%e%n"/>
+                <pattern-formatter
+                        pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c{1}] %X{frameworkRequestData} %s%e%n"/>
             </formatter>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:batch-jberet:1.0">
@@ -320,8 +322,12 @@
         <subsystem xmlns="urn:jboss:domain:jsr77:1.0"/>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <bindings>
-                <simple name="java:global/alfrescoBaseUri" value="http://localhost:8080/alfresco-stub" type="java.lang.String"/>
-                <simple name="java:global/alfrescoUploadUser" value="${alfresco.upload.user}" type="java.lang.String"/>
+                <simple name="java:global/alfrescoBaseUri"
+                        value="http://localhost:8080/alfresco-stub" type="java.lang.String"/>
+                <simple name="java:global/alfrescoUploadUser" value="${alfresco.upload.user}"
+                        type="java.lang.String"/>
+                <simple name="java:global/alfrescoDeleteUser" value="${alfresco.delete.user}"
+                        type="java.lang.String"/>
             </bindings>
             <remote-naming/>
         </subsystem>

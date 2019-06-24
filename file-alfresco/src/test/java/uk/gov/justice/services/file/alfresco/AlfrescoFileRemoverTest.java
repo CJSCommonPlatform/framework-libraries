@@ -53,5 +53,4 @@ public class AlfrescoFileRemoverTest {
         //then
         verify(restClient).delete(DELETE_PATH + alfrescoId, APPLICATION_JSON_TYPE, headersWithUserId(USER_ID));
     }
-
 }

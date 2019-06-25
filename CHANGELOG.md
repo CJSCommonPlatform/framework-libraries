@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.20.0] - 2019-06-25
+### Changed
+- Updated common-bom version to 2.3.0
+- Updated test-utils version to 1.24.2
+
 ## [1.19.0] - 2019-05-03
 ### Added
 - Poller and MultiIteratingPoller classes

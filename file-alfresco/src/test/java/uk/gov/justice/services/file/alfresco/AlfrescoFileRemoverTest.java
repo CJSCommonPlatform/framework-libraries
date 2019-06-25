@@ -22,10 +22,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class AlfrescoFileRemoverTest {
 
     @InjectMocks
-    AlfrescoFileRemover fileRemover;
+    private AlfrescoFileRemover fileRemover;
 
     @Mock
-    AlfrescoRestClient restClient;
+    private AlfrescoRestClient restClient;
 
     private static final String DELETE_PATH = "path/";
     private static final String USER_ID = "userDelete321";

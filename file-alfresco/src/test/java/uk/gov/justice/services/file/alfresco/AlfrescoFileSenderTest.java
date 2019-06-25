@@ -24,10 +24,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class AlfrescoFileSenderTest {
 
     @InjectMocks
-    AlfrescoFileSender fileSender;
+    private AlfrescoFileSender fileSender;
 
     @Mock
-    AlfrescoRestClient restClient;
+    private AlfrescoRestClient restClient;
 
     private static final String UPLOAD_PATH = "/service/case/upload";
     private static final String USER_ID = "user1234";

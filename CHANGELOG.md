@@ -15,8 +15,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 - PublishedEventSource for accessing published events
 
 ### Changed
-- Updated common-bom to version 2.2.0
-- Update test-utils version to 1.24.1
+- Updated common-bom to version 2.3.0
+- Update test-utils version to 1.24.2
 - Update parameters for method currentOrderedEventsWith in EventBufferService by adding component
 - Renamed method names in PublishedEventSourceTransformation
 - Renamed LinkedEventSourceTransformation interface to PublishedEventSourceTransformation

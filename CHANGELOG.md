@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [2.3.0] - 2019-06-25
+### Changed
+- Revert jackson version 2.9.8 to 2.8.11
+
 ## [2.2.0] - 2019-05-13
 
 ### Changed

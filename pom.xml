@@ -22,8 +22,8 @@
 
     <properties>
         <cpp.repo.name>utilities</cpp.repo.name>
-        <common-bom.version>2.0.2</common-bom.version>
-        <test-utils.version>1.23.0</test-utils.version>
+        <common-bom.version>2.3.0</common-bom.version>
+        <test-utils.version>1.24.2</test-utils.version>
     </properties>
 
     <scm>

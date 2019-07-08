@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.5] - 2019-07-08
+### Changed
+- changing transformer to use org.json.JSONObject instead of javax.json.JsonObject
+
 ## [1.0.4] - 2019-05-15
 ### Changed
 - changing test-utils-core scope to test

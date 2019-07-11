@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [2.7.2] - 2019-07-11
+### Changed
+- Updated common-bom version to 2.4.0
+
 ## [2.7.1] - 2019-06-25
 ### Changed
 - Updated common-bom version to 2.3.0

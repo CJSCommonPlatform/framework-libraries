@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [2.4.0] - 2019-07-11
+### Added
+- Added commons.cli version 1.2
+### Changed
+- wildfly-client-all now has default exclusions to allow for running Jmx Clients
 
 ## [2.3.0] - 2019-06-25
 ### Changed

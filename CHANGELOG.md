@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.0.1] - 2019-07-11
+### Changed
+- Updated common-bom to version 2.4.0
+
 ## [4.0.0] - 2019-06-20
 ### Added
 - JmsCommandHandlerDestinationNameProvider interface, the implementation will be generated for command handlers

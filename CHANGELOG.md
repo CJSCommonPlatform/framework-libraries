@@ -5,6 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [1.7.3] - 2019-07-11
+
+### Changed
+- Updated common-bom-version to 2.4.0
+- Updated utilities version to 1.20.1
+- Updated generator maven plugin to version to 2.7.2
+
 ## [1.7.2] - 2019-06-25
 
 ### Changed

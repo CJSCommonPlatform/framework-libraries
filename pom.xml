@@ -29,9 +29,9 @@
 
     <properties>
         <cpp.repo.name>json-schema-catalog</cpp.repo.name>
-        <common-bom.version>2.3.0</common-bom.version>
-        <utilities.version>1.20.0</utilities.version>
-        <generator-maven-plugin.version>2.7.1</generator-maven-plugin.version>
+        <common-bom.version>2.4.0</common-bom.version>
+        <utilities.version>1.20.1</utilities.version>
+        <generator-maven-plugin.version>2.7.2</generator-maven-plugin.version>
     </properties>
 
     <scm>

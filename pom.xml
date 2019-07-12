@@ -20,7 +20,7 @@
     </scm>
 
     <properties>
-        <common-bom.version>1.30.0</common-bom.version>
+        <common-bom.version>2.4.0</common-bom.version>
         <cpp.repo.name>maven-test-utils</cpp.repo.name>
     </properties>
 

@@ -36,10 +36,10 @@
 
     <properties>
         <cpp.repo.name>job-manager</cpp.repo.name>
-        <common-bom.version>2.3.0</common-bom.version>
-        <test-utils.version>1.24.2</test-utils.version>
-        <utilities.version>1.20.0</utilities.version>
-        <framework.version>6.0.0-RC2</framework.version>
+        <common-bom.version>2.4.0</common-bom.version>
+        <test-utils.version>1.24.3</test-utils.version>
+        <utilities.version>1.20.1</utilities.version>
+        <framework.version>6.0.0-RC4</framework.version>
     </properties>
 
     <build>

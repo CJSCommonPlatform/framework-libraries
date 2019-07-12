@@ -5,6 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [4.0.0-RC3] - 2019-07-12
+### Changed
+- Update to framework version 6.0.0-RC4
+- Update to common-bom version 2.4.0
+- Update to test-utils version 1.24.3
+- Update to utilities version 1.20.1
+
 ## [4.0.0-RC2] - 2019-07-04
 ### Changed
 - Update to framework version 6.0.0-RC2

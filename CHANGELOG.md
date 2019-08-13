@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.20.2] - 2019-08-12
+### Changed
+- Improved validation of yaml files parsing with better error messages
+
 ## [1.20.1] - 2019-07-11
 ### Changed
 - Updated common-bom version to 2.4.0

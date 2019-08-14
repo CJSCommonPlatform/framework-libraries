@@ -24,7 +24,7 @@
     <properties>
         <common-bom.version>2.4.0</common-bom.version>
         <jolt.version>0.1.1</jolt.version>
-        <utilities.verison>1.20.1</utilities.verison>
+        <utilities.verison>1.20.2</utilities.verison>
         <test.utils.core.version>1.24.2</test.utils.core.version>
         <framework-api.version>4.0.1</framework-api.version>
     </properties>

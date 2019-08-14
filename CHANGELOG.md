@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.7] - 2019-08-14
+### Changed
+- Update utilities to version 1.20.2
+
 ## [1.0.6] - 2019-07-11
 ### Changed
 - Update common-bom to version 2.4.0

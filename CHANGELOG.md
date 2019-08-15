@@ -5,36 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [4.0.0-RC6] - 2019-07-18
-### Changed
-- Update to framework version 6.0.0-RC9
+## [4.0.0] - 2019-08-15
 
-## [4.0.0-RC5] - 2019-07-18
 ### Changed
-- Update to framework version 6.0.0-RC8
-
-## [4.0.0-RC4] - 2019-07-16
-### Changed
-- Update to framework version 6.0.0-RC7
-
-## [4.0.0-RC3] - 2019-07-12
-### Changed
-- Update to framework version 6.0.0-RC4
+- Update to framework version 6.0.2
+- Replace JdbcRepositoryHelper with PreparedStatementWrapperFactory and JdbcResultSetStreamer
 - Update to common-bom version 2.4.0
 - Update to test-utils version 1.24.3
-- Update to utilities version 1.20.1
-
-## [4.0.0-RC2] - 2019-07-04
-### Changed
-- Update to framework version 6.0.0-RC2
-
-## [4.0.0-RC1] - 2019-06-27
-### Changed
-- Update to framework version 6.0.0-RC1
-- Replace JdbcRepositoryHelper with PreparedStatementWrapperFactory and JdbcResultSetStreamer
-- Update to common-bom version 2.3.0
-- Update to test-utils version 1.24.2
-- Update to utilities version 1.20.0
+- Update to utilities version 1.20.2
 
 ## [3.1.4] - 2019-03-21
 

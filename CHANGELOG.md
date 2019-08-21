@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [2.7.3] - 2019-08-21
+### Fixed
+- Error checking when generationPath set to CLASSPATH
+
 ## [2.7.2] - 2019-07-11
 ### Changed
 - Updated common-bom version to 2.4.0

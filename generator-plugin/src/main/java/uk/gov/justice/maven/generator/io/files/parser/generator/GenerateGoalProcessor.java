@@ -22,7 +22,6 @@ import org.slf4j.Logger;
  */
 public class GenerateGoalProcessor {
     private static final Logger LOGGER = getLogger(GenerateGoalProcessor.class);
-    private static final String CLASSPATH = "CLASSPATH";
 
     private final MojoGeneratorFactory mojoGeneratorFactory;
     private final FileParser parser;
@@ -52,26 +51,26 @@ public class GenerateGoalProcessor {
         if (config.getGenerationPath()==GenerateMojo.GenerationPath.SOURCE_AND_CLASS_PATH) {
             final Map<Path, Collection<Path>> combinedPaths = new HashMap<>();
 
-            classPaths = getPaths(Paths.get(CLASSPATH), includes, excludes);
+            classPaths = getPaths(Paths.get("CLASSPATH"), includes, excludes);
 
             combinedPaths.put(config.getSourceDirectory(), paths);
-            combinedPaths.put((Paths.get(format("%s/%s", config.getSourceDirectory().toString(), CLASSPATH))), classPaths);
+            combinedPaths.put((Paths.get(format("%s/%s", config.getSourceDirectory().toString(), "CLASSPATH"))), classPaths);
 
             combinedPaths.forEach((baseDir, combinedPath) ->
                 parseSourceDirectory(config, generatorConfig, combinedPath, isPathFromClasspath(baseDir, config.getGenerationPath())));
         } else {
             if ((config.getGenerationPath()==GenerateMojo.GenerationPath.CLASSPATH)) {
-                classPaths = getPaths(Paths.get(CLASSPATH), includes, excludes);
+                classPaths = getPaths(Paths.get("CLASSPATH"), includes, excludes);
 
                 parseSourceDirectory(config, generatorConfig,
                         classPaths, isPathFromClasspath(config.getSourceDirectory(), config.getGenerationPath()));
             } else {
 
-                if(StringUtils.isNoneBlank(config.getSourceDirectory().toString()) && !config.getSourceDirectory().toString().contains(CLASSPATH)){
+                if(StringUtils.isNoneBlank(config.getSourceDirectory().toString()) && !config.getSourceDirectory().toString().contains("CLASSPATH")){
                     parseSourceDirectory(config, generatorConfig, paths, isPathFromClasspath(config.getSourceDirectory(), config.getGenerationPath()));
                 }
                 else{
-                    classPaths = getPaths(Paths.get(CLASSPATH), includes, excludes);
+                    classPaths = getPaths(Paths.get("CLASSPATH"), includes, excludes);
 
                     parseSourceDirectory(config, generatorConfig, classPaths, isPathFromClasspath(config.getSourceDirectory(), config.getGenerationPath()));
                 }
@@ -91,11 +90,11 @@ public class GenerateGoalProcessor {
     }
 
     private Path getRequiredPath(final GenerateGoalConfig config) {
-        return config.getSourceDirectory().toString().contains(CLASSPATH)? config.getSourceDirectory():Paths.get(format("%s/%s",config.getSourceDirectory().toString(),CLASSPATH));
+        return config.getSourceDirectory().toString().contains("CLASSPATH")? config.getSourceDirectory():Paths.get(format("%s/%s",config.getSourceDirectory().toString(), "CLASSPATH"));
     }
 
     private boolean isPathFromClasspath(final Path baseDir, final GenerateMojo.GenerationPath generationPath){
-        return baseDir.toString().contains(CLASSPATH) || (generationPath != null && generationPath.name()==(CLASSPATH));
+        return baseDir.toString().contains("CLASSPATH") || (generationPath != null && "CLASSPATH".equals(generationPath.name()));
     }
 }
 

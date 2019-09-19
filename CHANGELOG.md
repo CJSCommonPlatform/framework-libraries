@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.7.3] - 2019-00-19
+### Changed
+- Upgraded framework-api to version 4.1.0
+
 ## [1.7.2] - 2019-08-14
 ### Changed
 - Upgraded utilities to version 1.20.2

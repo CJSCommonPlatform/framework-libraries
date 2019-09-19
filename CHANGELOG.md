@@ -4,7 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Changed
+
+## [4.1.0] - 2019-09-19
+### Removed
 - Moved PublishedEventSource to event-store
 
 ## [4.0.1] - 2019-07-11

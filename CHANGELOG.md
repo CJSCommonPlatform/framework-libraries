@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.20.3] - 2019-10-21
+### Fixed
+- Remove accidental logging of JsonEnvelope payload if exception thrown during json to object conversion
+
 ## [1.20.2] - 2019-08-12
 ### Changed
 - Improved validation of yaml files parsing with better error messages

@@ -5,8 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [1.7.4] - 2019-08-14
 
+## [1.7.5] - 2019-10-23
+### Changed
+- Updated utilities version to 1.20.3
+
+## [1.7.4] - 2019-08-14
 ### Changed
 - Updated utilities version to 1.20.2
 

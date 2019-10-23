@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [1.20.3] - 2019-10-21
+## [1.20.3] - 2019-10-23
 ### Fixed
 - Remove accidental logging of JsonEnvelope payload if exception thrown during json to object conversion
 

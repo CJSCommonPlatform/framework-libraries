@@ -12,7 +12,7 @@
 
     <groupId>uk.gov.justice.utils</groupId>
     <artifactId>utilities-parent</artifactId>
-    <version>1.20.3</version>
+    <version>1.20.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>

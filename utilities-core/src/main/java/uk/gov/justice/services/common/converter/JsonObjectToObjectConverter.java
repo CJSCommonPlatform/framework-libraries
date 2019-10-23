@@ -1,5 +1,6 @@
 package uk.gov.justice.services.common.converter;
 
+import static java.lang.String.format;
 import static uk.gov.justice.services.common.converter.JSONObjectValueObfuscator.obfuscated;
 
 import uk.gov.justice.services.common.converter.exception.ConverterException;
@@ -17,23 +18,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JsonObjectToObjectConverter implements TypedConverter<JsonObject, Object> {
 
     @Inject
-    ObjectMapper mapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public <R> R convert(final JsonObject source, final Class<R> clazz) {
         try {
-            final R object = mapper.readValue(mapper.writeValueAsString(source), clazz);
+            final R object = objectMapper.readValue(objectMapper.writeValueAsString(source), clazz);
 
             if (object == null) {
-                throw new ConverterException(String.format("Failed to convert %s to Object", obfuscated(
-                        source)));
+                throw new ConverterException(format("Error while converting to %s from json:[%s]", clazz.getName(), obfuscated(source)));
             }
 
             return object;
-        } catch (IOException e) {
-            throw new IllegalArgumentException(
-                    String.format("Error while converting %s to JsonObject", obfuscated(
-                            source)), e);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(format("Error while converting to %s from json (obfuscated):[%s]", clazz.getName(), obfuscated(source)));
         }
     }
 }

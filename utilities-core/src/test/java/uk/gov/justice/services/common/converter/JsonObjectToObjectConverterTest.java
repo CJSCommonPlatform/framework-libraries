@@ -1,7 +1,9 @@
 package uk.gov.justice.services.common.converter;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doThrow;
@@ -21,12 +23,16 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,13 +48,14 @@ public class JsonObjectToObjectConverterTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @Mock
-    private ObjectMapper mapper;
+    @Spy
+    private ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+
+    @InjectMocks
+    private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
     @Test
     public void shouldConvertPojoToJsonObject() throws Exception {
-        final JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter();
-        jsonObjectToObjectConverter.mapper = new ObjectMapperProducer().objectMapper();
 
         final JsonObject jsonObject = jsonObject();
         final Pojo pojo = jsonObjectToObjectConverter.convert(jsonObject, Pojo.class);
@@ -63,22 +70,20 @@ public class JsonObjectToObjectConverterTest {
 
     @Test
     public void shouldConvertToPojoWithUTCDateTime() throws Exception {
-        final JsonObjectToObjectConverter converter = new JsonObjectToObjectConverter();
-        converter.mapper = new ObjectMapperProducer().objectMapper();
 
-        assertThat(converter
+        assertThat(jsonObjectToObjectConverter
                         .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0+00:00").build(),
                                 PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
-        assertThat(converter
+        assertThat(jsonObjectToObjectConverter
                         .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0Z").build(),
                                 PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
-        assertThat(converter
+        assertThat(jsonObjectToObjectConverter
                         .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T13:09:01Z").build(),
                                 PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
-        assertThat(converter
+        assertThat(jsonObjectToObjectConverter
                         .convert(Json.createObjectBuilder().add("dateTime", "2016-07-25T16:09:01.0+03:00").build(),
                                 PojoWithDateTime.class).getDateTime(),
                 equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
@@ -87,30 +92,19 @@ public class JsonObjectToObjectConverterTest {
 
     @Test
     public void shouldThrowExceptionOnConversionError() throws IOException {
-        thrown.expect(ConverterException.class);
-        thrown.expectMessage("Failed to convert");
-        thrown.expectMessage("xxx");
-        final JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter();
-        jsonObjectToObjectConverter.mapper = mapper;
-        final JsonObject jsonObject = jsonObject();
 
-        when(mapper.writeValueAsString(jsonObject)).thenReturn(null);
+        final UUID uuid = UUID.randomUUID();
 
-        jsonObjectToObjectConverter.convert(jsonObject, Pojo.class);
-    }
+        final JsonObject jsonObject = Json.createObjectBuilder().add("id", uuid.toString()).build();
 
-    @Test
-    public void shouldThrowExceptionOnNullResult() throws IOException {
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Error while converting");
-        thrown.expectMessage("xxx");
-        final JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter();
-        jsonObjectToObjectConverter.mapper = mapper;
-        final JsonObject jsonObject = jsonObject();
+        doThrow(IOException.class).when(objectMapper).writeValueAsString(jsonObject);
 
-        doThrow(IOException.class).when(mapper).writeValueAsString(jsonObject);
-
-        jsonObjectToObjectConverter.convert(jsonObject, Pojo.class);
+        try {
+            jsonObjectToObjectConverter.convert(jsonObject, Pojo.class);
+        } catch (final IllegalArgumentException expected) {
+            assertThat(expected.getMessage(), is("Error while converting to uk.gov.justice.services.common.converter.JsonObjectToObjectConverterTest$Pojo from json (obfuscated):[{\"id\":\"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\"}]"));
+            assertThat(expected.getCause(), is(nullValue()));
+        }
     }
 
     private JsonObject jsonObject() {

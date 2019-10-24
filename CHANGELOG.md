@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [4.2.2] - 2019-10-24
+### Changed
+- Update to framework version 6.2.2
+- Update to utilities version 1.20.3
+
 ## [4.2.1] - 2019-10-18
 ### Changed
 - Update to framework version 6.2.1

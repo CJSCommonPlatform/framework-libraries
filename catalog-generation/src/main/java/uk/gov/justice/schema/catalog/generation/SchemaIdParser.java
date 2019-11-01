@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.stream.JsonParsingException;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -60,6 +61,8 @@ public class SchemaIdParser {
 
         } catch (final IOException e) {
             throw new CatalogGenerationException(format("Failed to extract id from schema file '%s'", schemaFile), e);
+        } catch (final JsonParsingException e) {
+            throw new CatalogGenerationException(format("Failed to parse schema file '%s'", schemaFile), e);
         }
     }
 }

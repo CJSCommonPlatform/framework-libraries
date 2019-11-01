@@ -5,6 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+### Changed
+- SchemaIdParser will now include which file caused a Json parsing exception
 
 ## [1.7.5] - 2019-10-23
 ### Changed

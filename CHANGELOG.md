@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [4.1.0] - 2019-12-10
+## [4.2.0] - 2019-12-10
 ### Added
 - New SystemErrorService interface for reporting of system errors
 

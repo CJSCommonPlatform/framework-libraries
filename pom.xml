@@ -36,6 +36,7 @@
         <module>framework-api-event-buffer</module>
         <module>framework-api-interceptors</module>
         <module>framework-api-unifiedsearch</module>
+        <module>framework-api-system</module>
     </modules>
 
     <scm>

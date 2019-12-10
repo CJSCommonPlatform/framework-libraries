@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.1.0] - 2019-12-10
+### Added
+- New SystemErrorService interface for reporting of system errors
+
 ## [4.1.0] - 2019-09-19
 ### Removed
 - Moved PublishedEventSource to event-store

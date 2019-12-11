@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.2.1] - 2019-12-11
+### Added
+- Added framework-api-system-errors to dependency management
+
 ## [4.2.0] - 2019-12-10
 ### Added
 - New SystemErrorService interface for reporting of system errors

@@ -86,7 +86,7 @@ public class BuilderGeneratorTest {
 
 
         when(additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)).thenReturn(false);
-        when(builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName)).thenReturn(buildMethod);
+        when(builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName, pluginContext)).thenReturn(buildMethod);
 
         final TypeSpec builder = builderGenerator.generate();
 

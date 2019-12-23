@@ -17,12 +17,22 @@ import java.util.List;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 /**
  * Factory for creating the 'with' and 'build' methods of the POJO's static inner Builder
  */
 public class BuilderMethodFactory {
+
+    private final ClassNameFactory classNameFactory;
+    private final OptionalTypeNameUtil optionalTypeNameUtil;
+
+    public BuilderMethodFactory(final ClassNameFactory classNameFactory,
+                                final OptionalTypeNameUtil optionalTypeNameUtil) {
+        this.classNameFactory = classNameFactory;
+        this.optionalTypeNameUtil = optionalTypeNameUtil;
+    }
 
     public List<MethodSpec> createTheWithMethods(
             final List<Definition> fieldDefinitions,
@@ -60,15 +70,16 @@ public class BuilderMethodFactory {
 
     public MethodSpec createTheBuildMethod(
             final List<Definition> fieldDefinitions,
-            final ClassName pojoClassName) {
+            final ClassName pojoClassName,
+            final PluginContext pluginContext) {
 
-        final String params = fieldDefinitions.stream()
-                .map(Definition::getFieldName)
+        final String constructorArguments = fieldDefinitions.stream()
+                .map(definition -> createConstructorArgumentFor(definition, pluginContext))
                 .collect(joining(", "));
 
         return MethodSpec.methodBuilder("build")
                 .addModifiers(PUBLIC)
-                .addStatement("return new $L(" + params + ")", pojoClassName)
+                .addStatement("return new $L(" + constructorArguments + ")", pojoClassName)
                 .returns(pojoClassName)
                 .build();
     }
@@ -90,6 +101,16 @@ public class BuilderMethodFactory {
                 .build();
     }
 
+    private String createConstructorArgumentFor(final Definition definition, final PluginContext pluginContext) {
+        final TypeName typeName = classNameFactory.createTypeNameFrom(definition, pluginContext);
+
+        if (optionalTypeNameUtil.isOptionalType(typeName)) {
+            return "Optional.ofNullable(" + definition.getFieldName() + ")";
+        }
+
+        return definition.getFieldName();
+    }
+
     private String createStatementFormatWith(final String params) {
         if (params.isEmpty()) {
             return "return new $L($N)";
@@ -98,14 +119,13 @@ public class BuilderMethodFactory {
         return "return new $L(" + params + ", $N)";
     }
 
-    private MethodSpec generateWithMethod(
-            final Definition fieldDefinition,
-            final ClassName builderClassName,
-            final ClassNameFactory classNameFactory,
-            final PluginContext pluginContext) {
+    private MethodSpec generateWithMethod(final Definition fieldDefinition,
+                                          final ClassName builderClassName,
+                                          final ClassNameFactory classNameFactory,
+                                          final PluginContext pluginContext) {
 
         final String fieldName = fieldDefinition.getFieldName();
-        final TypeName typeName = classNameFactory.createTypeNameFrom(fieldDefinition, pluginContext);
+        final TypeName typeName = getParameterTypeName(fieldDefinition, classNameFactory, pluginContext);
 
         return methodBuilder("with" + capitalize(fieldName))
                 .addModifiers(PUBLIC)
@@ -116,6 +136,19 @@ public class BuilderMethodFactory {
                         .addStatement("return this")
                         .build())
                 .build();
+    }
+
+    private TypeName getParameterTypeName(final Definition fieldDefinition,
+                                          final ClassNameFactory classNameFactory,
+                                          final PluginContext pluginContext) {
+
+        final TypeName typeName = classNameFactory.createTypeNameFrom(fieldDefinition, pluginContext);
+
+        if (optionalTypeNameUtil.isOptionalType(typeName)) {
+            return optionalTypeNameUtil.getOptionalTypeFrom((ParameterizedTypeName) typeName);
+        }
+
+        return typeName;
     }
 
     private MethodSpec generateWithMethodForAdditionalProperties(final ClassName builderClassName) {

@@ -153,6 +153,6 @@ public class BuilderGenerator implements ClassGeneratable {
             return builderMethodFactory.createTheBuildMethodWithAdditionalProperties(fieldDefinitions, pojoClassName);
         }
 
-        return builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName);
+        return builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName, pluginContext);
     }
 }

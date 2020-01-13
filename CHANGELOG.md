@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Builders field set method of Optional take argument of actual type rather than Optional of type
+- Builders construct object with Optional.empty() if no value set for field
+
 ## [1.7.3] - 2019-00-19
 ### Changed
 - Upgraded framework-api to version 4.1.0

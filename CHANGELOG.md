@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.20.4] - 2020-02-17
+### Changed
+- Updated common-bom version to 2.5.0
+- Updated test-utils version to 1.24.4
+
 ## [1.20.3] - 2019-10-23
 ### Fixed
 - Remove accidental logging of JsonEnvelope payload if exception thrown during json to object conversion

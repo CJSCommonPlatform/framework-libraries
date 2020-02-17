@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [2.4.1] - 2020-02-17
+### Removed
+- 1.5.1 of org.everit.json.schema dependency, this is causing conflicts
+
 ## [2.4.0] - 2019-07-11
 ### Added
 - Added commons.cli version 1.2

@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.24.4] - 2020-02-17
+### Changed
+- Updated common-bom to version 2.5.0
+- Use 1.6.0 of the org.everit.json.schema dependency
+
 ## [1.24.3] - 2019-07-11
 
 ### Changed

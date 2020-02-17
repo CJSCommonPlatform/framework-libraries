@@ -65,7 +65,6 @@
         <jcommander.version>1.48</jcommander.version>
         <jee.api.version>7.0</jee.api.version>
         <jokolia.client.java.version>2.0.0-M3</jokolia.client.java.version>
-        <json.schema.version>1.5.1</json.schema.version>
         <jsonassert.version>1.2.3</jsonassert.version>
         <jsonpath.version>2.2.0</jsonpath.version>
         <junit.version>4.12</junit.version>
@@ -371,17 +370,6 @@
                 <groupId>org.glassfish</groupId>
                 <artifactId>javax.json</artifactId>
                 <version>${glassfish-json.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.everit.json</groupId>
-                <artifactId>org.everit.json.schema</artifactId>
-                <version>${json.schema.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>

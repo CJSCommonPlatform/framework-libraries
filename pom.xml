@@ -12,7 +12,7 @@
 
     <groupId>uk.gov.justice.services</groupId>
     <artifactId>job-manager</artifactId>
-    <version>4.3.1</version>
+    <version>4.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Job Manager</name>

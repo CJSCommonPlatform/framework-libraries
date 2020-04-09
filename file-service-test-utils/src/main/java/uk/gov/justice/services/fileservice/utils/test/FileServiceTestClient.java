@@ -77,13 +77,35 @@ public class FileServiceTestClient {
             final InputStream contentStream,
             final Connection connection) throws FileServiceException {
 
+        return create(randomUUID(), fileName, mediaType, contentStream, connection);
+    }
+
+    /**
+     * Puts a file in the database with the specified id.
+     *
+     * NB: the {@link Connection} is not closed by the client.
+     *
+     * @param fileId the file id for the file to be created
+     * @param fileName the name of the file. Will appear in the metadata json
+     * @param mediaType the media type of the file. Will appear in the metadata json
+     * @param contentStream an {@link InputStream} from the file to store
+     * @param connection a live connection to the database.
+     * @return the file id
+     * @throws FileServiceException if saving the file fails
+     */
+    public UUID create(
+            final UUID fileId,
+            final String fileName,
+            final String mediaType,
+            final InputStream contentStream,
+            final Connection connection) throws FileServiceException {
+
         final JsonObject metadata = createObjectBuilder()
                 .add("fileName", fileName)
                 .add("mediaType", mediaType)
                 .add("createdAt", ZonedDateTimes.toString(utcClock.now()))
                 .build();
 
-        final UUID fileId = randomUUID();
         contentJdbcRepository.insert(fileId, contentStream, connection);
         metadataJdbcRepository.insert(fileId, metadata, connection);
 

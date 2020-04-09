@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [1.17.13] - 2020-04-09
+## Changed
+- Added new create method to FileServiceTestClientTest that allows the file id to be passed in
+
 ## [1.17.12] - 2019-10-23
 ## Changed
 - Update utilities to version 1.20.3

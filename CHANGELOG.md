@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [4.3.0-M1] - 2020-04-21
+### Changed
+- UnifiedSearchIndexer now takes an JsonEnvelope rather than a raw JsonEnvelope payload
+
 ## [4.2.1] - 2019-12-11
 ### Added
 - Added framework-api-system-errors to dependency management

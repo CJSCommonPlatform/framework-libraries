@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [4.3.0-M1] - 2020-04-21
+## [4.3.0] - 2020-04-22
 ### Changed
 - UnifiedSearchIndexer now takes an JsonEnvelope rather than a raw JsonEnvelope payload
 

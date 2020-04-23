@@ -39,7 +39,7 @@
         <common-bom.version>2.4.0</common-bom.version>
         <test-utils.version>1.24.3</test-utils.version>
         <utilities.version>1.20.3</utilities.version>
-        <framework.version>6.4.1</framework.version>
+        <framework.version>6.4.2</framework.version>
     </properties>
 
     <build>

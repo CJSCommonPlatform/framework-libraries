@@ -2,8 +2,6 @@ package uk.gov.moj.cpp.jobstore.persistence;
 
 import static java.lang.String.format;
 
-import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryException;
-
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,27 +14,18 @@ import org.slf4j.Logger;
 @ApplicationScoped
 public class JdbcJobStoreDataSourceProvider {
 
-    @Inject
-    Logger logger;
-
     private static final String JNDI_DS_JOB_STORE_PATTERN = "java:/app/%s/DS.jobstore";
 
-    private DataSource datasource = null;
-
-    @Resource(lookup = "java:app/AppName")
-    String warFileName;
+    @Inject
+    private Logger logger;
 
     @Inject
-    Context initialContext;
+    private Context initialContext;
 
-    JdbcJobStoreDataSourceProvider(final String warFileName, final Context initialContext) {
-        this.warFileName = warFileName;
-        this.initialContext = initialContext;
-    }
+    @Resource(lookup = "java:app/AppName")
+    private String warFileName;
 
-    public JdbcJobStoreDataSourceProvider() throws NamingException {}
-
-
+    private DataSource datasource = null;
 
     public DataSource getDataSource() {
         if (datasource == null) {

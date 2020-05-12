@@ -8,13 +8,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryException;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,8 +35,12 @@ public class JdbcJobStoreDataSourceProviderTest {
     private Logger logger;
 
     @InjectMocks
-    private JdbcJobStoreDataSourceProvider provider = new JdbcJobStoreDataSourceProvider("test-event-processor", initialContextMock);;
+    private JdbcJobStoreDataSourceProvider provider;
 
+    @Before
+    public void setup() throws Exception {
+        setField(provider, "warFileName", "test-event-processor");
+    }
 
     @Test
     public void shouldReturnDatasource() throws NamingException {
@@ -51,7 +56,7 @@ public class JdbcJobStoreDataSourceProviderTest {
 
     @Test
     public void shouldGetInitialContext() throws NamingException {
-        final Context initialContext = provider.initialContext;
+        final Context initialContext = getValueOfField(provider, "initialContext", Context.class);
         assertThat(initialContext, notNullValue());
     }
 

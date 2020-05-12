@@ -15,10 +15,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
 import uk.gov.justice.services.common.util.UtcClock;
-import uk.gov.justice.services.jdbc.persistence.JdbcRepositoryException;
-import uk.gov.justice.services.jdbc.persistence.JdbcResultSetStreamer;
-import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapper;
-import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapperFactory;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>1.7.1</version>
+    </parent>
+
+    <artifactId>maven-framework-parent-pom</artifactId>
+    <version>1.14.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Framework parent POM</name>
+    <description>Parent POM for the Microservices framework</description>
+
+    <properties>
+        <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
+        <cpp.repo.name>maven-framework-parent-pom</cpp.repo.name>
+    </properties>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+    <!--
+    =====
+    BUILD
+    =====
+    -->
+
+    <build>
+
+        <!-- Default plugin versions and management -->
+        <pluginManagement>
+            <plugins>
+
+                <!-- WildFly plugin to deploy war -->
+                <plugin>
+                    <groupId>org.wildfly.plugins</groupId>
+                    <artifactId>wildfly-maven-plugin</artifactId>
+                    <version>${plugins.maven.wildfly.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                    <version>${liquibase.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.edugility</groupId>
+                    <artifactId>h2-maven-plugin</artifactId>
+                    <version>1.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.h2database</groupId>
+                            <artifactId>h2</artifactId>
+                            <version>${h2.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.bsc.maven</groupId>
+                    <artifactId>maven-processor-plugin</artifactId>
+                    <version>${plugins.maven.processor.version}</version>
+                    <executions>
+                        <execution>
+                            <id>process</id>
+                            <goals>
+                                <goal>process</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <processors>
+                                    <processor>
+                                        org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
+                                    </processor>
+                                </processors>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>${hibernate.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${plugins.maven.resources.version}</version>
+                    <executions>
+                        <execution>
+                            <id>copy-json-test-resources</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/generated-test-resources/json
+                                </outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>src/raml/json</directory>
+                                        <filtering>true</filtering>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>copy-json-schema-resources</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/generated-resources/json/schema
+                                </outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>src/raml/json/schema</directory>
+                                        <filtering>true</filtering>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+
+        </pluginManagement>
+
+        <!-- Plugin configuration -->
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${plugins.jacoco.version}</version>
+                <configuration combine.children="append">
+                    <excludes>
+                        <exclude>uk/gov/justice/api/*Application.class</exclude>
+                        <exclude>uk/gov/justice/api/*JmsListener.class</exclude>
+                        <exclude>uk/gov/justice/api/Remote*.class</exclude>
+                        <exclude>uk/gov/justice/api/controller/Remote*.class</exclude>
+                        <exclude>uk/gov/justice/api/resource/*Resource.class</exclude>
+                        <exclude>uk/gov/justice/api/mapper/*ActionMapper.class</exclude>
+                        <exclude>uk/gov/justice/api/mapper/*MediaTypeToSchemaIdMapper.class</exclude>
+                        <exclude>entity/*_.class</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+
+    <!--
+    =======================
+    DISTRIBUTION MANAGEMENT
+    =======================
+    -->
+
+    <!-- NOTHING SET YET -->
+
+    <!--
+    ========
+    PROFILES
+    ========
+    -->
+
+    <profiles>
+
+        <profile>
+            <id>raml-jar</id>
+            <activation>
+                <file>
+                    <exists>src/raml</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>raml</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <classifier>raml</classifier>
+                                    <classesDirectory>${project.basedir}/src</classesDirectory>
+                                    <includes>
+                                        <include>raml/**</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>liquibase-jar</id>
+            <activation>
+                <file>
+                    <exists>src/main/resources/liquibase.properties</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <configuration>
+                            <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>liquibase.integration.commandline.Main</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <configuration>
+                            <dependencyReducedPomLocation>
+                                ${project.build.directory}/dependency-reduced-pom.xml
+                            </dependencyReducedPomLocation>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-core</artifactId>
+                    <version>${liquibase.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <version>${postgresql.driver.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+    </profiles>
+
+</project>

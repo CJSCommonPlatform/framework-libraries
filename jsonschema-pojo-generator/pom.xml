@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>1.7.1</version>
+    </parent>
+
+    <groupId>uk.gov.justice.generators</groupId>
+    <artifactId>jsonschema-pojo-generator</artifactId>
+    <version>1.7.8-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <description>Json Schema to POJO generator</description>
+
+    <modules>
+        <module>pojo-generation-core</module>
+        <module>integration-test</module>
+        <module>pojo-plugin-it</module>
+        <module>pojo-event-annotation-plugin</module>
+        <module>standard-test-catalog</module>
+        <module>example-pojo-schema</module>
+        <module>example-schema-to-pojo-gen-test</module>
+        <module>pojo-generation-plugin</module>
+    </modules>
+
+    <properties>
+        <common-bom.version>2.4.0</common-bom.version>
+        <framework-api-version>4.3.0</framework-api-version>
+        <utilities.version>1.20.3</utilities.version>
+        <test-utils.version>1.24.3</test-utils.version>
+        <generator-maven-plugin.version>2.7.2</generator-maven-plugin.version>
+        <json-schema-catalog.version>1.7.5</json-schema-catalog.version>
+
+        <cpp.repo.name>jsonschema-pojo-generator</cpp.repo.name>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>${argLine} -Xmx64m</argLine>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

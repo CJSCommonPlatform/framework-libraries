@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/events/pojo/enums/person-with-string-enum.json",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "favouriteColour": {
+      "type": "string",
+      "enum": [
+        "Red",
+        "Green",
+        "Blue"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "age",
+    "favouriteColour"
+  ]
+}

@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>uk.gov.justice</groupId>
-        <artifactId>maven-parent-pom</artifactId>
-        <version>1.7.1</version>
+        <groupId>uk.gov.justice.framework.libraries</groupId>
+        <artifactId>framework-libraries</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.justice.generators</groupId>

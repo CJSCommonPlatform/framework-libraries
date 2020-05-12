@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-framework-parent-pom</artifactId>
+        <version>1.13.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>file-service</artifactId>
+    <groupId>uk.gov.justice.services</groupId>
+    <version>1.17.14-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>file-service-liquibase</module>
+        <module>file-service-persistence</module>
+        <module>file-service-api</module>
+        <module>file-service-it</module>
+        <module>file-service-test-utils</module>
+    </modules>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+    <properties>
+        <common-bom.version>2.4.0</common-bom.version>
+        <cpp.utilities.version>1.20.3</cpp.utilities.version>
+        <cpp.test.utilities.version>1.24.3</cpp.test.utilities.version>
+
+        <cpp.repo.name>file-service</cpp.repo.name>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+             <dependency>
+                <groupId>uk.gov.justice.utils</groupId>
+                <artifactId>utilities-core</artifactId>
+                <version>${cpp.utilities.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

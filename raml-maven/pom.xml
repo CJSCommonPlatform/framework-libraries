@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>1.7.1</version>
+    </parent>
+
+    <groupId>uk.gov.justice.maven</groupId>
+    <artifactId>raml-maven</artifactId>
+    <version>1.6.10-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>raml-for-testing-io</module>
+        <module>raml-maven-plugin</module>
+        <module>raml-generator-core</module>
+        <module>io-utils</module>
+        <module>raml-parser</module>
+        <module>raml-maven-plugin-it</module>
+        <module>raml-generator-for-testing</module>
+        <module>lint-checker-core</module>
+    </modules>
+
+    <properties>
+        <common-bom.version>2.4.0</common-bom.version>
+        <cpp.repo.name>raml-maven</cpp.repo.name>
+    </properties>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

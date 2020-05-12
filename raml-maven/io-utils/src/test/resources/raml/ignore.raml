@@ -1,0 +1,15 @@
+#%RAML 0.8
+title: Example
+baseUri: http://localhost:8080/
+version: v0.1
+mediaType: application/json
+protocols: [ HTTP, HTTPS ]
+
+/test:
+  description: |
+    Post to this entry point to create a test
+  post:
+    headers:
+      Content-Type:
+        type: string
+        example: application/json

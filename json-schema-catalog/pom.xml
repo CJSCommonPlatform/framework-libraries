@@ -7,12 +7,12 @@
     <parent>
         <groupId>uk.gov.justice.framework.libraries</groupId>
         <artifactId>framework-libraries</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.justice.schema</groupId>
     <artifactId>json-schema-catalog</artifactId>
-    <version>1.7.7-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -29,16 +29,7 @@
 
     <properties>
         <cpp.repo.name>json-schema-catalog</cpp.repo.name>
-        <common-bom.version>2.4.0</common-bom.version>
-        <utilities.version>1.20.3</utilities.version>
-        <generator-maven-plugin.version>2.7.2</generator-maven-plugin.version>
     </properties>
-
-    <scm>
-        <connection>${cpp.scm.connection}</connection>
-        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
-        <url>${cpp.scm.url}</url>
-    </scm>
 
     <dependencyManagement>
         <dependencies>

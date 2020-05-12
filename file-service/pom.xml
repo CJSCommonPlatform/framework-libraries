@@ -5,13 +5,13 @@
     <parent>
         <groupId>uk.gov.justice.framework.libraries</groupId>
         <artifactId>framework-libraries</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>file-service</artifactId>
     <groupId>uk.gov.justice.services</groupId>
-    <version>1.17.14-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,17 +22,7 @@
         <module>file-service-test-utils</module>
     </modules>
 
-    <scm>
-        <connection>${cpp.scm.connection}</connection>
-        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
-        <url>${cpp.scm.url}</url>
-    </scm>
-
     <properties>
-        <common-bom.version>2.4.0</common-bom.version>
-        <cpp.utilities.version>1.20.3</cpp.utilities.version>
-        <cpp.test.utilities.version>1.24.3</cpp.test.utilities.version>
-
         <cpp.repo.name>file-service</cpp.repo.name>
     </properties>
 
@@ -48,7 +38,7 @@
              <dependency>
                 <groupId>uk.gov.justice.utils</groupId>
                 <artifactId>utilities-core</artifactId>
-                <version>${cpp.utilities.version}</version>
+                <version>${utilities.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -15,22 +15,16 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.util.UtcClock;
-import uk.gov.justice.services.core.mapping.NameToMediaTypeConverter;
-import uk.gov.justice.services.core.mapping.SchemaIdMappingCache;
-import uk.gov.justice.services.jdbc.persistence.JdbcResultSetStreamer;
-import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapperFactory;
-import uk.gov.justice.services.messaging.DefaultJsonObjectEnvelopeConverter;
-import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
-import uk.gov.justice.services.messaging.logging.DefaultTraceLogger;
-import uk.gov.justice.services.test.utils.common.envelope.EnvelopeRecordingInterceptor;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
+import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.PostgresJobSqlProvider;
+import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.execution.JobScheduler;
 import uk.gov.moj.cpp.task.extension.SampleTask;
@@ -96,13 +90,7 @@ public class JobSchedulerIT {
             GlobalValueProducer.class,
             TaskRegistry.class,
 
-            DefaultJsonObjectEnvelopeConverter.class,
-            DefaultTraceLogger.class,
-
-            EnvelopeRecordingInterceptor.class,
-
             StringToJsonObjectConverter.class,
-            JsonObjectEnvelopeConverter.class,
             ObjectMapper.class,
 
             JndiBasedServiceContextNameProvider.class,
@@ -110,11 +98,8 @@ public class JobSchedulerIT {
             GlobalValueProducer.class,
 
             JsonObjectToObjectConverter.class,
-            SchemaIdMappingCache.class,
             ObjectToJsonObjectConverter.class,
             UtcClock.class,
-            NameToMediaTypeConverter.class,
-            SchemaIdMappingCache.class,
             InitialContextProducer.class,
             LoggerProducer.class,
             SampleTask.class

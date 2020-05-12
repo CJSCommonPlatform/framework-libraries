@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- Remove dependency on microservice framework
 
 ## [4.3.2] - 2020-4-23
 ### Changed

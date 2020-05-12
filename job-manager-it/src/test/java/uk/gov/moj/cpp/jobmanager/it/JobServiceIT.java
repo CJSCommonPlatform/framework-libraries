@@ -14,16 +14,16 @@ import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.GlobalValueProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.common.configuration.ValueProducer;
-import uk.gov.justice.services.jdbc.persistence.JdbcResultSetStreamer;
-import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapperFactory;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
+import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.PostgresJobSqlProvider;
+import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 
 import java.sql.SQLException;

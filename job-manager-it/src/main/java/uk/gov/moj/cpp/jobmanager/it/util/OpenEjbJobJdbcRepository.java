@@ -8,10 +8,10 @@ import static java.util.UUID.randomUUID;
 import static javax.json.Json.createReader;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
-import uk.gov.justice.services.jdbc.persistence.PreparedStatementWrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobJdbcRepository;
+import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapper;
 
 import java.io.StringReader;
 import java.sql.Connection;
@@ -33,16 +33,11 @@ import javax.json.JsonReader;
 public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
 
     private static final String SQL_DELETE_PATTERN = "DELETE FROM %s";
-
     private static final String JOBS_PROCESSED_COUNT = "SELECT COUNT(*) FROM job where worker_id is not null and worker_lock_time > ?";
     private static final String JOBS_NOTPROCESSED_COUNT = "SELECT COUNT(*) FROM job where worker_id is null and worker_lock_time is null";
-
     private static final String JOBS_PROCESSED = "SELECT * FROM job where worker_id is not null and worker_lock_time > ?";
-
     private static final String JOBS_PROCESSED_FOR_WORKER = "SELECT * FROM job where worker_id = ?";
-
     private static final String JOB_DATA_JSON = "{\"some\": \"json\"}";
-
 
     public void waitForAllJobsToBeProcessed() {
 
@@ -60,11 +55,7 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public void cleanJobTables() throws SQLException {
-        cleanTable("job");
-    }
-
-    private void cleanTable(final String tableName) throws SQLException {
-        final String sql = format(SQL_DELETE_PATTERN, tableName);
+        final String sql = format(SQL_DELETE_PATTERN, "job");
         try (Connection connection = dataSource.getConnection()) {
             executeDelete(sql, connection);
         }
@@ -131,11 +122,9 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public void collectDuplicates(final Set<UUID> jobs, final List<UUID> duplicates, final Map<UUID, List<Job>> workersToJobs) {
-        workersToJobs.forEach((K, jobsForAWorker) -> {
-            for (int k = 0; k < jobsForAWorker.size(); k++) {
-                final Job job = jobsForAWorker.get(k);
+        workersToJobs.forEach((key, jobsForAWorker) -> {
+            for (final Job job : jobsForAWorker) {
                 final boolean added = jobs.add(job.getJobId());
-                System.out.println(job.getWorkerId().get() + ", " + job.getJobId());
                 if (!added) {
                     duplicates.add(job.getJobId());
                 }

@@ -17,11 +17,11 @@
         <module>files-for-testing-io</module>
         <module>generator-plugin</module>
         <module>generator-core</module>
-        <module>io-utils</module>
-        <module>raml-parser</module>
+        <module>generator-io-utils</module>
         <module>generator-plugin-it</module>
-        <module>raml-generator-for-testing</module>
-        <module>json-generator-for-testing</module>
+        <module>generator-raml-parser</module>
+        <module>raml-generator-for-testing-plugin</module>
+        <module>json-generator-for-testing-plugin</module>
         <module>generator-maven-test-utils</module>
         <module>schema-parser</module>
         <module>parser-common</module>

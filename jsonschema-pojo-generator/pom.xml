@@ -19,7 +19,7 @@
 
     <modules>
         <module>pojo-generation-core</module>
-        <module>integration-test</module>
+        <module>pojo-integration-test</module>
         <module>pojo-plugin-it</module>
         <module>pojo-event-annotation-plugin</module>
         <module>standard-test-catalog</module>

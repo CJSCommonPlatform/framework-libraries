@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-framework-parent-pom</artifactId>
+        <version>1.6.0</version>
+    </parent>
+
+    <groupId>uk.gov.justice.utils</groupId>
+    <artifactId>utilities-parent</artifactId>
+    <version>1.20.5-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>utilities-core</module>
+        <module>utilities-file</module>
+    </modules>
+
+    <properties>
+        <cpp.repo.name>utilities</cpp.repo.name>
+        <common-bom.version>2.5.0</common-bom.version>
+        <test-utils.version>1.24.4</test-utils.version>
+    </properties>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

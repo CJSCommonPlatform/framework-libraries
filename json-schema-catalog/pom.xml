@@ -27,10 +27,6 @@
         <module>catalog-generation-plugin</module>
     </modules>
 
-    <properties>
-        <cpp.repo.name>json-schema-catalog</cpp.repo.name>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

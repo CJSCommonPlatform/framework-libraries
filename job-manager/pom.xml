@@ -27,10 +27,6 @@
         <module>example</module>
     </modules>
 
-    <properties>
-        <cpp.repo.name>job-manager</cpp.repo.name>
-    </properties>
-
     <build>
         <pluginManagement>
             <plugins>

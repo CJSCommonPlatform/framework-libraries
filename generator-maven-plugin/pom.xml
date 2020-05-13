@@ -27,8 +27,8 @@
         <module>parser-common</module>
     </modules>
 
+    <!-- TODO - are these properties needed? -->
     <properties>
-        <cpp.repo.name>generator-maven-plugin</cpp.repo.name>
         <useSourcePathAndClassPath>false</useSourcePathAndClassPath>
         <useClassPath>false</useClassPath>
     </properties>

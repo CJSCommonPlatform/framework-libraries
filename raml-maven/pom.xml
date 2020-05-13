@@ -24,10 +24,6 @@
         <module>lint-checker-core</module>
     </modules>
 
-    <properties>
-        <cpp.repo.name>raml-maven</cpp.repo.name>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

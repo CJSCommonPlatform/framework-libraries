@@ -22,10 +22,6 @@
         <module>file-service-test-utils</module>
     </modules>
 
-    <properties>
-        <cpp.repo.name>file-service</cpp.repo.name>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

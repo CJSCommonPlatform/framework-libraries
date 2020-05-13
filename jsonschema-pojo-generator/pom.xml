@@ -28,10 +28,6 @@
         <module>pojo-generation-plugin</module>
     </modules>
 
-    <properties>
-        <cpp.repo.name>jsonschema-pojo-generator</cpp.repo.name>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

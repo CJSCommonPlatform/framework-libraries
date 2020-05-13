@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.justice.json</groupId>
         <artifactId>json-transformer</artifactId>
-        <version>1.0.11-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-core</artifactId>
-            <version>${utilities.verison}</version>
+            <version>${utilities.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.fasterxml.jackson.core</groupId>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>test-utils-core</artifactId>
-            <version>${test.utils.core.version}</version>
+            <version>${test.utilities.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

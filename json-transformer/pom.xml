@@ -7,12 +7,12 @@
     <parent>
         <groupId>uk.gov.justice.framework.libraries</groupId>
         <artifactId>framework-libraries</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.justice.json</groupId>
     <artifactId>json-transformer</artifactId>
-    <version>1.0.11-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <description>Json Schema to POJO generator</description>
@@ -20,14 +20,6 @@
     <modules>
         <module>json-transformer-jolt</module>
     </modules>
-
-    <properties>
-        <common-bom.version>2.4.0</common-bom.version>
-        <jolt.version>0.1.1</jolt.version>
-        <utilities.verison>1.20.3</utilities.verison>
-        <test.utils.core.version>1.24.2</test.utils.core.version>
-        <framework-api.version>4.3.0</framework-api.version>
-    </properties>
 
     <dependencyManagement>
         <dependencies>

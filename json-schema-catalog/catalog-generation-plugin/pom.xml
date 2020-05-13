@@ -5,7 +5,7 @@
     <parent>
         <artifactId>json-schema-catalog</artifactId>
         <groupId>uk.gov.justice.schema</groupId>
-        <version>1.7.7-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>uk.gov.justice.maven.generator</groupId>
             <artifactId>generator-plugin</artifactId>
-            <version>${generator-maven-plugin.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>

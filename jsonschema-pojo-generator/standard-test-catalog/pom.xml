@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jsonschema-pojo-generator</artifactId>
         <groupId>uk.gov.justice.generators</groupId>
-        <version>1.7.8-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +16,7 @@
             <plugin>
                 <artifactId>generator-plugin</artifactId>
                 <groupId>uk.gov.justice.maven.generator</groupId>
-                <version>${generator-maven-plugin.version}</version>
+                <version>${project.version}</version>
                 <executions>
                     <execution>
                         <id>schema-catalog-generation</id>
@@ -43,7 +43,7 @@
                     <dependency>
                         <groupId>uk.gov.justice.schema</groupId>
                         <artifactId>catalog-generation</artifactId>
-                        <version>${json-schema-catalog.version}</version>
+                        <version>${project.version}</version>
                     </dependency>
                </dependencies>
             </plugin>

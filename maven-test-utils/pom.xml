@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>uk.gov.justice</groupId>
-        <artifactId>maven-parent-pom</artifactId>
-        <version>1.6.0</version>
+        <groupId>uk.gov.justice.framework.utilities</groupId>
+        <artifactId>framework-utilities</artifactId>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

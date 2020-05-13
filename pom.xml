@@ -10,15 +10,15 @@
         <version>1.6.0</version>
     </parent>
 
-    <groupId>uk.gov.justice.utils</groupId>
+    <groupId>uk.gov.justice.framework.utilities</groupId>
     <artifactId>framework-utilities</artifactId>
-    <version>1.20.5-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>utilities</module>
-        <module>test-utils</module>
         <module>maven-test-utils</module>
+        <module>test-utils</module>
+<!--        <module>utilities</module>-->
     </modules>
 
     <properties>

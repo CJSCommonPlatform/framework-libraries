@@ -42,6 +42,23 @@
     <build>
         <plugins>
             <plugin>
+                <!-- Disable enforcer while using project version of generator plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${plugins.maven.enforcer.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-rules</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>generator-plugin</artifactId>
                 <groupId>uk.gov.justice.maven.generator</groupId>
                 <version>${project.version}</version>

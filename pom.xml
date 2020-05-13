@@ -31,6 +31,8 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
+        <sonar.projectKey>CJSCommonPlatform_framework-libraries</sonar.projectKey>
+        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
         <common-bom.version>2.4.0</common-bom.version>
         <framework-api.version>4.3.0</framework-api.version>
         <utilities.version>1.20.3</utilities.version>

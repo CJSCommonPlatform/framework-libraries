@@ -12,7 +12,7 @@
 
     <!-- TODO: this name conflicts with an artifact name in raml-maven. -->
     <!-- Check if it can be renamed safely -->
-    <artifactId>raml-parser</artifactId>
+    <artifactId>generator-raml-parser</artifactId>
 
     <scm>
         <connection>${cpp.scm.connection}</connection>

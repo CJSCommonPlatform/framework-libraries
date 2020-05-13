@@ -31,6 +31,8 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
+        <sonar.projectKey>CJSCommonPlatform_framework-libraries</sonar.projectKey>
+        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
         <common-bom.version>2.4.0</common-bom.version>
         <framework-api.version>4.3.0</framework-api.version>
         <utilities.version>1.20.3</utilities.version>
@@ -48,7 +50,11 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-
+            <dependency>
+                <groupId>uk.gov.justice.utils</groupId>
+                <artifactId>utilities-core</artifactId>
+                <version>${utilities.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -57,5 +63,19 @@
         <developerConnection>${cpp.scm.developerConnection}</developerConnection>
         <url>${cpp.scm.url}</url>
     </scm>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-failsafe-plugin</artifactId>-->
+<!--            </plugin>-->
+        </plugins>
+    </build>
 
 </project>

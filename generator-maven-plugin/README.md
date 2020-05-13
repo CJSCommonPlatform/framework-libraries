@@ -48,7 +48,7 @@ Maven dependency:
                 </dependency>
                 <dependency>
                     <groupId>uk.gov.justice.maven.generator</groupId>
-                    <artifactId>raml-parser</artifactId>
+                    <artifactId>generator-raml-parser</artifactId>
                     <version>1.7.0</version>
                 </dependency>
             </dependencies>

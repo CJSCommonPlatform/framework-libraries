@@ -20,25 +20,26 @@
 
     <modules>
         <module>file-service</module>
+        <module>generator-maven-plugin</module>
         <module>job-manager</module>
         <module>jsonschema-pojo-generator</module>
-        <module>raml-maven</module>
         <module>json-schema-catalog</module>
-        <module>maven-framework-parent-pom</module>
-        <module>generator-maven-plugin</module>
         <module>json-transformer</module>
+        <module>raml-maven</module>
     </modules>
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
         <sonar.projectKey>CJSCommonPlatform_framework-libraries</sonar.projectKey>
-        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
+        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
+
+        <!-- versions -->
         <common-bom.version>2.4.0</common-bom.version>
         <framework-api.version>4.3.0</framework-api.version>
-        <utilities.version>1.20.3</utilities.version>
-        <test.utilities.version>1.24.3</test.utilities.version>
         <jolt.version>0.1.1</jolt.version>
         <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
+        <test.utilities.version>1.24.3</test.utilities.version>
+        <utilities.version>1.20.3</utilities.version>
     </properties>
 
     <dependencyManagement>

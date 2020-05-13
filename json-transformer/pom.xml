@@ -21,18 +21,6 @@
         <module>json-transformer-jolt</module>
     </modules>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>uk.gov.justice</groupId>
-                <artifactId>maven-common-bom</artifactId>
-                <version>${common-bom.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -45,17 +33,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-        </plugins>
     </build>
-
 
 </project>

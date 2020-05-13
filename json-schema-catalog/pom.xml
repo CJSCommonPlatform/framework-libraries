@@ -16,15 +16,15 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>catalog-domain</module>
-        <module>integration-test</module>
         <module>catalog-core</module>
+        <module>catalog-domain</module>
         <module>catalog-generation</module>
         <module>catalog-generation-plugin-it</module>
-        <module>schema-service</module>
-        <module>schema-example-context</module>
+        <module>catalog-integration-test</module>
         <module>catalog-test-utils</module>
+        <module>schema-example-context</module>
         <module>catalog-generation-plugin</module>
+        <module>schema-service</module>
     </modules>
 
     <dependencyManagement>

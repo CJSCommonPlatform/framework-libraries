@@ -17,7 +17,7 @@
         <module>raml-for-testing-io</module>
         <module>raml-maven-plugin</module>
         <module>raml-generator-core</module>
-        <module>io-utils</module>
+        <module>raml-maven-io-utils</module>
         <module>raml-parser</module>
         <module>raml-maven-plugin-it</module>
         <module>raml-generator-for-testing</module>

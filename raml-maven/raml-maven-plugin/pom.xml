@@ -63,7 +63,7 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>
-            <artifactId>io-utils</artifactId>
+            <artifactId>raml-maven-io-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

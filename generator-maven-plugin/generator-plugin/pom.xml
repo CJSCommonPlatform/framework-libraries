@@ -62,7 +62,7 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven.generator</groupId>
-            <artifactId>io-utils</artifactId>
+            <artifactId>generator-io-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

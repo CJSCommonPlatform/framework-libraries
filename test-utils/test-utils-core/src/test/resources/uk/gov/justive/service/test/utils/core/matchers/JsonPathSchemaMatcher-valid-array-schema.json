@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "",
+  "type": "array",
+  "properties": {
+    "offences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "prosecutorCaseId": {
+            "type": "string"
+          },
+          "offenceSequenceNo": {
+            "type": "integer"
+          },
+          "libraOffenceCode": {
+            "type": "string"
+          },
+          "chargeDate": {
+            "type": "string"
+          },
+          "libraOffenceDateCode": {
+            "type": "integer"
+          },
+          "offenceDate": {
+            "type": "string"
+          },
+          "offenceWording": {
+            "type": "string"
+          },
+          "prosecutionFacts": {
+            "type": "string"
+          },
+          "witnessStatement": {
+            "type": "string"
+          },
+          "compensation": {
+            "type": "number"
+          }
+        },
+        "required" : [
+          "id",
+          "prosecutorCaseId",
+          "offenceSequenceNo",
+          "libraOffenceCode",
+          "chargeDate",
+          "libraOffenceDateCode",
+          "offenceDate",
+          "offenceWording"
+        ]
+      }
+    }
+  },
+  "required": [
+    "offences"
+  ]
+}

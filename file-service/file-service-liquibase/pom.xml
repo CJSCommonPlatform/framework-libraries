@@ -15,9 +15,4 @@
         <sonar.skip>true</sonar.skip>
     </properties>
 
-    <scm>
-        <connection>${cpp.scm.connection}</connection>
-        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
-        <url>${cpp.scm.url}</url>
-    </scm>
 </project>

@@ -12,18 +12,6 @@
     <artifactId>test-utils-logging-log4j2</artifactId>
     <packaging>pom</packaging>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-bom</artifactId>
-                <version>${log4j2.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <!-- Redirect other logging implementations to Log4j2 -->
         <dependency>

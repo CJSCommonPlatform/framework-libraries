@@ -11,12 +11,6 @@
 
     <artifactId>utilities-file</artifactId>
 
-    <scm>
-        <connection>${cpp.scm.connection}</connection>
-        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
-        <url>${cpp.scm.url}</url>
-    </scm>
-
     <dependencies>
 
         <dependency>
@@ -38,7 +32,7 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>test-utils-core</artifactId>
-            <version>${test-utils.version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

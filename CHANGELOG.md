@@ -11,6 +11,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     generator-maven-plugin
     job-manager
     json-schema-catalog
+    json-transformer
     jsonschema-pojo-generator
-    maven-framework-parent-pom
     raml-maven
+
+### Added
+- file-service 1.17.13: now set to version 7.0.0
+- generator-maven-plugin 2.7.3: now set to version 7.0.0
+- job-manager 4.3.2: now set to version 7.0.0
+- json-schema-catalog 1.7.6: now set to version 7.0.0
+- json-transformer 1.0.10: now set to version 7.0.0
+- jsonschema-pojo-generator 1.7.6: now set to version 7.0.0
+- raml-maven 1.6.9: now set to version 7.0.0
+    

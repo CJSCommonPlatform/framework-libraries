@@ -39,6 +39,7 @@
         <jolt.version>0.1.1</jolt.version>
         <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
         <framework-utilities.version>7.0.0-M2</framework-utilities.version>
+        <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
     </properties>
 
     <dependencyManagement>
@@ -71,10 +72,6 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 

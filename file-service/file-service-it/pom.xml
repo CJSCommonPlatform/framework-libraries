@@ -45,19 +45,19 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-core</artifactId>
-            <version>${utilities.version}</version>
+            <version>${framework-utilities.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-file</artifactId>
-            <version>${utilities.version}</version>
+            <version>${framework-utilities.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>test-utils-core</artifactId>
-            <version>${test.utilities.version}</version>
+            <version>${framework-utilities.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

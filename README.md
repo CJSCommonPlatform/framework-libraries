@@ -5,7 +5,7 @@
 
 Main repository for utilities used by [Microservice Framework](https://github.com/CJSCommonPlatform/microservice_framework)
 
-## Sub Projects
+## Utility Projects
 
 # [Utilities](./utilities/README.md)
 

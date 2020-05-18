@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [7.0.0] - 2020-05-18
+### Changed
+- Bumped up the version from 4.3.0 to 7.0.0 to match other framework projects
+- Upgraded maven-framework-parent-pom to 1.13.0
+
 ## [4.3.0] - 2020-04-22
 ### Changed
 - UnifiedSearchIndexer now takes an JsonEnvelope rather than a raw JsonEnvelope payload

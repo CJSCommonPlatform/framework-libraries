@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
+## [7.0.1] - 2020-05-18
+
+### Changed
+- Upgrade maven-framework-parent-pom to 1.13.0
+
 ## [7.0.0] - 2020-05-18
 
 ### Changed

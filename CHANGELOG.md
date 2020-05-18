@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### Changed
 ## [7.0.1] - 2020-05-18
 - Set framework-utilities version to 7.0.1
 

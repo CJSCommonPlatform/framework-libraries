@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## Unreleased
 
-## [7.0.0] - 2020-05-14
+## [7.0.0] - 2020-05-18
 
 ### Changed
 - Created project as a super repository for 

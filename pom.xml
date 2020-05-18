@@ -34,11 +34,11 @@
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
 
         <!-- versions -->
-        <common-bom.version>2.4.0</common-bom.version>
-        <framework-api.version>4.3.0</framework-api.version>
-        <jolt.version>0.1.1</jolt.version>
+        <common-bom.version>2.5.0</common-bom.version>
+        <framework-api.version>7.0.0</framework-api.version>
+        <framework-utilities.version>7.0.1</framework-utilities.version>
         <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
-        <framework-utilities.version>7.0.0</framework-utilities.version>
+        <jolt.version>0.1.1</jolt.version>
         <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
     </properties>
 

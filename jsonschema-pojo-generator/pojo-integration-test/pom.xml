@@ -41,7 +41,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.everit.json</groupId>
+            <groupId>com.github.everit-org.json-schema</groupId>
             <artifactId>org.everit.json.schema</artifactId>
             <scope>test</scope>
         </dependency>

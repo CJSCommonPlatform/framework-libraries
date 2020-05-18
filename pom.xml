@@ -12,7 +12,7 @@
 
     <groupId>uk.gov.justice.framework.utilities</groupId>
     <artifactId>framework-utilities</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
+    <version>7.0.1</version>
     <packaging>pom</packaging>
 
     <modules>

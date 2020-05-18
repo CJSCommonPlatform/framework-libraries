@@ -5,7 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.0.0] - 2020-05-18
+
 ### Changed
+- Set framework-utilities version to 7.0.0
 - Combined the following repos into framework-libraries
     file-service
     generator-maven-plugin

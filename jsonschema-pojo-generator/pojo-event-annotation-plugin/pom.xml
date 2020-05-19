@@ -20,7 +20,6 @@
         <dependency>
             <groupId>uk.gov.justice.framework-api</groupId>
             <artifactId>framework-api-domain</artifactId>
-            <version>${framework-api.version}</version>
         </dependency>
 
 

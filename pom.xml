@@ -21,6 +21,7 @@
     <modules>
         <module>file-service</module>
         <module>framework-api</module>
+        <module>framework-libraries-bom</module>
         <module>framework-utilities</module>
         <module>generator-maven-plugin</module>
         <module>job-manager</module>

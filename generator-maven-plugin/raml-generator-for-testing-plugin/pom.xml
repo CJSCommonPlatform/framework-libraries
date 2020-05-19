@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>raml-generator-for-testing</artifactId>
+    <artifactId>raml-generator-for-testing-plugin</artifactId>
 
     <dependencies>
         <dependency>

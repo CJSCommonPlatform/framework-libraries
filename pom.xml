@@ -20,13 +20,20 @@
 
     <modules>
         <module>file-service</module>
+        <module>framework-api</module>
+        <module>framework-utilities</module>
         <module>generator-maven-plugin</module>
         <module>job-manager</module>
-        <module>jsonschema-pojo-generator</module>
         <module>json-schema-catalog</module>
         <module>json-transformer</module>
+        <module>jsonschema-pojo-generator</module>
+        <module>maven-common-bom</module>
         <module>raml-maven</module>
     </modules>
+
+
+
+
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>

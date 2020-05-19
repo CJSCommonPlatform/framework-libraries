@@ -130,13 +130,13 @@
                 <dependencies>
                     <dependency>
                         <groupId>uk.gov.justice.maven.generator</groupId>
-                        <artifactId>raml-generator-for-testing</artifactId>
+                        <artifactId>raml-generator-for-testing-plugin</artifactId>
                         <type>test-jar</type>
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>uk.gov.justice.maven.generator</groupId>
-                        <artifactId>json-generator-for-testing</artifactId>
+                        <artifactId>json-generator-for-testing-plugin</artifactId>
                         <type>test-jar</type>
                         <version>${project.version}</version>
                     </dependency>
@@ -173,14 +173,14 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven.generator</groupId>
-            <artifactId>raml-generator-for-testing</artifactId>
+            <artifactId>raml-generator-for-testing-plugin</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven.generator</groupId>
-            <artifactId>json-generator-for-testing</artifactId>
+            <artifactId>json-generator-for-testing-plugin</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>

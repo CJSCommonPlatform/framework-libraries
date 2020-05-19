@@ -10,7 +10,7 @@
 
     <groupId>uk.gov.justice.framework-api</groupId>
     <artifactId>framework-api</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
+    <version>7.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modelVersion>4.0.0</modelVersion>
@@ -39,28 +39,12 @@
         <module>framework-api-system</module>
     </modules>
 
-    <scm>
-        <connection>${cpp.scm.connection}</connection>
-        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
-        <url>${cpp.scm.url}</url>
-    </scm>
-
     <properties>
         <cpp.repo.name>framework-api</cpp.repo.name>
         <common-bom.version>2.4.0</common-bom.version>
         <annotation-validator-core.version>1.0.1</annotation-validator-core.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>uk.gov.justice</groupId>
-                <artifactId>maven-common-bom</artifactId>
-                <version>${common-bom.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
 
 </project>

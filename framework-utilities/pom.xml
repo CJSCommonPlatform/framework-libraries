@@ -29,12 +29,6 @@
         <slf4j.version>1.7.10</slf4j.version>
     </properties>
 
-    <scm>
-        <connection>${cpp.scm.connection}</connection>
-        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
-        <url>${cpp.scm.url}</url>
-    </scm>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

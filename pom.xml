@@ -31,10 +31,6 @@
         <module>raml-maven</module>
     </modules>
 
-
-
-
-
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
         <sonar.projectKey>CJSCommonPlatform_framework-libraries</sonar.projectKey>

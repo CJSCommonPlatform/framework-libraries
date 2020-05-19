@@ -27,7 +27,6 @@
         <module>json-schema-catalog</module>
         <module>json-transformer</module>
         <module>jsonschema-pojo-generator</module>
-        <module>maven-common-bom</module>
         <module>raml-maven</module>
     </modules>
 
@@ -35,6 +34,7 @@
         <cpp.repo.name>framework-libraries</cpp.repo.name>
 
         <!-- versions -->
+        <maven-common-bom.version>2.5.0</maven-common-bom.version>
         <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
         <jolt.version>0.1.1</jolt.version>
         <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
@@ -46,7 +46,7 @@
             <dependency>
                 <groupId>uk.gov.justice</groupId>
                 <artifactId>maven-common-bom</artifactId>
-                <version>2.5.0</version>
+                <version>${maven-common-bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

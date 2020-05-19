@@ -29,7 +29,6 @@
         <module>framework-api-messaging-jms</module>
         <module>framework-api-direct-adapter</module>
         <module>framework-api-messaging-client</module>
-        <module>framework-api-bom</module>
         <module>framework-api-subscription</module>
         <module>framework-api-validator</module>
         <module>framework-api-event-buffer</module>

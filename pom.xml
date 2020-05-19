@@ -21,6 +21,7 @@
     <modules>
         <module>file-service</module>
         <module>framework-api</module>
+        <module>framework-libraries-bom</module>
         <module>framework-utilities</module>
         <module>generator-maven-plugin</module>
         <module>job-manager</module>
@@ -39,6 +40,9 @@
         <jolt.version>0.1.1</jolt.version>
         <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
         <annotation-validator-core.version>1.0.1</annotation-validator-core.version>
+        <diff.utils.version>1.3.0</diff.utils.version>
+        <log4j2.version>2.11.1</log4j2.version>
+        <slf4j.version>1.7.10</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +53,18 @@
                 <version>${maven-common-bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j2.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.java-diff-utils</groupId>
+                <artifactId>diffutils</artifactId>
+                <version>${diff.utils.version}</version>
             </dependency>
             <dependency>
                 <groupId>uk.gov.justice.framework-api</groupId>

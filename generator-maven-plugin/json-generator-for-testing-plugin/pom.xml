@@ -8,7 +8,7 @@
         <version>7.0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>json-generator-for-testing</artifactId>
+    <artifactId>json-generator-for-testing-plugin</artifactId>
 
     <dependencies>
         <dependency>

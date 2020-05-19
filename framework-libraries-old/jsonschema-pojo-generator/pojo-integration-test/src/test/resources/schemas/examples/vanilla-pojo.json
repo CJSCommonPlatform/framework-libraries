@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/events/pojo/vanilla/teen.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "pocketMoney": {
+      "type": "number"
+    },
+    "likesJustinBieber": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "age",
+    "pocketMoney",
+    "likesJustinBieber"
+  ]
+}

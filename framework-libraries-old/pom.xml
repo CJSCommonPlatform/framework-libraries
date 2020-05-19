@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-framework-parent-pom</artifactId>
+        <version>1.13.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>uk.gov.justice.framework.libraries</groupId>
+    <artifactId>framework-libraries</artifactId>
+    <version>7.0.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Framework Common Libraries</name>
+    <description>Common Libraries used by Microservice Framework</description>
+
+    <modules>
+        <module>file-service</module>
+        <module>generator-maven-plugin</module>
+        <module>job-manager</module>
+        <module>jsonschema-pojo-generator</module>
+        <module>json-schema-catalog</module>
+        <module>json-transformer</module>
+        <module>raml-maven</module>
+    </modules>
+
+    <properties>
+        <cpp.repo.name>framework-libraries</cpp.repo.name>
+        <sonar.projectKey>CJSCommonPlatform_framework-libraries</sonar.projectKey>
+        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
+
+        <!-- versions -->
+        <common-bom.version>2.5.0</common-bom.version>
+        <framework-api.version>7.0.0</framework-api.version>
+        <framework-utilities.version>7.0.1</framework-utilities.version>
+        <plugins.maven.wildfly.version>1.2.0.Final</plugins.maven.wildfly.version>
+        <jolt.version>0.1.1</jolt.version>
+        <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.utils</groupId>
+                <artifactId>utilities-core</artifactId>
+                <version>${framework-utilities.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

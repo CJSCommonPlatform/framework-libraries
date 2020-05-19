@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/events/pojo/arrays/recipe-with-array.json",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "ingredients": {
+      "type": "array",
+      "items": [
+        {
+          "id": "#ingredient",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "quantity": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "quantity"
+          ]
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "ingredients"
+  ]
+}

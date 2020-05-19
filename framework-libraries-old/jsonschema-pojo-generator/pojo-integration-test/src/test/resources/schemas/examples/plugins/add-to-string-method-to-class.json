@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/events/pojo/string/student-with-to-string.json",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "firstName",
+    "lastName",
+    "age"
+  ]
+}

@@ -151,7 +151,6 @@
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>
             <artifactId>maven-test-utils</artifactId>
-            <version>${framework-utilities.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

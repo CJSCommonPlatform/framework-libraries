@@ -27,7 +27,6 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>test-utils-core</artifactId>
-            <version>${framework-utilities.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -23,7 +23,6 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-core</artifactId>
-            <version>${framework-utilities.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.fasterxml.jackson.core</groupId>
@@ -60,7 +59,6 @@
         <dependency>
             <groupId>uk.gov.justice.framework-api</groupId>
             <artifactId>framework-api-unifiedsearch</artifactId>
-            <version>${framework-api.version}</version>
         </dependency>
 
         <!-- Test -->
@@ -72,7 +70,6 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>test-utils-core</artifactId>
-            <version>${framework-utilities.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

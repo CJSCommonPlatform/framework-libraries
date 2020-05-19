@@ -6,6 +6,12 @@ Common Libraries used by [Microservice Framework](https://github.com/CJSCommonPl
 
 ## Library Projects
 
+# [Framework API](./framework-api/README.md)
+The Java API for a framework to support applications utilising CQRS and Event Sourcing architectures.
+
+# [Framework Utilities](./framework-utilities/README.md)
+Main repository for utilities used by [Microservice Framework](https://github.com/CJSCommonPlatform/microservice_framework)
+
 # [File Service](./file-service/README.md)
 A simple drop in library for storing binary files in Postgres. 
 

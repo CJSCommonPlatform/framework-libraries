@@ -45,12 +45,10 @@
         <dependency>
             <groupId>com.bazaarvoice.jolt</groupId>
             <artifactId>jolt-core</artifactId>
-            <version>${jolt.version}</version>
         </dependency>
         <dependency>
             <groupId>com.bazaarvoice.jolt</groupId>
             <artifactId>json-utils</artifactId>
-            <version>${jolt.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.everit-org.json-schema</groupId>

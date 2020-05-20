@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Updated maven-plugin-plugin version to 3.6.0
+- Combined the annotation-validator-maven-plugin repo into framework-libraries
 
 ### Changed
 ## [7.0.1] - 2020-05-18

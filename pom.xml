@@ -19,6 +19,7 @@
     <description>Common Libraries used by Microservice Framework</description>
 
     <modules>
+        <module>annotation-validator-maven-plugin</module>
         <module>file-service</module>
         <module>framework-api</module>
         <module>framework-libraries-bom</module>
@@ -36,9 +37,6 @@
 
         <!-- versions -->
         <maven-common-bom.version>7.0.0</maven-common-bom.version>
-
-        <!-- This needs to move -->
-        <annotation-validator-core.version>1.0.1</annotation-validator-core.version>
     </properties>
 
     <dependencyManagement>

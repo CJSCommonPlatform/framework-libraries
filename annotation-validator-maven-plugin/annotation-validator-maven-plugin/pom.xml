@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.justice.maven</groupId>
         <artifactId>annotation-validator</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>7.0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,7 +13,6 @@
     <packaging>maven-plugin</packaging>
 
     <properties>
-        <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
         <maven-test-utils.version>1.0.0</maven-test-utils.version>
     </properties>
 
@@ -112,7 +111,6 @@
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>
             <artifactId>maven-test-utils</artifactId>
-            <version>${maven-test-utils.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

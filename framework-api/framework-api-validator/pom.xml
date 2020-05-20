@@ -24,7 +24,7 @@
         <dependency>
             <groupId>uk.gov.justice.maven</groupId>
             <artifactId>annotation-validator-core</artifactId>
-            <version>${annotation-validator-core.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Test dependencies-->

@@ -17,7 +17,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>${org.apache.maven.plugin-tools.version}</version>
+                <version>${plugins.maven-plugin-plugin.version}</version>
                 <configuration>
                     <skip>false</skip>
                     <goalPrefix>raml</goalPrefix>

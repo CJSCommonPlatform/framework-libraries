@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Updated maven-plugin-plugin version to 3.6.0
 
 ### Changed
 ## [7.0.1] - 2020-05-18

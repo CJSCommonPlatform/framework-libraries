@@ -111,6 +111,11 @@
                 <version>${framework-libraries.version}</version>
             </dependency>
             <dependency>
+                <groupId>uk.gov.justice.framework-api</groupId>
+                <artifactId>framework-api-event-listener-interceptors</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>uk.gov.justice.maven</groupId>
                 <artifactId>maven-test-utils</artifactId>
                 <version>${framework-libraries.version}</version>
@@ -152,6 +157,56 @@
             <dependency>
                 <groupId>uk.gov.justice.utils</groupId>
                 <artifactId>utilities-file</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.schema</groupId>
+                <artifactId>schema-service</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <artifactId>generator-plugin</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <artifactId>generator-core</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <artifactId>parser-common</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>lint-checker-core</artifactId>
+                <groupId>uk.gov.justice.maven</groupId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>raml-maven-plugin</artifactId>
+                <groupId>uk.gov.justice.maven</groupId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.services</groupId>
+                <artifactId>file-service-persistence</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.schema</groupId>
+                <artifactId>catalog-test-utils</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <artifactId>generator-maven-test-utils</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <artifactId>generator-raml-parser</artifactId>
                 <version>${framework-libraries.version}</version>
             </dependency>
         </dependencies>

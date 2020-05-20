@@ -1,7 +1,9 @@
 # Maven test utils
 
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/maven-test-utils.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/maven-test-utils)
-[![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/maven-test-utils/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/maven-test-utils?branch=master) 
-
-
 Java library to facilitate testing Maven MOJO classes
+
+_Moved into Framework Libraries from its original location as a project 
+in [Common Platform](https://github.com/CJSCommonPlatform). 
+For previous versions please refer 
+[here](https://github.com/CJSCommonPlatform/maven-test-utils)._
+

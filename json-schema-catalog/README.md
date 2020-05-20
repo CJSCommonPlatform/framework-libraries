@@ -2,6 +2,11 @@
 This library is intended as a json version of XML Catalogs: 
 https://www.oasis-open.org/committees/entity/spec-2001-08-06.html
 
+_Moved into Framework Libraries from its original location as a project 
+in [Common Platform](https://github.com/CJSCommonPlatform). 
+For previous versions please refer 
+[here](https://github.com/CJSCommonPlatform/json-schema-catalog)._
+
 ## Overview
 There are two distinct parts to the Json Schema Catalog project:
 

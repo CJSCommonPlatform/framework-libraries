@@ -1,8 +1,12 @@
 # Generator Maven Plugin
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/generator-maven-plugin.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/generator-maven-plugin) 
-[![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/generator-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/generator-maven-plugin?branch=master)
 
 This project contains a plugin for using [RAML](http://raml.org/) or other documents like Json Schema within Maven projects for generation of code.
+
+_Moved into Framework Libraries from its original location as a project 
+in [Common Platform](https://github.com/CJSCommonPlatform). 
+For previous versions please refer 
+[here](https://github.com/CJSCommonPlatform/generator-maven-plugin)._
+
 
 ## Usage
 

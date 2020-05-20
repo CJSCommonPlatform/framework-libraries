@@ -1,12 +1,16 @@
 # RAML Maven Plugin
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/raml-maven.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/raml-maven) 
-[![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/raml-maven/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/raml-maven?branch=master)
 
 This project contains a plugin for using [RAML](http://raml.org/) documents within Maven projects.
 Currently, it has two purposes:
 
 - _Code generation_ - the plugin can be configured with arbitrary code generation modules to generate custom code from RAML documents
 - _RAML syntax checking_ - for validating the syntax of RAML documents and imported JSON schemas
+
+_Moved into Framework Libraries from its original location as a project 
+in [Common Platform](https://github.com/CJSCommonPlatform). 
+For previous versions please refer 
+[here](https://github.com/CJSCommonPlatform/raml-maven)._
+
 
 ## Usage
 

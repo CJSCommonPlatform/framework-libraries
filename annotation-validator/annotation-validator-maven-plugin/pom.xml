@@ -12,12 +12,7 @@
     <artifactId>annotation-validator-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <properties>
-        <maven-test-utils.version>1.0.0</maven-test-utils.version>
-    </properties>
-
     <dependencies>
-        <!-- dependencies to annotations -->
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>

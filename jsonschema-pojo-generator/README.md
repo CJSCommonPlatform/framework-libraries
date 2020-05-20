@@ -1,7 +1,10 @@
 # jsonschema-pojo-generator
 Generator for domain event POJOs defined in json schemas
 
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/jsonschema-pojo-generator.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/jsonschema-pojo-generator) [![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/jsonschema-pojo-generator/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/jsonschema-pojo-generator?branch=master)
+_Moved into Framework Libraries from its original location as a project 
+in [Common Platform](https://github.com/CJSCommonPlatform). 
+For previous versions please refer 
+[here](https://github.com/CJSCommonPlatform/jsonschema-pojo-generator)._
 
 ## Overview
 jsonschema-pojo-generator is a maven plugin used to generate POJOs from a json schema and provides the following:

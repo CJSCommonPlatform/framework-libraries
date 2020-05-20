@@ -19,7 +19,7 @@
     <description>Common Libraries used by Microservice Framework</description>
 
     <modules>
-        <module>annotation-validator-maven-plugin</module>
+        <module>annotation-validator</module>
         <module>file-service</module>
         <module>framework-api</module>
         <module>framework-libraries-bom</module>

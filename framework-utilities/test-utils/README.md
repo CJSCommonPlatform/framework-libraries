@@ -1,4 +1,7 @@
 # Common Test Utilities
 
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/test-utils.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/test-utils) [![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/test-utils/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/test-utils?branch=master)
+_Moved into Framework Libraries from its original location as a project 
+in [Common Platform](https://github.com/CJSCommonPlatform). 
+For previous versions please refer 
+[here](https://github.com/CJSCommonPlatform/test-utils)._
 

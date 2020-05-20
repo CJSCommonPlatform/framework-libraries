@@ -35,10 +35,7 @@
         <cpp.repo.name>framework-libraries</cpp.repo.name>
 
         <!-- versions -->
-        <maven-common-bom.version>7.0.0-SNAPSHOT</maven-common-bom.version>
-
-        <!-- used in maven plugins. Maybe move to maven-parent-pom?-->
-        <org.apache.maven.plugin-tools.version>3.5</org.apache.maven.plugin-tools.version>
+        <maven-common-bom.version>7.0.0</maven-common-bom.version>
 
         <!-- This needs to move -->
         <annotation-validator-core.version>1.0.1</annotation-validator-core.version>

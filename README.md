@@ -24,13 +24,13 @@ A stateful multi-threaded Job and Task executor.
 # [Json Schema Catalog](./json-schema-catalog/README.md)
 A json version of [XML Catalogs](https://www.oasis-open.org/committees/entity/spec-2001-08-06.html)
 
-# [Pojo Generator](./json-schema-pojo-generator/README.md)
+# [Pojo Generator](./jsonschema-pojo-generator/README.md)
 Generator for domain event POJOs defined in json schemas
 
 # [Maven Raml](./raml-maven/README.md)
 A plugin for using [RAML](http://raml.org/) documents within Maven projects.
 
-# [Annotation Validator Maven Plugin](./annotation-validator-maven-plugin/README.md)
+# [Annotation Validator Maven Plugin](./annotation-validator/README.md)
 A plugin for validating annotations, that creates a report that lists what classes have which annotations
 
 # [Json Transformer](./json-transformer/README.md)

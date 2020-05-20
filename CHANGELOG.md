@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated maven-plugin-plugin version to 3.6.0
 - Combined the annotation-validator-maven-plugin repo into framework-libraries
+- Combined the embedded-artemis repo into framework-libraries
 - Updated sub-project's README.md to point to their old locations 
 
 ### Changed

@@ -30,6 +30,9 @@ Generator for domain event POJOs defined in json schemas
 # [Maven Raml](./raml-maven/README.md)
 A plugin for using [RAML](http://raml.org/) documents within Maven projects.
 
+# [Embedded Artemis](./embedded-artemis/README.md)
+An embedded version of Artemis that can be included in a project for testing.
+
 # [Annotation Validator Maven Plugin](./annotation-validator/README.md)
 A plugin for validating annotations, that creates a report that lists what classes have which annotations
 

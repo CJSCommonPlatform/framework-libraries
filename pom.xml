@@ -20,6 +20,7 @@
 
     <modules>
         <module>annotation-validator</module>
+        <module>embedded-artemis</module>
         <module>file-service</module>
         <module>framework-api</module>
         <module>framework-libraries-bom</module>

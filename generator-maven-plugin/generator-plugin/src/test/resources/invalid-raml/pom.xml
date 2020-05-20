@@ -1,0 +1,25 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId> uk.gov.justice.raml.maven.generator.test</groupId>
+    <artifactId>project-to-test</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <plugin>
+               <artifactId>generator-plugin</artifactId>
+                <groupId>uk.gov.justice.maven.generator</groupId>
+                <configuration>
+                    <generatorName>uk.gov.justice.maven.generator.io.files.parser.generator.DummyGenerator
+                    </generatorName>
+                    <parserName>uk.gov.justice.maven.generator.io.files.parser.RamlFileParser</parserName>
+                    <basePackageName>uk.gov.justice.api</basePackageName>
+                    <sourceDirectory>${basedir}/src/raml</sourceDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "additionalProperties": false,
+  "definitions": {},
+  "id": "/",
+  "properties": {
+    "test-number": {
+      "id": "/properties/test-number",
+      "type": "integer"
+    },
+    "test-string": {
+      "id": "/properties/test-string",
+      "type": "string"
+    }
+  },
+  "required": [
+    "test-string",
+    "test-number"
+  ],
+  "type": "object"
+}

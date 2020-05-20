@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.gov.justice.framework.libraries</groupId>
+        <artifactId>framework-libraries</artifactId>
+        <version>7.0.2-SNAPSHOT</version>
+    </parent>
+
+    <groupId>uk.gov.justice.maven.generator</groupId>
+    <artifactId>generator-maven-plugin</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>files-for-testing-io</module>
+        <module>generator-plugin</module>
+        <module>generator-core</module>
+        <module>generator-io-utils</module>
+        <module>generator-plugin-it</module>
+        <module>generator-raml-parser</module>
+        <module>raml-generator-for-testing-plugin</module>
+        <module>json-generator-for-testing-plugin</module>
+        <module>generator-maven-test-utils</module>
+        <module>schema-parser</module>
+        <module>parser-common</module>
+    </modules>
+
+    <!-- TODO - are these properties needed? -->
+    <properties>
+        <useSourcePathAndClassPath>false</useSourcePathAndClassPath>
+        <useClassPath>false</useClassPath>
+    </properties>
+
+</project>

@@ -1,0 +1,22 @@
+#%RAML 0.8
+title: An Action Command API
+baseUri: http://localhost:8080/example-command-api/command/api/rest/an-action
+version: v0.1
+mediaType: application/json
+protocols: [ HTTP ]
+
+/doStuff:
+  description: |
+    stub file for testing that raml files are found correctly
+  post:
+    description: |
+        ...
+        (mapping):
+            requestType: application/vnd.example.an-action+json
+            name: example.an-action
+        ...
+
+    body:
+        application/vnd.example.an-action+json:
+            schema: !include json/schema/example.an-action.json
+            example: !include json/an-action.json

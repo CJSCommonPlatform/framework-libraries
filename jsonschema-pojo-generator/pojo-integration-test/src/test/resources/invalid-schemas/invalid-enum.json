@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/context/invalid-enum.json",
+  "type": "object",
+  "properties": {
+    "invalidEnum": {
+      "type": "string",
+      "enum": [
+        "Mr",
+        "Mrs",
+        "Ms",
+        23,
+        false
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "title"
+  ]
+}

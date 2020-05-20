@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "caseId": {
+      "type": "string"
+    },
+    "caseReference": {
+      "type": "string"
+    },
+    "prosecutingAuthority": {
+      "type": "string"
+    },
+    "_is_charging": {
+      "type": "string"
+    },
+    "parties": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "organisationName": {
+              "type": "string"
+            },
+            "_party_type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "organisationName",
+            "_party_type"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "middleName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "dateOfBirth": {
+              "type": "string"
+            },
+            "gender": {
+              "type": "string"
+            },
+            "addressLines": {
+              "type": "string"
+            },
+            "postCode": {
+              "type": "string"
+            },
+            "pncId": {
+              "type": "string"
+            },
+            "aliases": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "arrestSummonsNumber": {
+              "type": "string"
+            },
+            "_party_type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "firstName",
+            "middleName",
+            "lastName",
+            "dateOfBirth",
+            "gender",
+            "addressLines",
+            "postCode",
+            "pncId",
+            "aliases",
+            "arrestSummonsNumber",
+            "_party_type"
+          ]
+        }
+      ]
+    },
+    "_case_type": {
+      "type": "string"
+    },
+    "_is_sjp": {
+      "type": "boolean"
+    },
+    "_is_magistrates": {
+      "type": "boolean"
+    },
+    "_is_crown": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "caseId",
+    "caseReference",
+    "prosecutingAuthority",
+    "_is_charging",
+    "parties",
+    "_case_type",
+    "_is_sjp",
+    "_is_magistrates",
+    "_is_crown"
+  ]
+}

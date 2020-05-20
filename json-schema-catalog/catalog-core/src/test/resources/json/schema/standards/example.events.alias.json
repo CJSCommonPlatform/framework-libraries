@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/standards/alias.json",
+  "properties": {
+    "aliasForenames": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "aliasInitials": {
+      "type": "string",
+      "maxLength": 2
+    },
+    "aliasSurname": {
+      "type": "string",
+      "maxLength": 30
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "aliasForenames",
+    "aliasInitials",
+    "aliasSurname"
+  ]
+}

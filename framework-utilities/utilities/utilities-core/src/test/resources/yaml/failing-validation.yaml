@@ -1,0 +1,13 @@
+subscriptions_descriptor:
+  spec_version: 1.0.0
+  service: examplecontext
+  service_component: EVENT_LISTENER
+  subscriptions:
+    - name: subscription1
+      prioritisation: 1
+      events:
+        - name: example.recipe-added
+          schema_uri: this-is-wrong://justice.gov.uk/json/schemas/domains/example/example.recipe-added.json
+        - name: example.recipe-deleted
+          schema_uri: so-is-this://justice.gov.uk/json/schemas/domains/example/example.recipe-deleted.json
+      event_source_name: example

@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/standards/events/package-and-class-name-from-id.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "id": "http://justice.gov.uk/standards/events/pojo.schema.json#age",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer"
+        }
+      }
+    },
+    "pocketMoney": {
+      "id": "common/pocketMoney.json",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "otherStuff": {
+      "id": "other-stuff.json",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "age",
+    "pocketMoney",
+    "otherStuff"
+  ]
+}

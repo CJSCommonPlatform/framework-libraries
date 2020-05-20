@@ -1,0 +1,12 @@
+{
+  "nino": "the nino",
+  "name": "the name",
+  "correspondence_address": {
+    "addressline1": "21 Gasworks Lane",
+    "addressline2": "Croydon",
+    "city": "London",
+    "postcode": "EC3 2AB",
+    "country": "UK",
+    "ss": "fred"
+  }
+}

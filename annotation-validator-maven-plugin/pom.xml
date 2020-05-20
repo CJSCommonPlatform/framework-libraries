@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>1.6.0</version>
+    </parent>
+
+    <groupId>uk.gov.justice.maven</groupId>
+    <artifactId>annotation-validator</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>annotation-validator-maven-plugin</module>
+        <module>annotation-validator-core</module>
+    </modules>
+
+    <scm>
+        <connection>${cpp.scm.connection}</connection>
+        <developerConnection>${cpp.scm.developerConnection}</developerConnection>
+        <url>${cpp.scm.url}</url>
+    </scm>
+
+    <properties>
+        <common-bom.version>1.30.0</common-bom.version>
+        <cpp.repo.name>annotation-validator-maven-plugin</cpp.repo.name>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${common-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

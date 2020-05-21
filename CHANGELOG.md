@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.0.4] - 2020-05-21
+### Removed
+- Removed framework-generators from the bom's dependency management
+
 ## [7.0.3] - 2020-05-21
 ### Changed
 - Moved Embedded Artemis dependencies to maven-common-bom

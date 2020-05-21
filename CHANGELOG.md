@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.0.3] - 2020-05-21
+### Changed
+- Moved Embedded Artemis dependencies to maven-common-bom
+
 ## [7.0.2] - 2020-05-20
 ### Changed
 - Updated maven-plugin-plugin version to 3.6.0

@@ -10,18 +10,11 @@
     <groupId>uk.gov.justice.artemis</groupId>
     <artifactId>embedded-artemis</artifactId>
 
-    <properties>
-        <netty.version>4.1.5.Final</netty.version>
-        <geronimo-jms.version>1.0-alpha-2</geronimo-jms.version>
-        <jboss-logmanager.version>2.0.3.Final</jboss-logmanager.version>
-        <artemis.jms.version>1.5.5</artemis.jms.version>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-server</artifactId>
-            <version>${artemis.jms.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
@@ -36,7 +29,6 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-core-client</artifactId>
-            <version>${artemis.jms.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.logging</groupId>
@@ -51,7 +43,6 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-journal</artifactId>
-            <version>${artemis.jms.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.logging</groupId>
@@ -62,17 +53,14 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-selector</artifactId>
-            <version>${artemis.jms.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jms_2.0_spec</artifactId>
-            <version>${geronimo-jms.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-commons</artifactId>
-            <version>${artemis.jms.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>

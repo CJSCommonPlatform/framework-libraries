@@ -1,1 +1,0 @@
-mvn -Dwildfly.keepalive=true wildfly:start

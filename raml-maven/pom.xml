@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.gov.justice.framework.libraries</groupId>
+        <artifactId>framework-libraries</artifactId>
+        <version>7.0.5-SNAPSHOT</version>
+    </parent>
+
+    <groupId>uk.gov.justice.maven</groupId>
+    <artifactId>raml-maven</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>raml-for-testing-io</module>
+        <module>raml-maven-plugin</module>
+        <module>raml-generator-core</module>
+        <module>raml-maven-io-utils</module>
+        <module>raml-parser</module>
+        <module>raml-maven-plugin-it</module>
+        <module>raml-generator-for-testing</module>
+        <module>lint-checker-core</module>
+    </modules>
+
+</project>

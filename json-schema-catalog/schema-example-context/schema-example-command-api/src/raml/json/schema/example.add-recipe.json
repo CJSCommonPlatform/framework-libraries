@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/example/cakeshop/example.add-recipe.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Uniquely identifies the cake to be produced from the recipe",
+      "name": "Name of Cake",
+      "title": "Name of Cake"
+    },
+    "glutenFree": {
+      "type": "boolean"
+    },
+    "ingredients": {
+      "type": "array",
+      "items": [
+        {
+          "$ref": "http://justice.gov.uk/example/standard/ingredient.json"
+        }
+      ],
+      "minItems": 1,
+      "description": "List ingredients and quantities for recipe"
+    }
+  },
+  "required": [
+    "name",
+    "ingredients",
+    "glutenFree"
+  ]
+}

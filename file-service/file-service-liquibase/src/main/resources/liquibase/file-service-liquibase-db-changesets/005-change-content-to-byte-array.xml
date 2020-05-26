@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="005-change-content-to-byte-array" author="TechPod" dbms="postgresql">
+
+        <preConditions onFail="MARK_RAN"
+                       onFailMessage=
+                               "Change set skipped because data type is already correct.
+                       Change set needed when database schema is recreated from scratch
+                       (liquibase 3.5.2 changed mapping for type BLOB from bytea to oid,
+                       but file-service required it to be bytea)">
+            <sqlCheck expectedResult="oid">select data_type from information_schema.columns where
+                table_name = 'content' and column_name='content';
+            </sqlCheck>
+        </preConditions>
+
+        <dropColumn tableName="content" columnName="content"/>
+
+        <addColumn tableName="content">
+            <column name="content" type="BINARY"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

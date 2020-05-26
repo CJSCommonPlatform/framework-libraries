@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/pojo/null-schema.json",
+  "type": "object",
+  "properties": {
+    "urn": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "policeOfficer": {
+      "type": "object",
+      "properties": {
+        "personId": {
+          "type": "string"
+        },
+        "rank": {
+          "type": "string"
+        },
+        "narrative": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "badgeNumber": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "urn",
+    "id",
+    "policeOfficer"
+  ]
+}
+
+
+

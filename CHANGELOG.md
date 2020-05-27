@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added File Service Alfresco as a sub module
 - Combined the domain-test-dsl repo into framework-libraries
+- Combined the wiremock-service repo into framework-libraries
 
 ## [7.0.4] - 2020-05-21
 ### Removed

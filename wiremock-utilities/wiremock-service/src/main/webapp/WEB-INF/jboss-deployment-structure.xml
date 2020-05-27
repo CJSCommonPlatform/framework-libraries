@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+
+    <ear-subdeployments-isolated>false</ear-subdeployments-isolated>
+
+    <deployment>
+
+        <exclude-subsystems>
+
+            <subsystem name="jaxrs" />
+
+            <subsystem name="resteasy" />
+
+            <subsystem name="webservices" />
+
+        </exclude-subsystems>
+
+
+        <exclusions>
+
+            <module name="com.fasterxml.jackson.core.jackson-annotations" />
+
+            <module name="com.fasterxml.jackson.core.jackson-core" />
+
+            <module name="com.fasterxml.jackson.core.jackson-databind" />
+
+            <module name="com.fasterxml.jackson.datatype.jackson-datatype-jdk8" />
+
+            <module name="com.fasterxml.jackson.datatype.jackson-datatype-jsr310" />
+
+            <module name="javaee.api" />
+
+            <module name="javax.ws.rs.api"/>
+
+            <module name="org.jboss.as.jaxrs"/>
+
+            <module name="org.jboss.resteasy.async-http-servlet-30" />
+
+            <module name="org.jboss.resteasy.resteasy-atom-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-cdi" />
+
+            <module name="org.jboss.resteasy.resteasy-hibernatevalidator-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-jaxrs" />
+
+            <module name="org.jboss.resteasy.resteasy-jaxb-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-jackson-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-jackson2-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-jettison-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-jsapi" />
+
+            <module name="org.jboss.resteasy.resteasy-multipart-provider" />
+
+            <module name="org.jboss.resteasy.resteasy-spring" />
+
+            <module name="org.jboss.resteasy.resteasy-yaml-provider" />
+
+            <module name="org.codehaus.jackson.jackson-core-asl" />
+
+            <module name="org.codehaus.jackson.jackson-jaxrs" />
+
+            <module name="org.codehaus.jackson.jackson-mapper-asl" />
+
+            <module name="org.codehaus.jackson.jackson-xc" />
+
+            <module name="org.codehaus.jettison" />
+
+        </exclusions>
+
+    </deployment>
+
+</jboss-deployment-structure>

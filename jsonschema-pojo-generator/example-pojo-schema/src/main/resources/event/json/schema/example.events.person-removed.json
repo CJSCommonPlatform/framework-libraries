@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/events/pojo/example.events.person-removed.json",
+  "properties": {
+    "personId": {
+      "$ref": "http://justice.gov.uk/events/pojo/example.standard.uuid.json"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "personId"
+  ]
+}

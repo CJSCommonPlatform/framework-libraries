@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.justice.framework.utilities</groupId>
+        <artifactId>framework-utilities</artifactId>
+        <version>7.0.5-SNAPSHOT</version>
+    </parent>
+
+    <groupId>uk.gov.justice.utils</groupId>
+    <artifactId>test-utils</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>test-utils-core</module>
+        <module>test-utils-logging-jdk</module>
+        <module>test-utils-logging-log4j</module>
+        <module>test-utils-logging-log4j2</module>
+        <module>test-utils-logging-simple</module>
+    </modules>
+
+</project>

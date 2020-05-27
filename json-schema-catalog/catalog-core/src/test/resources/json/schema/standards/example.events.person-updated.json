@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "http://justice.gov.uk/standards/example.events.person-updated.json",
+  "properties": {
+    "personId": {
+      "$ref": "http://justice.gov.uk/standards/example.standard.uuid.json"
+    },
+    "title": {
+      "type": "string",
+      "enum": [
+        "",
+        "Mr",
+        "Mrs",
+        "Ms"
+      ]
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "signedInCount": {
+      "type": "integer"
+    },
+    "ratio": {
+      "type": "number"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "$ref": "http://justice.gov.uk/standards/alias.json"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "personId",
+    "title",
+    "firstName",
+    "lastName",
+    "required",
+    "signedInCount",
+    "ratio",
+    "startDate",
+    "alias"
+  ]
+}

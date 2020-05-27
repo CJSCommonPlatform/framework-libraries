@@ -20,6 +20,7 @@
 
     <modules>
         <module>annotation-validator</module>
+        <module>domain-test-dsl</module>
         <module>embedded-artemis</module>
         <module>file-service</module>
         <module>file-service-alfresco</module>
@@ -37,6 +38,7 @@
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
         <maven-common-bom.version>7.0.2</maven-common-bom.version>
+        <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
     </properties>
 
     <dependencyManagement>

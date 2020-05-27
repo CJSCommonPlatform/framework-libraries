@@ -5,6 +5,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- Dependency set to framework-libraries
+
 ## [3.0.1] - 2018-06-12
 
 ### Fixed

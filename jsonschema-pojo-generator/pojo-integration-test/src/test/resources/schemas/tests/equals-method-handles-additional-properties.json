@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/pojo/equals-method-handles-additional-properties.json",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "lastName"
+  ]
+}

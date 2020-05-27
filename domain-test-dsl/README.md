@@ -1,6 +1,7 @@
 # Domain Test DSL
 
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/domain-test-dsl.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/domain-test-dsl) [![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/domain-test-dsl/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/domain-test-dsl?branch=master)
+_Moved into Framework Libraries from its original location as a project 
+in [Common Platform](https://github.com/CJSCommonPlatform). For previous versions please refer [here](https://github.com/CJSCommonPlatform/domain-test-dsl)._
 
 A domain-specific language (DSL) for testing aggregate roots and events using domain language:
 * Given/When/Then based

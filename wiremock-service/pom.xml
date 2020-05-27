@@ -1,25 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>uk.gov.justice.services</groupId>
-        <artifactId>wiremock-service-parent</artifactId>
-        <version>2.1.0-SNAPSHOT</version>
+        <groupId>uk.gov.justice</groupId>
+        <artifactId>maven-parent-pom</artifactId>
+        <version>2.0.0</version>
     </parent>
+    <groupId>uk.gov.justice.services</groupId>
+    <artifactId>wiremock-service-parent</artifactId>
+    <version>2.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-    <artifactId>wiremock-service</artifactId>
-    <packaging>war</packaging>
+    <modules>
+        <module>wiremock-service</module>
+        <module>wiremock-test-utils</module>
+    </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
-        </dependency>
-    </dependencies>
+    <name>WireMock Service</name>
+    <description>Service for exposing a WireMock server for integration testing</description>
+
+    <properties>
+        <cpp.repo.name>wiremock-service</cpp.repo.name>
+        <maven-common-bom.version>7.0.2</maven-common-bom.version>
+    </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:CJSCommonPlatform/wiremock-service.git</connection>
+        <developerConnection>scm:git:git@github.com:CJSCommonPlatform/wiremock-service.git
+        </developerConnection>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>uk.gov.justice</groupId>
+                <artifactId>maven-common-bom</artifactId>
+                <version>${maven-common-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

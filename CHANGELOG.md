@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.0.5] - 2020-05-27
+### Added
+- Added File Service Alfresco as a sub module
+
 ## [7.0.4] - 2020-05-21
 ### Removed
 - Removed framework-generators from the bom's dependency management

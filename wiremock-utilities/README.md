@@ -17,5 +17,4 @@ starting a local WireMock server directly in your tests.
 ## Modules
 
 * `wiremock-service` - the mocking service
-* `wiremock-service-test` - an example of how to use the mocking service as part of an integration test using an embedded WildFly instance
 * `wiremock-test-utils` - utility module for tests

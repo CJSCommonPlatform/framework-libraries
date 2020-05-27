@@ -15,7 +15,6 @@
 
     <modules>
         <module>wiremock-service</module>
-        <module>wiremock-service-test</module>
         <module>wiremock-test-utils</module>
     </modules>
 
@@ -23,10 +22,8 @@
     <description>Service for exposing a WireMock server for integration testing</description>
 
     <properties>
-        <wildfly-maven-plugin.version>1.2.2.Final</wildfly-maven-plugin.version>
-        <wiremock.version>2.19.0</wiremock.version>
         <cpp.repo.name>wiremock-service</cpp.repo.name>
-        <slf4j.version>1.7.10</slf4j.version>
+        <maven-common-bom.version>7.0.2</maven-common-bom.version>
     </properties>
 
     <scm>
@@ -40,19 +37,9 @@
             <dependency>
                 <groupId>uk.gov.justice</groupId>
                 <artifactId>maven-common-bom</artifactId>
-                <version>1.28.0</version>
+                <version>${maven-common-bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>4.5.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -20,7 +20,6 @@
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
-            <version>${wiremock.version}</version>
         </dependency>
     </dependencies>
 </project>

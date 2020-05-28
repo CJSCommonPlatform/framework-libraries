@@ -33,7 +33,6 @@
         <module>json-transformer</module>
         <module>jsonschema-pojo-generator</module>
         <module>raml-maven</module>
-        <module>wiremock-utilities</module>
     </modules>
 
     <properties>

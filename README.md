@@ -41,7 +41,5 @@ A plugin for validating annotations, that creates a report that lists what class
 # [File Service Alfresco](./file-service-alfresco/README.md)
 
 # [Domain Test DSL](./domain-test-dsl/README.md)
-
-# [Wiremock Service](./wiremock-utilities/README.md)
  
 

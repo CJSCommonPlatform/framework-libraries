@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [7.0.6] - 2020-05-28
+### Removed
+- Removed wiremock-service sub project, keeping it external instead
 
 ## [7.0.5] - 2020-05-27
 ### Added

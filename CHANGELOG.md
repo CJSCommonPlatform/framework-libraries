@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [7.0.6] - 2020-06-02
+## [7.0.8] - 2020-06-02
 ### Changed
 - Updated common bom to 7.0.3
 

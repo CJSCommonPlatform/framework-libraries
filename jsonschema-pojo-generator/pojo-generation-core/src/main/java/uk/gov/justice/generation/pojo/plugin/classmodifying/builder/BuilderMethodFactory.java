@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
-import static org.apache.commons.lang3.StringUtils.capitalize;
 import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin.ADDITIONAL_PROPERTIES_FIELD_NAME;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -17,7 +16,6 @@ import java.util.List;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 /**
@@ -27,11 +25,14 @@ public class BuilderMethodFactory {
 
     private final ClassNameFactory classNameFactory;
     private final OptionalTypeNameUtil optionalTypeNameUtil;
+    private final WithMethodGenerator withMethodGenerator;
 
     public BuilderMethodFactory(final ClassNameFactory classNameFactory,
-                                final OptionalTypeNameUtil optionalTypeNameUtil) {
+                                final OptionalTypeNameUtil optionalTypeNameUtil,
+                                final WithMethodGenerator withMethodGenerator) {
         this.classNameFactory = classNameFactory;
         this.optionalTypeNameUtil = optionalTypeNameUtil;
+        this.withMethodGenerator = withMethodGenerator;
     }
 
     public List<MethodSpec> createTheWithMethods(
@@ -41,11 +42,12 @@ public class BuilderMethodFactory {
             final PluginContext pluginContext) {
 
         return fieldDefinitions.stream()
-                .map(fieldDefinition -> generateWithMethod(
+                .flatMap(fieldDefinition -> withMethodGenerator.generateWithMethods(
                         fieldDefinition,
                         builderClassName,
                         classNameFactory,
-                        pluginContext))
+                        pluginContext)
+                        .stream())
                 .collect(toList());
     }
 
@@ -56,11 +58,12 @@ public class BuilderMethodFactory {
             final PluginContext pluginContext) {
 
         final List<MethodSpec> methods = fieldDefinitions.stream()
-                .map(fieldDefinition -> generateWithMethod(
+                .flatMap(fieldDefinition -> withMethodGenerator.generateWithMethods(
                         fieldDefinition,
                         builderClassName,
                         classNameFactory,
-                        pluginContext))
+                        pluginContext)
+                        .stream())
                 .collect(toList());
 
         methods.add(generateWithMethodForAdditionalProperties(builderClassName));
@@ -72,6 +75,7 @@ public class BuilderMethodFactory {
             final List<Definition> fieldDefinitions,
             final ClassName pojoClassName,
             final PluginContext pluginContext) {
+
 
         final String constructorArguments = fieldDefinitions.stream()
                 .map(definition -> createConstructorArgumentFor(definition, pluginContext))
@@ -86,10 +90,11 @@ public class BuilderMethodFactory {
 
     public MethodSpec createTheBuildMethodWithAdditionalProperties(
             final List<Definition> fieldDefinitions,
-            final ClassName pojoClassName) {
+            final ClassName pojoClassName,
+            final PluginContext pluginContext) {
 
         final String params = fieldDefinitions.stream()
-                .map(Definition::getFieldName)
+                .map(definition -> createConstructorArgumentFor(definition, pluginContext))
                 .collect(joining(", "));
 
         final String statementFormat = createStatementFormatWith(params);
@@ -117,38 +122,6 @@ public class BuilderMethodFactory {
         }
 
         return "return new $L(" + params + ", $N)";
-    }
-
-    private MethodSpec generateWithMethod(final Definition fieldDefinition,
-                                          final ClassName builderClassName,
-                                          final ClassNameFactory classNameFactory,
-                                          final PluginContext pluginContext) {
-
-        final String fieldName = fieldDefinition.getFieldName();
-        final TypeName typeName = getParameterTypeName(fieldDefinition, classNameFactory, pluginContext);
-
-        return methodBuilder("with" + capitalize(fieldName))
-                .addModifiers(PUBLIC)
-                .addParameter(typeName, fieldName, FINAL)
-                .returns(builderClassName)
-                .addCode(CodeBlock.builder()
-                        .addStatement("this.$L = $L", fieldName, fieldName)
-                        .addStatement("return this")
-                        .build())
-                .build();
-    }
-
-    private TypeName getParameterTypeName(final Definition fieldDefinition,
-                                          final ClassNameFactory classNameFactory,
-                                          final PluginContext pluginContext) {
-
-        final TypeName typeName = classNameFactory.createTypeNameFrom(fieldDefinition, pluginContext);
-
-        if (optionalTypeNameUtil.isOptionalType(typeName)) {
-            return optionalTypeNameUtil.getOptionalTypeFrom((ParameterizedTypeName) typeName);
-        }
-
-        return typeName;
     }
 
     private MethodSpec generateWithMethodForAdditionalProperties(final ClassName builderClassName) {

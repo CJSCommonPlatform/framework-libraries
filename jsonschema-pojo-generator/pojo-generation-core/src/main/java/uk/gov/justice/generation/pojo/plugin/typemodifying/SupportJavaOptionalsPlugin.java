@@ -26,14 +26,14 @@ import com.squareup.javapoet.TypeName;
  *
  *      public class MyClass {
  *
- *          private final Optional<String> myProperty;
+ *          private final String myProperty;
  *
- *          public MyClass(final Optional<String> myProperty) {
+ *          public MyClass(final String myProperty) {
  *              this.myProperty = myProperty;
  *          }
  *
  *          public Optional<String> getMyProperty() {
- *              return myProperty;
+ *              return Optional.ofNullable(myProperty);
  *          }
  *      }
  *

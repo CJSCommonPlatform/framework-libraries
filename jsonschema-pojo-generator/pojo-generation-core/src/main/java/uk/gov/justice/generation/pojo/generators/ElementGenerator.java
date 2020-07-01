@@ -9,9 +9,12 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.OptionalTypeNameUtil;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -27,14 +30,17 @@ public class ElementGenerator implements ElementGeneratable {
     private final Definition classTypeDefinition;
     private final ClassNameFactory classNameFactory;
     private final PluginContext pluginContext;
+    private final OptionalTypeNameUtil optionalTypeNameUtil;
 
     ElementGenerator(
             final Definition classTypeDefinition,
             final ClassNameFactory classNameFactory,
-            final PluginContext pluginContext) {
+            final PluginContext pluginContext,
+            final OptionalTypeNameUtil optionalTypeNameUtil) {
         this.classTypeDefinition = classTypeDefinition;
         this.classNameFactory = classNameFactory;
         this.pluginContext = pluginContext;
+        this.optionalTypeNameUtil = optionalTypeNameUtil;
     }
 
     @Override
@@ -45,11 +51,29 @@ public class ElementGenerator implements ElementGeneratable {
 
     @Override
     public Stream<MethodSpec> generateMethods() {
-        return Stream.of(methodBuilder(toGetterMethodName())
+        final TypeName returnType = classNameFactory.createTypeNameFrom(classTypeDefinition, pluginContext);
+
+        final MethodSpec.Builder methodSpecBuilder = methodBuilder(toGetterMethodName())
                 .addModifiers(PUBLIC)
-                .returns(classNameFactory.createTypeNameFrom(classTypeDefinition, pluginContext))
-                .addCode(CodeBlock.builder().addStatement("return $L", classTypeDefinition.getFieldName()).build())
-                .build());
+                .returns(returnType);
+
+        final String fieldName = classTypeDefinition.getFieldName();
+
+        if (optionalTypeNameUtil.isOptionalType(returnType)) {
+            methodSpecBuilder.addCode(CodeBlock.builder()
+                    .beginControlFlow("if ($L != null)", fieldName)
+                    .addStatement("return $L", fieldName)
+                    .endControlFlow()
+                    .addStatement("return $T.empty()", ClassName.get(Optional.class))
+                    .build());
+
+        } else {
+            methodSpecBuilder.addCode(CodeBlock.builder()
+                    .addStatement("return $L", fieldName)
+                    .build());
+        }
+
+        return Stream.of(methodSpecBuilder.build());
     }
 
     private String toGetterMethodName() {

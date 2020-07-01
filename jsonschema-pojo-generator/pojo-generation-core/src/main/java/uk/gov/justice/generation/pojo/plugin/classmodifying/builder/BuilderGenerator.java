@@ -150,7 +150,7 @@ public class BuilderGenerator implements ClassGeneratable {
     private MethodSpec buildMethod(final ClassName pojoClassName, final List<Definition> fieldDefinitions) {
 
         if (additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)) {
-            return builderMethodFactory.createTheBuildMethodWithAdditionalProperties(fieldDefinitions, pojoClassName);
+            return builderMethodFactory.createTheBuildMethodWithAdditionalProperties(fieldDefinitions, pojoClassName, pluginContext);
         }
 
         return builderMethodFactory.createTheBuildMethod(fieldDefinitions, pojoClassName, pluginContext);

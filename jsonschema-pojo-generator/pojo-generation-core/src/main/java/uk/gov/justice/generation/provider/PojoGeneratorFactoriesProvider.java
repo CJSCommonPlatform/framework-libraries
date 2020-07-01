@@ -8,11 +8,12 @@ import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.OptionalTypeNameUtil;
 
 public class PojoGeneratorFactoriesProvider {
 
     public JavaGeneratorFactory createJavaGeneratorFactory(final ClassNameFactory classNameFactory) {
-        return new JavaGeneratorFactory(classNameFactory);
+        return new JavaGeneratorFactory(classNameFactory, new OptionalTypeNameUtil());
     }
 
     public ClassNameFactory createClassNameFactory(final GenerationContext generationContext, final PluginProvider pluginProvider) {

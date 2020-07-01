@@ -16,11 +16,13 @@ public class BuilderGeneratorFactory {
      * @param classDefinition  The {@link ClassDefinition} of the outer POJO which will contain the
      *                         Builder as a static inner class
      * @param classNameFactory A factory for creating the field and method class names
+     * @param withMethodGenerator
      * @return a newly constructed {@link BuilderGenerator}
      */
     public BuilderGenerator create(final ClassDefinition classDefinition,
                                    final ClassNameFactory classNameFactory,
-                                   final PluginContext pluginContext) {
+                                   final PluginContext pluginContext,
+                                   final WithMethodGenerator withMethodGenerator) {
 
         final OptionalTypeNameUtil optionalTypeNameUtil = new OptionalTypeNameUtil();
 
@@ -28,7 +30,7 @@ public class BuilderGeneratorFactory {
                 classDefinition,
                 classNameFactory,
                 new BuilderFieldFactory(new FieldSpecFactory(optionalTypeNameUtil)),
-                new BuilderMethodFactory(classNameFactory, optionalTypeNameUtil),
+                new BuilderMethodFactory(classNameFactory, optionalTypeNameUtil, withMethodGenerator),
                 new AdditionalPropertiesDeterminer(),
                 pluginContext
         );

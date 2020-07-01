@@ -22,6 +22,7 @@ import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.OptionalTypeNameUtil;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.hashcode.SerialVersionUIDGenerator;
 import uk.gov.justice.generation.pojo.plugin.typemodifying.TypeModifyingPlugin;
 import uk.gov.justice.generation.pojo.visitable.Visitable;
@@ -110,6 +111,7 @@ public class GeneratorUtil {
         final TypeNameProvider typeNameProvider = new TypeNameProvider(generationContext, new PackageNameParser(), new ClassNameParser());
         final TypeNamePluginProcessor typeNamePluginProcessor = new TypeNamePluginProcessor(pluginProvider);
         final ClassNameFactory classNameFactory = new ClassNameFactory(typeNameProvider, typeNamePluginProcessor);
+        final OptionalTypeNameUtil optionalTypeNameUtil = new OptionalTypeNameUtil();
 
         final GeneratorFactoryBuilder generatorFactoryBuilder = new GeneratorFactoryBuilder();
 
@@ -117,6 +119,7 @@ public class GeneratorUtil {
                 .withGenerationContext(generationContext)
                 .withPluginProvider(pluginProvider)
                 .withClassNameFactory(classNameFactory)
+                .withOptionalTypeNameUtil(optionalTypeNameUtil)
                 .build();
 
         final PluginContext pluginContext = new PluginContext(

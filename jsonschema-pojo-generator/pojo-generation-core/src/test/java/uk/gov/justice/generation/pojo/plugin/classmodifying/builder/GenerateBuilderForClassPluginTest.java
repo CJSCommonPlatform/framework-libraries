@@ -32,6 +32,9 @@ public class GenerateBuilderForClassPluginTest {
     @Mock
     private BuilderGeneratorFactory builderGeneratorFactory;
 
+    @Mock
+    private WithMethodGenerator withMethodGenerator;
+
     @InjectMocks
     private GenerateBuilderForClassPlugin generateBuilderForClassPlugin;
 
@@ -54,7 +57,8 @@ public class GenerateBuilderForClassPluginTest {
         when(builderGeneratorFactory.create(
                 classDefinition,
                 classNameFactory,
-                pluginContext)).thenReturn(builderGenerator);
+                pluginContext,
+                withMethodGenerator)).thenReturn(builderGenerator);
 
         when(builderGenerator.generate()).thenReturn(innerClassBuilder);
         when(builderGenerator.generateStaticGetBuilderMethod()).thenReturn(staticGetBuilderMethod);

@@ -5,6 +5,8 @@ import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGenerator;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.OptionalTypeNameUtil;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.WithMethodGenerator;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -52,14 +54,20 @@ import com.squareup.javapoet.TypeSpec;
 public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 
     private final BuilderGeneratorFactory builderGeneratorFactory;
+    private final WithMethodGenerator withMethodGenerator;
 
-    public GenerateBuilderForClassPlugin(final BuilderGeneratorFactory builderGeneratorFactory) {
+    public GenerateBuilderForClassPlugin(
+            final BuilderGeneratorFactory builderGeneratorFactory,
+            final WithMethodGenerator withMethodGenerator) {
         this.builderGeneratorFactory = builderGeneratorFactory;
+        this.withMethodGenerator = withMethodGenerator;
     }
 
     @FactoryMethod
     public static GenerateBuilderForClassPlugin newGenerateBuilderForClassPlugin() {
-        return new GenerateBuilderForClassPlugin(new BuilderGeneratorFactory());
+        return new GenerateBuilderForClassPlugin(
+                new BuilderGeneratorFactory(),
+                new WithMethodGenerator(new OptionalTypeNameUtil()));
     }
 
     @Override
@@ -71,7 +79,8 @@ public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
         final BuilderGenerator builderGenerator = builderGeneratorFactory.create(
                 classDefinition,
                 pluginContext.getClassNameFactory(),
-                pluginContext);
+                pluginContext,
+                withMethodGenerator);
 
         final TypeSpec innerClassBuilder = builderGenerator.generate();
         final MethodSpec staticGetBuilderMethod = builderGenerator.generateStaticGetBuilderMethod();

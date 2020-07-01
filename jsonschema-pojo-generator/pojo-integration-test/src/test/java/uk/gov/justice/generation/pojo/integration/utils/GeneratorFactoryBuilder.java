@@ -4,12 +4,14 @@ import uk.gov.justice.generation.pojo.core.GenerationContext;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.OptionalTypeNameUtil;
 
 public class GeneratorFactoryBuilder {
 
     private GenerationContext generationContext;
     private PluginProvider pluginProvider;
     private ClassNameFactory classNameFactory;
+    private OptionalTypeNameUtil optionalTypeNameUtil;
 
     public GeneratorFactoryBuilder withGenerationContext(final GenerationContext generationContext) {
         this.generationContext = generationContext;
@@ -23,6 +25,11 @@ public class GeneratorFactoryBuilder {
 
     public GeneratorFactoryBuilder withClassNameFactory(final ClassNameFactory classNameFactory) {
         this.classNameFactory = classNameFactory;
+        return this;
+    }
+
+    public GeneratorFactoryBuilder withOptionalTypeNameUtil(final OptionalTypeNameUtil optionalTypeNameUtil) {
+        this.optionalTypeNameUtil = optionalTypeNameUtil;
         return this;
     }
 
@@ -40,6 +47,6 @@ public class GeneratorFactoryBuilder {
             throw new RuntimeException("Please set the ClassNameFactory before calling build()");
         }
 
-        return new JavaGeneratorFactory(classNameFactory);
+        return new JavaGeneratorFactory(classNameFactory, optionalTypeNameUtil);
     }
 }

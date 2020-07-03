@@ -10,6 +10,7 @@ import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.OptionalTypeNameUtil;
 
 import java.util.List;
 
@@ -19,18 +20,24 @@ import java.util.List;
 public class JavaGeneratorFactory {
 
     private final ClassNameFactory classNameFactory;
+    private final OptionalTypeNameUtil optionalTypeNameUtil;
 
-    public JavaGeneratorFactory(final ClassNameFactory classNameFactory) {
+    public JavaGeneratorFactory(final ClassNameFactory classNameFactory, final OptionalTypeNameUtil optionalTypeNameUtil) {
         this.classNameFactory = classNameFactory;
+        this.optionalTypeNameUtil = optionalTypeNameUtil;
     }
 
     public ElementGeneratable createGeneratorFor(final Definition definition, final PluginContext pluginContext) {
 
         if (definition.getClass() == ClassDefinition.class || definition.getClass() == EnumDefinition.class) {
-            return new ElementGenerator(definition, classNameFactory, pluginContext);
+            return new ElementGenerator(definition, classNameFactory, pluginContext, optionalTypeNameUtil);
         }
 
-        return new FieldGenerator((FieldDefinition) definition, classNameFactory, pluginContext);
+        return new FieldGenerator(
+                (FieldDefinition) definition,
+                classNameFactory,
+                pluginContext,
+                optionalTypeNameUtil);
     }
 
     public List<ClassGeneratable> createClassGeneratorsFor(final List<Definition> definitions,

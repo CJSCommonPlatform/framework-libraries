@@ -29,11 +29,13 @@ public class BuilderGeneratorFactoryTest {
         final ClassDefinition classDefinition = mock(ClassDefinition.class);
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
         final PluginContext pluginContext = mock(PluginContext.class);
+        final WithMethodGenerator withMethodGenerator = mock(WithMethodGenerator.class);
 
         final BuilderGenerator builderGenerator = builderGeneratorFactory.create(
                 classDefinition,
                 classNameFactory,
-                pluginContext
+                pluginContext,
+                withMethodGenerator
         );
 
         assertThat(getPrivateFieldFrom(builderGenerator, "classDefinition"), is(classDefinition));

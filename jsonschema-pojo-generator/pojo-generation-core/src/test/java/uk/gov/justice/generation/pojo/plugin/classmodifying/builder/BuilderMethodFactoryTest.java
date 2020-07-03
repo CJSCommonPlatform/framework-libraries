@@ -14,6 +14,7 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,9 @@ public class BuilderMethodFactoryTest {
 
     @Mock
     private OptionalTypeNameUtil optionalTypeNameUtil;
+
+    @Mock
+    private WithMethodGenerator withMethodGenerator;
 
     @InjectMocks
     private BuilderMethodFactory builderMethodFactory;
@@ -91,13 +95,17 @@ public class BuilderMethodFactoryTest {
         final Definition fieldDefinition_1 = mock(Definition.class);
         final Definition fieldDefinition_2 = mock(Definition.class);
         final List<Definition> fieldDefinitions = asList(fieldDefinition_1, fieldDefinition_2);
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         final ClassName pojoClassName = get("org.bloggs.fred", "AlcubierreDrive");
 
         when(fieldDefinition_1.getFieldName()).thenReturn("fieldDefinition_1");
         when(fieldDefinition_2.getFieldName()).thenReturn("fieldDefinition_2");
 
-        final MethodSpec theBuildMethod = builderMethodFactory.createTheBuildMethodWithAdditionalProperties(fieldDefinitions, pojoClassName);
+        final MethodSpec theBuildMethod = builderMethodFactory.createTheBuildMethodWithAdditionalProperties(
+                fieldDefinitions,
+                pojoClassName,
+                pluginContext);
 
         final String expectedBuildMethod =
                 "public org.bloggs.fred.AlcubierreDrive build() {\n  " +
@@ -109,6 +117,9 @@ public class BuilderMethodFactoryTest {
 
     @Test
     public void shouldCreateTheWithMethods() throws Exception {
+
+        final MethodSpec generatedWithMethod_1 = MethodSpec.methodBuilder("generatedWithMethod_1").build();
+        final MethodSpec generatedWithMethod_2 = MethodSpec.methodBuilder("generatedWithMethod_2").build();
 
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
@@ -125,6 +136,16 @@ public class BuilderMethodFactoryTest {
 
         when(classNameFactory.createTypeNameFrom(fieldDefinition_1, pluginContext)).thenReturn(get(String.class));
         when(classNameFactory.createTypeNameFrom(fieldDefinition_2, pluginContext)).thenReturn(get(Integer.class));
+        when(withMethodGenerator.generateWithMethods(
+                fieldDefinition_1,
+                builderClassName,
+                classNameFactory,
+                pluginContext)).thenReturn(singletonList(generatedWithMethod_1));
+        when(withMethodGenerator.generateWithMethods(
+                fieldDefinition_2,
+                builderClassName,
+                classNameFactory,
+                pluginContext)).thenReturn(singletonList(generatedWithMethod_2));
 
         final List<MethodSpec> withMethods = builderMethodFactory.createTheWithMethods(
                 fieldDefinitions,
@@ -133,65 +154,15 @@ public class BuilderMethodFactoryTest {
                 pluginContext);
 
         assertThat(withMethods.size(), is(2));
-
-        final String expectedWithMethod_1 =
-                "public org.bloggs.fred.AlcubierreDrive.Builder withFieldDefinition_1(" +
-                        "final java.lang.String fieldDefinition_1) {\n  " +
-                        "this.fieldDefinition_1 = fieldDefinition_1;\n  " +
-                        "return this;\n" +
-                        "}\n";
-        final String expectedWithMethod_2 =
-                "public org.bloggs.fred.AlcubierreDrive.Builder withFieldDefinition_2(" +
-                        "final java.lang.Integer fieldDefinition_2) {\n  " +
-                        "this.fieldDefinition_2 = fieldDefinition_2;\n  " +
-                        "return this;\n" +
-                        "}\n";
-
-        assertThat(withMethods.get(0).toString(), is(expectedWithMethod_1));
-        assertThat(withMethods.get(1).toString(), is(expectedWithMethod_2));
-    }
-
-    @Test
-    public void shouldCreateMethodOptionalField() throws Exception {
-
-        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
-        final PluginContext pluginContext = mock(PluginContext.class);
-
-        final Definition fieldDefinition = mock(Definition.class);
-        final ClassName className_1 = get(String.class);
-        final ParameterizedTypeName parameterizedTypeName = ParameterizedTypeName.get(get(Optional.class), get(String.class));
-
-        final List<Definition> fieldDefinitions = singletonList(fieldDefinition);
-        final ClassName builderClassName = get("org.bloggs.fred", "AlcubierreDrive").nestedClass("Builder");
-
-        when(fieldDefinition.getFieldName()).thenReturn("fieldDefinition");
-
-        when(classNameFactory.createTypeNameFrom(fieldDefinition, pluginContext)).thenReturn(parameterizedTypeName);
-
-        when(optionalTypeNameUtil.isOptionalType(className_1)).thenReturn(false);
-        when(optionalTypeNameUtil.isOptionalType(parameterizedTypeName)).thenReturn(true);
-        when(optionalTypeNameUtil.getOptionalTypeFrom(parameterizedTypeName)).thenReturn(get(String.class));
-
-        final List<MethodSpec> withMethods = builderMethodFactory.createTheWithMethods(
-                fieldDefinitions,
-                classNameFactory,
-                builderClassName,
-                pluginContext);
-
-        assertThat(withMethods.size(), is(1));
-
-        final String expectedWithMethod =
-                "public org.bloggs.fred.AlcubierreDrive.Builder withFieldDefinition(" +
-                        "final java.lang.String fieldDefinition) {\n  " +
-                        "this.fieldDefinition = fieldDefinition;\n  " +
-                        "return this;\n" +
-                        "}\n";
-
-        assertThat(withMethods.get(0).toString(), is(expectedWithMethod));
+        assertThat(withMethods.get(0), is(generatedWithMethod_1));
+        assertThat(withMethods.get(1), is(generatedWithMethod_2));
     }
 
     @Test
     public void shouldCreateMethodsWithAdditionalProperties() throws Exception {
+
+        final MethodSpec generatedWithMethod_1 = MethodSpec.methodBuilder("generatedWithMethod_1").build();
+        final MethodSpec generatedWithMethod_2 = MethodSpec.methodBuilder("generatedWithMethod_2").build();
 
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
         final PluginContext pluginContext = mock(PluginContext.class);
@@ -213,6 +184,18 @@ public class BuilderMethodFactoryTest {
         when(optionalTypeNameUtil.isOptionalType(className_1)).thenReturn(false);
         when(optionalTypeNameUtil.isOptionalType(className_2)).thenReturn(false);
 
+        when(withMethodGenerator.generateWithMethods(
+                fieldDefinition_1,
+                builderClassName,
+                classNameFactory,
+                pluginContext)).thenReturn(singletonList(generatedWithMethod_1));
+        when(withMethodGenerator.generateWithMethods(
+                fieldDefinition_2,
+                builderClassName,
+                classNameFactory,
+                pluginContext)).thenReturn(singletonList(generatedWithMethod_2));
+
+
         final List<MethodSpec> withMethods = builderMethodFactory.createTheWithMethodsWithAdditionalProperties(
                 fieldDefinitions,
                 classNameFactory,
@@ -221,18 +204,6 @@ public class BuilderMethodFactoryTest {
 
         assertThat(withMethods.size(), is(3));
 
-        final String expectedWithMethod_1 =
-                "public org.bloggs.fred.AlcubierreDrive.Builder withFieldDefinition_1(" +
-                        "final java.lang.String fieldDefinition_1) {\n  " +
-                        "this.fieldDefinition_1 = fieldDefinition_1;\n  " +
-                        "return this;\n" +
-                        "}\n";
-        final String expectedWithMethod_2 =
-                "public org.bloggs.fred.AlcubierreDrive.Builder withFieldDefinition_2(" +
-                        "final java.lang.Integer fieldDefinition_2) {\n  " +
-                        "this.fieldDefinition_2 = fieldDefinition_2;\n  " +
-                        "return this;\n" +
-                        "}\n";
 
         final String expectedAdditionalPropertiesWithMethod =
                 "public org.bloggs.fred.AlcubierreDrive.Builder withAdditionalProperty(" +
@@ -242,8 +213,8 @@ public class BuilderMethodFactoryTest {
                         "return this;\n" +
                         "}\n";
 
-        assertThat(withMethods.get(0).toString(), is(expectedWithMethod_1));
-        assertThat(withMethods.get(1).toString(), is(expectedWithMethod_2));
+        assertThat(withMethods.get(0), is(generatedWithMethod_1));
+        assertThat(withMethods.get(1), is(generatedWithMethod_2));
         assertThat(withMethods.get(2).toString(), startsWith(expectedAdditionalPropertiesWithMethod));
     }
 
@@ -251,10 +222,14 @@ public class BuilderMethodFactoryTest {
     public void shouldCreateTheBuildMethodWithOnlyAdditionalProperties() throws Exception {
 
         final List<Definition> fieldDefinitions = emptyList();
+        final PluginContext pluginContext = mock(PluginContext.class);
 
         final ClassName pojoClassName = get("org.bloggs.fred", "AlcubierreDrive");
 
-        final MethodSpec theBuildMethod = builderMethodFactory.createTheBuildMethodWithAdditionalProperties(fieldDefinitions, pojoClassName);
+        final MethodSpec theBuildMethod = builderMethodFactory.createTheBuildMethodWithAdditionalProperties(
+                fieldDefinitions,
+                pojoClassName,
+                pluginContext);
 
         final String expectedBuildMethod =
                 "public org.bloggs.fred.AlcubierreDrive build() {\n  " +

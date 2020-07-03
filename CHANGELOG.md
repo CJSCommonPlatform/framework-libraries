@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.0.9] - 2020-07-03
+### Changed
+- Pojo generator now handles Optionals correctly:
+    - Any getter of an Optional field will return Optional.empty() if the field is null
+    - 'with' methods in builders are overloaded for Optional fields to take both the raw Object and an Optional
+    
+
 ## [7.0.8] - 2020-06-02
 ### Changed
 - Updated common bom to 7.0.3

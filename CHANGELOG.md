@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [7.0.9] - 2020-07-03
+## [7.0.9] - 2020-07-06
 ### Changed
 - Pojo generator now handles Optionals correctly:
     - Any getter of an Optional field will return Optional.empty() if the field is null

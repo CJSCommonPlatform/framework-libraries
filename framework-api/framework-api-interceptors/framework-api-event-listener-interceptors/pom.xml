@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-api-interceptors</artifactId>
         <groupId>uk.gov.justice.framework-api</groupId>
-        <version>7.0.10-SNAPSHOT</version>
+        <version>7.0.9</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

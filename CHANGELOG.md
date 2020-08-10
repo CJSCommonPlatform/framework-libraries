@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [7.0.10] - 2020-08-10
+### Changed
+-   Separate audit jms connection factory
 
 ## [7.0.9] - 2020-07-07
 ### Changed

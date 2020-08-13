@@ -5,7 +5,7 @@
     <parent>
         <artifactId>json-schema-catalog</artifactId>
         <groupId>uk.gov.justice.schema</groupId>
-        <version>7.0.11-SNAPSHOT</version>
+        <version>7.0.10</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

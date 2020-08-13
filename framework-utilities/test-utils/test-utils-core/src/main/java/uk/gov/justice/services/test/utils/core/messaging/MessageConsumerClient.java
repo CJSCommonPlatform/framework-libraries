@@ -32,15 +32,24 @@ public class MessageConsumerClient  implements AutoCloseable {
         this.messageConsumerFactory = messageConsumerFactory;
         this.consumerClient = consumerClient;
     }
+    public void startConsumer(final String eventName, final String topicName, final int port) {
+
+        startConsumer(eventName, topicName, queueUri(port));
+    }
 
     public void startConsumer(final String eventName, final String topicName) {
+
+        startConsumer(eventName, topicName, QUEUE_URI);
+    }
+
+    public void startConsumer(final String eventName, final String topicName, final String queueURI) {
 
         final String messageSelector = format(MESSAGE_SELECTOR_TEMPLATE, eventName);
 
         try {
             messageConsumer = messageConsumerFactory.createAndStart(
                     messageSelector,
-                    QUEUE_URI,
+                    queueURI,
                     topicName);
 
         } catch (final JMSException e) {
@@ -48,7 +57,7 @@ public class MessageConsumerClient  implements AutoCloseable {
             final String message = "Failed to start message consumer for " +
                     "eventName '" + eventName + "':, " +
                     "topic: '" + topicName + "', " +
-                    "queueUri: '" + QUEUE_URI + "', " +
+                    "queueUri: '" + queueURI + "', " +
                     "messageSelector: '" + messageSelector + "'";
             throw new MessageConsumerException(message, e);
         }

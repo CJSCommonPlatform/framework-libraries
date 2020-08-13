@@ -12,7 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class QueueUriProvider {
 
-    private static final String BASE_URI_PATTERN = "tcp://%s:61616";
+    private static final String BASE_URI_PATTERN = "tcp://%s:%d";
+    private static final int DEFAULT_QUEUE_PORT = 61616;
 
     /**
      * Takes a comma separated list of broker hosts
@@ -20,7 +21,11 @@ public class QueueUriProvider {
     private static final String ARTEMIS_URI = "ARTEMIS_URI";
 
     public String getQueueUri() {
-        return format(BASE_URI_PATTERN, getHost());
+        return getQueueUri(DEFAULT_QUEUE_PORT);
+    }
+
+    public String getQueueUri(final int port) {
+        return format(BASE_URI_PATTERN, getHost(), port);
     }
 
     public List<String> getArtemisQueueUri() {
@@ -28,9 +33,12 @@ public class QueueUriProvider {
         if (StringUtils.isNotBlank(artemisUri)) {
             return on(",").splitToList(artemisUri);
         }
-        return newArrayList(format(BASE_URI_PATTERN, getArtemisHost()));
+        return newArrayList(format(BASE_URI_PATTERN, getArtemisHost(), DEFAULT_QUEUE_PORT));
     }
 
+    public static String queueUri(final int port) {
+        return new QueueUriProvider().getQueueUri(port);
+    }
     public static String queueUri() {
         return new QueueUriProvider().getQueueUri();
     }

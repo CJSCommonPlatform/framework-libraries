@@ -44,6 +44,16 @@ public class QueueUriProviderTest {
     }
 
     @Test
+    public void shouldGetLocalhostUriBySuppliedPort() {
+
+        final int port = 61646;
+        final String localhostUri = "tcp://localhost:" + port;
+
+        assertThat(queueUriProvider.getQueueUri(61646), is(localhostUri));
+        assertThat(queueUri(port), is(localhostUri));
+    }
+
+    @Test
     public void shouldGetTheRemoteUriIfTheSystemPropertyIsSet() {
 
         System.setProperty(INTEGRATION_HOST_KEY, "my.host.com");

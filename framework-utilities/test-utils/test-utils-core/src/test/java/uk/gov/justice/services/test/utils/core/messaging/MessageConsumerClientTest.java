@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClient.QUEUE_URI;
 import static uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClient.TIMEOUT_IN_MILLIS;
+import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 
 import java.util.Optional;
 
@@ -47,6 +48,23 @@ public class MessageConsumerClientTest {
         when(messageConsumerFactory.createAndStart(messageSelector, QUEUE_URI, topicName)).thenReturn(messageConsumer);
 
         messageConsumerClient.startConsumer(eventName, topicName);
+
+        assertThat(messageConsumerClient.getMessageConsumer(), is(messageConsumer));
+    }
+
+    @Test
+    public void shouldCreateAndStartAMessageConsumerOnSuppliedPort() throws Exception {
+
+        final String eventName = "my-context.events.my-event";
+        final String topicName = "my-context.event";
+        final String messageSelector = "CPPNAME IN ('my-context.events.my-event')";
+        final int port = 61646;
+
+        final MessageConsumer messageConsumer = mock(MessageConsumer.class);
+
+        when(messageConsumerFactory.createAndStart(messageSelector, queueUri(port), topicName)).thenReturn(messageConsumer);
+
+        messageConsumerClient.startConsumer(eventName, topicName, port);
 
         assertThat(messageConsumerClient.getMessageConsumer(), is(messageConsumer));
     }

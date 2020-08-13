@@ -4,9 +4,12 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## [7.0.10-M1] - 2020-08-10
+
+## [7.0.10] - 2020-08-13
 ### Changed
 -   Separate audit jms connection factory
+### Added
+-   New annotation `ConnectionFactoryName` to allow a separate message broked to be specified for auditing
 
 ## [7.0.9] - 2020-07-07
 ### Changed
@@ -14,7 +17,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     - Any getter of an Optional field will return Optional.empty() if the field is null
     - 'with' methods in builders are overloaded for Optional fields to take both the raw Object and an Optional
     
-
 ## [7.0.8] - 2020-06-02
 ### Changed
 - Updated common bom to 7.0.3

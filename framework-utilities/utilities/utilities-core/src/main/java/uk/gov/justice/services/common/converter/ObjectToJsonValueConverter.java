@@ -6,7 +6,7 @@ import uk.gov.justice.services.common.converter.exception.ConverterException;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
+import javax.enterprise.inject.Vetoed;
 import javax.json.JsonValue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,11 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Converts a Pojo to a JsonValue
  */
+@Vetoed
 public class ObjectToJsonValueConverter implements Converter<Object, JsonValue> {
 
     private final ObjectMapper mapper;
 
-    @Inject
     public ObjectToJsonValueConverter(final ObjectMapper mapper) {
         this.mapper = mapper;
     }

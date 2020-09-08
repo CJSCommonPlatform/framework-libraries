@@ -1,6 +1,5 @@
 package uk.gov.justice.generation.pojo.plugin;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;

@@ -24,7 +24,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,14 +38,15 @@ public class ObjectToJsonObjectConverterTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    @Mock
-    private ObjectMapper mapper;
+    @Spy
+    private ObjectMapper mapper = new ObjectMapperProducer().objectMapper();
+
+    @InjectMocks
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
     @Test
     public void shouldConvertPojoToJsonObject() throws Exception {
         final Pojo pojo = new Pojo(ID, NAME, ATTRIBUTES);
-        final ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter();
-        objectToJsonObjectConverter.mapper = new ObjectMapperProducer().objectMapper();
 
         final JsonObject jsonObject = objectToJsonObjectConverter.convert(pojo);
 
@@ -53,8 +55,6 @@ public class ObjectToJsonObjectConverterTest {
 
     @Test
     public void shouldThrowExceptionOnConversionError() throws JsonProcessingException {
-        final ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter();
-        objectToJsonObjectConverter.mapper = mapper;
 
         final Pojo pojo = new Pojo(ID, NAME, ATTRIBUTES);
         doThrow(JsonProcessingException.class).when(mapper).writeValueAsString(pojo);
@@ -67,11 +67,11 @@ public class ObjectToJsonObjectConverterTest {
 
     @Test(expected = ConverterException.class)
     public void shouldThrowExceptionOnNullResult() throws JsonProcessingException {
-        final ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter();
-        objectToJsonObjectConverter.mapper = mapper;
 
         final Pojo pojo = new Pojo(ID, NAME, ATTRIBUTES);
         when(mapper.writeValueAsString(pojo)).thenReturn(null);
+
+        final ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter(mapper);
 
         objectToJsonObjectConverter.convert(pojo);
     }

@@ -1,13 +1,10 @@
 package uk.gov.justice.plugin.annotation;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfoList;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
+import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.Class.forName;
+import static java.lang.Thread.currentThread;
+import static uk.gov.justice.plugin.validator.AnnotationValidatorFactory.getValidator;
+
 import uk.gov.justice.maven.annotation.domain.ValidationResult;
 import uk.gov.justice.maven.annotation.validator.AnnotationValidator;
 import uk.gov.justice.plugin.domain.ReportConfig;
@@ -20,10 +17,14 @@ import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static java.lang.Class.forName;
-import static java.lang.Thread.currentThread;
-import static uk.gov.justice.plugin.validator.AnnotationValidatorFactory.getValidator;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 @Mojo(name = "check-annotations", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 public class AnnotationCheckMojo extends AbstractMojo {

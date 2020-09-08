@@ -2,7 +2,6 @@ package uk.gov.justice.services.test.utils.core.http;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 /**

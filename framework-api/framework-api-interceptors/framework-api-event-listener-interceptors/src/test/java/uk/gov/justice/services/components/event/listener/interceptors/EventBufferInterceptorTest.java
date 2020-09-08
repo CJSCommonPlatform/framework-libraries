@@ -2,33 +2,22 @@ package uk.gov.justice.services.components.event.listener.interceptors;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.*;
-
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import uk.gov.justice.services.core.interceptor.InterceptorChain;
+import uk.gov.justice.services.core.interceptor.InterceptorContext;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-
-import uk.gov.justice.services.core.interceptor.InterceptorChain;
-import uk.gov.justice.services.core.interceptor.InterceptorContext;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventBufferInterceptorTest {

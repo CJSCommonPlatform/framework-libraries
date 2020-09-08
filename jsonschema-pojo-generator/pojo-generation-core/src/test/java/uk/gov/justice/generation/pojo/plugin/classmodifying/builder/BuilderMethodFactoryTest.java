@@ -14,7 +14,6 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

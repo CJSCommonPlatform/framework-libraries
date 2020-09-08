@@ -1,12 +1,9 @@
 package uk.gov.justice.artemis;
 
+import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.Collections;
 
 import org.apache.activemq.artemis.core.security.CheckType;

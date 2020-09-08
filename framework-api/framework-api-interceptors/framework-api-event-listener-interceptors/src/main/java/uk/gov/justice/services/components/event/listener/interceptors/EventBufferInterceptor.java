@@ -4,7 +4,6 @@ package uk.gov.justice.services.components.event.listener.interceptors;
 import uk.gov.justice.services.core.interceptor.Interceptor;
 import uk.gov.justice.services.core.interceptor.InterceptorChain;
 import uk.gov.justice.services.core.interceptor.InterceptorContext;
-import uk.gov.justice.services.event.buffer.api.EventBufferService;
 
 import java.util.List;
 import java.util.stream.Stream;

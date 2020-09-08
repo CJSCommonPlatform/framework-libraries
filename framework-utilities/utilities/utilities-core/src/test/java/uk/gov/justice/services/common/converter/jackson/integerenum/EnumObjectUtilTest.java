@@ -12,8 +12,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.jackson.integerenum.EnumObjectUtilTest.Age.FOURTY;
 import static uk.gov.justice.services.common.converter.jackson.integerenum.EnumObjectUtilTest.Age.THIRTY;
 
-import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonMappingException;

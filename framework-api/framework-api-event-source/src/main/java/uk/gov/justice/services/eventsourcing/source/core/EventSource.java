@@ -1,7 +1,5 @@
 package uk.gov.justice.services.eventsourcing.source.core;
 
-import uk.gov.justice.services.messaging.JsonEnvelope;
-
 import java.util.UUID;
 import java.util.stream.Stream;
 

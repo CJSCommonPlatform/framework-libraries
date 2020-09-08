@@ -5,15 +5,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.rules.ExpectedException.none;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseHeadersMatcher.headers;
 
+import uk.gov.justice.services.test.utils.core.http.ResponseData;
+
 import java.util.Arrays;
+
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
 public class ResponseHeadersMatcherTest {
 

@@ -1,9 +1,6 @@
 package uk.gov.justice.services.fileservice.domain;
 
-import static java.util.Objects.hash;
-
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.UUID;
 
 import javax.json.JsonObject;

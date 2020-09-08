@@ -2,12 +2,9 @@ package uk.gov.justice.generation.pojo.generators;
 
 import static com.squareup.javapoet.ClassName.get;
 import static com.squareup.javapoet.FieldSpec.builder;
-import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
-import static javax.lang.model.element.Modifier.PUBLIC;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -22,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;

@@ -2,14 +2,11 @@ package uk.gov.justice.services.common.polling;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.common.polling.MultiIteratingPoller;
-import uk.gov.justice.services.common.polling.Poller;
 import uk.gov.justice.services.common.util.Sleeper;
 
 import java.util.function.BooleanSupplier;

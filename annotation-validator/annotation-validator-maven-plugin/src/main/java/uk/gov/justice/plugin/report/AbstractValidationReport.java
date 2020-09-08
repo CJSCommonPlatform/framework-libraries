@@ -1,14 +1,15 @@
 package uk.gov.justice.plugin.report;
 
-import org.slf4j.Logger;
+import static org.apache.commons.io.FileUtils.deleteQuietly;
+import static org.apache.commons.io.IOUtils.write;
+
 import uk.gov.justice.plugin.domain.ReportConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static org.apache.commons.io.FileUtils.deleteQuietly;
-import static org.apache.commons.io.IOUtils.write;
+import org.slf4j.Logger;
 
 
 public abstract class AbstractValidationReport implements ValidationReport {

@@ -1,29 +1,13 @@
 package uk.gov.justice.services.test.utils.core.http;
 
-import static com.google.common.collect.Maps.newHashMap;
-import static org.junit.Assert.*;
-
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.Test;
+import org.mockito.InjectMocks;
 
 public class ExpectedJsonValuesResultConditionTest {
 

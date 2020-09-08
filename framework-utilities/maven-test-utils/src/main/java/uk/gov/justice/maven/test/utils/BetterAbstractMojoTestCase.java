@@ -1,5 +1,9 @@
 package uk.gov.justice.maven.test.utils;
 
+import static java.util.Arrays.asList;
+
+import java.io.File;
+
 import org.apache.maven.DefaultMaven;
 import org.apache.maven.Maven;
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
@@ -16,10 +20,6 @@ import org.apache.maven.project.ProjectBuildingRequest;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory;
 import org.eclipse.aether.repository.LocalRepository;
-
-import java.io.File;
-
-import static java.util.Arrays.asList;
 
 /**
  * Use this as you would {@link AbstractMojoTestCase}, where you want more of the standard maven

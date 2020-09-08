@@ -1,9 +1,9 @@
 package uk.gov.justice.raml.io;
 
-import com.google.common.base.Predicate;
-
 import static java.io.File.separatorChar;
 import static org.codehaus.plexus.util.SelectorUtils.matchPath;
+
+import com.google.common.base.Predicate;
 
 /**
  * matches resource path against Ant url pattern

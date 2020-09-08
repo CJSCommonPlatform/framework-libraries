@@ -1,13 +1,14 @@
 package uk.gov.justice.plugin.report;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.google.common.base.Joiner.on;
+import static com.google.common.collect.Lists.newArrayList;
+
 import uk.gov.justice.plugin.domain.ReportConfig;
 
 import java.util.List;
 
-import static com.google.common.base.Joiner.on;
-import static com.google.common.collect.Lists.newArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class AnnotationValidationReport extends AbstractValidationReport {

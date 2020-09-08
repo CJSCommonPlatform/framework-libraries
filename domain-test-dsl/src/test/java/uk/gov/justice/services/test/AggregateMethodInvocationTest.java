@@ -1,7 +1,10 @@
 package uk.gov.justice.services.test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
+import static org.junit.Assert.assertThat;
+import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
+
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.test.domain.AggregateWrapper;
 import uk.gov.justice.services.test.domain.aggregate.GenericAggregate;
@@ -10,10 +13,8 @@ import uk.gov.justice.services.test.domain.arg.ComplexArgument;
 import java.time.ZoneId;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.samePropertyValuesAs;
-import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
-import static org.junit.Assert.assertThat;
-import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
+import org.junit.Before;
+import org.junit.Test;
 
 public class AggregateMethodInvocationTest extends AggregateTestAssertions {
 

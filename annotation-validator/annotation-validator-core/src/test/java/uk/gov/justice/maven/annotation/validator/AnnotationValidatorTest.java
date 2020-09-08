@@ -7,7 +7,6 @@ import uk.gov.justice.maven.annotation.domain.ValidationResult;
 
 import java.util.Map;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 public class AnnotationValidatorTest {

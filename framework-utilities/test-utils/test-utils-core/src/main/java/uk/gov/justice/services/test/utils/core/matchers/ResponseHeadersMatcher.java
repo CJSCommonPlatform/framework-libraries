@@ -2,6 +2,8 @@ package uk.gov.justice.services.test.utils.core.matchers;
 
 import static java.util.Optional.empty;
 
+import uk.gov.justice.services.test.utils.core.http.ResponseData;
+
 import java.util.Optional;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -9,8 +11,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsMapContaining;
-
-import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
 public class ResponseHeadersMatcher extends ResponseMatcher<ResponseData> {
 	private Optional<IsMapContaining<String, Object>> headersMatcher = empty();

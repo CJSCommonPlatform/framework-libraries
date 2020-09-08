@@ -1,22 +1,19 @@
 package uk.gov.justice.services.common.converter;
 
 import static javax.json.JsonValue.FALSE;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 
 import javax.json.JsonNumber;
-import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 
-import net.minidev.json.JSONValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.internal.runners.JUnit44RunnerImpl;
 
 @RunWith(JUnit4.class)
 public class JsonValueFactoryTest {

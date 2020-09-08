@@ -7,9 +7,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.common.converter.exception.ConverterException;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.IOException;
@@ -23,15 +21,12 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 

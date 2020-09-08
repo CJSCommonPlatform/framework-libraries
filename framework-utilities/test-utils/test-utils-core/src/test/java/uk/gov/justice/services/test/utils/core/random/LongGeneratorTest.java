@@ -1,7 +1,7 @@
 package uk.gov.justice.services.test.utils.core.random;
 
 import static java.lang.String.format;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 

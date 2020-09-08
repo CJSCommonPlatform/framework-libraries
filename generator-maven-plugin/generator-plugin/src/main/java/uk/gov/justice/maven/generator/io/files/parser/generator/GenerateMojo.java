@@ -1,6 +1,5 @@
 package uk.gov.justice.maven.generator.io.files.parser.generator;
 
-import static java.lang.String.format;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
 import uk.gov.justice.maven.generator.io.files.parser.common.BasicMojo;

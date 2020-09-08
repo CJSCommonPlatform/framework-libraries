@@ -1,7 +1,5 @@
 package uk.gov.justice.services.test.util;
 
-import uk.gov.justice.domain.annotation.Event;
-
 /*
  Jackson can't serialise this class as its attributes are all private, results in an error which
  we need for testing

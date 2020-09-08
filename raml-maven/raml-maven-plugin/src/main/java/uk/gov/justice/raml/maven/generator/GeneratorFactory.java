@@ -3,7 +3,6 @@ package uk.gov.justice.raml.maven.generator;
 import uk.gov.justice.raml.core.Generator;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 

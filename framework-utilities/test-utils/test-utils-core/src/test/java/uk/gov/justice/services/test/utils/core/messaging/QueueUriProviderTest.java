@@ -4,12 +4,11 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.codehaus.groovy.runtime.InvokerHelper.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.INTEGRATION_HOST_KEY;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.ARTEMIS_HOST_KEY;
-import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
+import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.INTEGRATION_HOST_KEY;
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.artemisQueueUri;
+import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 
-import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

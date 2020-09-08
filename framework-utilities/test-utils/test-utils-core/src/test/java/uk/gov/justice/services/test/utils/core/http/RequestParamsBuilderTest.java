@@ -1,19 +1,11 @@
 package uk.gov.justice.services.test.utils.core.http;
 
-import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static uk.gov.justice.services.test.utils.core.http.PollingRequestParams.DEFAULT_DELAY_MILLIS;
-import static uk.gov.justice.services.test.utils.core.http.PollingRequestParams.DEFAULT_RETRY_COUNT;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParamswithHeaders;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.junit.Test;

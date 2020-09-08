@@ -2,7 +2,6 @@ package uk.gov.justice.maven.generator.io.files.parser.generator;
 
 
 import static java.nio.file.Files.exists;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.greaterThan;

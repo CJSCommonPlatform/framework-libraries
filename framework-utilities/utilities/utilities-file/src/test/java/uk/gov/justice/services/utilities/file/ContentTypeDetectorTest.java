@@ -9,7 +9,6 @@ import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Optional;
 
 import javax.ws.rs.core.MediaType;
 

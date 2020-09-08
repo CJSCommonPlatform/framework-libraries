@@ -6,10 +6,8 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 
 import java.util.HashMap;
@@ -18,6 +16,7 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

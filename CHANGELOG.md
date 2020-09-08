@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.0.11] - 2020-09-08
+### Changed
+-   `JsonObjectToObjectConverter`, `ObjectToJsonObjectConverter` and `ObjectToJsonValueConverter`  
+removed from CDI and are now injected using a producer: `JsonObjectConvertersProducer`
+### Added
+-   Now test utility class `JsonObjectConvertersFactory` to allow these classes
+to easily be used in tests
+
 ## [7.0.10] - 2020-08-13
 ### Changed
 -   Separate audit jms connection factory

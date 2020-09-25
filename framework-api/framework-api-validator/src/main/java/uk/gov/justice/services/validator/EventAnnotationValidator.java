@@ -38,6 +38,7 @@ public class EventAnnotationValidator implements AnnotationValidator<Event> {
 
     private Pattern getEventPattern(final String serviceName) {
         // example matching pattern: service.events.something-happened
-        return compile(serviceName + "\\.events\\.[a-z]+.[a-z0-9\\-]+[a-z0-9]+$");
+        // or: administration.events.something-happened
+        return compile("^(administration|" + serviceName + ").events\\.[a-z]+.[a-z0-9\\-]+[a-z0-9]+$");
     }
 }

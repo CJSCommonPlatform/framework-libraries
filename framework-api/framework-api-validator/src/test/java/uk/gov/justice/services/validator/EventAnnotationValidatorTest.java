@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 import uk.gov.justice.maven.annotation.domain.ValidationResult;
 import uk.gov.justice.maven.annotation.exception.ValidationException;
 import uk.gov.justice.services.validator.domain.ClassWithInvalidEventAnnotation;
+import uk.gov.justice.services.validator.domain.ClassWithValidAdministrationEventAnnotation;
 import uk.gov.justice.services.validator.domain.ClassWithValidEventAnnotation;
 
 import org.junit.Before;
@@ -42,4 +43,11 @@ public class EventAnnotationValidatorTest {
         assertThat(result.isValidationPassed(), is(true));
     }
 
+    @Test
+    public void shouldIndicateValidationSuccessWhenEventNameStartsWithAdministrationInsteadOfServiceName() {
+        final ValidationResult result = validator.validate(ClassWithValidAdministrationEventAnnotation.class, of("serviceName", "service"));
+        assertThat(result.getClassWithAnnotation(), is(ClassWithValidAdministrationEventAnnotation.class.getName()));
+        assertThat(result.getValidationText(), is("administration.events.valid"));
+        assertThat(result.isValidationPassed(), is(true));
+    }
 }

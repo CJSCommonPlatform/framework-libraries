@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.1.1] - 2020-09-25
+### Changed
+- Annotation validation plugin now accepts event names that start with `administration.events`
+as well as `<service-name>.events`
+
 ## [7.1.0] - 2020-09-23
 ### Changed
 - Updated parent maven-framework-parent-pom to version 2.0.0

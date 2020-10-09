@@ -20,8 +20,6 @@ import org.slf4j.Logger;
 
 public class ProjectDependencyLoader {
 
-    private static final Logger LOGGER = getLogger(ProjectDependencyLoader.class);
-
     private final MavenProject project;
 
     public ProjectDependencyLoader(final MavenProject project) {
@@ -40,7 +38,6 @@ public class ProjectDependencyLoader {
         for (final String dependency : dependencies) {
             final URL dependencyUrl = new File(dependency).toURI().toURL();
             if (dependencyUrl.toString().endsWith(".jar")) {
-                LOGGER.info("Resource URL: {}", dependencyUrl.toString());
                 dependenciesUrl.add(dependencyUrl);
             }
         }

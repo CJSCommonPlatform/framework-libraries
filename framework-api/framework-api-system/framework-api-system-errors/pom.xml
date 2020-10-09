@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-api-system</artifactId>
         <groupId>uk.gov.justice.framework-api</groupId>
-        <version>7.1.2</version>
+        <version>7.1.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

@@ -1,6 +1,10 @@
 package uk.gov.justice.services.common.configuration;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -27,5 +31,19 @@ public class JndiBasedServiceContextNameProviderTest {
         final String serviceContextName = jndiBasedServiceContextNameProvider.getServiceContextName();
 
         assertEquals(serviceContextName, APP_NAME);
+    }
+
+    @Test
+    public void shouldFailIfNameNotSet() throws Exception {
+        jndiBasedServiceContextNameProvider = new JndiBasedServiceContextNameProvider();
+
+        assertThat(jndiBasedServiceContextNameProvider.appName, is(nullValue()));
+
+        try {
+            jndiBasedServiceContextNameProvider.getServiceContextName();
+            fail();
+        } catch (final JndiNameNotFoundException expected) {
+            assertThat(expected.getMessage(), is("No JNDI name specified for JNDI property 'java:app/AppName'"));
+        }
     }
 }

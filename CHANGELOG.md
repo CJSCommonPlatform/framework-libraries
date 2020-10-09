@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- New LazyValue class to fetch values using a java Supplier and cache for future access
+
+### Changed
+- Removed logging of Resource URL scanning message during maven build
 
 ## [7.1.1] - 2020-09-25
 ### Changed

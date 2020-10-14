@@ -5,7 +5,6 @@ import static com.google.common.collect.Iterables.unmodifiableIterable;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.Thread.currentThread;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -16,7 +15,6 @@ import java.util.Set;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.project.MavenProject;
-import org.slf4j.Logger;
 
 public class ProjectDependencyLoader {
 

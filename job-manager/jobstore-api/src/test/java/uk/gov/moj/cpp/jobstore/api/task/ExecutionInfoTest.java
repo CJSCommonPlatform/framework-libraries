@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.jobstore.api.task;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;

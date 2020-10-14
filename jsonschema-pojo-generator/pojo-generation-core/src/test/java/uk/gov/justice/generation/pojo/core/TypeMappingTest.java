@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.pojo.core;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.generation.utils.TypeMappingFactory.typeMappingOf;
 
 import org.junit.Test;

@@ -3,7 +3,7 @@ package uk.gov.justice.services.common.converter;
 import static javax.json.JsonValue.NULL;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.isA;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 

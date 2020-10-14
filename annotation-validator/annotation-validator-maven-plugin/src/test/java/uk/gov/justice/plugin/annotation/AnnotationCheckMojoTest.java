@@ -2,11 +2,11 @@ package uk.gov.justice.plugin.annotation;
 
 import static com.google.common.base.Joiner.on;
 import static org.apache.commons.io.FileUtils.readLines;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.maven.test.utils.BetterAbstractMojoTestCase;
 import uk.gov.justice.plugin.domain.AnotherTestAnnotation;

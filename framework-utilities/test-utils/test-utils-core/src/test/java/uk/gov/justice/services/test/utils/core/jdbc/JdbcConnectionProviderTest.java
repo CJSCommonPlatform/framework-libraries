@@ -3,7 +3,7 @@ package uk.gov.justice.services.test.utils.core.jdbc;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 import static uk.gov.justice.services.test.utils.core.jdbc.H2ConnectionParameters.DRIVER_CLASS;
 import static uk.gov.justice.services.test.utils.core.jdbc.H2ConnectionParameters.PASSWORD;

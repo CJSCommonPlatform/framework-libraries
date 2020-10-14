@@ -1,7 +1,7 @@
 package uk.gov.justice.json.jolt;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static uk.gov.justice.json.jolt.JsonHelper.readJson;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;

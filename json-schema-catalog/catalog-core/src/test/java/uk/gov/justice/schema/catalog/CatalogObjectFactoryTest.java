@@ -3,7 +3,7 @@ package uk.gov.justice.schema.catalog;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.schema.catalog.client.SchemaClientFactory;
 import uk.gov.justice.schema.catalog.util.ClasspathResourceLoader;

@@ -1,8 +1,8 @@
 package uk.gov.justice.services.common.converter;
 
 import static javax.json.JsonValue.FALSE;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;

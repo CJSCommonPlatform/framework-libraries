@@ -2,7 +2,7 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

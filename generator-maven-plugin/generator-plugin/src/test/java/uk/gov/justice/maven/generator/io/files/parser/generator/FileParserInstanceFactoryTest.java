@@ -2,7 +2,7 @@ package uk.gov.justice.maven.generator.io.files.parser.generator;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 
 import uk.gov.justice.maven.generator.io.files.parser.FileParser;

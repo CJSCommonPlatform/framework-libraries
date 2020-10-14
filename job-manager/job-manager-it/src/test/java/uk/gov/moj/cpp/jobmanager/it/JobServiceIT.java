@@ -5,8 +5,8 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.IntStream.range;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.services.cdi.InitialContextProducer;

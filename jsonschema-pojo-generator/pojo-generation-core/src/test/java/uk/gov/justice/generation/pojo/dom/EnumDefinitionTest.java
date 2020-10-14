@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.dom;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 import java.util.Optional;

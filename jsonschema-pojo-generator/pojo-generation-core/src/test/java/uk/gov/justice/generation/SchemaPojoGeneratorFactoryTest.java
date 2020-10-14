@@ -3,7 +3,7 @@ package uk.gov.justice.generation;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.generation.io.files.parser.SchemaDefinition;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;

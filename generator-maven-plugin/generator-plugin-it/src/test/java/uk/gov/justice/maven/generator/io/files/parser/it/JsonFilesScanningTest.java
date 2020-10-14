@@ -2,8 +2,8 @@ package uk.gov.justice.maven.generator.io.files.parser.it;
 
 
 import static org.apache.commons.lang.StringUtils.substringBefore;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.assertThat;
 
 import java.net.URI;
 import java.net.URISyntaxException;

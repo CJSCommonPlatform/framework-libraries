@@ -2,7 +2,7 @@ package uk.gov.justice.services.utilities.file;
 
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 

@@ -1,7 +1,7 @@
 package uk.gov.justice.services.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.services.test.util.CantBeSerializedByJackson;
 

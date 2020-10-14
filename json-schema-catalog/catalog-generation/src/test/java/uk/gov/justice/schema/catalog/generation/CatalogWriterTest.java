@@ -6,7 +6,7 @@ import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.schema.catalog.CatalogContext;
 import uk.gov.justice.schema.catalog.domain.Catalog;

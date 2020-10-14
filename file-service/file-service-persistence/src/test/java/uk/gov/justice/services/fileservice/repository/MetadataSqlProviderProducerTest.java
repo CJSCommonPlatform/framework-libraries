@@ -1,7 +1,7 @@
 package uk.gov.justice.services.fileservice.repository;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
 
 import org.junit.Rule;
 import org.junit.Test;

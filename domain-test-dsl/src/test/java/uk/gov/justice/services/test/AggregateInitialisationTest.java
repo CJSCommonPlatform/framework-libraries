@@ -1,10 +1,10 @@
 package uk.gov.justice.services.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsSame.sameInstance;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 
 import uk.gov.justice.services.test.domain.AggregateWrapper;

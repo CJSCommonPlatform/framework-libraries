@@ -4,7 +4,7 @@ import static com.squareup.javapoet.TypeName.get;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

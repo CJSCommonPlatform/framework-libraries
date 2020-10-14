@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.1.3] - 2020-10-14
+### Changed
+- Security updates to apache.tika, commons.beanutils, commons.guava and junit in common-bom
+- Updated common-bom to 7.1.1
+
 ## [7.1.2] - 2020-10-09
 ### Added
 - New LazyValue class to fetch values using a java Supplier and caches for future access

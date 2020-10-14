@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.io.files.parser;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.generation.io.files.loader.ClasspathResourceLoader;
 import uk.gov.justice.generation.io.files.loader.InputStreamToJsonObjectConverter;

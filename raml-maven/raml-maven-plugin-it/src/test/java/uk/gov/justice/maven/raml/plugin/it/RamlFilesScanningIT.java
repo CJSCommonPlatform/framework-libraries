@@ -2,8 +2,8 @@ package uk.gov.justice.maven.raml.plugin.it;
 
 
 import static org.apache.commons.lang.StringUtils.substringBefore;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
 
 import uk.gov.justice.raml.maven.test.RamlTitleAppendingGenerator;
 

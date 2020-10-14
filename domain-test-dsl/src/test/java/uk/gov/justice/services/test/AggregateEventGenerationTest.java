@@ -1,8 +1,8 @@
 package uk.gov.justice.services.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.test.DomainTest.generatedEventAsJsonNode;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 

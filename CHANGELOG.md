@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.1.4] - 2020-10-14
+### Changed
+- Change import of `org.junit.Assert.assertThat` to `org.hamcrest.MatcherAssert.assertThat` as 
+it's now deprecated in Junit 
+
 ## [7.1.3] - 2020-10-14
 ### Changed
 - Security updates to apache.tika, commons.beanutils, commons.guava and junit in common-bom

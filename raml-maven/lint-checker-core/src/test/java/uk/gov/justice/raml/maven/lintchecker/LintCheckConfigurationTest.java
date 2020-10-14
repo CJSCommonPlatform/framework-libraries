@@ -1,7 +1,7 @@
 package uk.gov.justice.raml.maven.lintchecker;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;

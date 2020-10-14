@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.jobstore.api;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;

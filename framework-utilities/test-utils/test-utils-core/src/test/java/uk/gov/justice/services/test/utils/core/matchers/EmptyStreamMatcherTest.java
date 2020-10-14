@@ -1,6 +1,6 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.matchers.EmptyStreamMatcher.isEmptyStream;
 
 import java.util.stream.Stream;

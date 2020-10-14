@@ -2,7 +2,7 @@ package uk.gov.justice.services.test.matchers;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;

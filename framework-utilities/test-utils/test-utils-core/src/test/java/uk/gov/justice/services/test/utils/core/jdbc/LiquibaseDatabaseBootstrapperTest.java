@@ -1,7 +1,7 @@
 package uk.gov.justice.services.test.utils.core.jdbc;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.jdbc.H2ConnectionParameters.DRIVER_CLASS;
 import static uk.gov.justice.services.test.utils.core.jdbc.H2ConnectionParameters.PASSWORD;
 import static uk.gov.justice.services.test.utils.core.jdbc.H2ConnectionParameters.URL;

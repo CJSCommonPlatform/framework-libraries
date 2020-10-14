@@ -1,7 +1,7 @@
 package uk.gov.justice.services.core.extension;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.core.annotation.ServiceComponentLocation.LOCAL;
 
 import javax.enterprise.inject.spi.Bean;

@@ -2,7 +2,7 @@ package uk.gov.justice.generation.pojo.integration.examples;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.generation.pojo.integration.utils.PojoGeneratorPropertiesBuilder.pojoGeneratorPropertiesBuilder;
 
 import uk.gov.justice.generation.pojo.core.PojoGeneratorProperties;

@@ -3,7 +3,7 @@ package uk.gov.justice.generation.io.files.loader;
 import static java.nio.file.Paths.get;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.InputStream;
 import java.nio.file.Path;

@@ -3,9 +3,9 @@ package uk.gov.justice.services.test.utils.core.http;
 import static java.util.Collections.singletonMap;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.test.utils.core.rest.RestClient;

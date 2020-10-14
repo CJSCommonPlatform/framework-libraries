@@ -2,7 +2,7 @@ package uk.gov.justice.schema.catalog.generation;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.schema.catalog.domain.Catalog;
 

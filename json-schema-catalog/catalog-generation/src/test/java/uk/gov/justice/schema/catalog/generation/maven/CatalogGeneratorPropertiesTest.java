@@ -1,7 +1,7 @@
 package uk.gov.justice.schema.catalog.generation.maven;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.lang.reflect.Field;
 import java.nio.file.Paths;

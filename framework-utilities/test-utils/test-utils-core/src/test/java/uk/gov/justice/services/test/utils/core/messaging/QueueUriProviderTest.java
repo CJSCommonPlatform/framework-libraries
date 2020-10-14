@@ -3,7 +3,7 @@ package uk.gov.justice.services.test.utils.core.messaging;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.codehaus.groovy.runtime.InvokerHelper.asList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.ARTEMIS_HOST_KEY;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.INTEGRATION_HOST_KEY;
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.artemisQueueUri;

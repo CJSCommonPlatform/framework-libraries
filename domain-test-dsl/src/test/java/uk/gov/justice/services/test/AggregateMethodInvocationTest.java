@@ -1,8 +1,8 @@
 package uk.gov.justice.services.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 
 import uk.gov.justice.services.common.converter.ZonedDateTimes;

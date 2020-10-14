@@ -1,7 +1,7 @@
 package uk.gov.justice.services.fileservice.repository;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider.INSERT_SQL;
 import static uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider.UPDATE_SQL;
 

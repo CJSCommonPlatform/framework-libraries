@@ -2,7 +2,7 @@ package uk.gov.justice.raml.maven.lintchecker.rules;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.maven.test.utils.BetterAbstractMojoTestCase;
 import uk.gov.justice.raml.maven.lintchecker.LintCheckerException;

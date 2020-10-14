@@ -2,7 +2,7 @@ package uk.gov.justice.services.validator;
 
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.maven.annotation.domain.ValidationResult;
 import uk.gov.justice.maven.annotation.exception.ValidationException;

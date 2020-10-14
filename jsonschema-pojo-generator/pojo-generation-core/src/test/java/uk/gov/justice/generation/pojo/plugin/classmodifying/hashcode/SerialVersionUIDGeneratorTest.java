@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.hashcode;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 

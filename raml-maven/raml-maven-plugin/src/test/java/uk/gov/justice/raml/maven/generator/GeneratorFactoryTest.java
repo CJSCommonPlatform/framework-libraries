@@ -3,7 +3,7 @@ package uk.gov.justice.raml.maven.generator;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.raml.core.Generator;
 import uk.gov.justice.raml.maven.generator.generators.NonInstantiableTestGenerator;

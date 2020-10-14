@@ -1,6 +1,6 @@
 package uk.gov.justice.services.test.domain;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.DomainTest.jsonNodesListFrom;
 import static uk.gov.justice.services.test.DomainTest.toJsonNodes;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;

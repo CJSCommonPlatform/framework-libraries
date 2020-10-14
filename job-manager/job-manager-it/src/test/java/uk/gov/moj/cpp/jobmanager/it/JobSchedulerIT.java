@@ -2,8 +2,8 @@ package uk.gov.moj.cpp.jobmanager.it;
 
 import static java.lang.Thread.sleep;
 import static java.util.stream.IntStream.range;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.services.cdi.InitialContextProducer;

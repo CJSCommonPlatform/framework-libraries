@@ -1,12 +1,16 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
 import static com.squareup.javapoet.ClassName.get;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.generation.pojo.dom.DefinitionType.STRING;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
+import uk.gov.justice.generation.pojo.dom.FieldDefinition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
@@ -23,12 +27,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class WithMethodGeneratorTest {
 
     @Mock
     private OptionalTypeNameUtil optionalTypeNameUtil;
+
+    @Mock
+    private GetterStatementGenerator getterStatementGenerator;
 
     @InjectMocks
     private WithMethodGenerator withMethodgenerator;
@@ -68,7 +74,6 @@ public class WithMethodGeneratorTest {
 
         assertThat(methodSpecs.get(0).toString(), is(expectedWithMethod));
     }
-
 
     @Test
     public void shouldOverloadTheWithMethodIfTheFieldIsOptional() throws Exception {
@@ -112,5 +117,58 @@ public class WithMethodGeneratorTest {
 
         assertThat(methodSpecs.get(0).toString(), is(expectedWithMethod));
         assertThat(methodSpecs.get(1).toString(), is(overloadedBuildMethod));
+    }
+
+    @Test
+    public void shouldGenerateTheBuildersWithValuesFromMethod() throws Exception {
+
+        final ClassName pojoClassName = get("org.bloggs.fred", "AlcubierreDrive");
+        final ClassName builderClassName = get("org.bloggs.fred", "AlcubierreDriveBuilder");
+        final String parameterName = uncapitalize(pojoClassName.simpleName());
+
+        final List<Definition> fieldDefinitions = asList(
+                new FieldDefinition(STRING, "name"),
+                new FieldDefinition(STRING, "age"),
+                new FieldDefinition(STRING, "haircut")
+        );
+
+        final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
+        final PluginContext pluginContext = mock(PluginContext.class);
+
+        when(getterStatementGenerator.generateGetterStatement(
+                classNameFactory,
+                pluginContext,
+                parameterName,
+                fieldDefinitions.get(0)
+        )).thenReturn("alcubierreDrive.getName()");
+        when(getterStatementGenerator.generateGetterStatement(
+                classNameFactory,
+                pluginContext,
+                parameterName,
+                fieldDefinitions.get(1)
+        )).thenReturn("alcubierreDrive.getAge()");
+        when(getterStatementGenerator.generateGetterStatement(
+                classNameFactory,
+                pluginContext,
+                parameterName,
+                fieldDefinitions.get(2)
+        )).thenReturn("alcubierreDrive.getHaircut()");
+
+        final MethodSpec methodSpec = withMethodgenerator.generateWithValuesFromMethod(
+                pojoClassName,
+                builderClassName,
+                fieldDefinitions,
+                classNameFactory,
+                pluginContext);
+
+        final String expectedGeneratedMethod =
+                "public org.bloggs.fred.AlcubierreDriveBuilder withValuesFrom(final org.bloggs.fred.AlcubierreDrive alcubierreDrive) {\n" +
+                        "  this.name = alcubierreDrive.getName();\n" +
+                        "  this.age = alcubierreDrive.getAge();\n" +
+                        "  this.haircut = alcubierreDrive.getHaircut();\n" +
+                        "  return this;\n" +
+                        "}\n";
+
+        assertThat(methodSpec.toString(), is(expectedGeneratedMethod));
     }
 }

@@ -117,8 +117,11 @@ public class BuilderMethodFactoryTest {
     @Test
     public void shouldCreateTheWithMethods() throws Exception {
 
+        final ClassName pojoClassName = get("org.bloggs.fred", "AlcubierreDrive");
+        
         final MethodSpec generatedWithMethod_1 = MethodSpec.methodBuilder("generatedWithMethod_1").build();
         final MethodSpec generatedWithMethod_2 = MethodSpec.methodBuilder("generatedWithMethod_2").build();
+        final MethodSpec generatedWithValuesFromMethod = MethodSpec.methodBuilder("generatedWithValuesFromMethod").build();
 
         final ClassNameFactory classNameFactory = mock(ClassNameFactory.class);
 
@@ -145,16 +148,25 @@ public class BuilderMethodFactoryTest {
                 builderClassName,
                 classNameFactory,
                 pluginContext)).thenReturn(singletonList(generatedWithMethod_2));
+        when(withMethodGenerator.generateWithValuesFromMethod(
+                pojoClassName,
+                builderClassName,
+                fieldDefinitions,
+                classNameFactory,
+                pluginContext
+        )).thenReturn(generatedWithValuesFromMethod);
 
         final List<MethodSpec> withMethods = builderMethodFactory.createTheWithMethods(
                 fieldDefinitions,
                 classNameFactory,
+                pojoClassName,
                 builderClassName,
                 pluginContext);
 
-        assertThat(withMethods.size(), is(2));
+        assertThat(withMethods.size(), is(3));
         assertThat(withMethods.get(0), is(generatedWithMethod_1));
         assertThat(withMethods.get(1), is(generatedWithMethod_2));
+        assertThat(withMethods.get(2), is(generatedWithValuesFromMethod));
     }
 
     @Test

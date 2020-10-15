@@ -5,6 +5,7 @@ import uk.gov.justice.generation.pojo.plugin.FactoryMethod;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGenerator;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.BuilderGeneratorFactory;
+import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.GetterStatementGenerator;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.OptionalTypeNameUtil;
 import uk.gov.justice.generation.pojo.plugin.classmodifying.builder.WithMethodGenerator;
 
@@ -65,9 +66,11 @@ public class GenerateBuilderForClassPlugin implements ClassModifyingPlugin {
 
     @FactoryMethod
     public static GenerateBuilderForClassPlugin newGenerateBuilderForClassPlugin() {
+        final OptionalTypeNameUtil optionalTypeNameUtil = new OptionalTypeNameUtil();
+        final GetterStatementGenerator getterStatementGenerator = new GetterStatementGenerator(optionalTypeNameUtil);
         return new GenerateBuilderForClassPlugin(
                 new BuilderGeneratorFactory(),
-                new WithMethodGenerator(new OptionalTypeNameUtil()));
+                new WithMethodGenerator(optionalTypeNameUtil, getterStatementGenerator));
     }
 
     @Override

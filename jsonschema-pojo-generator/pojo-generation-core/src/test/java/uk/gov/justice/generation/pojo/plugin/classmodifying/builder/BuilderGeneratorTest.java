@@ -81,6 +81,7 @@ public class BuilderGeneratorTest {
         when(builderMethodFactory.createTheWithMethods(
                 fieldDefinitions,
                 classNameFactory,
+                pojoClassName,
                 builderClassName,
                 pluginContext)).thenReturn(singletonList(withMethod));
 

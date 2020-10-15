@@ -65,9 +65,8 @@ public class BuilderGenerator implements ClassGeneratable {
 
         final List<Definition> fieldDefinitions = classDefinition.getFieldDefinitions();
         final List<FieldSpec> fieldSpecs = createFields(fieldDefinitions);
-        final List<MethodSpec> withMethods = createWithMethods(fieldDefinitions);
+        final List<MethodSpec> withMethods = createWithMethods(pojoClassName, fieldDefinitions);
         final MethodSpec buildMethod = buildMethod(pojoClassName, fieldDefinitions);
-
 
         return classBuilder(BUILDER_SIMPLE_NAME)
                 .addModifiers(PUBLIC, STATIC)
@@ -128,7 +127,7 @@ public class BuilderGenerator implements ClassGeneratable {
         return fields;
     }
 
-    private List<MethodSpec> createWithMethods(final List<Definition> fieldDefinitions) {
+    private List<MethodSpec> createWithMethods(final ClassName pojoClassName, final List<Definition> fieldDefinitions) {
 
         final ClassName builderClassName = getBuilderClassName();
         if (additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)) {
@@ -143,6 +142,7 @@ public class BuilderGenerator implements ClassGeneratable {
         return builderMethodFactory.createTheWithMethods(
                 fieldDefinitions,
                 classNameFactory,
+                pojoClassName,
                 builderClassName,
                 pluginContext);
     }

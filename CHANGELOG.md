@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.1.5] - 2020-10-15
+### Changed
+- Builders of generated pojos now have a `withValuesFrom(...)` method to allow the builder to 
+be initialised with the values of another pojo instance  
+
 ## [7.1.4] - 2020-10-14
 ### Changed
 - Change import of `org.junit.Assert.assertThat` to `org.hamcrest.MatcherAssert.assertThat` as 

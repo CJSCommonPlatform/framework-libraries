@@ -38,10 +38,11 @@ public class BuilderMethodFactory {
     public List<MethodSpec> createTheWithMethods(
             final List<Definition> fieldDefinitions,
             final ClassNameFactory classNameFactory,
+            final ClassName pojoClassName,
             final ClassName builderClassName,
             final PluginContext pluginContext) {
 
-        return fieldDefinitions.stream()
+        final List<MethodSpec> withMethodSpecs = fieldDefinitions.stream()
                 .flatMap(fieldDefinition -> withMethodGenerator.generateWithMethods(
                         fieldDefinition,
                         builderClassName,
@@ -49,6 +50,16 @@ public class BuilderMethodFactory {
                         pluginContext)
                         .stream())
                 .collect(toList());
+
+        withMethodSpecs.add(withMethodGenerator.generateWithValuesFromMethod(
+                pojoClassName,
+                builderClassName,
+                fieldDefinitions,
+                classNameFactory,
+                pluginContext
+        ));
+
+        return withMethodSpecs;
     }
 
     public List<MethodSpec> createTheWithMethodsWithAdditionalProperties(

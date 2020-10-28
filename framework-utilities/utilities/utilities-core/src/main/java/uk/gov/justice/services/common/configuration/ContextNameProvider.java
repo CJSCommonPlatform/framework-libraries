@@ -13,7 +13,7 @@ public class ContextNameProvider {
 
     public String getContextName() {
 
-        return lazyValue.get(this::calculateContextName);
+        return lazyValue.createIfAbsent(this::calculateContextName);
     }
 
     private String calculateContextName() {

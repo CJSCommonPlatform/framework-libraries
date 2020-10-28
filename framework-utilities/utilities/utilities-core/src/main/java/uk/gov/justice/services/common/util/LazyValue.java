@@ -32,7 +32,7 @@ public class LazyValue {
      * @return The value using the Supplier if not already cached
      */
     @SuppressWarnings("unchecked")
-    public <T> T get(final Supplier<T> supplier) {
+    public <T> T createIfAbsent(final Supplier<T> supplier) {
 
         Object localRef = value;
         if (localRef == null) {

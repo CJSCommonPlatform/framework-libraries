@@ -1,0 +1,17 @@
+features:
+
+  # enabled features
+  - feature_name: "enabled-feature-1"
+    description: "enabled-description-1"
+    enabled: true
+  - feature_name: "enabled-feature-2"
+    description: "enabled-description-2"
+    enabled: true
+
+  # disabled features
+  - feature_name: "disabled-feature-1"
+    description: "disabled-description-1"
+    enabled: false
+  - feature_name: "disabled-feature-2"
+    description: "disabled-description-2"
+    enabled: false

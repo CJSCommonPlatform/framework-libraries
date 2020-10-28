@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.1.6-M1] - 2020-10-28
+### Added
+- Added support for FeatureControl annotations for feature-toggling code as enabled/disabled
+
 ## [7.1.5] - 2020-10-15
 ### Changed
 - Builders of generated pojos now have a `withValuesFrom(...)` method to allow the builder to 

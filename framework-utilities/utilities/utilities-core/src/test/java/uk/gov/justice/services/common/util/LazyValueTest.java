@@ -27,14 +27,14 @@ public class LazyValueTest {
 
         when(stringProvider.getString()).thenReturn(aString);
 
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
-        assertThat(lazyValue.get(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
+        assertThat(lazyValue.createIfAbsent(stringProvider::getString), is(aString));
 
         verify(stringProvider, times(1)).getString();
     }

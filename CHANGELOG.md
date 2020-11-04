@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.2.0-M3] - 2020-11-04
+### Added
+- Moved timer bean utilities in from event-store 
+
 ## [7.2.0-M2] - 2020-11-03
 ### Added
 - Added the FeatureFetcher interface for retrieving Features from Azure. 

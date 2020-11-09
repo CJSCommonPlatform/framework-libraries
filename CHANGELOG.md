@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.2.0-M4] - 2020-11-09
+### Changed
+- Test release to test the migration from `https://travis-ci.org/` to `https://travis-ci.com/` 
+
 ## [7.2.0-M3] - 2020-11-04
 ### Added
 - Moved timer bean utilities in from event-store 

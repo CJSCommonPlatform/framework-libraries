@@ -2,20 +2,20 @@ dist: trusty
 sudo: required
 language: java
 jdk:
-- oraclejdk8
+  - oraclejdk8
 git:
   depth: 3
 cache:
   directories:
-  - "$HOME/.m2"
+    - "$HOME/.m2"
 services:
-- postgresql
+  - postgresql
 before_script:
-- psql -c 'create database frameworkeventstore;' -U postgres
-- psql -c 'create database frameworkviewstore;' -U postgres
-- psql -c 'create database frameworkfilestore;' -U postgres
-- psql -c 'create database frameworkjobstore;' -U postgres
-- psql -c "CREATE USER framework WITH PASSWORD 'framework';" -U postgres
+  - psql -c 'create database frameworkeventstore;' -U postgres
+  - psql -c 'create database frameworkviewstore;' -U postgres
+  - psql -c 'create database frameworkfilestore;' -U postgres
+  - psql -c 'create database frameworkjobstore;' -U postgres
+  - psql -c "CREATE USER framework WITH PASSWORD 'framework';" -U postgres
 addons:
   postgresql: '9.5'
   sonarcloud:
@@ -25,14 +25,14 @@ addons:
     github_token:
       secure: E91Ox6abbRVcgNRyX4Bqs+ngWjZir47xQOtxH1EG2FGuCdmZQUJsyuVUK2vFZtN50TLFfAUFNCiLMcVV6o6uxaRyV7F9lTfkoBjBLWM68+5OwW2NpbEEnpP8gc8NHWsISYhPXvKEcXNtNjZORKrCbTIxa7kArmMFHUYTlcMMjgqkXqQ4DwnxAmDlz0tNqr7MPD1ipyEhS0JCIOwT3bll0n7JbkXKxiMg0sX+6woydTHaTvuPfeA+PPONQJ4O4/DdUl4kT5jeppftmd69Gq42hMkoMVpKxcid1UA5mw3+tFthdcjZRav2obBzDql8JUZZ5urU/1FMO8CKJLsOK6ydSWwIgATzHTtxsvJVjLFI6+FxeyzYiobvtB4LnaziyLPZarc/FqsM2gW/NmJLcyRkVmejj1RP9iqCiB7os+3VTyUNLE6y9qqPf2TiIx0M5CUcv6tTSjN72EHMYno1pVsd1U+ypX44u+rDIPYbJiWmwQOtJSCPIwTDlJhj+5V6lwneCDDIj/1xIro0DhP3X/uX0+S/R8cKdzKHh3P9kdtdN0SaePMEHSchlJ7IpI5Sqbn0qUuxJ266+bTh2bIB/R8iLETNUJw+wcVVYd259j3UrgSvq2R6wSony1615pAXAtaf67+wV7oFKWnMpaVUPg/lnI3AF0/dwEd1kFj7X/SdHxw=
 before_install:
-- git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
-- ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
-- ln -sfT ${PWD}/target/travis-settings/mvnw mvnw
-- ln -sft ${PWD} ${PWD}/target/travis-settings/.mvn
+  - git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
+  - ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
+  - ln -sfT ${PWD}/target/travis-settings/mvnw mvnw
+  - ln -sft ${PWD} ${PWD}/target/travis-settings/.mvn
 install: "${PWD}/target/travis-settings/java/install.sh -e -q -DexcludeGroupIds=uk.gov.justice.service,uk.gov.justice.services"
 script: "${PWD}/target/travis-settings/java/script-install.sh coveralls:report sonar:sonar"
 after_success: "${PWD}/target/travis-settings/java/after_success.sh"
 env:
   global:
-  - PGPORT=5432
-  - secure: Mf3ToLWv4oELn7t0G4wSKvGEbIZveIkvUixxCWRu4uzbObL9YqRqA8K9ilpOM3xGaZkPpW/7wiUx3G9j1dxTOc5p88pj7+25faFN0lOlivdZJwSMc0T0iBtA1hqZNffeY+nm3MHJFoOMBgEzXl5j5WGDNZEEqcoMSIjJztAP4w21dwh3IucyIWlsxcIxV6OK69eaxBOXThOhb8REUp4umEMPDOPYDobJ75Jp9dDWAEuP0pOezcz/EENa1k19WQl5d7SaH8AZUbdFS2vqTjoY9fCpSbcJj0mlIxHK0bje1l/dR/3+PRtPj/luFsDUpp904KKnoJ7Ae0YVVxa/MvoR9RpODUvUFUpA3GFYMcsNLyE2Gdm9MipjOeFPiAI/JWAFQoe6nWHJMS/F0OdkrGP1Gk06aZDTlMLNXnZizOtCClL24TCfqhgXVzTPo211tGINlVFYUzIFHYMDp2f9T/THjn1X/Wz69pCIhACEMnYF0vUEbr/oOa45EIp7SdbWhJtEs1T1OBsoTp3pvthLUKP5Y9P90mTlT8Jh5etE+VJyV9d7Kia0Od320HEtE6MikYMtZGohhxjn2I2hKjizfWbEOW5d9BeAjtu8ghLp82vzJgmy+aiUaPkHfOlRqNE7wOCAqpO8GZmPxeYfcfNIq+vhYVlwKkTyYjpDx9J3oIVcIDY=
+    - PGPORT=5432
+    - secure: Mf3ToLWv4oELn7t0G4wSKvGEbIZveIkvUixxCWRu4uzbObL9YqRqA8K9ilpOM3xGaZkPpW/7wiUx3G9j1dxTOc5p88pj7+25faFN0lOlivdZJwSMc0T0iBtA1hqZNffeY+nm3MHJFoOMBgEzXl5j5WGDNZEEqcoMSIjJztAP4w21dwh3IucyIWlsxcIxV6OK69eaxBOXThOhb8REUp4umEMPDOPYDobJ75Jp9dDWAEuP0pOezcz/EENa1k19WQl5d7SaH8AZUbdFS2vqTjoY9fCpSbcJj0mlIxHK0bje1l/dR/3+PRtPj/luFsDUpp904KKnoJ7Ae0YVVxa/MvoR9RpODUvUFUpA3GFYMcsNLyE2Gdm9MipjOeFPiAI/JWAFQoe6nWHJMS/F0OdkrGP1Gk06aZDTlMLNXnZizOtCClL24TCfqhgXVzTPo211tGINlVFYUzIFHYMDp2f9T/THjn1X/Wz69pCIhACEMnYF0vUEbr/oOa45EIp7SdbWhJtEs1T1OBsoTp3pvthLUKP5Y9P90mTlT8Jh5etE+VJyV9d7Kia0Od320HEtE6MikYMtZGohhxjn2I2hKjizfWbEOW5d9BeAjtu8ghLp82vzJgmy+aiUaPkHfOlRqNE7wOCAqpO8GZmPxeYfcfNIq+vhYVlwKkTyYjpDx9J3oIVcIDY=

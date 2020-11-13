@@ -34,16 +34,12 @@ public class FeatureControlYamlParsingTest {
 
         assertThat(features.size(), is(4));
         assertThat(features.get(0).getFeatureName(), is("enabled-feature-1"));
-        assertThat(features.get(0).getDescription(), is("enabled-description-1"));
         assertThat(features.get(0).isEnabled(), is(true));
         assertThat(features.get(1).getFeatureName(), is("enabled-feature-2"));
-        assertThat(features.get(1).getDescription(), is("enabled-description-2"));
         assertThat(features.get(1).isEnabled(), is(true));
         assertThat(features.get(2).getFeatureName(), is("disabled-feature-1"));
-        assertThat(features.get(2).getDescription(), is("disabled-description-1"));
         assertThat(features.get(2).isEnabled(), is(false));
         assertThat(features.get(3).getFeatureName(), is("disabled-feature-2"));
-        assertThat(features.get(3).getDescription(), is("disabled-description-2"));
         assertThat(features.get(3).isEnabled(), is(false));
     }
 }

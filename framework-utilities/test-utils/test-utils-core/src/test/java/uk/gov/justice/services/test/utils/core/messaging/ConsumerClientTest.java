@@ -2,6 +2,7 @@ package uk.gov.justice.services.test.utils.core.messaging;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,9 +14,7 @@ import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.TextMessage;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -24,9 +23,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ConsumerClientTest {
 
     private ConsumerClient consumerClient = new ConsumerClient();
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Mock
     private MessageConsumer messageConsumer;
@@ -75,17 +71,26 @@ public class ConsumerClientTest {
 
     @Test
     public void shouldThrowExceptionForNullConsumer() {
-        thrown.expect(MessageConsumerException.class);
-        thrown.expectMessage("Message consumer not started");
-        Optional<String> result = consumerClient.retrieveMessageNoWait(null);
+
+        final MessageConsumerException messageConsumerException = assertThrows(MessageConsumerException.class, () ->
+                consumerClient.retrieveMessageNoWait(null)
+        );
+
+        assertThat(messageConsumerException.getMessage(), is("Message consumer not started"));
     }
 
     @Test
     public void shouldThrowExceptionWhenRetrievingMessage() throws Exception {
-        thrown.expect(MessageConsumerException.class);
-        thrown.expectMessage("Failed to retrieve message");
-        when(messageConsumer.receive(10)).thenThrow(JMSException.class);
-        Optional<String> result = consumerClient.retrieveMessage(messageConsumer, 10);
+
+        final JMSException jmsException = new JMSException("Ooops");
+        when(messageConsumer.receive(10)).thenThrow(jmsException);
+
+        final MessageConsumerException messageConsumerException = assertThrows(MessageConsumerException.class, () ->
+                consumerClient.retrieveMessage(messageConsumer, 10)
+        );
+
+        assertThat(messageConsumerException.getMessage(), is("Failed to retrieve message"));
+        assertThat(messageConsumerException.getCause(), is(jmsException));
     }
 
 }

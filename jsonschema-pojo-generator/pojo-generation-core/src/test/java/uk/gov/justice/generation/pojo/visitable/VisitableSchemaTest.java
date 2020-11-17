@@ -1,6 +1,9 @@
 package uk.gov.justice.generation.pojo.visitable;
 
 import static org.everit.json.schema.CombinedSchema.ANY_CRITERION;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,20 +24,14 @@ import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class VisitableSchemaTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private Visitor visitor;
@@ -189,14 +186,16 @@ public class VisitableSchemaTest {
 
     @Test
     public void shouldThrowExceptionIfUnknownSchemaProcessed() throws Exception {
-        expectedException.expect(UnsupportedSchemaException.class);
-        expectedException.expectMessage("Schema of type: DummySchema is not supported.");
 
         final Schema.Builder<? extends Schema> builder = mock(Schema.Builder.class);
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
 
-        new VisitableSchema(fieldName, dummySchema, acceptorService).accept(mock(Visitor.class));
+        final UnsupportedSchemaException unsupportedSchemaException = assertThrows(UnsupportedSchemaException.class, () ->
+                new VisitableSchema(fieldName, dummySchema, acceptorService).accept(mock(Visitor.class))
+        );
+
+        assertThat(unsupportedSchemaException.getMessage(), is("Schema of type: DummySchema is not supported."));
     }
 
     private class DummySchema extends Schema {

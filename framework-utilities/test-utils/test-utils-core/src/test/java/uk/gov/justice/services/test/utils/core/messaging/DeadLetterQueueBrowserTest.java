@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -24,9 +25,7 @@ import javax.json.JsonObject;
 
 import org.hamcrest.collection.IsMapContaining;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -53,9 +52,6 @@ public class DeadLetterQueueBrowserTest {
     private JmsSessionFactory jmsSessionFactory;
 
     private DeadLetterQueueBrowser deadLetterQueueBrowser;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setup() {
@@ -113,22 +109,31 @@ public class DeadLetterQueueBrowserTest {
 
     @Test
     public void shouldThrowExceptionWhenBrowsing() throws JMSException {
-        thrown.expect(MessageConsumerException.class);
-        thrown.expectMessage("Fatal error getting messages from DLQ");
-        when(session.createBrowser(dlqQueue)).thenReturn(dlqBrowser);
-        when(dlqBrowser.getEnumeration()).thenThrow(JMSException.class);
 
-        List<String> result = deadLetterQueueBrowser.browse();
+        final JMSException jmsException = new JMSException("Oops");
+        when(session.createBrowser(dlqQueue)).thenReturn(dlqBrowser);
+        when(dlqBrowser.getEnumeration()).thenThrow(jmsException);
+
+
+        final MessageConsumerException messageConsumerException = assertThrows(MessageConsumerException.class, () ->
+                deadLetterQueueBrowser.browse()
+        );
+
+        assertThat(messageConsumerException.getMessage(), is("Fatal error getting messages from DLQ"));
+        assertThat(messageConsumerException.getCause(), is(jmsException));
     }
 
     @Test
     public void shouldThrowExceptionWhenCleaningQueue() throws JMSException {
-        thrown.expect(MessageConsumerException.class);
-        thrown.expectMessage("Fatal error cleaning messges from DLQ");
+
         when(session.createConsumer(any(Queue.class))).thenReturn(dlqMessageConsumer);
         doThrow(JMSException.class).when(consumerClient).cleanQueue(dlqMessageConsumer);
 
-        deadLetterQueueBrowser.removeMessages();
+        final MessageConsumerException messageConsumerException = assertThrows(MessageConsumerException.class, () ->
+                deadLetterQueueBrowser.removeMessages()
+        );
+
+        assertThat(messageConsumerException.getMessage(), is("Fatal error cleaning messges from DLQ"));
     }
 
     @Test

@@ -3,8 +3,10 @@ package uk.gov.justice.services.common.converter;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -20,9 +22,7 @@ import javax.json.JsonObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
@@ -34,9 +34,6 @@ public class ObjectToJsonObjectConverterTest {
     private static final UUID ID = UUID.randomUUID();
     private static final String NAME = "Pojo";
     private static final List<String> ATTRIBUTES = Arrays.asList("Attribute 1", "Attribute 2");
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Spy
     private ObjectMapper mapper = new ObjectMapperProducer().objectMapper();
@@ -59,10 +56,12 @@ public class ObjectToJsonObjectConverterTest {
         final Pojo pojo = new Pojo(ID, NAME, ATTRIBUTES);
         doThrow(JsonProcessingException.class).when(mapper).writeValueAsString(pojo);
 
-        exception.expect(IllegalArgumentException.class);
-        exception.expectCause(isA(JsonProcessingException.class));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                objectToJsonObjectConverter.convert(pojo)
+        );
 
-        objectToJsonObjectConverter.convert(pojo);
+        assertThat(illegalArgumentException.getMessage(), is("Error while converting Some Pojo toJsonObject"));
+        assertThat(illegalArgumentException.getCause(), is(instanceOf(JsonProcessingException.class)));
     }
 
     @Test(expected = ConverterException.class)
@@ -109,6 +108,11 @@ public class ObjectToJsonObjectConverterTest {
 
         public List<String> getAttributes() {
             return attributes;
+        }
+
+        @Override
+        public String toString() {
+            return "Some Pojo";
         }
     }
 }

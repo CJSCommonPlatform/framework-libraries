@@ -1,8 +1,10 @@
 package uk.gov.justice.generation.pojo.visitor;
 
+import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
@@ -11,18 +13,13 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Optional;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StringFormatValueParserTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @InjectMocks
     private StringFormatValueParser stringFormatValueParser;
@@ -34,7 +31,7 @@ public class StringFormatValueParserTest {
 
         final Optional<String> result = stringFormatValueParser.parseFrom(new StringReader(jsonValue), "fieldName");
 
-        assertThat(result, is(Optional.of(formatValue)));
+        assertThat(result, is(of(formatValue)));
     }
 
     @Test
@@ -48,14 +45,16 @@ public class StringFormatValueParserTest {
 
     @Test
     public void shouldCatchAndThrowExceptionIfIOExceptionIsThrown() throws Exception {
-        expectedException.expect(FailedToParseSchemaException.class);
-        expectedException.expectMessage(is("Failed to parse StringSchema format value for field name: fieldName"));
-        expectedException.expectCause(instanceOf(IOException.class));
 
         final Reader reader = mock(Reader.class);
 
         doThrow(new IOException()).when(reader);
 
-        stringFormatValueParser.parseFrom(reader, "fieldName");
+        final FailedToParseSchemaException failedToParseSchemaException = assertThrows(FailedToParseSchemaException.class, () ->
+                stringFormatValueParser.parseFrom(reader, "fieldName")
+        );
+
+        assertThat(failedToParseSchemaException.getMessage(), is("Failed to parse StringSchema format value for field name: fieldName"));
+        assertThat(failedToParseSchemaException.getCause(), is(instanceOf(IOException.class)));
     }
 }

@@ -1,21 +1,18 @@
 package uk.gov.justice.services.test.utils.core.random;
 
-import static org.junit.rules.ExpectedException.none;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
 
 import java.math.BigDecimal;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class BigDecimalGeneratorTest {
 
     private static final int NUMBER_OF_TIMES = 100000;
-
-    @Rule
-    public ExpectedException expectedException = none();
 
     @Test
     public void shouldGenerateBigDecimalGreaterThanOrEqualToMinAndLessThanOrEqualToMax() {
@@ -49,28 +46,29 @@ public class BigDecimalGeneratorTest {
 
     @Test
     public void shouldThrowExceptionIfScaleIsNegative() throws Exception {
-        // given
+
         final Integer min = -100;
         final Integer max = 100;
         final Integer scale = -2;
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Scale cannot be less than zero, got -2");
 
-        // when & then
-        new BigDecimalGenerator(min, max, scale);
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                new BigDecimalGenerator(min, max, scale)
+        );
+        
+        assertThat(illegalArgumentException.getMessage(), is("Scale cannot be less than zero, got -2"));
     }
 
     @Test
     public void shouldThrowExceptionIfMinIsGreaterThanMax() throws Exception {
-        // given
+
         final Integer min = 101;
         final Integer max = 100;
         final Integer scale = 2;
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Min value cannot be greater than or equal to Max value, got Min: 101 and Max: 100");
 
-        // when & then
-        new BigDecimalGenerator(min, max, scale);
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                new BigDecimalGenerator(min, max, scale)
+        );
+        assertThat(illegalArgumentException.getMessage(), is("Min value cannot be greater than or equal to Max value, got Min: 101 and Max: 100"));
     }
 
     @Test

@@ -1,23 +1,17 @@
 package uk.gov.justice.services.test.utils.core.random;
 
 import static java.time.LocalDate.now;
-import static org.junit.rules.ExpectedException.none;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
 
 import java.time.LocalDate;
 import java.time.Period;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class LocalDateGeneratorTest {
 
     private static final int NUMBER_OF_TIMES = 10000;
-
-    @Rule
-    public ExpectedException expectedException = none();
 
     @Test
     public void shouldGenerateRandomFutureLocalDate() {

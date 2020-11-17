@@ -5,23 +5,22 @@ import static java.util.Collections.singletonList;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.doThrow;
 
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import javax.json.JsonArray;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -33,9 +32,6 @@ public class ListToJsonArrayConverterTest {
     private static final UUID ID_TWO = UUID.randomUUID();
     private static final String NAME_ONE = "POJOONE";
     private static final String NAME_TWO = "POJOTWO";
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Mock
     private ObjectMapper mapperMock;
@@ -56,25 +52,30 @@ public class ListToJsonArrayConverterTest {
     @Test
     public void shouldThrowExceptionOnConversionError() {
         final ListToJsonArrayConverter<Pojo> listToJsonArraysConverter = new ListToJsonArrayConverter<Pojo>();
-        exception.expect(ConverterException.class);
-        listToJsonArraysConverter.convert(null);
 
+        final ConverterException converterException = assertThrows(ConverterException.class, () ->
+                listToJsonArraysConverter.convert(null)
+        );
+
+        assertThat(converterException.getMessage(), is("Failed to convert Null List to JsonArray"));
     }
 
     @Test
     public void shouldThrowExceptionOnIOException() throws JsonProcessingException {
+
         final ListToJsonArrayConverter<Pojo> listToJsonArraysConverter = new ListToJsonArrayConverter<Pojo>();
         listToJsonArraysConverter.mapper = mapperMock;
         listToJsonArraysConverter.stringToJsonObjectConverter = new StringToJsonObjectConverter();
 
         final Pojo pojoOne = new Pojo(null, null);
-        doThrow(IOException.class).when(mapperMock).writeValueAsString(pojoOne);
+        doThrow(JsonProcessingException.class).when(mapperMock).writeValueAsString(pojoOne);
 
-        exception.expect(ConverterException.class);
-        exception.expectCause(isA(IOException.class));
+        final ConverterException converterException = assertThrows(ConverterException.class, () ->
+                listToJsonArraysConverter.convert(singletonList(pojoOne))
+        );
 
-        listToJsonArraysConverter.convert(singletonList(pojoOne));
-
+        assertThat(converterException.getMessage(), is("Error while converting list item Some Pojo to JsonValue"));
+        assertThat(converterException.getCause(), is(instanceOf(JsonProcessingException.class)));
     }
 
     private JsonArray expectedJsonArray() {
@@ -102,5 +103,9 @@ public class ListToJsonArrayConverterTest {
             return name;
         }
 
+        @Override
+        public String toString() {
+            return "Some Pojo";
+        }
     }
 }

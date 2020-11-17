@@ -6,6 +6,7 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
@@ -17,9 +18,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,9 +33,6 @@ public class HttpResponsePollerTest {
 
     private final String URL = "http://localhost:8080/poll/condition";
     private final String MEDIA_TYPE = "application/vnd.poll.condition+json";
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private RestClient restClient;
@@ -70,12 +66,11 @@ public class HttpResponsePollerTest {
         when(response.getStatus()).thenReturn(NOT_FOUND.getStatusCode());
         when(response.readEntity(String.class)).thenReturn(responseText);
 
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(EXPECTED_MESSAGE_404);
+        final AssertionError assertionError = assertThrows(AssertionError.class, () ->
+                assertThat(poller.pollUntilFound(URL, MEDIA_TYPE), is(responseText))
+        );
 
-        final String result = poller.pollUntilFound(URL, MEDIA_TYPE);
-
-        assertThat(result, is(responseText));
+        assertThat(assertionError.getMessage(), is(EXPECTED_MESSAGE_404));
     }
 
     @Test
@@ -99,10 +94,11 @@ public class HttpResponsePollerTest {
         when(response.getStatus()).thenReturn(OK.getStatusCode());
         when(response.readEntity(String.class)).thenReturn(responseText);
 
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(EXPECTED_MESSAGE_200);
+        final AssertionError assertionError = assertThrows(AssertionError.class, () ->
+                poller.pollUntilNotFound(URL, MEDIA_TYPE)
+        );
 
-        poller.pollUntilNotFound(URL, MEDIA_TYPE);
+        assertThat(assertionError.getMessage(), is(EXPECTED_MESSAGE_200));
     }
 
     @Test
@@ -128,10 +124,11 @@ public class HttpResponsePollerTest {
         when(response.getStatus()).thenReturn(OK.getStatusCode());
         when(response.readEntity(String.class)).thenReturn(null);
 
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(EXPECTED_MESSAGE_RESULT);
+        final AssertionError assertionError = assertThrows(AssertionError.class, () ->
+                poller.pollUntilFoundWithCondition(URL, MEDIA_TYPE, responseConditionMet::equals)
+        );
 
-        poller.pollUntilFoundWithCondition(URL, MEDIA_TYPE, responseConditionMet::equals);
+        assertThat(assertionError.getMessage(), is(EXPECTED_MESSAGE_RESULT + "null"));
     }
 
     @Test
@@ -144,10 +141,11 @@ public class HttpResponsePollerTest {
         when(response.getStatus()).thenReturn(NOT_FOUND.getStatusCode());
         when(response.readEntity(String.class)).thenReturn(responseConditionNotMet);
 
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(EXPECTED_MESSAGE_404);
+        final AssertionError assertionError = assertThrows(AssertionError.class, () ->
+                poller.pollUntilFoundWithCondition(URL, MEDIA_TYPE, responseConditionMet::equals)
+        );
 
-        poller.pollUntilFoundWithCondition(URL, MEDIA_TYPE, responseConditionMet::equals);
+        assertThat(assertionError.getMessage(), is(EXPECTED_MESSAGE_404));
     }
 
     @Test
@@ -203,10 +201,11 @@ public class HttpResponsePollerTest {
         when(response.readEntity(String.class))
                 .thenReturn(unMatchingJsonObject);
 
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(EXPECTED_MESSAGE_RESULT);
+        final AssertionError assertionError = assertThrows(AssertionError.class, () ->
+                poller.pollUntilJsonObjectFoundWithValues(URL, MEDIA_TYPE, matchValues)
+        );
 
-        poller.pollUntilJsonObjectFoundWithValues(URL, MEDIA_TYPE, matchValues);
+        assertThat(assertionError.getMessage(), is(EXPECTED_MESSAGE_RESULT + unMatchingJsonObject));
     }
 
     @Test
@@ -223,10 +222,11 @@ public class HttpResponsePollerTest {
         when(response.readEntity(String.class))
                 .thenReturn(matchingJsonObject);
 
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(EXPECTED_MESSAGE_RESULT);
+        final AssertionError assertionError = assertThrows(AssertionError.class, () ->
+                poller.pollUntilJsonObjectFoundWithValues(URL, MEDIA_TYPE, matchValues)
+        );
 
-        poller.pollUntilJsonObjectFoundWithValues(URL, MEDIA_TYPE, matchValues);
+        assertThat(assertionError.getMessage(), is(EXPECTED_MESSAGE_RESULT + matchingJsonObject));
     }
 
     @Test

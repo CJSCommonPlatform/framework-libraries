@@ -1,6 +1,8 @@
 package uk.gov.justice.services.test.utils.core.random;
 
-import static org.junit.rules.ExpectedException.none;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
@@ -9,9 +11,7 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.Random;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -21,9 +21,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class DoubleGeneratorTest {
 
     private static final int NUMBER_OF_TIMES = 100000;
-
-    @Rule
-    public ExpectedException expectedException = none();
 
     @Spy
     private Random random = new Random();
@@ -61,24 +58,26 @@ public class DoubleGeneratorTest {
         final Long min = -100L;
         final Long max = 100L;
         final Integer scale = -2;
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Scale cannot be less than zero, got -2");
 
-        // when & then
-        new DoubleGenerator(min, max, scale).next();
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                new DoubleGenerator(min, max, scale).next()
+        );
+
+        assertThat(illegalArgumentException.getMessage(), is("Scale cannot be less than zero, got -2"));
     }
 
     @Test
     public void shouldThrowExceptionIfMinIsGreaterThanMax() throws Exception {
-        // given
+
         final Long min = 101L;
         final Long max = 100L;
         final Integer scale = 2;
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Min value cannot be greater than or equal to Max value, got Min: 101.0 and Max: 100.0");
 
-        // when & then
-        new DoubleGenerator(min, max, scale).next();
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                new DoubleGenerator(min, max, scale).next()
+        );
+
+        assertThat(illegalArgumentException.getMessage(), is("Min value cannot be greater than or equal to Max value, got Min: 101.0 and Max: 100.0"));
     }
 
     @Test

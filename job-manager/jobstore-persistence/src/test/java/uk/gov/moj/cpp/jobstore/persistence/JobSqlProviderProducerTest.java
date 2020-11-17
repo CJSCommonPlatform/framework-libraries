@@ -1,12 +1,12 @@
 package uk.gov.moj.cpp.jobstore.persistence;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 
@@ -14,9 +14,6 @@ public class JobSqlProviderProducerTest {
 
     @Mock
     private Logger logger;
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldReturnPostgresJobSqlProvider() {
@@ -35,9 +32,11 @@ public class JobSqlProviderProducerTest {
         jobSqlProviderProducer.logger = mock(Logger.class);
         jobSqlProviderProducer.strategyClass = "invalid strategy";
 
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Could not instantiate Job SQL provider strategy");
+        
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                jobSqlProviderProducer.jobSqlProvider()
+        );
 
-        jobSqlProviderProducer.jobSqlProvider();
+        assertThat(illegalArgumentException.getMessage(), is("Could not instantiate Job SQL provider strategy."));
     }
 }

@@ -22,9 +22,7 @@ import javax.json.JsonObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
@@ -39,9 +37,6 @@ public class JsonObjectToObjectConverterTest {
     private static final String ATTRIBUTE_1 = "Attribute 1";
     private static final String ATTRIBUTE_2 = "Attribute 2";
     private static final String INTERNAL_NAME = "internalName";
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Spy
     private ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();

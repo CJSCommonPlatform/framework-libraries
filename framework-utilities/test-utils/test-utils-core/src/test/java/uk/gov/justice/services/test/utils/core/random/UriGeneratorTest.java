@@ -1,6 +1,8 @@
 package uk.gov.justice.services.test.utils.core.random;
 
-import static org.junit.rules.ExpectedException.none;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
@@ -8,9 +10,7 @@ import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck
 
 import java.lang.reflect.Field;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -18,9 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class UriGeneratorTest {
 
     private static final String URI_PATTERN = "[-0-9a-zA-Z]{1,63}\\.[-.0-9a-zA-Z]+";
-
-    @Rule
-    public ExpectedException expectedException = none();
 
     @Test
     public void shouldGenerateValidUris() {
@@ -37,10 +34,11 @@ public class UriGeneratorTest {
         when(domainPartGenerator.next()).thenReturn("");
         modifyUnderlyingGenerator(uriGenerator, domainPartGenerator);
 
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Generated URI http:// is invalid");
+        final RuntimeException runtimeException = assertThrows(RuntimeException.class, () ->
+                uriGenerator.next()
+        );
 
-        uriGenerator.next();
+        assertThat(runtimeException.getMessage(), is("Generated URI http:// is invalid"));
     }
 
     private void modifyUnderlyingGenerator(final UriGenerator uriGenerator, final DomainPartGenerator domainPartGenerator) throws NoSuchFieldException, IllegalAccessException {

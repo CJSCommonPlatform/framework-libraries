@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.rules.ExpectedException.none;
+import static org.junit.Assert.assertThrows;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUID;
 
@@ -16,14 +16,9 @@ import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
 import javax.json.JsonArrayBuilder;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class ResponsePayloadMatcherTest {
-
-    @Rule
-    public ExpectedException expectedException = none();
 
     @Test
     public void shouldMatchJsonPayloadFromResponse() throws Exception {
@@ -49,12 +44,10 @@ public class ResponsePayloadMatcherTest {
         final JsonArrayBuilder events = createArrayBuilder();
         final String emptyEventsJson = createObjectBuilder().add("events", events).build().toString();
 
-        expectedException.expect(AssertionError.class);
-
-        assertThat(new ResponseData(null, emptyEventsJson), payload()
-                .isJson(
-                        withJsonPath("$.events", hasSize(2))
-                ));
+        assertThrows(AssertionError.class, () -> assertThat(
+                new ResponseData(null, emptyEventsJson), payload()
+                        .isJson(withJsonPath("$.events", hasSize(2)))
+        ));
     }
 
     @Test
@@ -67,12 +60,11 @@ public class ResponsePayloadMatcherTest {
 
     @Test
     public void shouldFailWhenStringResponsePayloadDoesNotMatch() {
-        expectedException.expect(AssertionError.class);
 
-        assertThat(new ResponseData(null, "string payload data"), payload()
-                .that(
-                        containsString("does not exist")
-                ));
+        assertThrows(AssertionError.class, () ->
+                assertThat(new ResponseData(null, "string payload data"), payload()
+                        .that(containsString("does not exist")))
+        );
     }
 
     @Test

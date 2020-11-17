@@ -1,26 +1,25 @@
 package uk.gov.justice.services.test.utils.core.random;
 
-import static org.junit.rules.ExpectedException.none;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class StringGeneratorTest {
 
     private static final int NUMBER_OF_TIMES = 100000;
 
-    @Rule
-    public ExpectedException expectedException = none();
-
     @Test
     public void shouldThrowExceptionWhenLengthIsNotGreaterThanZero() throws Exception {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("String length needs to be greater than zero. Got -10");
 
-        new StringGenerator(-10);
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                new StringGenerator(-10)
+        );
+
+        assertThat(illegalArgumentException.getMessage(), is("String length needs to be greater than zero. Got -10"));
     }
 
     @Test

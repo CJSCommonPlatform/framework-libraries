@@ -1,11 +1,11 @@
 package uk.gov.justice.services.fileservice.repository;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThrows;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,16 +33,14 @@ public class MetadataSqlProviderProducerTest {
         assertThat(metadataSqlProviderProducer.metadataSqlProvider(), instanceOf(AnsiMetadataSqlProvider.class));
     }
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     @Test
     public void shouldThrowExceptionIfClassDoesNotExist() {
         metadataSqlProviderProducer.strategyClass = "uk.gov.justice.services.eventsourcing.repository.jdbc.SomeUnknowClazzz";
 
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Could not instantiate File Service SQL provider strategy.");
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                metadataSqlProviderProducer.metadataSqlProvider()
+        );
 
-        metadataSqlProviderProducer.metadataSqlProvider();
+        assertThat(illegalArgumentException.getMessage(), is("Could not instantiate File Service SQL provider strategy."));
     }
 }

@@ -1,10 +1,12 @@
 package uk.gov.justice.services.test;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsSame.sameInstance;
+import static org.junit.Assert.assertThrows;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 
 import uk.gov.justice.services.test.domain.AggregateWrapper;
@@ -14,14 +16,9 @@ import uk.gov.justice.services.test.domain.event.InitialEventB;
 
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class AggregateInitialisationTest extends AggregateTestAssertions {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldInitialiseAggregateWithNoInitialEvents() throws Exception {
@@ -55,21 +52,25 @@ public class AggregateInitialisationTest extends AggregateTestAssertions {
 
     @Test
     public void shouldThrowExceptionIfEventFileDoesNotExist() throws Exception {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Error reading/parsing json file: non-existent");
 
-        aggregateWrapper()
-                .withInitialEventsFromFiles("non-existent")
-                .initialiseFromClass(GenericAggregate.class.getSimpleName());
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                aggregateWrapper()
+                        .withInitialEventsFromFiles("non-existent")
+                        .initialiseFromClass(GenericAggregate.class.getSimpleName())
+        );
+
+        assertThat(illegalArgumentException.getMessage(), is("Error reading/parsing json file: non-existent"));
     }
 
     @Test
     public void shouldThrowExceptionIfEventClassDoesNotExist() throws Exception {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Error applying initial event. Event class not found");
 
-        aggregateWrapper()
-                .withInitialEventsFromFiles("event-no-class")
-                .initialiseFromClass(GenericAggregate.class.getSimpleName());
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
+                aggregateWrapper()
+                        .withInitialEventsFromFiles("event-no-class")
+                        .initialiseFromClass(GenericAggregate.class.getSimpleName())
+        );
+        
+        assertThat(illegalArgumentException.getMessage(), is("Error applying initial event. Event class not found"));
     }
 }

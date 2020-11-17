@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -42,9 +43,7 @@ import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ReferenceSchema;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -52,9 +51,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDefinitionFactoryTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private ReferenceValueParser referenceValueParser;
@@ -247,25 +243,30 @@ public class DefaultDefinitionFactoryTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldThrowExceptionIfUnknownSchemaProcessedForConstructDefinition() throws Exception {
-        expectedException.expect(UnsupportedSchemaException.class);
-        expectedException.expectMessage("Schema of type: DummySchema is not supported.");
-
         final Schema.Builder<DummySchema> builder = mock(Schema.Builder.class);
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
-        defaultDefinitionFactory.constructDefinitionFor(fieldName, dummySchema);
+
+        final UnsupportedSchemaException unsupportedSchemaException = assertThrows(UnsupportedSchemaException.class, () ->
+                defaultDefinitionFactory.constructDefinitionFor(fieldName, dummySchema)
+        );
+
+        assertThat(unsupportedSchemaException.getMessage(), is("Schema of type: DummySchema is not supported."));
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void shouldThrowExceptionIfUnknownSchemaProcessedForConstructFieldDefinition() throws Exception {
-        expectedException.expect(UnsupportedSchemaException.class);
-        expectedException.expectMessage("Schema of type: DummySchema is not supported.");
 
         final Schema.Builder<DummySchema> builder = mock(Schema.Builder.class);
         final String fieldName = "myDummy";
         final DummySchema dummySchema = new DummySchema(builder, fieldName);
-        defaultDefinitionFactory.constructDefinitionFor("fieldName", dummySchema);
+
+        final UnsupportedSchemaException unsupportedSchemaException = assertThrows(UnsupportedSchemaException.class, () ->
+                defaultDefinitionFactory.constructDefinitionFor("fieldName", dummySchema)
+        );
+
+        assertThat(unsupportedSchemaException.getMessage(), is("Schema of type: DummySchema is not supported."));
     }
 
     private class DummySchema extends Schema {

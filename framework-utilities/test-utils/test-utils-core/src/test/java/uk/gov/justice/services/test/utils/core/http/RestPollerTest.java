@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.rules.ExpectedException.none;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -37,9 +37,7 @@ import javax.ws.rs.core.Response;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -56,9 +54,6 @@ public class RestPollerTest {
 
     @Mock
     private Response response;
-
-    @Rule
-    public ExpectedException expectedException = none();
 
     private RestPoller poll;
 
@@ -199,20 +194,16 @@ public class RestPollerTest {
 
     @Test
     public void shouldFailFastWhenResponseIsNotPartOfIgnoreOrExpectedData() {
-        expectedException.expect(AssertionError.class);
 
         when(response.getStatus())
                 .thenReturn(NOT_FOUND.getStatusCode())
                 .thenReturn(FORBIDDEN.getStatusCode())
                 .thenReturn(ACCEPTED.getStatusCode());
 
-        poll
-                .ignoring(
-                        status().is(NOT_FOUND)
-                )
-                .until(
-                        status().is(ACCEPTED)
-                );
+        assertThrows(AssertionError.class, () ->
+                poll.ignoring(status().is(NOT_FOUND))
+                        .until(status().is(ACCEPTED))
+        );
 
         verify(restClient, times(2)).query(REQUEST_URL, MEDIA_TYPE, new MultivaluedHashMap<>(HEADERS));
         verify(response, times(2)).getStatus();

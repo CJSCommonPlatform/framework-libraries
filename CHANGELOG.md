@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.2.1] - 2020-11-18
+### Added
+- Added a default version of the FeatureFetcher that returns an empty list of Features to 
+allow integration tests to run 
+
 ## [7.2.0] - 2020-11-13
 ### Added
 - Moved timer bean utilities in from event-store 

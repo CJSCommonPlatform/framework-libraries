@@ -5,6 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [8.0.0-M1] - 2020-12-10
+### Changed
+- Update to Java 11
+    - Change from `com.jayway.restassured.path.json.JsonPath` to `io.restassured.path.json.JsonPath`
+    - replace org.reflections with classgraph for classpath scanning in the generators
+    - Jaxb libraries needed for java 11 as they're no longer included by default
+        - com.sun.xml.bind:jaxb-core
+        - javax.xml.bind:jaxb-api
+        - com.sun.xml.bind:jaxb-impl
+
 ## [7.2.2] - 2020-11-18
 ### Removed
 - Moved EmptyFeatureFetcher to microservices-framework 

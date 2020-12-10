@@ -264,7 +264,7 @@ public class JobJdbcRepositoryTest {
     }
 
     @Test(expected = JdbcRepositoryException.class)
-    public void shouldThrowJdbcRepositoryExceptionWhenLocingJobs() throws SQLException {
+    public void shouldThrowJdbcRepositoryExceptionWhenLockingJobs() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;

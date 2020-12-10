@@ -6,13 +6,13 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>2.0.0</version>
+        <version>8.0.0-M2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.gov.justice.framework.libraries</groupId>
     <artifactId>framework-libraries</artifactId>
-    <version>7.2.3-SNAPSHOT</version>
+    <version>8.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Framework Common Libraries</name>
@@ -37,7 +37,7 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
-        <maven-common-bom.version>7.1.1</maven-common-bom.version>
+        <maven-common-bom.version>8.0.0-M3</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
     </properties>
 
@@ -95,6 +95,13 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                        <version>${jaxb.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

@@ -15,6 +15,7 @@ import uk.gov.justice.services.yaml.subscriptiondescriptor.SubscriptionsDescript
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +56,8 @@ public class YamlParserTest {
 
         final URL url = getFromClasspath("yaml/subscriptions-descriptor.yaml");
 
-        final TypeReference<Map<String, SubscriptionsDescriptor>> typeReference
-                = new TypeReference<Map<String, SubscriptionsDescriptor>>() {
+        final TypeReference<HashMap<String, SubscriptionsDescriptor>> typeReference
+                = new TypeReference<>() {
         };
 
         final Map<String, SubscriptionsDescriptor> subscriptionDescriptorDefinitionMap = yamlParser().parseYamlFrom(url, typeReference);

@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonPathSchemaMatcher.matchesSchema;
 
-import com.jayway.restassured.path.json.JsonPath;
+import io.restassured.path.json.JsonPath;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;

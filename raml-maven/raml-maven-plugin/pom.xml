@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice.maven</groupId>
         <artifactId>raml-maven</artifactId>
-        <version>7.2.3-SNAPSHOT</version>
+        <version>8.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>raml-maven-plugin</artifactId>
@@ -153,5 +153,11 @@
             <artifactId>maven-test-utils</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>

@@ -1,11 +1,15 @@
 package uk.gov.justice.maven.generator.io.files.parser.io;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -23,7 +27,8 @@ public class FileTreeScannerTest {
 
         String[] includes = {"**/*.raml"};
         String[] excludes = {"**/*ignore.raml"};
-        Path baseDir = Paths.get("src/test/resources/raml/");
+
+        Path baseDir = getRamlDir();
 
         FileTreeScanner fileTreeResolver = new FileTreeScanner();
 
@@ -77,14 +82,13 @@ public class FileTreeScannerTest {
                 equalTo(Paths.get("raml/subfolder/example-3.raml"))));
     }
 
-
     @Test
     @SuppressWarnings("unchecked")
     public void shouldIncludeMultipleFiles() throws Exception {
 
         String[] includes = {"**/*example-1.raml", "**/*example-2.raml"};
         String[] excludes = {};
-        Path baseDir = Paths.get("src/test/resources/raml/");
+        Path baseDir = getRamlDir();
 
         FileTreeScanner fileTreeResolver = new FileTreeScanner();
 
@@ -102,7 +106,7 @@ public class FileTreeScannerTest {
 
         String[] includes = {};
         String[] excludes = {};
-        Path baseDir = Paths.get("src/test/resources/raml/");
+        Path baseDir = getRamlDir();
 
         FileTreeScanner fileTreeResolver = new FileTreeScanner();
 
@@ -123,7 +127,7 @@ public class FileTreeScannerTest {
 
         String[] includes = {"**/*raml"};
         String[] excludes = {"**/*ignore.raml", "**/*example-2.raml"};
-        Path baseDir = Paths.get("src/test/resources/raml/");
+        Path baseDir = getRamlDir();
 
         FileTreeScanner fileTreeResolver = new FileTreeScanner();
 
@@ -150,5 +154,9 @@ public class FileTreeScannerTest {
         assertThat(paths, empty());
     }
 
-
+    private Path getRamlDir() throws URISyntaxException {
+        final URL raml = getClass().getClassLoader().getResource("raml");
+        assertThat(raml, is(notNullValue()));
+        return Paths.get(raml.toURI());
+    }
 }

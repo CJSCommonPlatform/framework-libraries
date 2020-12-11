@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import com.google.common.io.Resources;
-import com.jayway.restassured.path.json.JsonPath;
+import io.restassured.path.json.JsonPath;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.hamcrest.Description;

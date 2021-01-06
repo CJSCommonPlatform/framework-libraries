@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [8.0.0-M3] - 2020-01-06
+### Changed
+- Update common-bom to 8.0.0-M5
+
 ## [8.0.0-M2] - 2020-01-06
 ### Changed
 - Update common-bom to 8.0.0-M4

@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M1] - 2020-01-25
+### Changed
+- Bumped version to 11.0.0 to match the new framework version
+- Update common-bom to 11.0.0-M2
+- Update framework-parent-pom to 11.0.0-M1
+### Added
+- New integration test in pojo generators to test using a unique package name for dependant objects
+
 ## [8.0.0-M3] - 2020-01-06
 ### Changed
 - Update common-bom to 8.0.0-M5

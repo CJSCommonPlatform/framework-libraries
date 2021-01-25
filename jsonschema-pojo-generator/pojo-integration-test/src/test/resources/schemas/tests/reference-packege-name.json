@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/standards/events/person.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "title": {
+      "$ref": "#/definitions/title"
+    }
+  },
+  "definitions": {
+    "title": {
+      "id": "http://justice.gov.uk/references/title.json",
+      "type": "string",
+      "enum": [
+        "",
+        "Mr",
+        "Mrs",
+        "Ms"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "title"
+  ]
+}

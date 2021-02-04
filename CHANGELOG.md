@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [11.0.0-M2] - 2021-02-04
 ### Changed
 - Update to JEE 8
-- Update
+- Update common-bom to 11.0.0-M3
+- Update maven-framework-parent-pom to 11.0.0-M2
 
 ## [11.0.0-M1] - 2020-01-25
 ### Changed

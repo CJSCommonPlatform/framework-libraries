@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [11.0.0-M3] - 2021-05-05
+### Changed
+- Update common-bom to 11.0.0-M4
+
 ## [11.0.0-M2] - 2021-02-04
 ### Changed
 - Update to JEE 8

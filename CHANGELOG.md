@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [11.0.0-M4] - 2021-05-07
+### Changed
+- Update common-bom to 11.0.0-M5
+- Update framework-parent-pom to 11.0.0-M3
+
 ## [11.0.0-M3] - 2021-05-05
 ### Changed
 - Update common-bom to 11.0.0-M4

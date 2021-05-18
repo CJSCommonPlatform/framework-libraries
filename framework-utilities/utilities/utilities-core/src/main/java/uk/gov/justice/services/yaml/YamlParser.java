@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.net.URL;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class YamlParser {
 
-    public <T> T parseYamlFrom(final URL yamlUrl, final TypeReference typeReference) {
+    public <T> T parseYamlFrom(final URL yamlUrl, final TypeReference<T> typeReference) {
         try {
-            return new ObjectMapperProducer().yamlObjectMapper().readValue(yamlUrl, typeReference);
+            final ObjectMapper objectMapper = new ObjectMapperProducer().yamlObjectMapper();
+            return objectMapper.readValue(yamlUrl, typeReference);
         } catch (final IOException e) {
             throw new YamlParserException(format("Failed to read YAML file %s ", yamlUrl), e);
         }

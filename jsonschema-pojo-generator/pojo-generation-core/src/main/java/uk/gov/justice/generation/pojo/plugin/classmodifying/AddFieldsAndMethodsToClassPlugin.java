@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -96,7 +97,8 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
                 classNameFactory,
                 pluginContext);
 
-       final MethodSpec.Builder constructorBuilder = constructorBuilder()
+        final MethodSpec.Builder constructorBuilder = constructorBuilder()
+                .addAnnotation(JsonCreator.class)
                 .addModifiers(PUBLIC)
                 .addParameters(constructorParameters)
                 .addCode(constructorStatements(fieldNames));

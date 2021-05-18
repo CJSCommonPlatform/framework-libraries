@@ -3,6 +3,8 @@ package uk.gov.justice.services.yaml.subscriptiondescriptor;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class SubscriptionsDescriptor {
 
     private final String specVersion;
@@ -10,6 +12,7 @@ public class SubscriptionsDescriptor {
     private final String serviceComponent;
     private final List<Subscription> subscriptions;
 
+    @JsonCreator
     public SubscriptionsDescriptor(final String specVersion, final String service, final String serviceComponent, final List<Subscription> subscriptions) {
         this.specVersion = specVersion;
         this.service = service;

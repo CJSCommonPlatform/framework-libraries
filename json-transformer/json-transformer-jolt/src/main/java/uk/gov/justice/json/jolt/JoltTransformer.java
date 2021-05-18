@@ -9,11 +9,13 @@ import uk.gov.justice.services.unifiedsearch.TransformerApi;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.bazaarvoice.jolt.Chainr;
@@ -42,7 +44,11 @@ public class JoltTransformer implements TransformerApi {
 
         final Object transform = chainr.transform(stringObjectMap);
 
-        return convert(transform);
+        if (transform != null) {
+            return convert(transform);
+        }
+
+        throw new ConverterException(format("Failed to jolt transform '%s' to using operations '%s'", inputJson, operationsString));
     }
 
 
@@ -66,7 +72,8 @@ public class JoltTransformer implements TransformerApi {
     public JsonObject convert(final Object source) {
         try {
             final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
-            final JsonObject jsonObject = objectMapper.readValue(objectMapper.writeValueAsString(source), JsonObject.class);
+            final String content = objectMapper.writeValueAsString(source);
+            final JsonObject jsonObject = objectMapper.readValue(content, JsonObject.class);
             if (null == jsonObject) {
                 throw new ConverterException(format("Failed to convert %s to JsonObject", source));
             }

@@ -4,11 +4,14 @@ import uk.gov.justice.domain.annotation.Event;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 @Event("cake-ordered")
 public class CakeOrdered {
 
     private final UUID id;
 
+    @JsonCreator
     public CakeOrdered(final UUID id) {
         this.id = id;
     }

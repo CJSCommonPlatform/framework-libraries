@@ -27,6 +27,7 @@ import uk.gov.justice.generation.pojo.plugin.PluginContext;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -71,7 +72,11 @@ public class AddFieldsAndMethodsToClassPluginTest {
         assertThat(typeSpec.name, is("ClassName"));
         assertThat(typeSpec.fieldSpecs.size(), is(0));
         assertThat(typeSpec.methodSpecs.size(), is(1));
-        assertThat(typeSpec.methodSpecs, hasItem(constructorBuilder().addModifiers(PUBLIC).build()));
+        assertThat(typeSpec.methodSpecs, hasItem(constructorBuilder()
+                .addAnnotation(JsonCreator.class)
+                .addModifiers(PUBLIC)
+                .build()
+        ));
     }
 
     @Test
@@ -114,6 +119,7 @@ public class AddFieldsAndMethodsToClassPluginTest {
         assertThat(typeSpec.methodSpecs, hasItems(
                 constructorBuilder()
                         .addModifiers(PUBLIC)
+                        .addAnnotation(JsonCreator.class)
                         .addParameter(String.class, "field", FINAL)
                         .addStatement("this.field = field")
                         .build(),
@@ -162,6 +168,7 @@ public class AddFieldsAndMethodsToClassPluginTest {
         assertThat(typeSpec.methodSpecs.size(), is(1));
         assertThat(typeSpec.methodSpecs, hasItems(
                 constructorBuilder()
+                        .addAnnotation(JsonCreator.class)
                         .addModifiers(PUBLIC)
                         .addParameter(map, "additionalProperties", FINAL)
                         .addStatement("this.additionalProperties = additionalProperties")

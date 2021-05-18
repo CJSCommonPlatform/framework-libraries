@@ -3,6 +3,8 @@ package uk.gov.justice.services.yaml.subscriptiondescriptor;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class Subscription {
 
     private final String name;
@@ -10,6 +12,7 @@ public class Subscription {
     private final String eventSourceName;
     private final String prioritisation;
 
+    @JsonCreator
     public Subscription(final String name,
                         final List<Event> events,
                         final String eventSourceName,

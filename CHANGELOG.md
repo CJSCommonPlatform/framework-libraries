@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [11.0.0-M5] - 2021-05-18
+### Changed
+- Updated Jackson to 2.10.5.1
+- Added @JsonConstructor annotation to generated pojos to allow for single arg constructors
+
 ## [11.0.0-M4] - 2021-05-07
 ### Changed
 - Update common-bom to 11.0.0-M5

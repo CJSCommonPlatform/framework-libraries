@@ -22,6 +22,7 @@ import java.util.Objects;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.json.JSONObject;
@@ -290,6 +291,7 @@ public class ObjectMapperProducerTest {
     public static class DummyBeanWithSingleArgConstructor {
         private final String name;
 
+        @JsonCreator
         private DummyBeanWithSingleArgConstructor(final String name) {
             this.name = name;
         }

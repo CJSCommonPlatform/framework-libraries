@@ -25,6 +25,12 @@
             <artifactId>javax.json-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!-- Test dependencies -->
         <dependency>

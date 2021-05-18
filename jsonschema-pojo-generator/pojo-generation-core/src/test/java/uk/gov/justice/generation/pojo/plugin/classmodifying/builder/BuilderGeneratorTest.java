@@ -154,7 +154,6 @@ public class BuilderGeneratorTest {
         assertThat(builder.fieldSpecs.get(0).toString(), is("private java.lang.String captainsLog;\n"));
         assertThat(builder.fieldSpecs.get(1).toString(), is("private final java.util.Map<java.lang.String, java.lang.Object> additionalProperties = new java.util.HashMap<java.lang.String, java.lang.Object>();\n"));
 
-        builder.methodSpecs.forEach(System.out::println);
         assertThat(builder.methodSpecs.size(), is(2));
         assertThat(builder.methodSpecs, hasItem(withMethod));
         assertThat(builder.methodSpecs, hasItem(buildMethodWithAdditionalProperties));

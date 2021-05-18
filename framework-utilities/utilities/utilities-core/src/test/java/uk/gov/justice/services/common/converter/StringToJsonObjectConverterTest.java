@@ -4,8 +4,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+
 import javax.json.JsonObject;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 public class StringToJsonObjectConverterTest {

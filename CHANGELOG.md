@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M6] - 2021-05-28
+### Fixed
+- Removed hard dependency on javaee-api in jobstore to prevent the setting javaee-api.jar in context wars 
+
 ## [11.0.0-M5] - 2021-05-18
 ### Changed
 - Updated Jackson to 2.10.5.1

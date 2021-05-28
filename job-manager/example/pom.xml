@@ -22,6 +22,12 @@
             <artifactId>jobstore-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!-- IT -->
         <dependency>

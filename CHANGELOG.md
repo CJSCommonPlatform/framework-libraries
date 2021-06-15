@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M7] - 2021-06-15
+### Changed
+- Update common-bom to 11.0.0-M8 
+
 ## [11.0.0-M6] - 2021-05-28
 ### Fixed
 - Removed hard dependency on javaee-api in jobstore to prevent the setting javaee-api.jar in context wars 

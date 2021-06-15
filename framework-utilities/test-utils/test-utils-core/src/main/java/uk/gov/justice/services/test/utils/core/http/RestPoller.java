@@ -1,6 +1,6 @@
 package uk.gov.justice.services.test.utils.core.http;
 
-import static com.jayway.awaitility.Awaitility.await;
+import static org.awaitility.Awaitility.await;
 import static java.util.Optional.empty;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static javax.ws.rs.core.Response.Status.fromStatusCode;
@@ -18,9 +18,9 @@ import java.util.concurrent.TimeUnit;
 import javax.ws.rs.core.Response;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.jayway.awaitility.core.ConditionEvaluationLogger;
-import com.jayway.awaitility.core.ConditionFactory;
-import com.jayway.awaitility.core.ConditionTimeoutException;
+import org.awaitility.core.ConditionEvaluationLogger;
+import org.awaitility.core.ConditionFactory;
+import org.awaitility.core.ConditionTimeoutException;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;

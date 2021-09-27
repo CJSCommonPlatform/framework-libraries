@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [8.0.0] - 2020-11-28
+### Changed
+- Bumped the version to 8.0.0 to match the final release version of the Java 8 framework
+- Removed sonar from the build as it no longer works with Java 8
+
+
 ## [7.3.0] - 2021-12-13
 ### Changed
 - Updated log4j2 to 2.15.0 to fix security vulnerability https://www.randori.com/blog/cve-2021-44228/

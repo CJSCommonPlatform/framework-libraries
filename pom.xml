@@ -12,7 +12,7 @@
 
     <groupId>uk.gov.justice.framework.libraries</groupId>
     <artifactId>framework-libraries</artifactId>
-    <version>7.2.2</version>
+    <version>8.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Framework Common Libraries</name>
@@ -37,7 +37,7 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
-        <maven-common-bom.version>7.1.1</maven-common-bom.version>
+        <maven-common-bom.version>8.0.0</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
     </properties>
 

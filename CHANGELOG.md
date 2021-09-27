@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [8.0.0] - 2020-11-28
+### Changed
+- Bumped the version to 8.0.0 to match the final release version of the Java 8 framework
+- Removed sonar from the build as it no longer works with Java 8
+
 ## [7.2.2] - 2020-11-18
 ### Removed
 - Moved EmptyFeatureFetcher to microservices-framework 

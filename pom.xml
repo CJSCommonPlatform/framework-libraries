@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -37,7 +37,7 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
-        <maven-common-bom.version>8.0.0</maven-common-bom.version>
+        <maven-common-bom.version>8.0.1</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
     </properties>
 

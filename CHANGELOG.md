@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [8.0.1] - 2021-10-04
+### Changed
+- Re-release of pom to fix corrupt file in artifactory. No other changes
+
 
 ## [8.0.0] - 2020-11-28
 ### Changed

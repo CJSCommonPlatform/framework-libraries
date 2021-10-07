@@ -37,7 +37,7 @@ public class EmbeddedJMSServer {
 
     /**
      * Stop the server if its running
-     * 
+     * @return true if shutdown succeeded
      * @throws Exception if unsuccessful
      */
     public boolean stop() throws Exception {
@@ -62,7 +62,8 @@ public class EmbeddedJMSServer {
 
     /**
      * Set a reference to EmbeddedJMS
-     * 
+     *
+     * @param jmsServer An embedded JmsServer
      * @return EmbeddedJMS
      */
     public EmbeddedJMSServer setJmsServer(final EmbeddedJMS jmsServer) {
@@ -82,7 +83,7 @@ public class EmbeddedJMSServer {
     /**
      * Set the initialisation flag
      * 
-     * @param boolean flag
+     * @param initialised flag
      */
     public void setInitialised(final boolean initialised) {
         this.initialised = initialised;

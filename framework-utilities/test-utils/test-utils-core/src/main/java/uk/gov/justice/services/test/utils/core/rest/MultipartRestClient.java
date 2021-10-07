@@ -25,7 +25,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
  * To Use:
  *
  * <pre>
- *     <blockquote>
  *
  *         final String url = ...
  *         final String filename = ...
@@ -45,7 +44,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
  *              final HttpResponse response = multipartRestClient.post(filePart, url);
  *         }
  *
- *     </blockquote>
  * </pre>
  */
 public class MultipartRestClient {

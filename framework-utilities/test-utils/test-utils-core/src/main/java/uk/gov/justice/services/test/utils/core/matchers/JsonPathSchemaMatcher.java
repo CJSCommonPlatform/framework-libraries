@@ -60,7 +60,7 @@ public class JsonPathSchemaMatcher extends TypeSafeMatcher<JsonPath> {
      *
      * @param schemaLocation Fully qualified class location of schema.
      * @param type JsonObject or JsonArray.
-     * @return
+     * @return schema Matcher
      */
     @Factory
     public static Matcher<JsonPath> matchesSchema(String schemaLocation, Class<?> type) {

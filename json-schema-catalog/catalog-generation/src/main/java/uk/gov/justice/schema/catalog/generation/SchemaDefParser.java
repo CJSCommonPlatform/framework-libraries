@@ -19,7 +19,7 @@ import java.util.Optional;
  *  <li>Schema file (The original unparsed absolute {@link URL} of the json schema file)</li>
  * </ul>
  *
- * For example:<br/>
+ * For example:
  * Given an absolute {@link URL} of a json file
  * <pre>file:/path/to/raml/json/schema/some/path/some-schema-or-other.json</pre>
  * and a path to the json files (a sub path to locate the root of the json schemas)

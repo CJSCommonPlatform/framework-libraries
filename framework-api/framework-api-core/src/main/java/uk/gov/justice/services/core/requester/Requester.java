@@ -23,6 +23,7 @@ public interface Requester {
      *
      * @param envelope envelope containing the request that needs to be sent
      * @param clazz the return Envelope payload type
+     * @param <T> The type of the envelope
      * @return an envelope containing the response with payload T
      */
     <T> Envelope<T> request(final Envelope<?> envelope, Class<T> clazz);
@@ -31,7 +32,7 @@ public interface Requester {
      * Sends a request envelope to the next component setting system user id.
      * The correct requester is injected by the framework.
      *
-     * @deprecated use Requester.requestAsAdmin(Envelope<?> envelope, Class<T> clazz) instead.
+     * @deprecated use Requester.requestAsAdmin(Envelope&lt;?&gt; envelope, Class&lt;T&gt; clazz) instead.
      *
      * @param envelope envelope containing the request that needs to be sent
      * @return an envelope containing the response
@@ -45,6 +46,7 @@ public interface Requester {
      *
      * @param envelope envelope containing the request that needs to be sent
      * @param clazz the return Envelope payload type
+     * @param <T> The type of the envelope
      * @return an envelope containing the response with payload T
      */
     <T> Envelope<T> requestAsAdmin(final Envelope<?> envelope, Class<T> clazz);

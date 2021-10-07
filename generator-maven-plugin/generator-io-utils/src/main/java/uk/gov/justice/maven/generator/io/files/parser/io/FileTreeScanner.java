@@ -34,7 +34,7 @@ public class FileTreeScanner {
 
     /**
      * Finding all files within a directory that fulfil a set of include and exclude patterns, using standard
-     * Ant patterns - {@see http://ant.apache.org/manual/dirtasks.html#patterns}.
+     * @see <a href="http://ant.apache.org/manual/dirtasks.html#patterns">Ant patterns</a>
      *
      * @param baseDir  the path to search under
      * @param includes the path patterns to include

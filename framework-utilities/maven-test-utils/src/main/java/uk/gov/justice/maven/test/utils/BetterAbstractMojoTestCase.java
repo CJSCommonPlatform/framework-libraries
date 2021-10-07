@@ -24,8 +24,8 @@ import org.eclipse.aether.repository.LocalRepository;
 /**
  * Use this as you would {@link AbstractMojoTestCase}, where you want more of the standard maven
  * defaults to be set (and where the {@link AbstractMojoTestCase} leaves them as null or empty).
- * This includes: <li> local repo, repo sessions and managers configured <li> maven default remote
- * repos installed (NB: this does not use your ~/.m2 local settings) <li> system properties are
+ * This includes:  local repo, repo sessions and managers configured maven default remote
+ * repos installed (NB: this does not use your ~/.m2 local settings)  system properties are
  * copies <p> No changes to subclass code is needed; this simply intercepts the {@link
  * #newMavenSession(MavenProject)} method used by the various {@link #lookupMojo(String, File)}
  * methods. <p> This also provides new methods, {@link #newMavenSession()} to conveniently create a
@@ -90,6 +90,9 @@ public abstract class BetterAbstractMojoTestCase extends AbstractMojoTestCase {
     /**
      * As {@link #lookupConfiguredMojo(MavenProject, String)} but taking the pom file and creating
      * the {@link MavenProject}.
+     * @param pom The name of the pom file
+     * @param goal The Maven goal
+     * @return The configured Mojo
      */
     protected Mojo lookupConfiguredMojo(final File pom, final String goal) throws Exception {
         assertNotNull(pom);

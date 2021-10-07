@@ -14,12 +14,10 @@ import liquibase.resource.ClassLoaderResourceAccessor;
  * To Use:
  *
  * <pre>
- *     <blockquote>
  *          final Connection connection = ...; // Sql {@link Connection} to the database
  *          liquibaseDatabaseBootstrapper.bootstrap(
  *                  "liquibase/my-liquibase-db-changelog.xml",
  *                  connection);
- *     </blockquote>
  * </pre>
  *
  * You will need to ensure that your liquibase changelog file is on your classpath (usually by

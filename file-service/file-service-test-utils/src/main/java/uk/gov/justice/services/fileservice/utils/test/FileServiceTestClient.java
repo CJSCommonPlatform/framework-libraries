@@ -25,7 +25,6 @@ import javax.json.JsonObject;
  *
  * To Use:
  *  <pre>
- *      <blockquote>
  *          final String fileName = "some.jpg";
  *          final String mediaType = "image/jpeg";
  *          final InputStream contentStream ...
@@ -39,7 +38,6 @@ import javax.json.JsonObject;
  *
  *          fileReference = fileServiceTestClient.read(fileId, connection);
  *          
- *      </blockquote>
  *  </pre>
  */
 public class FileServiceTestClient {

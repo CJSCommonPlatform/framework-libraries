@@ -36,6 +36,8 @@ public interface EnveloperProvider {
      * Provide an instance of a {@link Envelope} through EnveloperBuilder with given payload
      *
      * @param payload  the payload Object to be added to the Envelope
+     * @param <T> the type of the payload
+     *
      * @return the EnveloperBuilder instance
      */
     <T> Enveloper.EnveloperBuilder<T> envelop(final T payload);
@@ -44,8 +46,8 @@ public interface EnveloperProvider {
      * Provides a function that wraps the provided object into a new {@link JsonEnvelope} using
      * metadata from the given Envelope, except the name.
      *
-     * @param envelope
-     * @return Function<Object, JsonEnvelope>
+     * @param envelope The original envelope
+     * @return Function&lt;Object, JsonEnvelope&gt;
      */
     Function<Object, JsonEnvelope> toEnvelopeWithMetadataFrom(final Envelope<?> envelope);
 

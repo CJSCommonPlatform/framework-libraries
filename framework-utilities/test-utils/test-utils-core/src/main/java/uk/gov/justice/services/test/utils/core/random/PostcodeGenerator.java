@@ -61,50 +61,11 @@ import static java.lang.String.format;
  * Valid Formats: A indicates an alphabetic character and N indicates a numeric character
  * </p>
  * 
- * <table>
- * <tr>
- * <th>Outcode</th>
- * <th>Incode</th>
- * <th>Example Postcode</th>
- * </tr>
- * <tr>
- * <td>AN</th>
- * <th>NAA</th>
- * <th>M1 1AA</th>
- * </tr>
- * <tr>
- * <td>ANN</th>
- * <th>NAA</th>
- * <th>M10 1NW</th>
- * </tr>
- * <tr>
- * <td>AAN</th>
- * <th>NAA</th>
- * <th>CR2 6NY</th>
- * </tr>
- * <tr>
- * <td>AANN</th>
- * <th>NAA</th>
- * <th>CN65 1AP</th>
- * </tr>
- * <tr>
- * <td>ANA</th>
- * <th>NAA</th>
- * <th>M1P 1AA</th>
- * </tr>
- * <tr>
- * <td>AANA</th>
- * <th>NAA</th>
- * <th>EC1A 1AA</th>
- * </tr>
- * </table>
- * 
+ *
  * <p>
  * The following characters are never used in the <b>inward part</b> of the postcode. <br>
  * CIKMOV
  * </p>
- * 
- * <p>
  * 
  * <ul>
  * <li>The letters Q, V and X are not used in the first position</li>
@@ -112,8 +73,7 @@ import static java.lang.String.format;
  * <li>The only letters to appear in the third position are A, B, C, D, E, F, G, H, J, K, S, T, U
  * and W.</li>
  * </ul>
- * </p>
- * 
+ *
  */
 public class PostcodeGenerator extends Generator<String> {
 

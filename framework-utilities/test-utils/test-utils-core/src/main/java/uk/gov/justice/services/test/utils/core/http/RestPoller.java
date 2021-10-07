@@ -31,7 +31,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  * To Use:
  *
  * Poll until the response has specified number of events with required json payload:
- * <pre><blockquote>
+ * <pre>
  *
  *      import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
  *      import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
@@ -56,7 +56,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  *          )
  *      ;
  *
- * </blockquote></pre>
+ * </pre>
  *
  * The call is configured using <code>RequestParams</code>. This object is most easily created using
  * a <code>RequestParamsBuilder</code> which takes a url and media type and will supply all other
@@ -64,7 +64,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  * way.
  *
  * Poll until the response has specified substring in the payload:
- * <pre><blockquote>
+ * <pre>
  *
  *      import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
  *      import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
@@ -86,11 +86,11 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  *          )
  *      ;
  *
- * </blockquote></pre>
+ * </pre>
  *
  * Poll ignoring certain response status, until the response has specified number of events with
  * required data:
- * <pre><blockquote>
+ * <pre>
  *
  *      import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
  *      import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
@@ -122,7 +122,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  *          )
  *      ;
  *
- * </blockquote></pre>
+ * </pre>
  */
 public class RestPoller {
 
@@ -224,6 +224,7 @@ public class RestPoller {
      *
      * @param timeout the timeout
      * @param unit    the unit
+     * @return this
      */
     public RestPoller timeout(final long timeout, final TimeUnit unit) {
         this.await = this.await.with().timeout(timeout, unit);
@@ -237,6 +238,7 @@ public class RestPoller {
      *
      * @param delay the delay
      * @param unit  the unit
+     * @return this
      */
     public RestPoller pollDelay(final long delay, final TimeUnit unit) {
         this.await = this.await.with().pollDelay(delay, unit);

@@ -51,7 +51,7 @@ public class SchemaDuplicateChecker {
     private int numberOfViolatingSchemas = 0;
 
     /**
-     * Returns true if the check found no schemas with different contents
+     * @return true if the check found no schemas with different contents
      */
     public boolean isCompliant() {
         return isCompliant;
@@ -60,6 +60,7 @@ public class SchemaDuplicateChecker {
     /**
      * Runs checks to identify schemas with the same filename but with different content across
      * modules
+     * @return true if no duplicates found
      */
     public boolean runDuplicateCheck() {
         this.isCompliant = false;
@@ -136,7 +137,9 @@ public class SchemaDuplicateChecker {
     }
 
     /**
-     * creates a list with schema files which appear more than once
+     * Creates a list with schema files which appear more than once
+     * @param schemaOccurrenceMap List of schema files
+     * @return List of schemas that are duplicates
      */
     private List<String> generateSchemaDuplicationList(Map<String, Long> schemaOccurrenceMap) {
         return schemaOccurrenceMap.entrySet()
@@ -149,6 +152,8 @@ public class SchemaDuplicateChecker {
 
     /**
      * Creates a structure with the count of occurrences of each file
+     * @param schemaFilesList List of schema files
+     * @return Map of schemas to the count of occurrences
      */
     private Map<String, Long> generateSchemaOccurrenceCount(List<SchemaFile> schemaFilesList) {
         return schemaFilesList
@@ -159,6 +164,8 @@ public class SchemaDuplicateChecker {
 
     /**
      * Lists all the schemas that it can find in all schema containers (directories or jars)
+     * @param schemaContainers List of files containing schemas
+     * @return List of schema files found
      */
     private List<SchemaFile> listAllSchemaFilesFromContainers(List<File> schemaContainers) {
 
@@ -178,7 +185,9 @@ public class SchemaDuplicateChecker {
     }
 
     /**
-     * Returns a structure will all schemas for that directory
+     * Returns a structure with all schemas for that directory
+     * @param directory The directory to check for schemas
+     * @return List of schema files found
      */
     List<SchemaFile> listSchemaFilesFromDir(File directory) {
 
@@ -186,14 +195,13 @@ public class SchemaDuplicateChecker {
     }
 
     /**
-     * Returns a structure will all schemas for that directory
-     *
      * @param baseContainer the container where the files are found
+     * @return  a structure will all schemas for that directory
      */
     private List<SchemaFile> listSchemaFilesFromDir(File baseContainer, File directory) {
 
-        List<File> files = Arrays.asList(directory
-                .listFiles(d -> d.getAbsolutePath().toLowerCase().endsWith(JSON_SCHEMA_FILE_EXTENSION) || d.isDirectory()));
+        File[] files = directory
+                .listFiles(d -> d.getAbsolutePath().toLowerCase().endsWith(JSON_SCHEMA_FILE_EXTENSION) || d.isDirectory());
 
         List<SchemaFile> returnList = new ArrayList<>();
 
@@ -217,6 +225,8 @@ public class SchemaDuplicateChecker {
     /**
      * Lists all the schema containers (dirs and jars) which are likely to contain schemas from the
      * classpath
+     *
+     * @return List of schema container files
      */
     List<File> retrieveSchemaContainers() {
         Enumeration<URL> urlEnumeration = null;
@@ -252,6 +262,10 @@ public class SchemaDuplicateChecker {
 
     /**
      * Generates a report with the issues found
+     *
+     * @param schemaFiles List of schema files
+     * @param offenders Map of offending schema files
+     * @return A report as a String
      */
     public String generateReport(List<SchemaFile> schemaFiles, Map<String, Set<String>> offenders) {
 
@@ -300,6 +314,11 @@ public class SchemaDuplicateChecker {
 
     /**
      * Generates a patch list for a given set of checksums
+     * 
+     * @param schemaFiles List of schema files
+     * @param setOfChecksums Set of checksums
+     *
+     * @return List of Patches
      */
     private List<Patch> generatePatchListForChecksumSet(final List<SchemaFile> schemaFiles, final Set<String> setOfChecksums) {
         final List<Patch> patches =
@@ -329,9 +348,6 @@ public class SchemaDuplicateChecker {
         return patches;
     }
 
-    /**
-     * Finds all the schema files for the given filename and pretty print checksum
-     */
     private List<SchemaFile> findSchemaFiles(final List<SchemaFile> schemaFiles, String filename, String prettyPrintChecksum) {
         return schemaFiles
                 .stream()
@@ -339,9 +355,6 @@ public class SchemaDuplicateChecker {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves the file contents matching the pretty print hash
-     */
     private String getOriginalFileContents(List<SchemaFile> schemaFiles, String hash) {
         Optional<String> contents = schemaFiles.stream().filter(e -> e.getPrettyPrintChecksum().equals(hash)).map(SchemaFile::getOriginalFileContents).findAny();
         if (contents.isPresent()) {
@@ -352,7 +365,8 @@ public class SchemaDuplicateChecker {
     }
 
     /**
-     * Returns all schemas files found in the jar
+     * @param jar Jar file to check for schemas
+     * @return all schemas files found in the jar
      */
     public List<SchemaFile> listSchemaFilesFromJar(File jar) {
 
@@ -365,7 +379,10 @@ public class SchemaDuplicateChecker {
     }
 
     /**
-     * Returns all schemas files found in the jar
+     *
+     * @param jar Jar file to check for schemas
+     * @param jarFile Jar file to check for schemas
+     * @return all schemas files found in the jar
      */
     public List<SchemaFile> listSchemaFilesFromJar(final File jar, final JarFile jarFile) {
         try {
@@ -393,7 +410,7 @@ public class SchemaDuplicateChecker {
     }
 
     /**
-     * Gets the total amount of schemas found during the check execution
+     * @return the total amount of schemas found during the check execution
      */
     public int getTotalSchemasFound() {
         return this.totalSchemasFound;
@@ -401,7 +418,7 @@ public class SchemaDuplicateChecker {
 
 
     /**
-     * Gets the number of unique schema files (filename based) found containing different schemas
+     * @return  the number of unique schema files (filename based) found containing different schemas
      */
     public int getNumberOfViolatingSchemas() {
         return numberOfViolatingSchemas;

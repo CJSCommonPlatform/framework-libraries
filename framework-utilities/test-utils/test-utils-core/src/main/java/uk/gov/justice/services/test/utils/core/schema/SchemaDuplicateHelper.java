@@ -31,8 +31,8 @@ public class SchemaDuplicateHelper {
 
     /**
      * Extracts the filesystem jar path from a Jar URL
-     * @param url
-     * @return
+     * @param url the url of the jar file
+     * @return the path to the jar
      */
     public static String extractJarPath(URL url) {
         if (!url.getProtocol().equalsIgnoreCase(JAR_PROTOCOL)) {
@@ -50,17 +50,17 @@ public class SchemaDuplicateHelper {
 
     /**
      * Tests if a file is a jar (based on the extension)
-     * @param f
-     * @return
+     * @param file File to test
+     * @return true if the file is a jar
      */
-    public static boolean isJAR(File f) {
-        return f.isFile() && f.getName().toLowerCase().endsWith(JAR_FILE_EXTENSION);
+    public static boolean isJAR(File file) {
+        return file.isFile() && file.getName().toLowerCase().endsWith(JAR_FILE_EXTENSION);
     }
 
     /**
      * Strips the whitespace from a Json string
-     * @param jsonString
-     * @return
+     * @param jsonString json to strip whitespace from
+     * @return the cleaned json
      */
     public static String stripWhitespace(String jsonString) {
         try (final JsonReader jsonReader = Json.createReader(new StringReader(jsonString))) {
@@ -71,8 +71,8 @@ public class SchemaDuplicateHelper {
 
     /**
      * Computes the Sha 256 hash from a string
-     * @param string
-     * @return
+     * @param string String to compute hash from
+     * @return The computed Sha 256 hash
      */
     public static String computeSha256Checksum(String string) {
         return DigestUtils.sha256Hex(string);
@@ -80,8 +80,8 @@ public class SchemaDuplicateHelper {
 
     /**
      * Splits the file contents into multiple lines (supports Unix and Windows)
-     * @param fileContents
-     * @return
+     * @param fileContents File contents as a String
+     * @return List of the file's lines
      */
     public static List<String> convertFileContentToLines(String fileContents) {
         String newlineDelimiter = UNIX_NEWLINE;

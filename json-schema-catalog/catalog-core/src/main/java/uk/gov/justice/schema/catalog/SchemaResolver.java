@@ -13,23 +13,25 @@ import java.util.Optional;
 /**
  * Resolves the actual URI of a json schema file based on the absolute uri of
  * the catalog file, an {@link Optional} base location relative to the catalog uri
- * and the relative path of the schema file.<br/>
+ * and the relative path of the schema file.
  *
- * <p>
- *  For instance: given a catalog file<br/>
- *  '<b>file:/json/schemas/schema-catalog.json</b>'<br/>
+ *  For instance: given a catalog file
+ *  <pre>
+ *      'file:/json/schemas/schema-catalog.json'
+ *  </pre>
  *
- *  A relative base location of <br/>
- *  <b>'domain/objects'</b><br/>
+ *  A relative base location of
+ *  <pre>
+ *      'domain/objects'
+ *  </pre>
  *
- *  And a schema location of<br/>
- *  <b>definitions/address.json</b><br/>
+ *  And a schema location of
+ *  <pre>
+ *      'definitions/address.json'
+ *  </pre>
  *
- *  This would be resolved into the actual location of the json schema file <br/>
- *  <b>file:/json/schemas/domain/objects/definitions/address.json</b>
- *
- * </p>
- *
+ *  This would be resolved into the actual location of the json schema file
+ *  <pre>file:/json/schemas/domain/objects/definitions/address.json</pre>
  */
 public class SchemaResolver {
 

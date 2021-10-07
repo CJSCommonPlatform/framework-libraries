@@ -177,7 +177,7 @@ public final class JsonObjects {
      * A convenience method to retrieve a Boolean value
      *
      * @param object the JsonObject from which to retrieve the value
-     * @param name  whose associated value is to be returned as Long
+     * @param name   whose associated value is to be returned as Long
      * @return the Boolean value to which the specified name is mapped
      * @throws IllegalStateException if the value is not assignable to a Boolean
      */
@@ -190,13 +190,13 @@ public final class JsonObjects {
     }
 
 
-
     /**
      * A convenience method for getting a JsonArray as a List of a specific JsonValue type.
      *
      * @param object the JsonObject from which to retrieve the value
      * @param names  whose associated value is to be returned
      * @param clazz  the type of JsonValue that the returned list will contain
+     * @param <R> Type of the class
      * @return the Long value to which the specified name is mapped
      * @throws IllegalStateException    if the value is not assignable to the specified type
      * @throws IllegalArgumentException if the value is not assignable to a Long
@@ -246,6 +246,7 @@ public final class JsonObjects {
      * Only copy the field names for which the filter returns true.
      *
      * @param source {@link JsonObject} to copy fields from
+     * @param filter Filter function
      * @return a {@link JsonObjectBuilder} initialised with the fields contained in the source
      */
     public static JsonObjectBuilder createObjectBuilderWithFilter(final JsonObject source, Function<String, Boolean> filter) {
@@ -286,9 +287,9 @@ public final class JsonObjects {
     /**
      * Convert a collection of objects into a JsonArray
      *
-     * @param entries the collection to be converted
+     * @param entries   the collection to be converted
      * @param converter to convert each entry in the collection
-     * @param <T> the type of element in the collection
+     * @param <T>       the type of element in the collection
      * @return a JsonArray with the converted entries
      */
     public static <T> JsonArray toJsonArray(final Collection<T> entries, final Function<T, JsonValue> converter) {

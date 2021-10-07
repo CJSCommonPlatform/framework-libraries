@@ -8,8 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Re-release of pom to fix corrupt file in artifactory. No other changes
 
-
-## [8.0.0] - 2020-11-28
+## [8.0.0] - 2020-09-28
 ### Changed
 - Bumped the version to 8.0.0 to match the final release version of the Java 8 framework
 - Removed sonar from the build as it no longer works with Java 8

@@ -31,10 +31,10 @@ public final class PortFinder {
      * 
      * If none of the above works return the passed in port
      * 
-     * @param port
-     * @return
+     * @param port Fallback port
+     * @return an available port or fallback
      */
-    public static final int getPortWithRandomPortFallback(final int port) {
+    public static int getPortWithRandomPortFallback(final int port) {
         int allocatedport = getPort(port);
         if (allocatedport != (-1)) {
             return allocatedport;

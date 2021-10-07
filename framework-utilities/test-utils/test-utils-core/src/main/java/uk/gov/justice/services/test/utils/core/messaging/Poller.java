@@ -17,18 +17,18 @@ import com.google.common.annotations.VisibleForTesting;
  *
  * To use:
  *
- * <pre><blockquote>
+ * <pre>
  *
  *      private final MyResourceFinder myResourceFinder = new MyResourceFinder();
  *      private final Poller poller = new Poller();
  *
- *      @Test
+ *      &#64;Test
  *      public void myTest() {
  *
- *          final Optional<String> found = poller.pollUntilFound(myResourceFinder::find);
+ *          final Optional&lt;String&gt; found = poller.pollUntilFound(myResourceFinder::find);
  *      }
  *
- *  </blockquote></pre>
+ *  </pre>
  */
 public class Poller {
 

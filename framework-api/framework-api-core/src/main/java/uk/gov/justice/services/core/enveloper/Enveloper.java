@@ -15,7 +15,7 @@ public interface Enveloper {
      *
      * @deprecated use Enveloper.envelop(T payload)
      *                          .withName(String name)
-     *                          .withMetadataFrom(Envelope<?> envelope) instead
+     *                          .withMetadataFrom(Envelope&lt;?&gt; envelope) instead
      * @param envelope - the envelope containing source metadata.
      * @return a function that wraps objects into an envelope.
      */
@@ -28,7 +28,7 @@ public interface Enveloper {
      *
      * @deprecated use Enveloper.envelop(T payload)
      *                          .withName(String name)
-     *                          .withMetadataFrom(Envelope<?> envelope) instead
+     *                          .withMetadataFrom(Envelope&lt;?&gt; envelope) instead
      * @param envelope - the envelope containing source metadata.
      * @param name     - name of the payload.
      * @return a function that wraps objects into an envelope.
@@ -40,8 +40,8 @@ public interface Enveloper {
      * Provides a function that wraps the provided object into a new {@link JsonEnvelope} using
      * metadata from the given Envelope, except the name.
      *
-     * @param envelope
-     * @return Function<Object, JsonEnvelope>
+     * @param envelope The original {@link JsonEnvelope}
+     * @return Function&lt;Object, JsonEnvelope&gt;
      */
     static Function<Object, JsonEnvelope> toEnvelopeWithMetadataFrom(final Envelope<?> envelope) {
         return EnveloperProvider.provider().toEnvelopeWithMetadataFrom(envelope);
@@ -49,8 +49,8 @@ public interface Enveloper {
 
     /**
      * Creates an {@link Envelope} through {@link EnveloperBuilder}
-     * @param payload
-     * @param <T>
+     * @param payload The payload for the envelope
+     * @param <T> The envelope type
      * @return EnveloperBuilder
      */
     static <T> EnveloperBuilder<T> envelop(final T payload) {

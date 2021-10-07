@@ -33,8 +33,10 @@ public class CatalogUpdater {
     /**
      * Updates the cache with raw json schemas that are not on the classpath
      *
-     * @param basePath the base directory to load the resources from
-     * @param paths    the resources to parse
+     * @param basePath                      the base directory to load the resources from
+     * @param schemaIdsToRawJsonSchemaCache Cache of schemas
+     * @param basePath                      base path
+     * @param paths                         the resources to parse
      */
     public void updateRawCatalog(final Map<String, String> schemaIdsToRawJsonSchemaCache, final Path basePath, final Collection<Path> paths) {
 

@@ -19,7 +19,7 @@ import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
  * Send messages to a JMS topic sequentially <br>
  * or as a parallel stream
  * 
- * Example: <br/>
+ * Example: 
  * 
  * <code>
  *

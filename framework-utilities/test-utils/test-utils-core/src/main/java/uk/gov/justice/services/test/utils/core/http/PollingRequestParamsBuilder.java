@@ -108,16 +108,15 @@ public class PollingRequestParamsBuilder {
      * Adds a condition for verifying the response body from a call to a rest endpoint. By default allows all.
      *
      * To use:
-     *      <pre><blockquote>
+     *      <pre>
      *
      *      new PollingRequestParamsBuilder()
-     *          .withResultCondition(json -> json.equals("my-json"))
+     *          .withResultCondition(json -&gt; json.equals("my-json"))
      *          .build();
+     *      </pre>
      *
-     *      </blockquote></pre>
-     *
-     * @param resultCondition
-     * @return
+     * @param resultCondition Predicate of a boolean condition
+     * @return this
      */
     public PollingRequestParamsBuilder withResponseBodyCondition(final Predicate<String> resultCondition) {
         this.resultCondition = resultCondition;
@@ -128,7 +127,7 @@ public class PollingRequestParamsBuilder {
      * Adds a pre configured result condition, which verified that all of the names/values exist
      * in the response body json
      *
-     * @See ExpectedJsonValuesResultCondition
+     * See {@link ExpectedJsonValuesResultCondition}
      *
      * @param values a Map of property names to values that should exist in the result json
      * @return this

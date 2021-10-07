@@ -36,7 +36,7 @@ public class ServerPermit implements AutoCloseable {
      * Acquire a permit
      * 
      * @return ServerPermit
-     * @throws InterruptedException
+     * @throws InterruptedException on Thread.interrupt()
      */
     public ServerPermit acquire() throws InterruptedException {
         semaphore.acquire();
@@ -63,7 +63,7 @@ public class ServerPermit implements AutoCloseable {
     /**
      * Set a reference to Semaphore
      * 
-     * @param Semaphore
+     * @param semaphore The Semaphore
      */
     public ServerPermit setSemaphore(final Semaphore semaphore) {
         this.semaphore = semaphore;

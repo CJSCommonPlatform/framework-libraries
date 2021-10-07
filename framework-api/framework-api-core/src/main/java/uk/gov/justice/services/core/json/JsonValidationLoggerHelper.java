@@ -9,16 +9,16 @@ public interface JsonValidationLoggerHelper {
 
     /**
      * Converts {@link JsonSchemaValidationException} to a readable log message
-     * @param jsonSchemaValidatonException
-     * @return tlog message as String
+     * @param jsonSchemaValidationException The Exception to log
+     * @return log message as String
      */
-    String toValidationTrace(final JsonSchemaValidationException jsonSchemaValidatonException);
+    String toValidationTrace(final JsonSchemaValidationException jsonSchemaValidationException);
 
     /**
      * Converts {@link JsonSchemaValidationException} to a {@link JsonObject}
-     * @param jsonSchemaValidatonException
-     * @return log message in {@ JsonObject} format
+     * @param jsonSchemaValidationException The Exception to log
+     * @return log message in {@link JsonObject} format
      */
-    JsonObject toJsonObject(final JsonSchemaValidationException jsonSchemaValidatonException);
+    JsonObject toJsonObject(final JsonSchemaValidationException jsonSchemaValidationException);
 
 }

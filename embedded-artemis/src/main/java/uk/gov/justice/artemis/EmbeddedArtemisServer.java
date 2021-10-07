@@ -85,8 +85,7 @@ public final class EmbeddedArtemisServer {
 
     /**
      * Stop the server after acquiring a permit
-     * 
-     * @throws Exception if unsuccessful
+     * @return true on successful shutdown of JMS server
      */
     public static final boolean stopServer() {
         try (final ServerPermit sp = serverPermit.acquire()) {
@@ -100,7 +99,7 @@ public final class EmbeddedArtemisServer {
     /**
      * Get the shutdown hook for stopping the server
      * 
-     * @return Thread
+     * @return Shutdown hook to stop the server Thread
      */
     public static Thread getShutDownHook() {
         return new Thread(() -> {
@@ -111,7 +110,7 @@ public final class EmbeddedArtemisServer {
     /**
      * Get a reference to EmbeddedJMSServer
      * 
-     * @return EmbeddedJMSServer
+     * @return  The embedded jms server
      */
     public static EmbeddedJMSServer getJmsServer() {
         return jmsServer;
@@ -120,7 +119,7 @@ public final class EmbeddedArtemisServer {
     /**
      * Set a reference to EmbeddedJMSServer
      * 
-     * @param EmbeddedJMSServer
+     * @param jmsServer The embedded jms server
      * @see EmbeddedJMSServer
      */
     public static void setJmsServer(final EmbeddedJMSServer jmsServer) {
@@ -129,8 +128,8 @@ public final class EmbeddedArtemisServer {
 
     /**
      * Set a reference to EmbeddedJMS
-     * 
-     * @return EmbeddedJMS
+     *
+     * @param embeddedJms The embedded jms server
      * @see EmbeddedJMS
      */
     public static void setEmbeddedJms(final EmbeddedJMS embeddedJms) {
@@ -140,7 +139,7 @@ public final class EmbeddedArtemisServer {
     /**
      * Get a reference to EmbeddedJMS
      * 
-     * @return EmbeddedJMS
+     * @return The embedded jms
      */
     public static EmbeddedJMS getEmbeddedJms() {
         return jmsServer.getJmsServer();
@@ -158,7 +157,7 @@ public final class EmbeddedArtemisServer {
     /**
      * Set a reference to ServerPermit
      * 
-     * @param ServerPermit
+     * @param serverPermit The Server permit
      */
     public static void setServerPermit(final ServerPermit serverPermit) {
         EmbeddedArtemisServer.serverPermit = serverPermit;

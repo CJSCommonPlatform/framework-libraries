@@ -70,6 +70,9 @@ public class RandomGenerator {
 
     /**
      * @deprecated Use {@link #bigDecimal(Integer min, Integer max, Integer scale)} instead.
+     * @param max The maximum size
+     * @param scale The Scale of the {@link java.math.BigDecimal}
+     * @return a {@link Generator} for BigDecimals
      */
     @Deprecated
     public static Generator<BigDecimal> bigDecimal(final Integer max, final Integer scale) {
@@ -78,6 +81,8 @@ public class RandomGenerator {
 
     /**
      * @deprecated Use {@link #bigDecimal(Integer min, Integer max, Integer scale)} instead.
+     * @param max The maximum size
+     * @return a {@link Generator} for BigDecimals
      */
     @Deprecated
     public static Generator<BigDecimal> bigDecimal(final Integer max) {
@@ -86,6 +91,9 @@ public class RandomGenerator {
 
     /**
      * @deprecated Use {@link #doubleValue(Long min, Long max, Integer scale)} instead.
+     * @param max The maximum size
+     * @param decimalPlaces number of decimal places
+     * @return a {@link Generator} for BigDecimals
      */
     @Deprecated
     public static Generator<Double> doubleval(final Integer max, final Integer decimalPlaces) {

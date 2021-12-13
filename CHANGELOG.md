@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [7.3.0] - 2021-12-13
+### Changed
+- Updated log4j2 to 2.15.0 to fix security vulnerability https://www.randori.com/blog/cve-2021-44228/
+- Updated maven-common-pom to 7.2.0
+
 ## [7.2.2] - 2020-11-18
 ### Removed
 - Moved EmptyFeatureFetcher to microservices-framework 

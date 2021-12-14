@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice.framework.libraries</groupId>
         <artifactId>framework-libraries</artifactId>
-        <version>7.2.2</version>
+        <version>7.3.0</version>
     </parent>
 
     <groupId>uk.gov.justice.generators</groupId>

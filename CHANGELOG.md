@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [8.0.2] - 2021-10-04
+### Changed
+- Merged in 7.x.x branch
+- Updated common-bom to 8.0.4 to update log4j2 to 2.17.0 
+
 ## [8.0.1] - 2021-10-04
 ### Changed
 - Re-release of pom to fix corrupt file in artifactory. No other changes
@@ -12,7 +17,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Bumped the version to 8.0.0 to match the final release version of the Java 8 framework
 - Removed sonar from the build as it no longer works with Java 8
-
 
 ## [7.3.0] - 2021-12-13
 ### Changed

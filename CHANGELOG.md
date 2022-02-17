@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## [8.0.2] - 2021-10-04
+## [8.0.2] - 2022-02-17
 ### Changed
 - Merged in 7.x.x branch
 - Updated common-bom to 8.0.4 to update log4j2 to 2.17.0 

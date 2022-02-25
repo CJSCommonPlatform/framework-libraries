@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M8] - 2022-02-25
+### Changed
+- Update common-bom to 11.0.0-M9 to
+  - Update log4j2 to 2.17.1 to fix critical security violation
+
 ## [11.0.0-M7] - 2021-06-15
 ### Changed
 - Update common-bom to 11.0.0-M8 

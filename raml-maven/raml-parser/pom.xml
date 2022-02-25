@@ -7,7 +7,7 @@
     <parent>
         <artifactId>raml-maven</artifactId>
         <groupId>uk.gov.justice.maven</groupId>
-        <version>11.0.0-M8</version>
+        <version>11.0.0-M9-SNAPSHOT</version>
     </parent>
 
     <!-- TODO: this name conflicts with an artifact name in generator-maven-plugin. -->

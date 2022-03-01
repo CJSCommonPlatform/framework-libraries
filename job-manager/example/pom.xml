@@ -75,6 +75,12 @@
             <artifactId>commons-logging</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.xbean</groupId>
+            <artifactId>xbean-asm7-shaded</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 

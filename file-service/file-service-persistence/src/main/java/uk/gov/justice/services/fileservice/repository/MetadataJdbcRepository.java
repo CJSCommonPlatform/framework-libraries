@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -31,9 +30,9 @@ public class MetadataJdbcRepository {
 
     public static final String FIND_BY_FILE_ID_SQL = "SELECT metadata FROM metadata WHERE file_id = ?";
     public static final String DELETE_SQL = "DELETE FROM metadata WHERE file_id = ?";
+    private static final String INSERT_SQL = "INSERT INTO metadata(metadata, file_id) values (to_json(?::json), ?)";
+    private static final String UPDATE_SQL = "UPDATE metadata SET metadata = to_json(?::json) WHERE file_id = ?";
 
-    @Inject
-    protected MetadataSqlProvider metadataSqlProvider;
 
     /**
      * inserts the json metadata of a file into a new row
@@ -45,7 +44,7 @@ public class MetadataJdbcRepository {
      */
     public void insert(final UUID fileId, final JsonObject metadata, final Connection connection) throws FileServiceException {
 
-        insertOrUpdate(fileId, metadata, connection, metadataSqlProvider.getInsertSql());
+        insertOrUpdate(fileId, metadata, connection, INSERT_SQL);
     }
 
     /**
@@ -82,7 +81,7 @@ public class MetadataJdbcRepository {
      *                   started on this connection.
      */
     public void update(final UUID fileId, final JsonObject metadata, final Connection connection) throws FileServiceException {
-        insertOrUpdate(fileId, metadata, connection, metadataSqlProvider.getUpdateSql());
+        insertOrUpdate(fileId, metadata, connection, UPDATE_SQL);
     }
 
     private void insertOrUpdate(final UUID fileId, final JsonObject metadata, final Connection connection, final String sql) throws DataIntegrityException, StorageException {

@@ -128,13 +128,12 @@ public class FileServiceTestClient {
         if (metadata.isPresent() && content.isPresent()) {
 
             final InputStream inputStream = content.get().getContent();
-            final Boolean deleted = content.get().isDeleted();
 
             final FileReference fileReference = new FileReference(
                     fileId,
                     metadata.get(),
                     inputStream,
-                    deleted);
+                    false);
 
             return of(fileReference);
         }

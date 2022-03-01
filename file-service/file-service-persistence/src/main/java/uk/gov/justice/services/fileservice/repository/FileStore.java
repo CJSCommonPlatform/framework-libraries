@@ -99,13 +99,12 @@ public class FileStore {
             final InputStreamWrapper inputStreamWrapper = new InputStreamWrapper(
                     fileContent.getContent(),
                     connection);
-            final Boolean deleted = fileContent.isDeleted();
 
             return of(new FileReference(
                     fileId,
                     metadata.get(),
                     inputStreamWrapper,
-                    deleted));
+                    false));
         } catch (final SQLException | StorageException e) {
             close(connection);
             throw new StorageException("Failed to read File from the database", e);

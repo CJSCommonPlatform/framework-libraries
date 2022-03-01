@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [8.0.4] - 2022-03-10
+### Changed
+- Changed the file service to make hard delete of files from postgres on delete rather than just marking them as deleted
+- Updated maven to always run the integration tests as part of the build
+- Removed support for in memory databases for filestore. Postgres is now required
+
 ## [8.0.2] - 2022-02-17
 ### Changed
 - Merged in 7.x.x branch

@@ -119,7 +119,7 @@ public class ContentJdbcRepositoryTest {
 
         final UUID fileId = randomUUID();
         final Boolean deleted = true;
-        final String sql = "SELECT content, deleted FROM content WHERE file_id = ?";
+        final String sql = "SELECT content FROM content WHERE file_id = ?";
 
         final InputStream contentStream = mock(InputStream.class);
         final Connection connection = mock(Connection.class);
@@ -137,7 +137,6 @@ public class ContentJdbcRepositoryTest {
                 .orElseThrow(() -> new AssertionError("Failed to find content"));
 
         assertThat(fileContent.getContent(), is(contentStream));
-        assertThat(fileContent.isDeleted(), is(deleted));
 
         final InOrder inOrder = inOrder(
                 connection,
@@ -161,7 +160,7 @@ public class ContentJdbcRepositoryTest {
     public void shouldReturnEmptyIfNoFileFound() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "SELECT content, deleted FROM content WHERE file_id = ?";
+        final String sql = "SELECT content FROM content WHERE file_id = ?";
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
@@ -191,10 +190,10 @@ public class ContentJdbcRepositoryTest {
     }
 
     @Test
-    public void shouldThrowAIfAnyOfTheSqlStatementsFail() throws Exception {
+    public void shouldThrowStorageExceptionIfAnyOfTheSqlStatementsFail() throws Exception {
 
         final SQLException sqlException = new SQLException("Ooops");
-        final String sql = "SELECT content, deleted FROM content WHERE file_id = ?";
+        final String sql = "SELECT content FROM content WHERE file_id = ?";
 
         final UUID fileId = randomUUID();
 
@@ -236,7 +235,7 @@ public class ContentJdbcRepositoryTest {
     public void shouldDeleteAFileById() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "UPDATE content SET deleted = true WHERE file_id = ?";
+        final String sql = "DELETE FROM content WHERE file_id = ?";
         final int rowsAffected = 1;
 
         final Connection connection = mock(Connection.class);
@@ -258,10 +257,10 @@ public class ContentJdbcRepositoryTest {
     }
 
     @Test
-    public void shouldThrowAIfDeletingAFileAffectsMoreThanOneRow() throws Exception {
+    public void shouldThrowDataIntegrityExceptionIfDeletingAFileAffectsMoreThanOneRow() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "UPDATE content SET deleted = true WHERE file_id = ?";
+        final String sql = "DELETE FROM content WHERE file_id = ?";
         final int rowsAffected = 2;
 
         final Connection connection = mock(Connection.class);
@@ -288,10 +287,10 @@ public class ContentJdbcRepositoryTest {
     }
 
     @Test
-    public void shouldThrowAIfDeletingAFileThrowsAnSqlException() throws Exception {
+    public void shouldThrowStorageExceptionIfDeletingAFileThrowsAnSqlException() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "UPDATE content SET deleted = true WHERE file_id = ?";
+        final String sql = "DELETE FROM content WHERE file_id = ?";
         final SQLException sqlException = new SQLException("Ooops");
 
         final Connection connection = mock(Connection.class);

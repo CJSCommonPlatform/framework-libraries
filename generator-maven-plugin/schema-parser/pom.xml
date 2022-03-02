@@ -7,7 +7,7 @@
     <parent>
         <artifactId>generator-maven-plugin</artifactId>
         <groupId>uk.gov.justice.maven.generator</groupId>
-        <version>8.0.3</version>
+        <version>8.0.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>schema-parser</artifactId>

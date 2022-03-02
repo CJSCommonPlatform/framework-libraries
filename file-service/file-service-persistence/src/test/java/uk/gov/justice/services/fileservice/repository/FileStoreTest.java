@@ -146,7 +146,6 @@ public class FileStoreTest {
     public void shouldFindAFileReferenceByUsingTheContentAndMetadataRepositories() throws Exception {
 
         final UUID fileId = randomUUID();
-        final Boolean deleted = true;
 
         final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
@@ -157,7 +156,7 @@ public class FileStoreTest {
         when(dataSource.getConnection()).thenReturn(connection);
 
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream, deleted)));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream)));
 
         final Optional<FileReference> fileReferenceOptional = fileStore.find(fileId);
 
@@ -166,7 +165,7 @@ public class FileStoreTest {
 
         assertThat(fileReference.getFileId(), is(fileId));
         assertThat(fileReference.getMetadata(), is(metadata));
-        assertThat(fileReference.isDeleted(), is(deleted));
+        assertThat(fileReference.isDeleted(), is(false));
 
 
         final InputStreamWrapper inputStreamWrapper = (InputStreamWrapper) fileReference.getContentStream();
@@ -279,13 +278,12 @@ public class FileStoreTest {
         final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
         final InputStream contentStream = mock(InputStream.class);
-        final Boolean deleted = true;
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
 
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream, deleted)));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream)));
 
         try {
             fileStore.find(fileId);
@@ -302,13 +300,12 @@ public class FileStoreTest {
         final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
         final InputStream contentStream = mock(InputStream.class);
-        final Boolean deleted = true;
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
 
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
-        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream, deleted)));
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream)));
 
         try {
             fileStore.find(fileId);

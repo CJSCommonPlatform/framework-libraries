@@ -22,14 +22,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore("Comment out this ignore if you want to run the File Service against a local Postgres database")
 public class PostgresMetadataJdbcRepositoryIT {
 
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/fileservice";
-    private static final String USERNAME = "fileservice";
-    private static final String PASSWORD = "fileservice";
+    private static final String URL = "jdbc:postgresql://localhost:5432/frameworkfilestore";
+    private static final String USERNAME = "framework";
+    private static final String PASSWORD = "framework";
     private static final String DRIVER_CLASS = org.postgresql.Driver.class.getName();
 
     private final JdbcConnectionProvider connectionProvider = new JdbcConnectionProvider();

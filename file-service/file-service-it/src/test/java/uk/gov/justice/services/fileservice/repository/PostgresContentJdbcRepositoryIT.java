@@ -17,7 +17,10 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.After;
@@ -25,14 +28,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore("Comment out this ignore if you want to run the File Service against a local Postgres database")
 public class PostgresContentJdbcRepositoryIT {
 
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/fileservice";
-    private static final String USERNAME = "fileservice";
-    private static final String PASSWORD = "fileservice";
+    private static final String URL = "jdbc:postgresql://localhost:5432/frameworkfilestore";
+    private static final String USERNAME = "framework";
+    private static final String PASSWORD = "framework";
     private static final String DRIVER_CLASS = org.postgresql.Driver.class.getName();
 
     private final JdbcConnectionProvider connectionProvider = new JdbcConnectionProvider();
@@ -73,8 +75,6 @@ public class PostgresContentJdbcRepositoryIT {
                 .findByFileId(fileId, connection)
                 .orElseThrow(() -> new AssertionError("Failed to find file contents"));
 
-        assertThat(fileContent.isDeleted(), is(false));
-
         final File outputFile = createTempFile("/created-for-testing-file-store-please-delete-me_1", "jpg");
         outputFile.deleteOnExit();
 
@@ -105,17 +105,22 @@ public class PostgresContentJdbcRepositoryIT {
                 .findByFileId(fileId, connection)
                 .orElseThrow(() -> new AssertionError("Failed to find file content"));
 
-        assertThat(fileContent.isDeleted(), is(false));
         fileContent.getContent().close();
 
         contentJdbcRepository.delete(fileId, connection);
 
-        final FileContent deletedFileContent = contentJdbcRepository
-                .findByFileId(fileId, connection)
-                .orElseThrow(() -> new AssertionError("Failed to find file content"));
+        final Optional<FileContent> deletedFileContent = contentJdbcRepository
+                .findByFileId(fileId, connection);
 
-        assertThat(deletedFileContent.isDeleted(), is(true));
-        deletedFileContent.getContent().close();
+        assertThat(deletedFileContent.isPresent(), is(false));
+
+        try(final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from content where file_id = ?")) {
+            preparedStatement.setObject(1, fileId);
+
+            try(final ResultSet resultSet = preparedStatement.executeQuery()) {
+                assertThat(resultSet.next(), is(false));
+            }
+        }
 
         connection.commit();
     }

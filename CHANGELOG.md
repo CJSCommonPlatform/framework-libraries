@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [8.0.3] - 2022-03-02
 ### Changed
 - Changed the file service to make hard delete of files from postgres on delete rather than just marking them as deleted
 - Updated maven to always run the integration tests as part of the build 

@@ -15,12 +15,11 @@ import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.fileservice.client.FileService;
 import uk.gov.justice.services.fileservice.domain.FileReference;
-import uk.gov.justice.services.fileservice.it.helpers.IntegrationTestDataSourceProvider;
-import uk.gov.justice.services.fileservice.repository.AnsiMetadataSqlProvider;
 import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
 import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
+import uk.gov.justice.services.fileservice.utils.test.FileStoreTestDataSourceProvider;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
@@ -31,7 +30,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.UUID;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.sql.DataSource;
@@ -43,11 +41,9 @@ import org.apache.openejb.junit.ApplicationComposer;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Module;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Ignore("Not currently working. This all needs refactoring to remove the need to have an in memory database fix the CDI injection")
 @RunWith(ApplicationComposer.class)
 public class FileServiceIT {
 
@@ -56,11 +52,10 @@ public class FileServiceIT {
     private final LiquibaseDatabaseBootstrapper liquibaseDatabaseBootstrapper = new LiquibaseDatabaseBootstrapper();
     private final ClasspathFileResource classpathFileResource = new ClasspathFileResource();
 
-    @Resource(name = "openejb/Resource/DS.fileservice")
-    private DataSource dataSource;
+    private DataSource dataSource = new FileStoreTestDataSourceProvider().getDatasource();
 
     @Inject
-    FileService fileService;
+    private FileService fileService;
 
     @Module
     @Classes(cdi = true, value = {
@@ -74,9 +69,8 @@ public class FileServiceIT {
 
             FileService.class,
 
-            IntegrationTestDataSourceProvider.class,
+            FileStoreTestDataSourceProvider.class,
 
-            AnsiMetadataSqlProvider.class,
             ContentJdbcRepository.class,
             FileStore.class,
             MetadataJdbcRepository.class,

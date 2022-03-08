@@ -51,8 +51,8 @@ public class FileServiceTestClient {
      *
      * @param databaseDialect the database dialect to use. See {@link DatabaseDialect}
      */
-    public FileServiceTestClient(final DatabaseDialect databaseDialect) {
-        metadataJdbcRepository = new InstantiatableMetadataJdbcRepository(databaseDialect);
+    public FileServiceTestClient() {
+        metadataJdbcRepository = new MetadataJdbcRepository();
         contentJdbcRepository = new ContentJdbcRepository();
         utcClock = new UtcClock();
     }

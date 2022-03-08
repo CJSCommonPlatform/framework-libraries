@@ -31,7 +31,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class MetadataJdbcRepositoryTest {
 
@@ -45,7 +44,7 @@ public class MetadataJdbcRepositoryTest {
     public void shouldInsertMetadata() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String insertSql = "insert sql";
+        final String insertSql = "INSERT INTO metadata(metadata, file_id) values (to_json(?::json), ?)";
 
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
@@ -78,7 +77,7 @@ public class MetadataJdbcRepositoryTest {
         final SQLException sqlException = new SQLException("Ooops");
 
         final UUID fileId = randomUUID();
-        final String insertSql = "insert sql";
+        final String insertSql = "INSERT INTO metadata(metadata, file_id) values (to_json(?::json), ?)";
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
@@ -113,7 +112,7 @@ public class MetadataJdbcRepositoryTest {
     public void shouldThrowADataIntegrityExceptionIfInsertingMetadataReturnsMoreThanOneRowAffected() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String insertSql = "insert sql";
+        final String insertSql = "INSERT INTO metadata(metadata, file_id) values (to_json(?::json), ?)";
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
@@ -146,7 +145,7 @@ public class MetadataJdbcRepositoryTest {
     @Test
     public void shouldUpdateMetadata() throws Exception {
         final UUID fileId = randomUUID();
-        final String updateSql = "update sql";
+        final String updateSql = "UPDATE metadata SET metadata = to_json(?::json) WHERE file_id = ?";
 
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
@@ -179,7 +178,7 @@ public class MetadataJdbcRepositoryTest {
         final SQLException sqlException = new SQLException("Ooops");
 
         final UUID fileId = randomUUID();
-        final String updateSql = "update sql";
+        final String updateSql = "UPDATE metadata SET metadata = to_json(?::json) WHERE file_id = ?";
 
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);
@@ -215,7 +214,7 @@ public class MetadataJdbcRepositoryTest {
     public void shouldThrowADataIntegrityExceptionIfUpdatingMetadataReturnsMoreThanOneRowAffected() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String updateSql = "update sql";
+        final String updateSql = "UPDATE metadata SET metadata = to_json(?::json) WHERE file_id = ?";
 
         final JsonObject metadata = mock(JsonObject.class);
         final Connection connection = mock(Connection.class);

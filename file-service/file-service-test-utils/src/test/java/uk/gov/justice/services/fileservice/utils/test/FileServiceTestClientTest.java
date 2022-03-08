@@ -8,11 +8,9 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static uk.gov.justice.services.fileservice.utils.test.DatabaseDialect.ANSI_SQL;
 
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
-import uk.gov.justice.services.test.utils.core.jdbc.JdbcConnectionProvider;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.File;
@@ -22,48 +20,25 @@ import java.sql.Connection;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class FileServiceTestClientTest {
 
-    private static final String URL = "jdbc:h2:mem:test;MV_STORE=FALSE;MVCC=FALSE";
-    private static final String USERNAME = "sa";
-    private static final String PASSWORD = "sa";
-    private static final String DRIVER_CLASS = org.h2.Driver.class.getName();
-
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
+    private static FileStoreTestDataSourceProvider filestoreTestDataSourceProvider = new FileStoreTestDataSourceProvider();
 
-    private final JdbcConnectionProvider jdbcConnectionProvider = new JdbcConnectionProvider();
     private final ClasspathFileResource classpathFileResource = new ClasspathFileResource();
-
-    private final FileServiceTestClient fileServiceTestClient = new FileServiceTestClient(ANSI_SQL);
-
-    private Connection connection;
+    private final FileServiceTestClient fileServiceTestClient = new FileServiceTestClient();
 
     @BeforeClass
-    public static void createInMemoryDatabase() throws Exception {
+    public static void boostrapFileStoreDatabase() throws Exception {
 
-        new LiquibaseDatabaseBootstrapper().bootstrap(
-                LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML,
-                new JdbcConnectionProvider().getConnection(
-                        URL,
-                        USERNAME,
-                        PASSWORD,
-                        DRIVER_CLASS
-                ));
-    }
-
-    @Before
-    public void createDatabaseConnection() throws Exception {
-
-        connection = jdbcConnectionProvider.getConnection(
-                URL,
-                USERNAME,
-                PASSWORD,
-                DRIVER_CLASS
-        );
+        try(final Connection connection = filestoreTestDataSourceProvider.getDatasource().getConnection()) {
+            new LiquibaseDatabaseBootstrapper().bootstrap(
+                    LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML,
+                    connection);
+        }
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -76,37 +51,38 @@ public class FileServiceTestClientTest {
 
         final InputStream contentStream = new FileInputStream(inputFile);
 
-        final UUID fileId = fileServiceTestClient.create(fileName, mediaType, contentStream, connection);
+        try(final Connection connection = filestoreTestDataSourceProvider.getDatasource().getConnection()) {
 
-        contentStream.close();
+            final UUID fileId = fileServiceTestClient.create(fileName, mediaType, contentStream, connection);
 
-        final Optional<FileReference> fileReferenceOptional = fileServiceTestClient.read(fileId, connection);
+            contentStream.close();
 
-        assertThat(fileReferenceOptional.isPresent(), is(true));
+            final Optional<FileReference> fileReferenceOptional = fileServiceTestClient.read(fileId, connection);
 
-        final FileReference fileReference = fileReferenceOptional.get();
+            assertThat(fileReferenceOptional.isPresent(), is(true));
 
-        assertThat(fileReference.getFileId(), is(fileId));
-        assertThat(fileReference.isDeleted(), is(false));
+            final FileReference fileReference = fileReferenceOptional.get();
 
+            assertThat(fileReference.getFileId(), is(fileId));
+            assertThat(fileReference.isDeleted(), is(false));
 
-        final String metadataJson = fileReference.getMetadata().toString();
+            final String metadataJson = fileReference.getMetadata().toString();
 
-        with(metadataJson)
-                .assertThat("$.fileName", is(fileName))
-                .assertThat("$.mediaType", is(mediaType))
-        ;
+            with(metadataJson)
+                    .assertThat("$.fileName", is(fileName))
+                    .assertThat("$.mediaType", is(mediaType))
+            ;
 
+            try (final InputStream inputStream = fileReference.getContentStream()) {
+                final File outputFile = createTempFile("for-testing-please.delete", "jpg");
+                outputFile.deleteOnExit();
 
-        try(final InputStream inputStream = fileReference.getContentStream()) {
-            final File outputFile = createTempFile("for-testing-please.delete", "jpg");
-            outputFile.deleteOnExit();
+                copy(inputStream, outputFile.toPath(), REPLACE_EXISTING);
 
-            copy(inputStream, outputFile.toPath(), REPLACE_EXISTING);
-
-            assertThat(outputFile.exists(), is(true));
-            assertThat(outputFile.length(), is(greaterThan(0L)));
-            assertThat(outputFile.length(), is(inputFile.length()));
+                assertThat(outputFile.exists(), is(true));
+                assertThat(outputFile.length(), is(greaterThan(0L)));
+                assertThat(outputFile.length(), is(inputFile.length()));
+            }
         }
     }
 
@@ -122,37 +98,38 @@ public class FileServiceTestClientTest {
 
         final UUID fileId = randomUUID();
 
-        assertThat(fileServiceTestClient.create(fileId, fileName, mediaType, contentStream, connection), is(fileId));
+        try(final Connection connection = filestoreTestDataSourceProvider.getDatasource().getConnection()) {
+            assertThat(fileServiceTestClient.create(fileId, fileName, mediaType, contentStream, connection), is(fileId));
 
-        contentStream.close();
+            contentStream.close();
 
-        final Optional<FileReference> fileReferenceOptional = fileServiceTestClient.read(fileId, connection);
+            final Optional<FileReference> fileReferenceOptional = fileServiceTestClient.read(fileId, connection);
 
-        assertThat(fileReferenceOptional.isPresent(), is(true));
+            assertThat(fileReferenceOptional.isPresent(), is(true));
 
-        final FileReference fileReference = fileReferenceOptional.get();
+            final FileReference fileReference = fileReferenceOptional.get();
 
-        assertThat(fileReference.getFileId(), is(fileId));
-        assertThat(fileReference.isDeleted(), is(false));
-
-
-        final String metadataJson = fileReference.getMetadata().toString();
-
-        with(metadataJson)
-                .assertThat("$.fileName", is(fileName))
-                .assertThat("$.mediaType", is(mediaType))
-        ;
+            assertThat(fileReference.getFileId(), is(fileId));
+            assertThat(fileReference.isDeleted(), is(false));
 
 
-        try(final InputStream inputStream = fileReference.getContentStream()) {
-            final File outputFile = createTempFile("for-testing-please.delete", "jpg");
-            outputFile.deleteOnExit();
+            final String metadataJson = fileReference.getMetadata().toString();
 
-            copy(inputStream, outputFile.toPath(), REPLACE_EXISTING);
+            with(metadataJson)
+                    .assertThat("$.fileName", is(fileName))
+                    .assertThat("$.mediaType", is(mediaType))
+            ;
 
-            assertThat(outputFile.exists(), is(true));
-            assertThat(outputFile.length(), is(greaterThan(0L)));
-            assertThat(outputFile.length(), is(inputFile.length()));
+            try (final InputStream inputStream = fileReference.getContentStream()) {
+                final File outputFile = createTempFile("for-testing-please.delete", "jpg");
+                outputFile.deleteOnExit();
+
+                copy(inputStream, outputFile.toPath(), REPLACE_EXISTING);
+
+                assertThat(outputFile.exists(), is(true));
+                assertThat(outputFile.length(), is(greaterThan(0L)));
+                assertThat(outputFile.length(), is(inputFile.length()));
+            }
         }
     }
 }

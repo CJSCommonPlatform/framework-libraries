@@ -12,7 +12,7 @@
 
     <properties>
         <sonar.skip>true</sonar.skip>
-		 <liquibase.version>3.4.2</liquibase.version>
+		 <liquibase.version>4.8.0</liquibase.version>
     </properties>
 
     <build>

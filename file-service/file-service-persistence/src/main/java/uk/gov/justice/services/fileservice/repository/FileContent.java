@@ -5,18 +5,12 @@ import java.io.InputStream;
 public class FileContent {
 
     private final InputStream content;
-    private final Boolean deleted;
 
-    public FileContent(final InputStream content, final Boolean deleted) {
+    public FileContent(final InputStream content) {
         this.content = content;
-        this.deleted = deleted;
     }
 
     public InputStream getContent() {
         return content;
-    }
-
-    public Boolean isDeleted() {
-        return deleted;
     }
 }

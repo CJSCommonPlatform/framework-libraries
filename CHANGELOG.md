@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [11.0.0-M9] - 2022-03-10
+### Changed
+- Cherry-picked from java 8
+  - Changed the file service to make hard delete of files from postgres on delete rather than just marking them as deleted
+  - Updated maven to always run the integration tests as part of the build
+  - Removed support for in memory databases for filestore. Postgres is now required
+
 
 ## [11.0.0-M8] - 2022-02-25
 ### Changed

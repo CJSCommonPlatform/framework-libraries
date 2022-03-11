@@ -5,6 +5,7 @@ import static uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder.crea
 import uk.gov.justice.services.cdi.InitialContextProducer;
 import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
+import uk.gov.justice.services.common.converter.JsonObjectConvertersProducer;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -98,7 +99,9 @@ public class BakeryServiceIT {
             PersistenceUnit.class,
             ObjectMapperProducer.class,
             InitialContextProducer.class,
-            UtcClock.class
+            UtcClock.class,
+
+            JsonObjectConvertersProducer.class
     },
             cdiAlternatives = {PostgresJobSqlProvider.class}
     )

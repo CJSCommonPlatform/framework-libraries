@@ -1,6 +1,7 @@
 package uk.gov.justice.services.test.utils.core.schema;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -19,7 +20,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -192,7 +192,7 @@ public class SchemaDuplicateChecker {
      */
     private List<SchemaFile> listSchemaFilesFromDir(File baseContainer, File directory) {
 
-        List<File> files = Arrays.asList(directory
+        List<File> files = asList(directory
                 .listFiles(d -> d.getAbsolutePath().toLowerCase().endsWith(JSON_SCHEMA_FILE_EXTENSION) || d.isDirectory()));
 
         List<SchemaFile> returnList = new ArrayList<>();

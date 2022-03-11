@@ -49,6 +49,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.xbean</groupId>
+            <artifactId>xbean-asm7-shaded</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>jobstore-liquibase</artifactId>
             <version>${project.version}</version>

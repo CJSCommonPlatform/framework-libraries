@@ -29,9 +29,9 @@ import java.util.UUID;
  */
 public class ContentJdbcRepository {
 
-    public static final String SQL_FIND_BY_FILE_ID = "SELECT content, deleted FROM content WHERE file_id = ?";
+    public static final String SQL_FIND_BY_FILE_ID = "SELECT content FROM content WHERE file_id = ?";
     public static final String SQL_INSERT_CONTENT = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
-    public static final String SQL_DELETE_CONTENT = "UPDATE content SET deleted = true WHERE file_id = ?";
+    public static final String SQL_DELETE_CONTENT = "DELETE FROM content WHERE file_id = ?";
 
     /**
      * Inserts the content into the content table as an array of bytes[]
@@ -82,8 +82,7 @@ public class ContentJdbcRepository {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     final InputStream contentStream = resultSet.getBinaryStream(1);
-                    final boolean deleted = resultSet.getBoolean(2);
-                    return of(new FileContent(contentStream, deleted));
+                    return of(new FileContent(contentStream));
                 }
             }
         } catch (final SQLException e) {

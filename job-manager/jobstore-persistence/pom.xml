@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice.services</groupId>
         <artifactId>job-manager</artifactId>
-        <version>11.0.0-M9-SNAPSHOT</version>
+        <version>11.0.0-M10</version>
     </parent>
 
     <artifactId>jobstore-persistence</artifactId>

@@ -19,7 +19,6 @@
         <module>test-utils-framework-api</module>
         <module>test-utils-logging-jdk</module>
         <module>test-utils-logging-log4j</module>
-        <module>test-utils-logging-log4j2</module>
         <module>test-utils-logging-simple</module>
     </modules>
 

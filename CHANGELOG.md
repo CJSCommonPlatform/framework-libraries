@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [11.0.0-M11] - 2022-03-15
+### Changed
+- Update common-bom to 11.0.0-M11
+
 ## [11.0.0-M10] - 2022-03-15
 ### Changed
 - Updated to log4j 2; all dependencies on log4j 1 removed

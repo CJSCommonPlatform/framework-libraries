@@ -35,6 +35,7 @@
         <module>framework-api-interceptors</module>
         <module>framework-api-unifiedsearch</module>
         <module>framework-api-system</module>
+        <module>framework-api-healthcheck</module>
     </modules>
 
 </project>

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [11.0.0-M13] - 2022-03-23
+### Changed
+- Added healthcheck api libraries to bom
+
 ## [11.0.0-M12] - 2022-03-22
 ### Changed
 - Added healthcheck api classes as a new module

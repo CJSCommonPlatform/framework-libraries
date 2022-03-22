@@ -121,6 +121,11 @@
                 <version>${framework-libraries.version}</version>
             </dependency>
             <dependency>
+                <groupId>uk.gov.justice.framework-api</groupId>
+                <artifactId>framework-api-healthcheck</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>uk.gov.justice.maven</groupId>
                 <artifactId>maven-test-utils</artifactId>
                 <version>${framework-libraries.version}</version>

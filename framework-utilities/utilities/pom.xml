@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice.framework.utilities</groupId>
         <artifactId>framework-utilities</artifactId>
-        <version>11.0.0-M12-SNAPSHOT</version>
+        <version>11.0.0-M12</version>
     </parent>
 
     <groupId>uk.gov.justice.utils</groupId>

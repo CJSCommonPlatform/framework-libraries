@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Update postgres version used by travis in travis.yml
+
 ## [11.0.0-M13] - 2022-03-23
 ### Changed
 - Added healthcheck api libraries to bom

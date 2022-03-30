@@ -2,35 +2,50 @@ dist: trusty
 sudo: required
 language: java
 jdk:
-- openjdk11
+  - openjdk11
 git:
   depth: 3
 cache:
   directories:
-  - "$HOME/.m2"
+    - "$HOME/.m2"
 services:
-- postgresql
+  - postgresql
 before_script:
-- psql -c 'create database frameworkeventstore;' -U postgres
-- psql -c 'create database frameworkviewstore;' -U postgres
-- psql -c 'create database frameworkfilestore;' -U postgres
-- psql -c 'create database frameworkjobstore;' -U postgres
-- psql -c "CREATE USER framework WITH PASSWORD 'framework';" -U postgres
-addons:
-  postgresql: '9.5'
+  - export PATH="/usr/lib/postgresql/11/bin:$PATH"
+  - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
+  - psql -c 'create database frameworkeventstore;' -U postgres
+  - psql -c 'create database frameworkviewstore;' -U postgres
+  - psql -c 'create database frameworkfilestore;' -U postgres
+  - psql -c 'create database frameworkjobstore;' -U postgres
+  - psql -c "CREATE USER framework WITH PASSWORD 'framework';" -U postgres
+#addons:
+#  postgresql: '11'
+#  apt:
+#    packages:
+#      - postgresql-11
+#      - postgresql-client-11
   sonarcloud:
     organization: cjscommonplatform
     token:
       secure: dGrhYzf6WtIdubDnHrBadjHIOazDFo8yDgJrffQgBrbYeEH3jITFev2BlQUSLEESYWnlmoz/diy4aPLcgJUAcgMByF2gnZtIq/9q/UClqLpWZtLmXz7Aw2JT+TuEE7pU4PpDSflhMwUf9b+q5FdrBy8XVA2WnYIRVwBnLe7hz8ab+9ifeP3h01Wx/OdqiDKI+g0WzyMlxtWGUUYXGEchg6e8yk1gXK8YmsYG6IlTE8FVLIHhCxfiKIM30AA0Rk7ARkTt2KEBc4rvauPhr7aXBDZctQSWQWcz1KqbvsCWNE7clZxt6fJzf9OI8LUAxFRC9w9V5qibLP4Pa+8OFJjlAAy7ciUlKWz71S6qm5v7zWpzm2urC+NeaeqsZMNW/0uC3XZT8fPU3UbmIX+ME7ppPbR8jGU8DN9DffopTWP+AbQ7a3Wy471usc4QsowcEJaqVnddK1YpyxgkbamfmfyCMg8g9CY6Nwcr+6uPuuZ5pVs8A8pPI/L4GA7zuEKUCcppdZ7oCIESRA8QPfb0TcZeHyC48v3f0i2G21P7glEnryNu6j7cf17QIgyfqct5Vi9xytD/h7seP/NRWSEY66fRm/wqOFnS9QUjZ9StcAvlMCj/AT//pNClOeZMxwTklD+fKvpfQUxtJ81+J0Yrb3/zoMQjJxNLsPamZj45AdmmisY=
 before_install:
-- git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
-- ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
-- ln -sfT ${PWD}/target/travis-settings/mvnw mvnw
-- ln -sft ${PWD} ${PWD}/target/travis-settings/.mvn
+  - git clone https://github.com/CJSCommonPlatform/travis-settings.git target/travis-settings
+  - ln -sfT ${PWD}/target/travis-settings/settings.xml ${HOME}/.m2/settings.xml
+  - ln -sfT ${PWD}/target/travis-settings/mvnw mvnw
+  - ln -sft ${PWD} ${PWD}/target/travis-settings/.mvn
+  - sudo service postgresql stop
+  - sudo apt install -yq --no-install-suggests --no-install-recommends postgresql-11 postgresql-client-11 
+  - sed -e 's/^port.*/port = 5432/' /etc/postgresql/11/main/postgresql.conf > postgresql.conf
+  - sudo chown postgres postgresql.conf
+  - sudo mv postgresql.conf /etc/postgresql/11/main
+  - sudo cp /etc/postgresql/{10,11}/main/pg_hba.conf
+  - sudo service postgresql restart 11
+
 install: "${PWD}/target/travis-settings/java/install.sh -e -DexcludeGroupIds=uk.gov.justice.service,uk.gov.justice.services"
 script: "${PWD}/target/travis-settings/java/script-install.sh coveralls:report sonar:sonar"
 after_success: "${PWD}/target/travis-settings/java/after_success.sh"
 env:
   global:
-  - PGPORT=5432
-  - secure: Mf3ToLWv4oELn7t0G4wSKvGEbIZveIkvUixxCWRu4uzbObL9YqRqA8K9ilpOM3xGaZkPpW/7wiUx3G9j1dxTOc5p88pj7+25faFN0lOlivdZJwSMc0T0iBtA1hqZNffeY+nm3MHJFoOMBgEzXl5j5WGDNZEEqcoMSIjJztAP4w21dwh3IucyIWlsxcIxV6OK69eaxBOXThOhb8REUp4umEMPDOPYDobJ75Jp9dDWAEuP0pOezcz/EENa1k19WQl5d7SaH8AZUbdFS2vqTjoY9fCpSbcJj0mlIxHK0bje1l/dR/3+PRtPj/luFsDUpp904KKnoJ7Ae0YVVxa/MvoR9RpODUvUFUpA3GFYMcsNLyE2Gdm9MipjOeFPiAI/JWAFQoe6nWHJMS/F0OdkrGP1Gk06aZDTlMLNXnZizOtCClL24TCfqhgXVzTPo211tGINlVFYUzIFHYMDp2f9T/THjn1X/Wz69pCIhACEMnYF0vUEbr/oOa45EIp7SdbWhJtEs1T1OBsoTp3pvthLUKP5Y9P90mTlT8Jh5etE+VJyV9d7Kia0Od320HEtE6MikYMtZGohhxjn2I2hKjizfWbEOW5d9BeAjtu8ghLp82vzJgmy+aiUaPkHfOlRqNE7wOCAqpO8GZmPxeYfcfNIq+vhYVlwKkTyYjpDx9J3oIVcIDY=
+    - PGPORT=5432
+    - PGUSER=travis
+    - secure: Mf3ToLWv4oELn7t0G4wSKvGEbIZveIkvUixxCWRu4uzbObL9YqRqA8K9ilpOM3xGaZkPpW/7wiUx3G9j1dxTOc5p88pj7+25faFN0lOlivdZJwSMc0T0iBtA1hqZNffeY+nm3MHJFoOMBgEzXl5j5WGDNZEEqcoMSIjJztAP4w21dwh3IucyIWlsxcIxV6OK69eaxBOXThOhb8REUp4umEMPDOPYDobJ75Jp9dDWAEuP0pOezcz/EENa1k19WQl5d7SaH8AZUbdFS2vqTjoY9fCpSbcJj0mlIxHK0bje1l/dR/3+PRtPj/luFsDUpp904KKnoJ7Ae0YVVxa/MvoR9RpODUvUFUpA3GFYMcsNLyE2Gdm9MipjOeFPiAI/JWAFQoe6nWHJMS/F0OdkrGP1Gk06aZDTlMLNXnZizOtCClL24TCfqhgXVzTPo211tGINlVFYUzIFHYMDp2f9T/THjn1X/Wz69pCIhACEMnYF0vUEbr/oOa45EIp7SdbWhJtEs1T1OBsoTp3pvthLUKP5Y9P90mTlT8Jh5etE+VJyV9d7Kia0Od320HEtE6MikYMtZGohhxjn2I2hKjizfWbEOW5d9BeAjtu8ghLp82vzJgmy+aiUaPkHfOlRqNE7wOCAqpO8GZmPxeYfcfNIq+vhYVlwKkTyYjpDx9J3oIVcIDY=

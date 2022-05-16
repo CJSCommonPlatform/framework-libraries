@@ -1,5 +1,6 @@
 package uk.gov.justice.services.fileservice.domain;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -66,14 +67,15 @@ public class FileReference implements AutoCloseable {
      * Implementation of {@link AutoCloseable} {@code close()}. Closes
      * the content stream of the file, which in turn closes the sql {@link java.sql.Connection}
      * to the database.
-     *
-     * @throws Exception if closing the content stream fails
      */
     @Override
-    public void close() throws Exception {
+    public void close() {
 
         if(contentStream != null) {
-            contentStream.close();
+            try {
+                contentStream.close();
+            } catch (final IOException ignored) {
+            }
         }
     }
 

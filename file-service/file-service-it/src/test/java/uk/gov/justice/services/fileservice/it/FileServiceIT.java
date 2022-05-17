@@ -19,10 +19,10 @@ import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
 import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
+import uk.gov.justice.services.fileservice.utils.test.FileStoreDatabaseBootstrapper;
 import uk.gov.justice.services.fileservice.utils.test.FileStoreTestDataSourceProvider;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
-import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.utilities.file.ContentTypeDetector;
 
 import java.io.File;
@@ -32,7 +32,6 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
-import javax.sql.DataSource;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.openejb.jee.Application;
@@ -47,12 +46,7 @@ import org.junit.runner.RunWith;
 @RunWith(ApplicationComposer.class)
 public class FileServiceIT {
 
-    private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
-
-    private final LiquibaseDatabaseBootstrapper liquibaseDatabaseBootstrapper = new LiquibaseDatabaseBootstrapper();
     private final ClasspathFileResource classpathFileResource = new ClasspathFileResource();
-
-    private DataSource dataSource = new FileStoreTestDataSourceProvider().getDatasource();
 
     @Inject
     private FileService fileService;
@@ -89,9 +83,7 @@ public class FileServiceIT {
 
     @Before
     public void initDatabase() throws Exception {
-        liquibaseDatabaseBootstrapper.bootstrap(
-                LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML,
-                dataSource.getConnection());
+        new FileStoreDatabaseBootstrapper().initDatabase();
     }
 
     @Test

@@ -3,8 +3,5 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="liquibase/jobstore-changesets/001-create-tables.xml"/>
-    <include file="liquibase/jobstore-changesets/002a-add-job-data-column-h2.xml"/>
-    <include file="liquibase/jobstore-changesets/002b-add-job-data-column-postgres.xml"/>
-
+<includeAll relativeToChangelogFile="true" path="jobstore-changesets"/>
 </databaseChangeLog>

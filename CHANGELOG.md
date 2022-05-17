@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [11.0.0-M14] - 2022-05-18
 ### Changed
+- Updated liquibase to 4.10.0 and made required changes to liquibase property files
 - Close method on FileReference in the file-store no longer has checked Exception in signature
 
 ## [11.0.0-M13] - 2022-03-23

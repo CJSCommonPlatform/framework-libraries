@@ -5,8 +5,8 @@ import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import uk.gov.justice.services.fileservice.utils.test.FileStoreDatabaseBootstrapper;
 import uk.gov.justice.services.fileservice.utils.test.FileStoreTestDataSourceProvider;
-import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -23,11 +23,8 @@ import org.junit.Test;
 
 public class MetadataJdbcRepositoryIT {
 
-    private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
-
     private final MetadataJdbcRepository metadataJdbcRepository = new MetadataJdbcRepository();
     private final ContentJdbcRepository contentJdbcRepository = new ContentJdbcRepository();
-    private final LiquibaseDatabaseBootstrapper liquibaseDatabaseBootstrapper = new LiquibaseDatabaseBootstrapper();
 
     private Connection connection;
 
@@ -35,7 +32,7 @@ public class MetadataJdbcRepositoryIT {
     public void setupDatabase() throws Exception {
 
         connection = new FileStoreTestDataSourceProvider().getDatasource().getConnection();
-        liquibaseDatabaseBootstrapper.bootstrap(LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML, connection);
+        new FileStoreDatabaseBootstrapper().initDatabase();
     }
 
     @After
@@ -57,8 +54,6 @@ public class MetadataJdbcRepositoryIT {
 
         contentJdbcRepository.insert(fileId, content, connection);
         metadataJdbcRepository.insert(fileId, metadata, connection);
-
-        connection.commit();
 
         final JsonObject foundMetadata = metadataJdbcRepository
                 .findByFileId(fileId, connection)
@@ -93,8 +88,6 @@ public class MetadataJdbcRepositoryIT {
                 .orElseThrow(() -> new AssertionError("Failed to find metadata using id " + fileId));
 
         assertThat(updatedMetadata, is(newMetadata));
-
-        connection.commit();
     }
 
     @Test
@@ -114,8 +107,6 @@ public class MetadataJdbcRepositoryIT {
         metadataJdbcRepository.delete(fileId, connection);
 
         assertThat(metadataJdbcRepository.findByFileId(fileId, connection).isPresent(), is(false));
-
-        connection.commit();
     }
 
     private JsonObject toJsonObject(final String json) {

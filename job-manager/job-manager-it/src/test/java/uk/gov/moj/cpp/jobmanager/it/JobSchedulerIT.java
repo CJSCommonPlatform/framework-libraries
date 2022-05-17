@@ -71,7 +71,7 @@ import org.junit.runner.RunWith;
 @RunWith(ApplicationComposer.class)
 public class JobSchedulerIT {
 
-    private static final String LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML = "liquibase/jobstore-db-changelog.xml";
+    private static final String LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML = "liquibase-files/jobstore-db-changelog.xml";
 
     @Inject
     OpenEjbJobJdbcRepository testJobJdbcRepository;

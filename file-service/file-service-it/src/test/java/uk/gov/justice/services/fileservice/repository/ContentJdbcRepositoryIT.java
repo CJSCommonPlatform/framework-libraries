@@ -8,8 +8,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 
+import uk.gov.justice.services.fileservice.utils.test.FileStoreDatabaseBootstrapper;
 import uk.gov.justice.services.fileservice.utils.test.FileStoreTestDataSourceProvider;
-import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,10 +29,7 @@ import org.junit.Test;
 
 public class ContentJdbcRepositoryIT {
 
-    private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
-
     private final ContentJdbcRepository contentJdbcRepository = new ContentJdbcRepository();
-    private final LiquibaseDatabaseBootstrapper liquibaseDatabaseBootstrapper = new LiquibaseDatabaseBootstrapper();
 
     private Connection connection;
 
@@ -41,9 +38,7 @@ public class ContentJdbcRepositoryIT {
 
         connection = new FileStoreTestDataSourceProvider().getDatasource().getConnection();
 
-        liquibaseDatabaseBootstrapper.bootstrap(
-                LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML,
-                connection);
+        new FileStoreDatabaseBootstrapper().initDatabase();
     }
 
     @After
@@ -79,8 +74,6 @@ public class ContentJdbcRepositoryIT {
         assertThat(outputFile.exists(), is(true));
         assertThat(outputFile.length(), is(greaterThan(0L)));
         assertThat(outputFile.length(), is(inputFile.length()));
-
-        connection.commit();
     }
 
     @Test
@@ -114,8 +107,6 @@ public class ContentJdbcRepositoryIT {
                 assertThat(resultSet.next(), is(false));
             }
         }
-
-        connection.commit();
     }
 
     public File getFile(final String fileName) throws URISyntaxException {

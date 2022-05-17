@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 
 public class JobJdbcRepositoryTest {
 
-    private static final String LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML = "liquibase/jobstore-db-changelog.xml";
+    private static final String LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML = "liquibase-files/jobstore-db-changelog.xml";
     private static final String JOBS_COUNT = "SELECT COUNT(*) FROM job";
     private static final String JOB_DATA_JSON = "{\"some\": \"json\"}";
 

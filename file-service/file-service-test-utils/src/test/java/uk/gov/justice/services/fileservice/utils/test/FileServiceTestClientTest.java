@@ -11,7 +11,6 @@ import static org.hamcrest.Matchers.greaterThan;
 
 import uk.gov.justice.services.fileservice.domain.FileReference;
 import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
-import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +24,6 @@ import org.junit.Test;
 
 public class FileServiceTestClientTest {
 
-    private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
     private static FileStoreTestDataSourceProvider filestoreTestDataSourceProvider = new FileStoreTestDataSourceProvider();
 
     private final ClasspathFileResource classpathFileResource = new ClasspathFileResource();
@@ -33,12 +31,7 @@ public class FileServiceTestClientTest {
 
     @BeforeClass
     public static void boostrapFileStoreDatabase() throws Exception {
-
-        try(final Connection connection = filestoreTestDataSourceProvider.getDatasource().getConnection()) {
-            new LiquibaseDatabaseBootstrapper().bootstrap(
-                    LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML,
-                    connection);
-        }
+        new FileStoreDatabaseBootstrapper().initDatabase();
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

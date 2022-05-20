@@ -52,9 +52,11 @@ import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Configuration;
 import org.apache.openejb.testing.Module;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@Ignore("This test takes minutes to run and isn't really critical, so taking it out of the default build. Uncomment this to run")
 @RunWith(ApplicationComposer.class)
 public class BakeryServiceIT {
 

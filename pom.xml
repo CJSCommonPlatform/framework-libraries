@@ -12,7 +12,7 @@
 
     <groupId>uk.gov.justice.framework.libraries</groupId>
     <artifactId>framework-libraries</artifactId>
-    <version>11.0.0-M16-SNAPSHOT</version>
+    <version>11.0.0-M16</version>
     <packaging>pom</packaging>
 
     <name>Framework Common Libraries</name>

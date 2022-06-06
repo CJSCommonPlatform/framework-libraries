@@ -41,7 +41,7 @@ public class AlfrescoFileRequester implements FileRequester {
     @Override
     public Optional<InputStream> request(final String fileId, final String fileMimeType, final String fileName) {
         try {
-            return ofNullable(restClient.getAsInputStream(alfrescoUriOf(fileId, fileName),
+            return ofNullable(restClient.getAsInputStream(alfrescoUriOf(fileId),
                     valueOf(fileMimeType), headersWithUserId(alfrescoReadUser)));
         } catch (final NotFoundException nfe) {
             return empty();
@@ -65,8 +65,8 @@ public class AlfrescoFileRequester implements FileRequester {
         }
     }
 
-    private String alfrescoUriOf(final String fileId, final String fileName) {
-        return format("%s%s/content/%s", alfrescoWorkspacePath, fileId, fileName);
+    private String alfrescoUriOf(final String fileId) {
+        return format("%s%s", alfrescoWorkspacePath, fileId);
     }
 
     private String alfrescoPdfUriOf(final String fileId, final String fileName) {

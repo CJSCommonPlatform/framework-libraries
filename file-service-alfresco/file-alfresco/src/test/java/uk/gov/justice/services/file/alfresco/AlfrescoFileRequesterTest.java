@@ -53,7 +53,7 @@ public class AlfrescoFileRequesterTest {
         alfrescoFileRequester.alfrescoReadUser = randomUUID().toString();
         final String fileId = randomUUID().toString();
 
-        when(alfrescoRestClient.getAsInputStream(format("%s%s/content/%s",
+        when(alfrescoRestClient.getAsInputStream(format("%s%s",
                 alfrescoFileRequester.alfrescoWorkspacePath, fileId, FILE_NAME),
                 TEXT_PLAIN_TYPE, headersWithUserId(alfrescoFileRequester.alfrescoReadUser)))
                 .thenReturn(inputStream);
@@ -73,7 +73,7 @@ public class AlfrescoFileRequesterTest {
         final String fileId = randomUUID().toString();
         final NotFoundException notFoundException = new NotFoundException("oops");
 
-        when(alfrescoRestClient.getAsInputStream(format("%s%s/content/%s",
+        when(alfrescoRestClient.getAsInputStream(format("%s%s",
                 alfrescoFileRequester.alfrescoWorkspacePath, fileId, FILE_NAME),
                 TEXT_PLAIN_TYPE, headersWithUserId(alfrescoFileRequester.alfrescoReadUser)))
                 .thenThrow(notFoundException);
@@ -91,7 +91,7 @@ public class AlfrescoFileRequesterTest {
         final String fileId = randomUUID().toString();
         final ProcessingException processingException = new ProcessingException("oops");
 
-        when(alfrescoRestClient.getAsInputStream(format("%s%s/content/%s",
+        when(alfrescoRestClient.getAsInputStream(format("%s%s",
                 alfrescoFileRequester.alfrescoWorkspacePath, fileId, FILE_NAME),
                 TEXT_PLAIN_TYPE, headersWithUserId(alfrescoFileRequester.alfrescoReadUser)))
                 .thenThrow(processingException);
@@ -113,7 +113,7 @@ public class AlfrescoFileRequesterTest {
         final String fileId = randomUUID().toString();
         final InternalServerErrorException internalServerErrorException = new InternalServerErrorException("oops");
 
-        when(alfrescoRestClient.getAsInputStream(format("%s%s/content/%s",
+        when(alfrescoRestClient.getAsInputStream(format("%s%s",
                 alfrescoFileRequester.alfrescoWorkspacePath, fileId, FILE_NAME),
                 TEXT_PLAIN_TYPE, headersWithUserId(alfrescoFileRequester.alfrescoReadUser)))
                 .thenThrow(internalServerErrorException);

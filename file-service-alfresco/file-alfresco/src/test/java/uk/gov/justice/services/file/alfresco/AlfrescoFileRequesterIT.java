@@ -63,7 +63,7 @@ public class AlfrescoFileRequesterIT {
         final String fileName = "file.txt";
         fileRequester.request(fileId, UNUSED_MIME_TYPE, fileName);
 
-        verify(getRequestedFor(urlEqualTo(format("/alfresco%s%s/content/%s", ALFRESCO_WORKSPACE_PATH, fileId, fileName)))
+        verify(getRequestedFor(urlEqualTo(format("/alfresco%s%s", ALFRESCO_WORKSPACE_PATH, fileId, fileName)))
                 .withHeader("cppuid", equalTo("user1234")));
     }
 
@@ -74,7 +74,7 @@ public class AlfrescoFileRequesterIT {
         final String fileName = "file123.txt";
         final String fileContent = "abcd";
 
-        stubFor(get(urlMatching(format("/alfresco%s%s/content/%s", ALFRESCO_WORKSPACE_PATH, fileId, fileName)))
+        stubFor(get(urlMatching(format("/alfresco%s%s", ALFRESCO_WORKSPACE_PATH, fileId, fileName)))
                 .withHeader("cppuid", equalTo("user1234"))
                 .willReturn(aResponse().withHeader("Content-Type", TEXT_PLAIN).withBody(fileContent)));
 
@@ -121,7 +121,7 @@ public class AlfrescoFileRequesterIT {
         final String fileId = randomUUID().toString();
         final String fileName = "file.txt";
 
-        stubFor(get(urlEqualTo(format("/alfresco%s%s/content/%s", ALFRESCO_WORKSPACE_PATH, fileId, fileName)))
+        stubFor(get(urlEqualTo(format("/alfresco%s%s", ALFRESCO_WORKSPACE_PATH, fileId, fileName)))
                 .withHeader("cppuid", equalTo("user1234")).willReturn(aResponse().withStatus(500)));
 
         try {

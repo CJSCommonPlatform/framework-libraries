@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [8.0.5] - 2022-07-23
 ### Changed
 - Updated API path for alfresco read material endpoint
 

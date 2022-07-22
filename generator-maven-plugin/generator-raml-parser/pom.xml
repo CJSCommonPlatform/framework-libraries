@@ -7,7 +7,7 @@
     <parent>
         <artifactId>generator-maven-plugin</artifactId>
         <groupId>uk.gov.justice.maven.generator</groupId>
-        <version>8.0.5</version>
+        <version>8.0.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>generator-raml-parser</artifactId>

@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M19] - 2022-08-11
+### Changed
+- Update common bom to 11.0.0-M15 in order to:
+    - Update artemis-jms-client to 2.10.1
+
 ## [11.0.0-M18] - 2022-06-08
 ### Changed
 - Updated API path for alfresco read material endpoint
@@ -18,7 +23,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Update liquibase to 4.10.0
 - Update maven-framework-parent-pom to 11.0.0-M6
 - Update common-bom to 11.0.0-M13
-
 
 ## [11.0.0-M15] - 2022-05-20
 ### Changed

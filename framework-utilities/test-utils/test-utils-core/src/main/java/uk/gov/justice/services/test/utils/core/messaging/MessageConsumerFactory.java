@@ -12,10 +12,8 @@ public class MessageConsumerFactory {
     private MessageConsumer messageConsumer;
     private JmsSessionFactory jmsSessionFactory;
 
-
-
-    public MessageConsumerFactory() {
-        jmsSessionFactory = new JmsSessionFactory();
+    public MessageConsumerFactory(final JmsSessionFactory jmsSessionFactory) {
+        this.jmsSessionFactory = jmsSessionFactory;
     }
 
     public MessageConsumer createAndStart(

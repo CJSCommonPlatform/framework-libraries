@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M20] - 2022-08-30
+### Changed
+- DeadLetterQueueBrowser now has 
+  - A default name of `jms.queue.DLQ` rather than the original name of `DLQ`
+  - A new constructor to pass the name in if you don't want the default name
+### Added
+- New builder `MessageConsumerClientBuilder` that allows ActiveMQ connection parameters to be specified  
+
 ## [11.0.0-M19] - 2022-08-11
 ### Changed
 - Update common bom to 11.0.0-M15 in order to:

@@ -41,14 +41,29 @@ public class DeadLetterQueueBrowser implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeadLetterQueueBrowser.class);
 
     private static final List<String> DLQ_QUEUE_URIS = artemisQueueUri();
-    private static final String DLQ_NAME = "DLQ";
+    private static final String DEFAULT_DLQ_NAME = "jms.queue.DLQ";
 
-    private List<Session> sessions;
-    private List<JmsSessionFactory> jmsSessionFactories;
+    private final List<Session> sessions;
+    private final List<JmsSessionFactory> jmsSessionFactories;
     private Queue dlqQueue;
     private final ConsumerClient consumerClient;
 
+    private final String dlqName;
+
+    /**
+     * Creates a browser for the Dead Letter Queue with the default name of 'jms.queue.DLQ'
+     */
     public DeadLetterQueueBrowser() {
+        this(DEFAULT_DLQ_NAME);
+    }
+
+    /**
+     * Creates a browser for the Dead Letter Queue with the supplied name
+     *
+     * @param dlqName The name of the DLQ
+     */
+    public DeadLetterQueueBrowser(final String dlqName) {
+        this.dlqName = dlqName;
         consumerClient = new ConsumerClient();
         jmsSessionFactories = Lists.newArrayList();
         sessions = Lists.newArrayList();
@@ -56,9 +71,14 @@ public class DeadLetterQueueBrowser implements AutoCloseable {
     }
 
     @VisibleForTesting
-    DeadLetterQueueBrowser(final Queue dlqQueue, final List<Session> sessions,
-                           final List<JmsSessionFactory> jmsSessionFactories, final ConsumerClient consumerClient) {
+    DeadLetterQueueBrowser(
+            final String dlqName,
+            final Queue dlqQueue,
+            final List<Session> sessions,
+            final List<JmsSessionFactory> jmsSessionFactories,
+            final ConsumerClient consumerClient) {
         super();
+        this.dlqName = dlqName;
         this.sessions = sessions;
         this.jmsSessionFactories = jmsSessionFactories;
         this.dlqQueue = dlqQueue;
@@ -73,10 +93,10 @@ public class DeadLetterQueueBrowser implements AutoCloseable {
                 sessions.add(jmsSessionFactory.session(u));
                 jmsSessionFactories.add(jmsSessionFactory);
             });
-            dlqQueue = new ActiveMQQueue(DLQ_NAME);
+            dlqQueue = new ActiveMQQueue(dlqName);
         } catch (Exception e) {
             close();
-            final String message = "Failed to start dlq message consumer for " + "queue: '" + DLQ_NAME + "', "
+            final String message = "Failed to start dlq message consumer for " + "queue: '" + dlqName + "', "
                     + "queueUris: '" + DLQ_QUEUE_URIS + " ";
             LOGGER.error("Fatal error initialising Artemis {}  ", message);
             throw new MessageConsumerException(message, e);

@@ -55,7 +55,12 @@ public class DeadLetterQueueBrowserTest {
 
     @Before
     public void setup() {
-        deadLetterQueueBrowser = new DeadLetterQueueBrowser(dlqQueue, newArrayList(session), newArrayList(jmsSessionFactory), consumerClient);
+        deadLetterQueueBrowser = new DeadLetterQueueBrowser(
+                "jms.queue.DLQ",
+                dlqQueue,
+                newArrayList(session),
+                newArrayList(jmsSessionFactory),
+                consumerClient);
     }
 
     @Test

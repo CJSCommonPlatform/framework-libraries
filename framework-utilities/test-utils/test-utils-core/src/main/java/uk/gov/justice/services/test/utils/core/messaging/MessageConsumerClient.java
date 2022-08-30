@@ -23,8 +23,14 @@ public class MessageConsumerClient  implements AutoCloseable {
     private MessageConsumer messageConsumer;
     private ConsumerClient consumerClient;
 
+    @Deprecated(since = "Please use MessageConsumerClientBuilder to create instead of using this constructor")
     public MessageConsumerClient() {
-        this(new MessageConsumerFactory(), new ConsumerClient());
+        this(new JmsSessionFactory());
+    }
+
+
+    MessageConsumerClient(final JmsSessionFactory jmsSessionFactory) {
+        this(new MessageConsumerFactory(jmsSessionFactory), new ConsumerClient());
     }
 
     @VisibleForTesting

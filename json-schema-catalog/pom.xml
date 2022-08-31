@@ -7,12 +7,12 @@
     <parent>
         <groupId>uk.gov.justice.framework.libraries</groupId>
         <artifactId>framework-libraries</artifactId>
-        <version>11.0.0-M20</version>
+        <version>11.0.0-M21-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.justice.schema</groupId>
     <artifactId>json-schema-catalog</artifactId>
-    <version>11.0.0-M20</version>
+    <version>11.0.0-M21-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>

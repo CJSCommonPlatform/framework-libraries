@@ -10,8 +10,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClientBuilder.aMessageConsumerClient;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
 
-import uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil;
-
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;

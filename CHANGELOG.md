@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M21] - 2022-09-02
+### Changed
+- MessageConsumerClient is now idempotent when calling `startConsumer(...)`
+
 ## [11.0.0-M20] - 2022-08-30
 ### Changed
 - DeadLetterQueueBrowser now has 

@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M22] - 2022-10-18
+### Changed
+- Updated slf4j/log4j bridge jar from slf4j-log4j12 to slf4j-reload4j
+
 ## [11.0.0-M21] - 2022-09-02
 ### Changed
 - MessageConsumerClient is now idempotent when calling `startConsumer(...)`

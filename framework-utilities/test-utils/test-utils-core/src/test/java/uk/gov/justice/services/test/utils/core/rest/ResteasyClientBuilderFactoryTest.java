@@ -6,7 +6,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 import org.apache.http.HttpHost;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine;
+import org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient43Engine;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class ResteasyClientBuilderFactoryTest {
         System.setProperty(PROPERTY_HTTP_PROXY_PORT, String.valueOf(PROXY_PORT));
 
         final ResteasyClient client = ResteasyClientBuilderFactory.clientBuilder().build();
-        final HttpHost actualProxySettings = ((ApacheHttpClient4Engine) client.httpEngine()).getDefaultProxy();
+        final HttpHost actualProxySettings = ((ApacheHttpClient43Engine) client.httpEngine()).getDefaultProxy();
 
         assertThat(actualProxySettings.getHostName(), is(PROXY_HOST));
         assertThat(actualProxySettings.getPort(), is(PROXY_PORT));
@@ -57,7 +57,7 @@ public class ResteasyClientBuilderFactoryTest {
         System.clearProperty(PROPERTY_HTTP_PROXY_PORT);
 
         final ResteasyClient client = ResteasyClientBuilderFactory.clientBuilder().build();
-        final HttpHost actualProxySettings = ((ApacheHttpClient4Engine) client.httpEngine()).getDefaultProxy();
+        final HttpHost actualProxySettings = ((ApacheHttpClient43Engine) client.httpEngine()).getDefaultProxy();
 
         assertThat(actualProxySettings, is(nullValue()));
     }

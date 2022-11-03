@@ -18,6 +18,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 @ApplicationScoped
 public class AlfrescoRestClient {
@@ -88,7 +89,7 @@ public class AlfrescoRestClient {
         if (NO_PROXY.equals(proxyType)) {
             return ClientBuilder.newClient();
         } else {
-            return new ResteasyClientBuilder()
+            return new ResteasyClientBuilderImpl()
                     .defaultProxy(proxyHostname, parseInt(proxyPort), proxyType)
                     .build();
         }

@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M23] - 2022-11-03
+### Security
+- Updates to various libraries to address security alerts:
+    - wildfly to version 26.1.2.Final
+    - artemis to version 2.20.0
+    - resteasy-client to version 4.7.7.Final
+
 ## [11.0.0-M22] - 2022-10-18
 ### Changed
 - Updated slf4j/log4j bridge jar from slf4j-log4j12 to slf4j-reload4j

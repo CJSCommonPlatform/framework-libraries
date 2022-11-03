@@ -1,6 +1,7 @@
 package uk.gov.justice.services.test.utils.core.rest;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 public class ResteasyClientBuilderFactory {
 
@@ -8,7 +9,7 @@ public class ResteasyClientBuilderFactory {
     private static final String PROPERTY_HTTP_PROXY_PORT = "http.proxyPort";
 
     public static ResteasyClientBuilder clientBuilder() {
-        final ResteasyClientBuilder resteasyClientBuilder = new ResteasyClientBuilder();
+        final ResteasyClientBuilder resteasyClientBuilder = new ResteasyClientBuilderImpl();
 
         setProxyDetails(resteasyClientBuilder);
 

@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M24] - 2022-11-16
+### Changed
+- Update common bom to 11.0.0-M18 in order to:
+    - Update jboss-logging version to 3.5.0.Final
+
 ## [11.0.0-M23] - 2022-11-03
 ### Security
 - Updates to various libraries to address security alerts:

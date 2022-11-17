@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.ObjectIdWriter;
 import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
 
@@ -38,12 +39,22 @@ public class AdditionalPropertiesSerializer extends BeanSerializerBase {
     }
 
     @Override
+    protected BeanSerializerBase withByNameInclusion(final Set<String> set_1, final Set<String> set_2) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public BeanSerializerBase asArraySerializer() {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public BeanSerializerBase withFilterId(final Object o) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected BeanSerializerBase withProperties(final BeanPropertyWriter[] beanPropertyWriters, final BeanPropertyWriter[] beanPropertyWriters1) {
         throw new UnsupportedOperationException();
     }
 

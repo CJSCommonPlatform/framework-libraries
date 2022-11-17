@@ -37,7 +37,7 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
-        <maven-common-bom.version>11.0.0-M18</maven-common-bom.version>
+        <maven-common-bom.version>11.0.0-M19</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
     </properties>
 

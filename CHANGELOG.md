@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [11.0.0-M25] - 2022-11-22
+### Security
+- Update common bom to 11.0.0-M20 in order to:
+    - Update hibernate version to 5.4.24.Final
+    - Update jackson.databind version to 2.12.7.1
+
 ## [11.0.0-M25] - 2022-11-17
 ### Changed
 - Update common bom to 11.0.0-M19 in order to:

@@ -6,7 +6,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.jackson.integerenum.EnumObjectUtilTest.Age.FOURTY;
@@ -17,6 +16,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 
 public class EnumObjectUtilTest {
 
@@ -51,7 +51,7 @@ public class EnumObjectUtilTest {
         final SerializerProvider serializerProvider = mock(SerializerProvider.class);
         final JsonMappingException jsonMappingException = mock(JsonMappingException.class);
 
-        when(serializerProvider.mappingException(any(String.class), any(NoSuchFieldException.class)))
+        when(serializerProvider.mappingException(ArgumentMatchers.any(String.class), ArgumentMatchers.any(NoSuchFieldException.class)))
                 .thenReturn(jsonMappingException);
 
         try {

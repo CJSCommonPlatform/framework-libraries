@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GenerateBuilderForClassPluginTest {
@@ -53,7 +53,6 @@ public class GenerateBuilderForClassPluginTest {
         final PluginContext pluginContext = mock(PluginContext.class);
 
         when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
-        when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(builderGeneratorFactory.create(
                 classDefinition,
                 classNameFactory,

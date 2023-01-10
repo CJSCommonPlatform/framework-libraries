@@ -14,15 +14,10 @@ import java.io.StringReader;
 import java.util.Optional;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class StringFormatValueParserTest {
 
-    @InjectMocks
-    private StringFormatValueParser stringFormatValueParser;
+    private final StringFormatValueParser stringFormatValueParser = new StringFormatValueParser();
 
     @Test
     public void shouldParseFormatValueFromValidJsonString() throws Exception {

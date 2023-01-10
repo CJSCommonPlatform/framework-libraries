@@ -8,7 +8,6 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
 
 import uk.gov.justice.schema.catalog.util.UrlConverter;
@@ -22,10 +21,11 @@ import javax.json.stream.JsonParsingException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,8 +59,13 @@ public class SchemaIdParserTest {
 
         assertThat(schemaIdParser.parse(schemaFile).isPresent(), is(false));
 
-        verify(logger).warn(argThat(startsWith("Failed to generate catalog. Schema 'file:")));
-        verify(logger).warn(argThat(endsWith("/dodgy-schemas/schema-with-missing-id.json' has no id")));
+        final ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(logger).warn(stringArgumentCaptor.capture());
+
+        final String warningMessage = stringArgumentCaptor.getValue();
+        assertThat(warningMessage, startsWith("Failed to generate catalog. Schema 'file:"));
+        assertThat(warningMessage, endsWith("/dodgy-schemas/schema-with-missing-id.json' has no id"));
     }
 
     @Test

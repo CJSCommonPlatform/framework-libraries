@@ -3,11 +3,11 @@ package uk.gov.moj.cpp.task.execution;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.common.util.UtcClock;
@@ -31,7 +31,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -82,7 +82,7 @@ public class JobSchedulerTest {
 
         jobExecutor.fetchUnassignedJobs();
 
-        verifyZeroInteractions(executorService);
+        verifyNoInteractions(executorService);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class JobSchedulerTest {
 
     @Test
     public void shouldRollbackTransactionWhenAnExceptionOccurs() throws SystemException, NotSupportedException {
-        when(jobService.getUnassignedJobsFor(any(UUID.class))).thenReturn(Stream.of(job));
+
         doThrow(new NotSupportedException()).when(userTransaction).begin();
 
         jobExecutor.fetchUnassignedJobs();

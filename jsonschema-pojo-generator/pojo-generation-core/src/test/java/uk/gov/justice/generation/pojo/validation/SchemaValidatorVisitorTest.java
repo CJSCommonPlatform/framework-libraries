@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.lang.reflect.Field;
 
@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -95,6 +95,6 @@ public class SchemaValidatorVisitorTest {
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(NullSchema.class));
         schemaValidatorVisitor.visit(AN_EMPTY_STRING, mock(EmptySchema.class));
 
-        verifyZeroInteractions(validator);
+        verifyNoInteractions(validator);
     }
 }

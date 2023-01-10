@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.hamcrest.Description;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NoEventsMatcherTest {
@@ -33,7 +33,7 @@ public class NoEventsMatcherTest {
 
         assertThat(noEventsMatcher.matchesSafely(actualEvents, description), is(true));
 
-        verifyZeroInteractions(description);
+        verifyNoInteractions(description);
     }
 
     @Test

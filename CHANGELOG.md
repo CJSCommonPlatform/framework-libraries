@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [11.0.0-M29] - 2023-01-16
+### Changed
+- Update common-bom in order to:
+  - Update mockito version to 4.11.0
+  - Update slf4j version to 2.0.6
+  - Update hamcrest version to 2.2
+  - Update slf4j version to 2.0.6
+### Removed
+- Removed all old hamcrest libraries
 
 ## [11.0.0-M27] - 2022-11-23
 ### Changed

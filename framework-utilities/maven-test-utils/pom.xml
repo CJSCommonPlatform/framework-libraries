@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.justice.framework.utilities</groupId>
         <artifactId>framework-utilities</artifactId>
-        <version>11.0.0-M28-SNAPSHOT</version>
+        <version>11.0.0-M30-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
+            <artifactId>hamcrest</artifactId>
         </dependency>
     </dependencies>
 </project>

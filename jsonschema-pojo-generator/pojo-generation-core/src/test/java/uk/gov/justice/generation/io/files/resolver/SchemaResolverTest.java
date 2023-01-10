@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SchemaResolverTest {
@@ -50,7 +50,6 @@ public class SchemaResolverTest {
         final Schema schema = mock(Schema.class);
 
         when(resource.asJsonObject()).thenReturn(jsonObject);
-        when(schemaCatalogResolver.loadSchema(jsonObject)).thenReturn(schema);
 
         try {
             schemaResolver.resolve(resource);

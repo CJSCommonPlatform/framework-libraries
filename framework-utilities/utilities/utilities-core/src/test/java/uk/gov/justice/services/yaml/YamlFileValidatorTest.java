@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class YamlFileValidatorTest {
@@ -53,9 +53,6 @@ public class YamlFileValidatorTest {
     public void shouldThrowYamlParserException() throws IOException {
         try {
             final URL yamlUrl = new URL("file:/test");
-            final JSONObject jsonObject = mock(JSONObject.class);
-
-            when(yamlToJsonObjectConverter.convert(yamlUrl)).thenReturn(jsonObject);
             when(yamlSchemaLoader.loadSchema(SUBSCRIPTION_SCHEMA_PATH)).thenThrow(new IOException());
 
             yamlFileValidator.validate(SUBSCRIPTION_SCHEMA_PATH, yamlUrl);

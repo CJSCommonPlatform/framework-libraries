@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-api-interceptors</artifactId>
         <groupId>uk.gov.justice.framework-api</groupId>
-        <version>11.0.0-M28-SNAPSHOT</version>
+        <version>11.0.0-M30-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -36,7 +36,7 @@
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
+            <artifactId>hamcrest</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RawCatalogTest {
@@ -95,11 +95,6 @@ public class RawCatalogTest {
     @Test
     public void shouldReturnEmptyIfTheCacheIsNotInitialized() throws Exception {
         final String schemaId = "schema id";
-
-        final Map<String, String> schemaIdsToRawJsonSchemaCache = mock(Map.class);
-
-        when(jsonSchemaFileLoader.loadSchemas()).thenReturn(schemaIdsToRawJsonSchemaCache);
-        when(schemaIdsToRawJsonSchemaCache.get(schemaId)).thenReturn(null);
 
         assertThat(rawCatalog.getRawJsonSchema(schemaId), is(empty()));
     }

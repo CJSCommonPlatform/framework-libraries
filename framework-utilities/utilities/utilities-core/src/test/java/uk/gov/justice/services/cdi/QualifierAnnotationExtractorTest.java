@@ -4,7 +4,6 @@ import static com.google.common.collect.ImmutableSet.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,13 +12,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.enterprise.inject.InjectionException;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Named;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class QualifierAnnotationExtractorTest {
@@ -43,12 +43,14 @@ public class QualifierAnnotationExtractorTest {
     @Test
     public void shouldThrowARuntimeExceptionIfNoSubscriptionNameQualifierOnAnEventListener() throws Exception {
 
-        final InjectionPoint injectionPoint = mock(InjectionPoint.class, RETURNS_DEEP_STUBS.get());
+        final InjectionPoint injectionPoint = mock(InjectionPoint.class);
+        final Bean bean = mock(Bean.class);
 
         final Set<Annotation> emptySet = new HashSet<>();
 
         when(injectionPoint.getQualifiers()).thenReturn(emptySet);
-        when(injectionPoint.getBean().getName()).thenReturn(MayAnnotatedClass.class.getName());
+        when(injectionPoint.getBean()).thenReturn(bean);
+        when(bean.getName()).thenReturn(MayAnnotatedClass.class.getName());
 
         try {
             qualifierAnnotationExtractor.getFrom(injectionPoint, Named.class);

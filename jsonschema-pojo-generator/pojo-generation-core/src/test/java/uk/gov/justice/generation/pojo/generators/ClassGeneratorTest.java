@@ -2,11 +2,10 @@ package uk.gov.justice.generation.pojo.generators;
 
 import static com.squareup.javapoet.ClassName.get;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClassGeneratorTest {
@@ -46,7 +45,6 @@ public class ClassGeneratorTest {
     public void shouldReturnCorrectSimpleClassNameForGenerator() throws Exception {
         final ClassName className = get(AlcubierreDrive.class);
 
-        when(pluginProvider.classModifyingPlugins()).thenReturn(emptyList());
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
 
         assertThat(classGenerator.getSimpleClassName(), is("AlcubierreDrive"));
@@ -56,7 +54,6 @@ public class ClassGeneratorTest {
     public void shouldReturnCorrectPackageNameForGenerator() throws Exception {
         final ClassName className = get(AlcubierreDrive.class);
 
-        when(pluginProvider.classModifyingPlugins()).thenReturn(emptyList());
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(className);
 
         assertThat(classGenerator.getPackageName(), is("uk.gov.justice.generation.pojo.generators"));

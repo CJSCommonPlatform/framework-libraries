@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice.maven</groupId>
         <artifactId>raml-maven</artifactId>
-        <version>11.0.0-M28-SNAPSHOT</version>
+        <version>11.0.0-M30-SNAPSHOT</version>
     </parent>
 
     <artifactId>raml-maven-plugin</artifactId>
@@ -128,7 +128,7 @@
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
+            <artifactId>hamcrest</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

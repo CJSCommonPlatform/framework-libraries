@@ -4,10 +4,13 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -38,7 +41,7 @@ import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -347,20 +350,18 @@ public class FileStoreTest {
     @Test
     public void shouldDoNothingWhenAnExceptionIsThrownOnFindAndConnectionIsNull() throws Exception {
 
+        final UUID fileId = randomUUID();
         final StorageException storageException = new StorageException("Ooops");
 
         final DataSource dataSource = mock(DataSource.class);
 
-        final JsonObject metadata = mock(JsonObject.class);
-
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(null);
 
-        when(metadataJdbcRepository.findByFileId(any(UUID.class), any(Connection.class))).thenReturn(of(metadata));
-        when(contentJdbcRepository.findByFileId(any(UUID.class), any(Connection.class))).thenThrow(storageException);
+        when(metadataJdbcRepository.findByFileId(eq(fileId), isNull(Connection.class))).thenThrow(storageException);
 
         try {
-            fileStore.find(randomUUID());
+            fileStore.find(fileId);
             fail();
         } catch (final StorageException ignored) {
         }
@@ -475,10 +476,11 @@ public class FileStoreTest {
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
-
-        fileStore.delete(fileId);
-
         doThrow(storageException).when(contentJdbcRepository).delete(fileId, connection);
+
+        final StorageException thrownStorageException = assertThrows(StorageException.class, () -> fileStore.delete(fileId));
+
+        assertThat(thrownStorageException, is(sameInstance(storageException)));
 
         verify(connection).close();
     }

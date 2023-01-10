@@ -38,7 +38,7 @@ import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddFieldsAndMethodsToClassPluginTest {
@@ -147,7 +147,6 @@ public class AddFieldsAndMethodsToClassPluginTest {
 
         when(pluginContext.getJavaGeneratorFactory()).thenReturn(generatorFactory);
         when(pluginContext.getClassNameFactory()).thenReturn(classNameFactory);
-        when(fieldGenerator.generateField()).thenReturn(fieldSpec);
         when(pluginContext.isPluginInUse(AddAdditionalPropertiesToClassPlugin.class)).thenReturn(true);
 
         final TypeSpec.Builder typeSpecBuilder = classBuilder("ClassName");

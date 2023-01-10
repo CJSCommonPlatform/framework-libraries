@@ -6,9 +6,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.anyVararg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.spi.FileSystemProvider;
@@ -72,7 +70,7 @@ public class SourceWriterTest {
     }
 
     @Test
-    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressWarnings({"ResultOfMethodCallIgnored", "unchecked"})
     public void shouldThrowExceptionIfUnableToWriteJavaFile() throws Exception {
 
         final TypeSpec helloWorld = simpleClassTypeSpec();
@@ -93,8 +91,8 @@ public class SourceWriterTest {
         when(fileSystemMock.provider()).thenReturn(providerMock);
 
         final BasicFileAttributes basicFileAttributes = Files.readAttributes(sourceOutputDirectory.toPath(), BasicFileAttributes.class);
-        when(providerMock.readAttributes(anyObject(), (Class) anyObject(), new LinkOption[0])).thenReturn(basicFileAttributes);
-        when(providerMock.newOutputStream(anyObject(), anyVararg())).thenThrow(new IOException());
+        when(providerMock.readAttributes(any(Path.class), any(Class.class))).thenReturn(basicFileAttributes);
+        when(providerMock.newOutputStream(any(Path.class), any())).thenThrow(new IOException());
 
         when(classGenerator.generate()).thenReturn(helloWorld);
         when(classGenerator.getPackageName()).thenReturn(TEST_PACKAGE_NAME);

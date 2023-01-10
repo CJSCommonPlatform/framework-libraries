@@ -1,10 +1,9 @@
 package uk.gov.justice.services.common.converter.jackson.additionalproperties;
 
-import static com.google.common.base.CharMatcher.any;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,7 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdditionalPropertiesSerializerTest {
@@ -52,7 +51,7 @@ public class AdditionalPropertiesSerializerTest {
                 dummySerializer,
                 newHashSet(ADDITIONAL_PROPERTIES_NAME));
 
-        when(serializerProviderMock.mappingException(anyString(), anyObject())).thenReturn(new JsonMappingException(null, ""));
+        when(serializerProviderMock.mappingException(anyString(), any(Object.class))).thenReturn(new JsonMappingException(null, ""));
     }
 
     @Test
@@ -98,23 +97,25 @@ public class AdditionalPropertiesSerializerTest {
         additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock);
 
         verify(jsonGeneratorMock, times(1)).writeStartObject();
-        verify(jsonGeneratorMock, times(0)).writeObjectField(anyString(), anyObject());
+        verify(jsonGeneratorMock, times(0)).writeObjectField(anyString(), any(Object.class));
         verify(jsonGeneratorMock, times(1)).writeEndObject();
     }
 
     @Test
     public void shouldThrowExceptionThroughSerializerProviderWhenJsonGeneratorThrowsIOException() throws IOException {
 
-        final TestWithNoAdditionalProperties person = new TestWithNoAdditionalProperties("TEST", "PERSON", 21);
+        final Map<String, Object> additionalProperties = Map.of("name", "value");
 
-        doThrow(new IOException()).when(jsonGeneratorMock).writeObjectField(anyString(), anyObject());
+        final TestWithAdditionalProperties person = new TestWithAdditionalProperties("TEST", "PERSON", 21, additionalProperties);
+
+        doThrow(new IOException()).when(jsonGeneratorMock).writeObjectField(anyString(), any(Object.class));
 
         try {
             additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock);
             fail();
         } catch (final IOException expected) {}
 
-        verify(serializerProviderMock, times(1)).mappingException(anyString(), anyObject());
+        verify(serializerProviderMock, times(1)).mappingException(anyString(), any(Object.class));
 
     }
 
@@ -129,7 +130,7 @@ public class AdditionalPropertiesSerializerTest {
             // Expected
         }
 
-        verify(serializerProviderMock, times(1)).mappingException(anyString(), anyObject());
+        verify(serializerProviderMock, times(1)).mappingException(anyString(), any(Object.class));
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -172,6 +173,21 @@ public class AdditionalPropertiesSerializerTest {
             this.firstName = firstName;
             this.surname = surname;
             this.age = age;
+        }
+    }
+
+    private static class TestWithAdditionalProperties {
+
+        private String firstName;
+        private String surname;
+        private int age;
+        private Map<String, Object> additionalProperties;
+
+        public TestWithAdditionalProperties(final String firstName, final String surname, final int age, Map<String, Object> additionalProperties) {
+            this.firstName = firstName;
+            this.surname = surname;
+            this.age = age;
+            this.additionalProperties = additionalProperties;
         }
     }
 

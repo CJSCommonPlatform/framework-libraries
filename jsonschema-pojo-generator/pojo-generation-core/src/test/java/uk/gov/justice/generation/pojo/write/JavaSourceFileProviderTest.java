@@ -2,6 +2,7 @@ package uk.gov.justice.generation.pojo.write;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -11,13 +12,14 @@ import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassGeneratable;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JavaSourceFileProviderTest {
@@ -28,7 +30,12 @@ public class JavaSourceFileProviderTest {
     @Test
     public void shouldReturnAnExistingJavaFile() throws Exception {
 
-        final Path sourceRootDirectory = Paths.get("src/main/java");
+        final URL resource = getClass().getResource("/");
+        assertThat(resource, is(notNullValue()));
+        final Path classesDir = Paths.get(resource.toURI());
+        final Path parent = classesDir.getParent().getParent();
+
+        final Path sourceRootDirectory = parent.resolve("src/main/java");
         final String sourceFilename = "filename";
 
         final Class<Definition> definitionClass = Definition.class;
@@ -49,7 +56,12 @@ public class JavaSourceFileProviderTest {
     @Test
     public void shouldReturnANonExistentJavaFile() throws Exception {
 
-        final Path sourceRootDirectory = Paths.get("src/main/java");
+        final URL resource = getClass().getResource("/");
+        assertThat(resource, is(notNullValue()));
+        final Path classesDir = Paths.get(resource.toURI());
+        final Path parent = classesDir.getParent().getParent();
+
+        final Path sourceRootDirectory = parent.resolve("src/main/java");
         final String sourceFilename = "filename";
 
         final GenerationContext generationContext = new GenerationContext(sourceRootDirectory, "", sourceFilename, emptyList());

@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -91,7 +91,6 @@ public class SchemaPojoGeneratorTest {
         final Visitable visitable = mock(Visitable.class);
 
         when(generatorConfig.getGeneratorProperties()).thenReturn(generatorProperties);
-        when(jsonSchemaFile.getName()).thenReturn(jsonSchemaFileName);
 
         when(bootstrapper.getGenerationContext(generatorConfig, jsonSchema, jsonSchemaFileName)).thenReturn(generationContext);
         when(bootstrapper.getPluginProvider(generatorProperties)).thenReturn(pluginProvider);

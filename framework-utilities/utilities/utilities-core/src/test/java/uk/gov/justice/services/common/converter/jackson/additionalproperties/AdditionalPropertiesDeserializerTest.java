@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdditionalPropertiesDeserializerTest {
@@ -43,7 +43,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_STRING);
-        when(jp.getCurrentName()).thenReturn("Test");
         when(jp.getValueAsString()).thenReturn("Test Value");
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithInvalidAdditionalProperties, "additionalProperties");
@@ -63,7 +62,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_STRING);
-        when(jp.getCurrentName()).thenReturn("Test");
         when(jp.getValueAsString()).thenReturn("Test Value");
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithAdditionalProperties, "additionalProperties");
@@ -86,8 +84,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_STRING);
-        when(jp.getCurrentName()).thenReturn(propertyName);
-        when(jp.getValueAsString()).thenReturn(propertyValue);
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithAdditionalProperties, "additionalProperties");
 
@@ -111,7 +107,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_NUMBER_INT);
-        when(jp.getCurrentName()).thenReturn(propertyName);
         when(jp.getValueAsInt()).thenReturn(propertyValue);
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithAdditionalProperties, "additionalProperties");
@@ -136,7 +131,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_NUMBER_FLOAT);
-        when(jp.getCurrentName()).thenReturn(propertyName);
         when(jp.getValueAsDouble()).thenReturn((double) propertyValue);
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithAdditionalProperties, "additionalProperties");
@@ -161,7 +155,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_TRUE);
-        when(jp.getCurrentName()).thenReturn(propertyName);
         when(jp.getValueAsBoolean()).thenReturn(propertyValue);
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithAdditionalProperties, "additionalProperties");
@@ -186,7 +179,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_FALSE);
-        when(jp.getCurrentName()).thenReturn(propertyName);
         when(jp.getValueAsBoolean()).thenReturn(propertyValue);
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithAdditionalProperties, "additionalProperties");
@@ -211,7 +203,6 @@ public class AdditionalPropertiesDeserializerTest {
         final JsonParser jp = mock(JsonParser.class);
 
         when(jp.getCurrentToken()).thenReturn(VALUE_NULL);
-        when(jp.getCurrentName()).thenReturn(propertyName);
 
         beanDeserializer.handleUnknownProperty(jp, ctxt, personWithAdditionalProperties, "additionalProperties");
 

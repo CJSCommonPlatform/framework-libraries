@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MetadataJdbcRepositoryTest {
@@ -52,7 +52,6 @@ public class MetadataJdbcRepositoryTest {
 
         final int rowsUpdated = 1;
 
-        when(metadataSqlProvider.getInsertSql()).thenReturn(insertSql);
         when(connection.prepareStatement(insertSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 
@@ -82,7 +81,6 @@ public class MetadataJdbcRepositoryTest {
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(metadataSqlProvider.getInsertSql()).thenReturn(insertSql);
         when(connection.prepareStatement(insertSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
@@ -118,7 +116,6 @@ public class MetadataJdbcRepositoryTest {
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final int rowsUpdated = 2;
 
-        when(metadataSqlProvider.getInsertSql()).thenReturn(insertSql);
         when(connection.prepareStatement(insertSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 
@@ -152,7 +149,6 @@ public class MetadataJdbcRepositoryTest {
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final int rowsUpdated = 1;
 
-        when(metadataSqlProvider.getUpdateSql()).thenReturn(updateSql);
         when(connection.prepareStatement(updateSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 
@@ -184,7 +180,6 @@ public class MetadataJdbcRepositoryTest {
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
-        when(metadataSqlProvider.getUpdateSql()).thenReturn(updateSql);
         when(connection.prepareStatement(updateSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
@@ -221,7 +216,6 @@ public class MetadataJdbcRepositoryTest {
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
         final int rowsUpdated = 2;
 
-        when(metadataSqlProvider.getUpdateSql()).thenReturn(updateSql);
         when(connection.prepareStatement(updateSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsUpdated);
 

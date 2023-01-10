@@ -29,7 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BuilderGeneratorTest {
@@ -71,7 +71,6 @@ public class BuilderGeneratorTest {
         final MethodSpec buildMethod = MethodSpec.methodBuilder("build").build();
 
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(pojoClassName);
-        when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(classDefinition.getFieldDefinitions()).thenReturn(fieldDefinitions);
 
         when(builderFieldFactory.createFields(
@@ -120,7 +119,6 @@ public class BuilderGeneratorTest {
         final MethodSpec buildMethodWithAdditionalProperties = MethodSpec.methodBuilder("build").build();
 
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(pojoClassName);
-        when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(classDefinition.getFieldDefinitions()).thenReturn(fieldDefinitions);
         when(additionalPropertiesDeterminer.shouldAddAdditionalProperties(classDefinition, pluginContext)).thenReturn(true);
 
@@ -180,7 +178,6 @@ public class BuilderGeneratorTest {
         final ClassName pojoClassName = get(packageName, pojoSimpleName);
         final ClassName pojoBuilder = pojoClassName.nestedClass("Builder");
 
-        when(classDefinition.getFieldName()).thenReturn(fieldName);
         when(classNameFactory.createClassNameFrom(classDefinition)).thenReturn(pojoClassName);
 
         final MethodSpec methodSpec = builderGenerator.generateStaticGetBuilderMethod();

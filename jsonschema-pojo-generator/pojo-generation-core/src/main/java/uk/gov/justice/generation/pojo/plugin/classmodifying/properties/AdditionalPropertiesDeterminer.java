@@ -26,7 +26,9 @@ public class AdditionalPropertiesDeterminer {
             final ClassDefinition classDefinition,
             final PluginContext pluginContext) {
 
-        return classDefinition.allowAdditionalProperties() &&
-                pluginContext.isPluginInUse(AddAdditionalPropertiesToClassPlugin.class);
+        final boolean b = classDefinition.allowAdditionalProperties();
+        final boolean pluginInUse = pluginContext.isPluginInUse(AddAdditionalPropertiesToClassPlugin.class);
+        return b &&
+                pluginInUse;
     }
 }

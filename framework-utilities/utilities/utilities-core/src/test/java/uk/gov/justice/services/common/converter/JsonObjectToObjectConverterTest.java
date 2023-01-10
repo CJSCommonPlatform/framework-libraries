@@ -21,12 +21,13 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JsonObjectToObjectConverterTest {
@@ -87,7 +88,7 @@ public class JsonObjectToObjectConverterTest {
 
         final JsonObject jsonObject = Json.createObjectBuilder().add("id", uuid.toString()).build();
 
-        doThrow(IOException.class).when(objectMapper).writeValueAsString(jsonObject);
+        doThrow(JsonProcessingException.class).when(objectMapper).writeValueAsString(jsonObject);
 
         try {
             jsonObjectToObjectConverter.convert(jsonObject, Pojo.class);

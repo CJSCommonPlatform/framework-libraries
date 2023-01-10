@@ -9,13 +9,11 @@ import uk.gov.justice.services.unifiedsearch.TransformerApi;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.bazaarvoice.jolt.Chainr;

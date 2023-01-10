@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BuilderMethodFactoryTest {
@@ -132,12 +132,7 @@ public class BuilderMethodFactoryTest {
         final PluginContext pluginContext = mock(PluginContext.class);
 
         final ClassName builderClassName = get("org.bloggs.fred", "AlcubierreDrive").nestedClass("Builder");
-
-        when(fieldDefinition_1.getFieldName()).thenReturn("fieldDefinition_1");
-        when(fieldDefinition_2.getFieldName()).thenReturn("fieldDefinition_2");
-
-        when(classNameFactory.createTypeNameFrom(fieldDefinition_1, pluginContext)).thenReturn(get(String.class));
-        when(classNameFactory.createTypeNameFrom(fieldDefinition_2, pluginContext)).thenReturn(get(Integer.class));
+        
         when(withMethodGenerator.generateWithMethods(
                 fieldDefinition_1,
                 builderClassName,
@@ -185,16 +180,7 @@ public class BuilderMethodFactoryTest {
 
         final List<Definition> fieldDefinitions = asList(fieldDefinition_1, fieldDefinition_2);
         final ClassName builderClassName = get("org.bloggs.fred", "AlcubierreDrive").nestedClass("Builder");
-
-        when(fieldDefinition_1.getFieldName()).thenReturn("fieldDefinition_1");
-        when(fieldDefinition_2.getFieldName()).thenReturn("fieldDefinition_2");
-
-        when(classNameFactory.createTypeNameFrom(fieldDefinition_1, pluginContext)).thenReturn(className_1);
-        when(classNameFactory.createTypeNameFrom(fieldDefinition_2, pluginContext)).thenReturn(className_2);
-
-        when(optionalTypeNameUtil.isOptionalType(className_1)).thenReturn(false);
-        when(optionalTypeNameUtil.isOptionalType(className_2)).thenReturn(false);
-
+        
         when(withMethodGenerator.generateWithMethods(
                 fieldDefinition_1,
                 builderClassName,

@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GeneratorContextProviderTest {
@@ -52,7 +52,6 @@ public class GeneratorContextProviderTest {
         when(packageNameParser.packageNameFrom(schemaId)).thenReturn(of(packageName));
 
         when(javaFileSimpleNameLister.findSimpleNames(sourcePaths, outputDirectory, packageName)).thenReturn(hardCodedClassNames);
-        when(generatorConfig.getBasePackageName()).thenReturn(packageName);
 
         final GenerationContext generationContext = generatorContextProvider.create(schemaFilename, schema, generatorConfig);
 

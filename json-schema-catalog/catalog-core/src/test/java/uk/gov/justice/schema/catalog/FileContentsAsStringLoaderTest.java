@@ -16,7 +16,7 @@ import java.net.URL;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FileContentsAsStringLoaderTest {
@@ -27,7 +27,9 @@ public class FileContentsAsStringLoaderTest {
     @Test
     public void shouldLoadADocumentAsAString() throws Exception {
 
-        final URL url = new File("src/test/resources/json/schema/context/person.json").toURI().toURL();
+        final URL url = getClass().getClassLoader().getResource("json/schema/context/person.json");
+
+        assertThat(url, is(notNullValue()));
 
         final String json = fileContentsAsStringLoader.readFileContents(url);
 

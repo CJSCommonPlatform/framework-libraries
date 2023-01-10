@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentJdbcRepositoryTest {
@@ -118,7 +118,6 @@ public class ContentJdbcRepositoryTest {
     public void shouldFindFileContentByFileId() throws Exception {
 
         final UUID fileId = randomUUID();
-        final Boolean deleted = true;
         final String sql = "SELECT content FROM content WHERE file_id = ?";
 
         final InputStream contentStream = mock(InputStream.class);
@@ -130,7 +129,6 @@ public class ContentJdbcRepositoryTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
         when(resultSet.getBinaryStream(1)).thenReturn(contentStream);
-        when(resultSet.getBoolean(2)).thenReturn(deleted);
 
         final FileContent fileContent = contentJdbcRepository
                 .findByFileId(fileId, connection)

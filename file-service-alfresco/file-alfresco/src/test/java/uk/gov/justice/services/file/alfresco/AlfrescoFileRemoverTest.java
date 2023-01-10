@@ -2,8 +2,8 @@ package uk.gov.justice.services.file.alfresco;
 
 import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.contains;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AlfrescoFileRemoverTest {
@@ -45,7 +45,6 @@ public class AlfrescoFileRemoverTest {
         when(restClient.delete(contains(alfrescoId), any(), any()))
                 .thenReturn(response);
         when(response.getStatusInfo()).thenReturn(responseStatus);
-        when(response.getStatus()).thenReturn(responseStatus.getStatusCode());
 
         //when
         fileRemover.remove(alfrescoId);

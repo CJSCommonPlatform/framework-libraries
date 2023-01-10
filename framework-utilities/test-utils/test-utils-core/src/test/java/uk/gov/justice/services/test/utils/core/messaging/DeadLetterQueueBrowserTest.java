@@ -5,8 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeadLetterQueueBrowserTest {
@@ -131,8 +130,7 @@ public class DeadLetterQueueBrowserTest {
     @Test
     public void shouldThrowExceptionWhenCleaningQueue() throws JMSException {
 
-        when(session.createConsumer(any(Queue.class))).thenReturn(dlqMessageConsumer);
-        doThrow(JMSException.class).when(consumerClient).cleanQueue(dlqMessageConsumer);
+        when(session.createConsumer(any(Queue.class))).thenThrow(JMSException.class);
 
         final MessageConsumerException messageConsumerException = assertThrows(MessageConsumerException.class, () ->
                 deadLetterQueueBrowser.removeMessages()

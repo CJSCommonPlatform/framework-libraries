@@ -8,10 +8,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.maven.generator.io.files.parser.FileParser;
@@ -36,7 +36,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.raml.emitter.RamlEmitter;
 import org.raml.model.Raml;
 
@@ -163,7 +163,6 @@ public class GenerateGoalProcessorTest {
         when(scanner.find(any(Path.class), any(String[].class), any(String[].class))).thenReturn(emptyList());
         generateGoalProcessor.generate(config);
 
-        verifyZeroInteractions(mojoGeneratorFactory);
-
+        verifyNoInteractions(mojoGeneratorFactory);
     }
 }

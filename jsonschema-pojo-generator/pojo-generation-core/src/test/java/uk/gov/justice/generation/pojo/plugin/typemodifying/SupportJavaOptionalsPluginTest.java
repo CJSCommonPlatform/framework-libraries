@@ -22,7 +22,7 @@ import com.squareup.javapoet.TypeName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -77,7 +77,6 @@ public class SupportJavaOptionalsPluginTest {
         final Definition definition = mock(Definition.class);
         final PluginContext pluginContext = mock(PluginContext.class);
 
-        when(definition.isRequired()).thenReturn(false);
         when(definition.type()).thenReturn(ARRAY);
 
         final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(
@@ -96,7 +95,6 @@ public class SupportJavaOptionalsPluginTest {
         final Definition definition = mock(Definition.class);
         final PluginContext pluginContext = mock(PluginContext.class);
 
-        when(definition.isRequired()).thenReturn(true);
         when(definition.type()).thenReturn(ARRAY);
 
         final TypeName typeName = optionalTypeNamePlugin.modifyTypeName(

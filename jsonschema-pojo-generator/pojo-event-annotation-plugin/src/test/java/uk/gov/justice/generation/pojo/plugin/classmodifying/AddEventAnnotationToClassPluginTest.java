@@ -5,7 +5,7 @@ import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.generation.pojo.dom.DefinitionType.CLASS;
 
@@ -17,7 +17,7 @@ import com.squareup.javapoet.TypeSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddEventAnnotationToClassPluginTest {
@@ -69,6 +69,6 @@ public class AddEventAnnotationToClassPluginTest {
         assertThat(typeSpec.fieldSpecs.size(), is(0));
         assertThat(typeSpec.methodSpecs.size(), is(0));
 
-        verifyZeroInteractions(pluginContext);
+        verifyNoInteractions(pluginContext);
     }
 }

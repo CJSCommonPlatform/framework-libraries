@@ -6,12 +6,15 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import uk.gov.justice.maven.test.utils.BetterAbstractMojoTestCase;
 import uk.gov.justice.raml.core.GeneratorConfig;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -34,7 +37,10 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
     }
 
     public void testShouldGenerateFromValidRaml() throws Exception {
-        File pom = getTestFile("src/test/resources/generate/pom.xml");
+
+        final URL resource = getClass().getResource("/generate/pom.xml");
+        assertThat(resource, is(notNullValue()));
+        final File pom = new File(resource.toURI());
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
@@ -93,14 +99,19 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
     public void testShouldNotTryToInstatiateGeneratorIfNoRamlFiles() throws Exception {
         //NonExisting generator defined in pom.xml
 
-        File pom = getTestFile("src/test/resources/non-raml/pom.xml");
+        final URL resource = getClass().getResource("/non-raml/pom.xml");
+        assertThat(resource, is(notNullValue()));
+        final File pom = new File(resource.toURI());
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
         mojo.execute();
     }
 
     public void testShouldGenerateFromOnlyIncludedRaml() throws Exception {
-        File pom = getTestFile("src/test/resources/includes-excludes/pom.xml");
+
+        final URL resource = getClass().getResource("/includes-excludes/pom.xml");
+        assertThat(resource, is(notNullValue()));
+        final File pom = new File(resource.toURI());
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
@@ -116,7 +127,12 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
 
     @SuppressWarnings("unchecked")
     public void testShouldIncludeRamlFilesFromTheClasspath() throws Exception {
-        File pom = getTestFile("src/test/resources/includes-excludes-external/pom.xml");
+
+        final URL resource = getClass().getResource("/includes-excludes-external/pom.xml");
+        assertThat(resource, is(notNullValue()));
+        final File pom = new File(resource.toURI());
+
+        assertThat(pom.exists(), is(true));
 
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
@@ -131,7 +147,11 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
     }
 
     public void testShouldSkipExecution() throws Exception {
-        File pom = getTestFile("src/test/resources/skip-execution/pom.xml");
+
+        final URL resource = getClass().getResource("/skip-execution/pom.xml");
+        assertThat(resource, is(notNullValue()));
+        final File pom = new File(resource.toURI());
+
         GenerateMojo mojo = (GenerateMojo) lookupConfiguredMojo(pom, "generate");
 
         mojo.execute();

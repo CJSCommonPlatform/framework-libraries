@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JavaFileSimpleNameListerTest {
@@ -150,6 +150,6 @@ public class JavaFileSimpleNameListerTest {
 
         assertThat(simpleNames, hasItems("FirstClass", "SecondClass"));
 
-        verifyZeroInteractions(outputDirectory);
+        verifyNoInteractions(outputDirectory);
     }
 }

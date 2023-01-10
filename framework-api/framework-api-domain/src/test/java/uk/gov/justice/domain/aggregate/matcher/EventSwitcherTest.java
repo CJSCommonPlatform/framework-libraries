@@ -4,16 +4,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * Unit tests for the {@link EventSwitcher} class.
@@ -73,7 +73,7 @@ public class EventSwitcherTest {
         Object result = eventSwitcher.with(eventMatcherA, eventMatcherB);
         assertThat(result, equalTo(event));
         verify(eventMatcherA).apply(event);
-        Mockito.verifyZeroInteractions(eventMatcherB);
+        verifyNoMoreInteractions(eventMatcherB);
     }
 
     @Test

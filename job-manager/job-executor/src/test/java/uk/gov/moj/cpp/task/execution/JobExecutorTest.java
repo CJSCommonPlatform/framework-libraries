@@ -4,13 +4,13 @@ import static java.time.ZonedDateTime.now;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
@@ -34,7 +34,7 @@ import javax.transaction.UserTransaction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -225,8 +225,8 @@ public class JobExecutorTest {
 
         createJobExecutor(job).run();
 
-        verifyZeroInteractions(sampleTask);
-        verifyZeroInteractions(jobService);
+        verifyNoInteractions(sampleTask);
+        verifyNoInteractions(jobService);
     }
 
     private JobExecutor createJobExecutor(final Job job) {

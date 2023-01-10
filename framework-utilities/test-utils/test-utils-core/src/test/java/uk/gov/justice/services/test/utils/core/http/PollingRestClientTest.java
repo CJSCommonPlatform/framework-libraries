@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,7 +49,6 @@ public class PollingRestClientTest {
         final Status status = OK;
         final String responseBody = "{\"some\": \"json\"}";
 
-        final Response response = mock(Response.class);
         final Predicate<String>  alwaysTrueResultCondition = mock(Predicate.class);
         final ResponseDetails responseDetails = new ResponseDetails(status, responseBody);
 
@@ -59,9 +58,6 @@ public class PollingRestClientTest {
                 .build();
 
         when(validatingRestClient.get(pollingRequestParams)).thenReturn(empty(), empty(), of(responseDetails));
-        when(response.getStatus()).thenReturn(status.getStatusCode());
-        when(response.getEntity()).thenReturn(responseBody);
-        when(alwaysTrueResultCondition.test(responseBody)).thenReturn(true);
         when(responseValidator.hasValidResponseBody(responseBody, pollingRequestParams)).thenReturn(true);
         when(responseValidator.hasValidStatus(status, pollingRequestParams)).thenReturn(true);
         assertThat(pollingRestClient.pollUntilExpectedResponse(pollingRequestParams), is(responseBody));
@@ -87,11 +83,6 @@ public class PollingRestClientTest {
                 .build();
 
         when(validatingRestClient.get(pollingRequestParams)).thenReturn(empty(), empty(), of(responseDetails));
-        when(response.getStatus()).thenReturn(status.getStatusCode());
-        when(response.getEntity()).thenReturn(responseBody);
-        when(alwaysTrueResultCondition.test(responseBody)).thenReturn(true);
-        when(responseValidator.hasValidResponseBody(responseBody, pollingRequestParams)).thenReturn(false);
-        when(responseValidator.hasValidStatus(status, pollingRequestParams)).thenReturn(true);
 
         try {
             pollingRestClient.pollUntilExpectedResponse(pollingRequestParams);
@@ -119,9 +110,6 @@ public class PollingRestClientTest {
                 .build();
 
         when(validatingRestClient.get(pollingRequestParams)).thenReturn(empty(), empty(), of(responseDetails));
-        when(response.getStatus()).thenReturn(actualStatus.getStatusCode());
-        when(response.getEntity()).thenReturn(responseBody);
-        when(alwaysTrueResultCondition.test(responseBody)).thenReturn(true);
         when(responseValidator.hasValidResponseBody(responseBody, pollingRequestParams)).thenReturn(true);
         when(responseValidator.hasValidStatus(actualStatus, pollingRequestParams)).thenReturn(false);
 
@@ -163,8 +151,6 @@ public class PollingRestClientTest {
         final Status status = OK;
         final String responseBody = "{\"some\": \"json\"}";
 
-        final Response response = mock(Response.class);
-        final Predicate<Response>  alwaysTrueResponseCondition = mock(Predicate.class);
         final Predicate<String>  alwaysFalseResultCondition = mock(Predicate.class);
 
         final PollingRequestParams pollingRequestParams = new PollingRequestParamsBuilder(url, mediaType)
@@ -173,10 +159,6 @@ public class PollingRestClientTest {
         final ResponseDetails responseDetails = new ResponseDetails(status, responseBody);
 
         when(validatingRestClient.get(pollingRequestParams)).thenReturn(empty(), empty(), of(responseDetails));
-        when(response.getStatus()).thenReturn(status.getStatusCode());
-        when(response.getEntity()).thenReturn(responseBody);
-        when(alwaysTrueResponseCondition.test(response)).thenReturn(true);
-        when(alwaysFalseResultCondition.test(responseBody)).thenReturn(false);
 
         try {
             pollingRestClient.pollUntilExpectedResponse(pollingRequestParams);

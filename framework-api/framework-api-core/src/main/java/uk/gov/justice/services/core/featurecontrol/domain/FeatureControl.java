@@ -1,8 +1,9 @@
 package uk.gov.justice.services.core.featurecontrol.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class FeatureControl {
 

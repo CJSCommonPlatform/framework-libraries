@@ -8,7 +8,7 @@ import java.sql.Connection;
  */
 public interface H2ConnectionParameters {
 
-    String URL = "jdbc:h2:mem:test;MV_STORE=FALSE;MVCC=FALSE";
+    String URL = "jdbc:h2:mem:test";
     String USERNAME = "sa";
     String PASSWORD = "sa";
     String DRIVER_CLASS = "org.h2.Driver";

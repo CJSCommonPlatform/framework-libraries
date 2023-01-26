@@ -4,155 +4,7 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## [11.0.0-M29] - 2023-01-16
-### Changed
-- Update common-bom in order to:
-  - Update mockito version to 4.11.0
-  - Update slf4j version to 2.0.6
-  - Update hamcrest version to 2.2
-  - Update slf4j version to 2.0.6
-### Removed
-- Removed all old hamcrest libraries
-
-## [11.0.0-M27] - 2022-11-23
-### Changed
-- Removed log4j-over-slf4j as it is now replaced by slf4j-reload4j
-
-## [11.0.0-M26] - 2022-11-22
-### Security
-- Update common bom to 11.0.0-M20 in order to:
-    - Update hibernate version to 5.4.24.Final
-    - Update jackson.databind version to 2.12.7.1
-
-## [11.0.0-M25] - 2022-11-17
-### Changed
-- Update common bom to 11.0.0-M19 in order to:
-    - Update jackson libraries to 2.12.7
-
-## [11.0.0-M24] - 2022-11-16
-### Changed
-- Update common bom to 11.0.0-M18 in order to:
-    - Update jboss-logging version to 3.5.0.Final
-
-## [11.0.0-M23] - 2022-11-03
-### Security
-- Updates to various libraries to address security alerts:
-    - wildfly to version 26.1.2.Final
-    - artemis to version 2.20.0
-    - resteasy-client to version 4.7.7.Final
-
-## [11.0.0-M22] - 2022-10-18
-### Changed
-- Updated slf4j/log4j bridge jar from slf4j-log4j12 to slf4j-reload4j
-
-## [11.0.0-M21] - 2022-09-02
-### Changed
-- MessageConsumerClient is now idempotent when calling `startConsumer(...)`
-
-## [11.0.0-M20] - 2022-08-30
-### Changed
-- DeadLetterQueueBrowser now has 
-  - A default name of `jms.queue.DLQ` rather than the original name of `DLQ`
-  - A new constructor to pass the name in if you don't want the default name
-### Added
-- New builder `MessageConsumerClientBuilder` that allows ActiveMQ connection parameters to be specified  
-
-## [11.0.0-M19] - 2022-08-11
-### Changed
-- Update common bom to 11.0.0-M15 in order to:
-    - Update artemis-jms-client to 2.10.1
-
-## [11.0.0-M18] - 2022-06-08
-### Changed
-- Updated API path for alfresco read material endpoint
-
-## [11.0.0-M17] - 2022-05-30
-### Changed
-- Removed strict checking of liquibase.properties files
-
-## [11.0.0-M16] - 2022-05-23
-### Changed
-- Update liquibase to 4.10.0
-- Update maven-framework-parent-pom to 11.0.0-M6
-- Update common-bom to 11.0.0-M13
-
-## [11.0.0-M15] - 2022-05-20
-### Changed
-- Update liquibase to 4.10.0
-
-## [11.0.0-M13] - 2022-03-23
-### Changed
-- Added healthcheck api libraries to bom
-
-## [11.0.0-M12] - 2022-03-22
-### Changed
-- Added healthcheck api classes as a new module
-
-## [11.0.0-M11] - 2022-03-15
-### Changed
-- Update common-bom to 11.0.0-M11
-
-## [11.0.0-M10] - 2022-03-15
-### Changed
-- Updated to log4j 2; all dependencies on log4j 1 removed
-
-## [11.0.0-M9] - 2022-03-10
-### Changed
-- Cherry-picked from java 8
-  - Changed the file service to make hard delete of files from postgres on delete rather than just marking them as deleted
-  - Updated maven to always run the integration tests as part of the build
-  - Removed support for in memory databases for filestore. Postgres is now required
-
-## [11.0.0-M8] - 2022-02-25
-### Changed
-- Update common-bom to 11.0.0-M9 to
-  - Update log4j2 to 2.17.1 to fix critical security violation
-
-## [11.0.0-M7] - 2021-06-15
-### Changed
-- Update common-bom to 11.0.0-M8 
-
-## [11.0.0-M6] - 2021-05-28
-### Fixed
-- Removed hard dependency on javaee-api in jobstore to prevent the setting javaee-api.jar in context wars 
-
-## [11.0.0-M5] - 2021-05-18
-### Changed
-- Updated Jackson to 2.10.5.1
-- Added @JsonConstructor annotation to generated pojos to allow for single arg constructors
-
-## [11.0.0-M4] - 2021-05-07
-### Changed
-- Update common-bom to 11.0.0-M5
-- Update framework-parent-pom to 11.0.0-M3
-
-## [11.0.0-M3] - 2021-05-05
-### Changed
-- Update common-bom to 11.0.0-M4
-
-## [11.0.0-M2] - 2021-02-04
-### Changed
-- Update to JEE 8
-- Update common-bom to 11.0.0-M3
-- Update maven-framework-parent-pom to 11.0.0-M2
-
-## [11.0.0-M1] - 2020-01-25
-### Changed
-- Bumped version to 11.0.0 to match the new framework version
-- Update common-bom to 11.0.0-M2
-- Update framework-parent-pom to 11.0.0-M1
-### Added
-- New integration test in pojo generators to test using a unique package name for dependant objects
-
-## [8.0.0-M3] - 2020-01-06
-### Changed
-- Update common-bom to 8.0.0-M5
-
-## [8.0.0-M2] - 2020-01-06
-### Changed
-- Update common-bom to 8.0.0-M4
-
-## [8.0.0-M1] - 2020-12-10
+## [11.0.0] - 2023-01-26
 ### Changed
 - Update to Java 11
     - Change from `com.jayway.restassured.path.json.JsonPath` to `io.restassured.path.json.JsonPath`
@@ -161,6 +13,26 @@ This project adheres to [Semantic Versioning](http://semver.org/).
         - com.sun.xml.bind:jaxb-core
         - javax.xml.bind:jaxb-api
         - com.sun.xml.bind:jaxb-impl
+- Bumped version to 11.0.0 to match the new framework version
+- Update to JEE 8
+- DeadLetterQueueBrowser now has 
+  - A default name of `jms.queue.DLQ` rather than the original name of `DLQ`
+  - A new constructor to pass the name in if you don't want the default name
+- MessageConsumerClient is now idempotent when calling `startConsumer(...)`
+- Updated API path for alfresco read material endpoint
+- Removed strict checking of liquibase.properties files
+- Updated to log4j 2; all dependencies on log4j 1 removed
+- Cherry-picked from java 8
+  - Changed the file service to make hard delete of files from postgres on delete rather than just marking them as deleted
+  - Updated maven to always run the integration tests as part of the build
+  - Removed support for in memory databases for filestore. Postgres is now required
+### Added
+- New builder `MessageConsumerClientBuilder` that allows ActiveMQ connection parameters to be specified  
+- Added healthcheck api classes as a new module
+- Added healthcheck api libraries to bom
+- New integration test in pojo generators to test using a unique package name for dependant objects
+### Fixed
+- Removed hard dependency on javaee-api in jobstore to prevent the setting javaee-api.jar in context wars 
 
 ## [7.2.2] - 2020-11-18
 ### Removed

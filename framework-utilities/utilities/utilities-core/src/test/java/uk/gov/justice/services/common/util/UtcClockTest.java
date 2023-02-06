@@ -31,5 +31,6 @@ public class UtcClockTest {
 
         assertThat(zonedDateTime.isAfter(now().minusSeconds(2L)), is(true));
         assertThat(zonedDateTime.getZone(), is(UTC));
+        assertThat(zonedDateTime.getNano() % 1_000_000, is(0));
     }
 }

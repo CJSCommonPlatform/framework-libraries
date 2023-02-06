@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.0.0-M2] - 2023-02-06
+### Changed
+- UtcClock.now() now always truncates the time to milliseconds
+
 ## [17.0.0-M1] - 2023-02-03
 ### Changed
 - Update to Java 17

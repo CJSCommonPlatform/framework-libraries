@@ -6,13 +6,13 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>11.0.1</version>
+        <version>17.0.0-M2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.gov.justice.framework.libraries</groupId>
     <artifactId>framework-libraries</artifactId>
-    <version>11.0.2-SNAPSHOT</version>
+    <version>17.0.0-M3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Framework Common Libraries</name>
@@ -37,8 +37,12 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
-        <maven-common-bom.version>11.0.1</maven-common-bom.version>
+        <maven-common-bom.version>17.0.0-M2</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
+
+        <!-- Must be moved to parent-pom -->
+        <maven-plugin-annotations.version>3.7.1</maven-plugin-annotations.version>
+
     </properties>
 
     <dependencyManagement>

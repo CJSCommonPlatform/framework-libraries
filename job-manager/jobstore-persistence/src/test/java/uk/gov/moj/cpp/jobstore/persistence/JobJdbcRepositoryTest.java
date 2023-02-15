@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.jobstore.persistence;
 
 import static java.time.ZonedDateTime.now;
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
@@ -24,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -131,8 +133,8 @@ public class JobJdbcRepositoryTest {
         final String nextTaskBeforeUpdate = "Next Task Before Update";
         final String nextTaskAfterUpdate = "Next Task After Update";
 
-        final ZonedDateTime nextTaskStartTimeBeforeUpdate = new UtcClock().now().minusHours(2);
-        final ZonedDateTime nextTaskStartTimeAfterUpdate = new UtcClock().now();
+        final ZonedDateTime nextTaskStartTimeBeforeUpdate = new UtcClock().now().minusHours(2).truncatedTo(MILLIS);
+        final ZonedDateTime nextTaskStartTimeAfterUpdate = new UtcClock().now().truncatedTo(MILLIS);
 
         final Optional<UUID> workerId = of(randomUUID());
         final Job job1 = new Job(jobId, jobData(JOB_DATA_JSON), nextTaskBeforeUpdate, nextTaskStartTimeBeforeUpdate, workerId, of(now()));
@@ -140,7 +142,7 @@ public class JobJdbcRepositoryTest {
         jdbcRepository.insertJob(job1);
         jdbcRepository.updateNextTaskDetails(jobId, nextTaskAfterUpdate, toSqlTimestamp(nextTaskStartTimeAfterUpdate));
 
-        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).collect(Collectors.toList());
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).toList();
         assertThat(jobs.size(), is(1));
         assertThat(jobs.get(0).getNextTask(), is(nextTaskAfterUpdate));
         assertThat(jobs.get(0).getNextTaskStartTime(), is(nextTaskStartTimeAfterUpdate));

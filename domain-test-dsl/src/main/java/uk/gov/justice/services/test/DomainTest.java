@@ -20,14 +20,13 @@ import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 import org.reflections.Reflections;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(strict = false, features = "src/test/resources/domain-features", format = {"pretty",
-        "json:target/cucumber.json"}, tags = {"~@ignore"})
+@CucumberOptions(features = "src/test/resources/domain-features", tags = "~@ignore")
 public class DomainTest {
 
     public static final Reflections UK_GOV_REFLECTIONS = new Reflections("uk.gov");

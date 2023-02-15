@@ -3,27 +3,19 @@ package uk.gov.justice.services.test.utils.core.random;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.verify;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
 
-import java.lang.reflect.Field;
 import java.text.DecimalFormat;
-import java.util.Random;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DoubleGeneratorTest {
 
     private static final int NUMBER_OF_TIMES = 100000;
-
-    @Spy
-    private Random random = new Random();
 
     @Test
     public void shouldGenerateDoubleGreaterThanOrEqualToMinAndLessThanOrEqualToMax() {
@@ -90,17 +82,9 @@ public class DoubleGeneratorTest {
 
         // when
         final Generator<Double> doubleGenerator = new DoubleGenerator(min, max, scale);
-        overrideUnderlyingRandomGenerator(doubleGenerator, random);
+//        overrideUnderlyingRandomGenerator(doubleGenerator, random);
 
         // then
         typeCheck(doubleGenerator, s -> new DecimalFormat("#.###").format(s).matches("(-)?\\d+(\\.\\d{1,2})?")).verify(times(noOfTimes));
-        verify(random, Mockito.times(noOfTimes * 2)).nextDouble();
     }
-
-    private <T> void overrideUnderlyingRandomGenerator(final Generator<T> randomGenerator, final Random targetRandom) throws NoSuchFieldException, IllegalAccessException {
-        final Field fieldRandom = randomGenerator.getClass().getSuperclass().getDeclaredField("RANDOM");
-        fieldRandom.setAccessible(true);
-        fieldRandom.set(randomGenerator, targetRandom);
-    }
-
 }

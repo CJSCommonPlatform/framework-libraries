@@ -4,9 +4,20 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## Changed
-## [11.0.1] - 2023-02-01
 
+## [17.0.0-M3] - 2023-02-15
+### Changed
+- Update parent poms
+
+## [17.0.0-M2] - 2023-02-06
+### Changed
+- UtcClock.now() now always truncates the time to milliseconds
+
+## [17.0.0-M1] - 2023-02-03
+### Changed
+- Update to Java 17
+
+## [11.0.1] - 2023-02-01
 ### Changed
 - Downgraded maven minimum version to 3.3.9 until the pipeline maven version is updated
 - Add cover all token to travis settings

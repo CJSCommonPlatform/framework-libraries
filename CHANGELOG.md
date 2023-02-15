@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.0.0-M3] - 2023-02-15
+### Changed
+- Update parent poms
+
 ## [17.0.0-M2] - 2023-02-06
 ### Changed
 - UtcClock.now() now always truncates the time to milliseconds

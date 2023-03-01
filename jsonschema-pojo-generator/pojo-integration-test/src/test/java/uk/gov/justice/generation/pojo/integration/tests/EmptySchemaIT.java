@@ -45,7 +45,7 @@ public class EmptySchemaIT {
         final Class<?> emptySchemaClass = classes.get(0);
 
         assertThat(emptySchemaClass.getDeclaredField("additionalProperties"), is(notNullValue()));
-        assertThat(emptySchemaClass.getDeclaredField("additionalProperties").getType().getName(), is("java.util.Map"));
+        assertThat(emptySchemaClass.getDeclaredField("additionalProperties").getType().getName(), is("java.util.HashMap"));
 
         assertThat(emptySchemaClass.getDeclaredMethod("getAdditionalProperties"), is(notNullValue()));
         assertThat(emptySchemaClass.getDeclaredMethod("setAdditionalProperty", String.class, Object.class), is(notNullValue()));

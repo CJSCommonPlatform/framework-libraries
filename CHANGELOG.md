@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Change 'additionalProperties' Map in generated pojos to HashMap to allow serialization
 
 ## [17.0.0-M3] - 2023-02-15
 ### Changed

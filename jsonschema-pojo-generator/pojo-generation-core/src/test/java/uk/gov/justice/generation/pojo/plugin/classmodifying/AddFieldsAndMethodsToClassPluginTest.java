@@ -24,6 +24,7 @@ import uk.gov.justice.generation.pojo.generators.FieldGenerator;
 import uk.gov.justice.generation.pojo.generators.JavaGeneratorFactory;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -170,7 +171,7 @@ public class AddFieldsAndMethodsToClassPluginTest {
                         .addAnnotation(JsonCreator.class)
                         .addModifiers(PUBLIC)
                         .addParameter(map, "additionalProperties", FINAL)
-                        .addStatement("this.additionalProperties = additionalProperties")
+                        .addStatement("this.additionalProperties = new HashMap<>(additionalProperties)")
                         .build())
         );
     }

@@ -10,6 +10,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class AddAdditionalPropertiesToClassPlugin implements ClassModifyingPlugi
     private FieldSpec additionalPropertiesMapField() {
 
         final ParameterizedTypeName map = ParameterizedTypeName.get(
-                ClassName.get(Map.class),
+                ClassName.get(HashMap.class),
                 TypeName.get(String.class),
                 TypeName.get(Object.class));
 

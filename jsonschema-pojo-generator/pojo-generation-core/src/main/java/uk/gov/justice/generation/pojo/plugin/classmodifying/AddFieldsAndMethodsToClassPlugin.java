@@ -120,7 +120,13 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
     private CodeBlock constructorStatements(final List<String> names) {
         final CodeBlock.Builder builder = CodeBlock.builder();
 
-        names.forEach(fieldName -> builder.addStatement("this.$N = $N", fieldName, fieldName));
+        for (String fieldName : names) {
+            if(fieldName.equals(ADDITIONAL_PROPERTIES)) {
+                builder.addStatement("this.$N = new HashMap<>($N)", fieldName, fieldName);
+            } else {
+                builder.addStatement("this.$N = $N", fieldName, fieldName);
+            }
+        }
 
         return builder.build();
     }

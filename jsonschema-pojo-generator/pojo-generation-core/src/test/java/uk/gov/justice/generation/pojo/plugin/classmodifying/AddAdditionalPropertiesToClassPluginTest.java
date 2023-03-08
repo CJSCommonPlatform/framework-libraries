@@ -24,7 +24,7 @@ public class AddAdditionalPropertiesToClassPluginTest {
     @Test
     public void shouldGenerateTheAdditionalPropertiesFieldDeclarationIfAllowAdditionalPropertiesIsTrue() throws Exception {
 
-        final String expectedField = "private final java.util.Map" +
+        final String expectedField = "private final java.util.HashMap" +
                 "<java.lang.String, java.lang.Object> additionalProperties;\n";
 
         final TypeSpec.Builder classBuilder = classBuilder("MyClass");

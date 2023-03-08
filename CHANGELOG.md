@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [17.0.0-M4] - 2023-03-08
 ### Changed
 - Change 'additionalProperties' Map in generated pojos to HashMap to allow serialization
+- Update maven-common-bom to version 17.0.0-M3
 
 ## [17.0.0-M3] - 2023-02-15
 ### Changed

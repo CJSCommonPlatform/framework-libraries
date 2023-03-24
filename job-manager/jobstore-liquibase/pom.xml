@@ -5,7 +5,7 @@
     <parent>
 	    <groupId>uk.gov.justice.services</groupId>
         <artifactId>job-manager</artifactId>
-	    <version>17.0.0-M5-SNAPSHOT</version>
+	    <version>17.0.0-M5</version>
     </parent>
 
     <artifactId>jobstore-liquibase</artifactId>

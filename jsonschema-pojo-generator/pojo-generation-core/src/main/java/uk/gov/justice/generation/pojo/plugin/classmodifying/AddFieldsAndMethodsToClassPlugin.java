@@ -122,7 +122,7 @@ public class AddFieldsAndMethodsToClassPlugin implements ClassModifyingPlugin {
 
         for (String fieldName : names) {
             if(fieldName.equals(ADDITIONAL_PROPERTIES)) {
-                builder.addStatement("this.$N = new HashMap<>($N)", fieldName, fieldName);
+                builder.addStatement("this.$N = $N == null ? null : new HashMap<>($N)", fieldName, fieldName, fieldName);
             } else {
                 builder.addStatement("this.$N = $N", fieldName, fieldName);
             }

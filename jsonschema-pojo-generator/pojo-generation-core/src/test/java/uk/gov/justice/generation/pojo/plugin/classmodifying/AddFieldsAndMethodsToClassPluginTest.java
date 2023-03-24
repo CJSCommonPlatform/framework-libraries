@@ -171,7 +171,7 @@ public class AddFieldsAndMethodsToClassPluginTest {
                         .addAnnotation(JsonCreator.class)
                         .addModifiers(PUBLIC)
                         .addParameter(map, "additionalProperties", FINAL)
-                        .addStatement("this.additionalProperties = new HashMap<>(additionalProperties)")
+                        .addStatement("this.additionalProperties = additionalProperties == null ? new HashMap<>() : new HashMap<>(additionalProperties)")
                         .build())
         );
     }

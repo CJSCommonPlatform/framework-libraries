@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.0.1] - 2023-05-10
+### Changed
+- Removed unnecessary logging of 'skipping generation' message in pojo generator
+
 ## [17.0.0] - 2023-05-05
 ### Changed
 - Update to Java 17

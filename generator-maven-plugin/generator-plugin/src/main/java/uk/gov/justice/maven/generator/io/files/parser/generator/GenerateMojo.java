@@ -87,7 +87,6 @@ public class GenerateMojo extends BasicMojo {
         } else {
             getLog().info("Skipping generation plugin execution as generation.skip flag is enabled.");
         }
-
     }
 
     private GenerateGoalConfig configuration(final List<Path> sourcePaths) {

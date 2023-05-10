@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [8.0.6] - 2023-05-31
+### Changed
+- Removed unnecessary logging of 'skipping generation' message in pojo generator
+
 ## [8.0.5] - 2022-07-23
 ### Changed
 - Updated API path for alfresco read material endpoint

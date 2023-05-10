@@ -74,12 +74,10 @@ public class NonDuplicatingSourceWriterTest {
         when(generationContext.getOutputDirectoryPath()).thenReturn(sourceRootDirectory);
         when(javaSourceFileProvider.getJavaFile(generationContext, classGenerator)).thenReturn(sourceFile);
         when(sourceFile.exists()).thenReturn(true);
-        when(sourceFile.getAbsolutePath()).thenReturn("org/test/MyExistingPojo.java");
 
         assertThat(nonDuplicatingSourceWriter.write(classGenerator, generationContext), is(sourceFile));
 
         verifyZeroInteractions(sourceWriter);
-        verify(logger).info("Skipping generation, Java file already exists: '{}'", "org/test/MyExistingPojo.java");
     }
 
     @Test

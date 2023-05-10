@@ -46,9 +46,7 @@ public class NonDuplicatingSourceWriter {
             } else {
                 throw new SourceCodeWriteException(format("Failed to write java file '%s'", sourceFile.getAbsolutePath()));
             }
-        } else {
-            logger.info("Skipping generation, Java file already exists: '{}'", sourceFile.getAbsolutePath());
-        }
+        } 
 
         return sourceFile;
     }

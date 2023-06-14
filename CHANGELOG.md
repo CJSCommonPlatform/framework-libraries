@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.0.2] - 2023-06-14
+### Security
+- Update org.json to version 20230227 to fix **security vulnerability CVE-2022-45688**
+  Detail: https://nvd.nist.gov/vuln/detail/CVE-2022-45688
+
 ## [17.0.1] - 2023-05-10
 ### Changed
 - Removed unnecessary logging of 'skipping generation' message in pojo generator

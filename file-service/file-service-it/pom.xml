@@ -13,11 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>file-service-api</artifactId>
             <version>${project.version}</version>
@@ -90,6 +85,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-reload4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- TODO BeforeBeanDiscovery class of jakartaee 10, doesn't contain addAnnotatedType(AnnotatedType<?> var1) method which openejb implementation is looking for and hence this dependency should be pushed down in the classpath -->
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

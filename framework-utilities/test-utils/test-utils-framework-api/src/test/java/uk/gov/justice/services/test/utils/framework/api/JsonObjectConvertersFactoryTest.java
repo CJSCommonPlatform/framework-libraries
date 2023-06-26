@@ -66,10 +66,11 @@ public class JsonObjectConvertersFactoryTest {
     private void checkSetUpCorrectly(final ObjectMapper objectMapper) {
         final Set<String> registeredModuleTypes = getValueOfField(objectMapper, "_registeredModuleTypes", Set.class);
 
-        assertThat(registeredModuleTypes, hasItem("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule"));
+        //TODO modules name looks like renamed
+        assertThat(registeredModuleTypes, hasItem("jackson-datatype-jsr310"));
         assertThat(registeredModuleTypes, hasItem("com.fasterxml.jackson.datatype.jdk8.Jdk8Module"));
-        assertThat(registeredModuleTypes, hasItem("com.fasterxml.jackson.module.paramnames.ParameterNamesModule"));
-        assertThat(registeredModuleTypes, hasItem("uk.gov.justice.services.common.converter.jackson.jsr353.InclusionAwareJSR353Module"));
+        assertThat(registeredModuleTypes, hasItem("jackson-module-parameter-names"));
+        assertThat(registeredModuleTypes, hasItem("jackson-datatype-jakarta-jsonp"));
         assertThat(registeredModuleTypes, hasItem("uk.gov.justice.services.common.converter.jackson.additionalproperties.AdditionalPropertiesModule"));
         assertThat(registeredModuleTypes, hasItem("uk.gov.justice.services.common.converter.jackson.integerenum.IntegerEnumModule"));
     }

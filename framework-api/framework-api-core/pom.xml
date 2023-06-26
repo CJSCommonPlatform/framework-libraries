@@ -76,6 +76,11 @@
             <artifactId>test-utils-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.parsson</groupId>
+            <artifactId>parsson</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

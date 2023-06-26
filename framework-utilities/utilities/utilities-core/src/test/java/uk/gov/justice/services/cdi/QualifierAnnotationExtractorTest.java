@@ -56,7 +56,7 @@ public class QualifierAnnotationExtractorTest {
             qualifierAnnotationExtractor.getFrom(injectionPoint, Named.class);
             fail();
         } catch (final InjectionException expected) {
-            assertThat(expected.getMessage(), is("Failed to find 'javax.inject.Named' annotation on bean 'uk.gov.justice.services.cdi.QualifierAnnotationExtractorTest$MayAnnotatedClass'"));
+            assertThat(expected.getMessage(), is("Failed to find 'jakarta.inject.Named' annotation on bean 'uk.gov.justice.services.cdi.QualifierAnnotationExtractorTest$MayAnnotatedClass'"));
         }
     }
 

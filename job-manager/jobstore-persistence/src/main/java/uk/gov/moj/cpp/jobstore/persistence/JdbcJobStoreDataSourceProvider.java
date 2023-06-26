@@ -7,7 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import javax.naming.Context;
 import javax.naming.NamingException;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 

@@ -32,7 +32,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import jakarta.json.JsonObject;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;

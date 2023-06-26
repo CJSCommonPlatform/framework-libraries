@@ -5,7 +5,7 @@ import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.ge
 
 import uk.gov.justice.services.fileservice.repository.DataSourceProvider;
 
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import org.postgresql.ds.PGSimpleDataSource;
 

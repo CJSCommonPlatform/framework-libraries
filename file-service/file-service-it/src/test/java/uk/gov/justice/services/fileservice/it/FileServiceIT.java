@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.openejb.jee.Application;

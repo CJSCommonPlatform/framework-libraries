@@ -43,7 +43,7 @@ import java.util.stream.Stream;
 import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
 import javax.naming.InitialContext;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 import jakarta.transaction.HeuristicMixedException;
 import jakarta.transaction.HeuristicRollbackException;
 import jakarta.transaction.NotSupportedException;

@@ -9,7 +9,7 @@ import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import javax.naming.NamingException;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 /**
  * Gets the container {@link DataSource} using JNDI

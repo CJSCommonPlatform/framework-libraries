@@ -26,7 +26,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 

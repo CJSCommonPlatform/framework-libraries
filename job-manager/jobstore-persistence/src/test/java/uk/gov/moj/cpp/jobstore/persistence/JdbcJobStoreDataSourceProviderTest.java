@@ -13,7 +13,7 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;

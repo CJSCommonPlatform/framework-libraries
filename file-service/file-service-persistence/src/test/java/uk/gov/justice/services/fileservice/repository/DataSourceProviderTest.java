@@ -11,7 +11,7 @@ import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -14,12 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>artemis-server</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-jakarta-server</artifactId>
-            <version>2.29.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.johnzon</groupId>

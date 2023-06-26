@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.jobstore.persistence;
 
-import static jakarta.naming.Context.INITIAL_CONTEXT_FACTORY;
-import static jakarta.naming.Context.URL_PKG_PREFIXES;
+import static javax.naming.Context.INITIAL_CONTEXT_FACTORY;
+import static javax.naming.Context.URL_PKG_PREFIXES;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.getHost;
 
 import javax.sql.DataSource;

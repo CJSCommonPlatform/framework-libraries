@@ -2,12 +2,12 @@ package uk.gov.justice.services.common.converter.jackson.jsr353;
 
 import jakarta.json.JsonValue;
 
-import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
+import com.fasterxml.jackson.datatype.jsonp.JSONPModule;
 
 /**
  * Customised version of the JSR353Module that excludes null values.
  */
-public class InclusionAwareJSR353Module extends JSR353Module {
+public class InclusionAwareJSR353Module extends JSONPModule {
 
     private static final long serialVersionUID = -1112006287109681036L;
 

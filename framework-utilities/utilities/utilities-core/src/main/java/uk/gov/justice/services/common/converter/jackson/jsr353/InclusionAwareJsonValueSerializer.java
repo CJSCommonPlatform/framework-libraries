@@ -10,7 +10,7 @@ import jakarta.json.JsonValue;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.datatype.jsr353.JsonValueSerializer;
+import com.fasterxml.jackson.datatype.jsonp.JsonValueSerializer;
 
 /**
  * Customised version of the JSR353 JsonValueSerializer that excludes null values.

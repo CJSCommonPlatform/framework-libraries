@@ -2,7 +2,7 @@ package uk.gov.justice.json.jolt;
 
 import java.util.Map;
 
-import javax.json.Json;
+import jakarta.json.Json;
 
 import com.bazaarvoice.jolt.ContextualTransform;
 import org.slf4j.Logger;

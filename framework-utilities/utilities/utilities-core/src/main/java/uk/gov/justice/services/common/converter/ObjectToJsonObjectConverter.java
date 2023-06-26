@@ -6,8 +6,8 @@ import uk.gov.justice.services.common.converter.exception.ConverterException;
 
 import java.io.IOException;
 
-import javax.enterprise.inject.Vetoed;
-import javax.json.JsonObject;
+import jakarta.enterprise.inject.Vetoed;
+import jakarta.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

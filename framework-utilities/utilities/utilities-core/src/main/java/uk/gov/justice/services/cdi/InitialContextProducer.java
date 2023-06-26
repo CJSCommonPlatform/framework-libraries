@@ -1,13 +1,13 @@
 package uk.gov.justice.services.cdi;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.CreationException;
-import javax.enterprise.inject.Disposes;
-import javax.enterprise.inject.InjectionException;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.CreationException;
+import jakarta.enterprise.inject.Disposes;
+import jakarta.enterprise.inject.InjectionException;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.naming.InitialContext;
+import jakarta.naming.NamingException;
 
 @ApplicationScoped
 public class InitialContextProducer {

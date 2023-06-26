@@ -1,6 +1,6 @@
 package uk.gov.justice.services.fileservice.repository;
 
-import javax.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Alternative;
 
 @Alternative
 public class PostgresMetadataSqlProvider implements MetadataSqlProvider {

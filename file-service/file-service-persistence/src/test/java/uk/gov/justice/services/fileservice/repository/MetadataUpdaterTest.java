@@ -3,7 +3,7 @@ package uk.gov.justice.services.fileservice.repository;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.time.ZoneOffset.UTC;
 import static java.time.ZonedDateTime.of;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
@@ -19,8 +19,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 
-import javax.json.JsonObject;
-import javax.ws.rs.core.MediaType;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.core.MediaType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

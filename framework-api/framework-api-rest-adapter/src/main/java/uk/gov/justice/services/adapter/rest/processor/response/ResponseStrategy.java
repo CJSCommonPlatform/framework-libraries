@@ -4,7 +4,7 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 @FunctionalInterface
 public interface ResponseStrategy {

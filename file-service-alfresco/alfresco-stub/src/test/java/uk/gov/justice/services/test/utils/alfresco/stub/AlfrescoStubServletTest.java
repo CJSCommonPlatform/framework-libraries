@@ -1,6 +1,6 @@
 package uk.gov.justice.services.test.utils.alfresco.stub;
 
-import static javax.json.Json.createArrayBuilder;
+import static jakarta.json.Json.createArrayBuilder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,10 +9,10 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
-import javax.json.JsonArray;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import jakarta.json.JsonArray;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,10 +1,10 @@
 package uk.gov.justice.services.common.converter.jackson.jsr353;
 
-import static javax.json.JsonValue.NULL;
+import static jakarta.json.JsonValue.NULL;
 
-import javax.json.JsonArray;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 

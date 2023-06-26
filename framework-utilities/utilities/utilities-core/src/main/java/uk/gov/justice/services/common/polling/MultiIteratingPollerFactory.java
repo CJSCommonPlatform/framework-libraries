@@ -2,7 +2,7 @@ package uk.gov.justice.services.common.polling;
 
 import uk.gov.justice.services.common.util.Sleeper;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class MultiIteratingPollerFactory {
 

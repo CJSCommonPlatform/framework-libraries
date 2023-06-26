@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying;
 import static com.squareup.javapoet.ClassName.get;
 import static com.squareup.javapoet.CodeBlock.of;
 import static java.util.stream.Collectors.toList;
-import static javax.lang.model.element.Modifier.PUBLIC;
+import static jakarta.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;

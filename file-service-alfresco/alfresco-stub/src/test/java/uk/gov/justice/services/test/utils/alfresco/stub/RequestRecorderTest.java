@@ -5,7 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.ByteArrayInputStream;
 
-import javax.json.JsonArray;
+import jakarta.json.JsonArray;
 
 import org.junit.Test;
 

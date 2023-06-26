@@ -1,7 +1,7 @@
 package uk.gov.justice.services.messaging.jms;
 
-import javax.jms.Message;
-import javax.jms.Session;
+import jakarta.jms.Message;
+import jakarta.jms.Session;
 
 /**
  * Interface that specifies a converter between Java objects and JMS messages.

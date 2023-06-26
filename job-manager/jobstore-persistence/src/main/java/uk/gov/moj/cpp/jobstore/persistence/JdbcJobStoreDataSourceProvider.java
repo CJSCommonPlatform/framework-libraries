@@ -2,12 +2,12 @@ package uk.gov.moj.cpp.jobstore.persistence;
 
 import static java.lang.String.format;
 
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import jakarta.annotation.Resource;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.naming.Context;
+import jakarta.naming.NamingException;
+import jakarta.sql.DataSource;
 
 import org.slf4j.Logger;
 

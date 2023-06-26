@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.json.JsonObject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 
 public interface RestProcessor {
 

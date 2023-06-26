@@ -1,7 +1,7 @@
 package uk.gov.justice.services.messaging;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 /**
  * A converter class to convert between {@link JsonEnvelope} and {@link JsonObject}.

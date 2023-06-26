@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.LinkedList;
 
-import javax.sql.DataSource;
+import jakarta.sql.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

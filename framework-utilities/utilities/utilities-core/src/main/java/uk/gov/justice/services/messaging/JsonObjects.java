@@ -1,6 +1,6 @@
 package uk.gov.justice.services.messaging;
 
-import static javax.json.JsonValue.ValueType;
+import static jakarta.json.JsonValue.ValueType;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,14 +12,14 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 
 import com.google.common.collect.ImmutableList;
 

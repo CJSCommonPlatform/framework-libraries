@@ -2,10 +2,10 @@ package uk.gov.justice.services.common.configuration;
 
 import static uk.gov.justice.services.common.configuration.CommonValueAnnotationDef.globalValueAnnotationOf;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.naming.NamingException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.naming.NamingException;
 
 /**
  * Looks up global jndi names in order to inject their values into @GlobalValue annotated

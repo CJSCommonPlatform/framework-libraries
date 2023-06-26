@@ -43,16 +43,16 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
-import javax.transaction.UserTransaction;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
+import jakarta.naming.InitialContext;
+import jakarta.sql.DataSource;
+import jakarta.transaction.HeuristicMixedException;
+import jakarta.transaction.HeuristicRollbackException;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.RollbackException;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import liquibase.Liquibase;

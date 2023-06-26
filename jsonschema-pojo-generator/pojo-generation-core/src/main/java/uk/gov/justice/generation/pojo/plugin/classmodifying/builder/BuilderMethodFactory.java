@@ -3,8 +3,8 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.PUBLIC;
+import static jakarta.lang.model.element.Modifier.FINAL;
+import static jakarta.lang.model.element.Modifier.PUBLIC;
 import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin.ADDITIONAL_PROPERTIES_FIELD_NAME;
 
 import uk.gov.justice.generation.pojo.dom.Definition;

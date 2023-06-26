@@ -3,9 +3,9 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying;
 import static com.squareup.javapoet.FieldSpec.builder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static java.util.Arrays.asList;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.PRIVATE;
-import static javax.lang.model.element.Modifier.PUBLIC;
+import static jakarta.lang.model.element.Modifier.FINAL;
+import static jakarta.lang.model.element.Modifier.PRIVATE;
+import static jakarta.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;

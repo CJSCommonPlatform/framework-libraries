@@ -11,10 +11,10 @@ import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.enterprise.inject.InjectionException;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Named;
+import jakarta.enterprise.inject.InjectionException;
+import jakarta.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Named;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

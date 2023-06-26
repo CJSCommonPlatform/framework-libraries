@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.jobstore.persistence;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import javax.naming.Context;
+import jakarta.naming.Context;
 
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;

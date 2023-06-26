@@ -10,7 +10,7 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import java.util.Iterator;
 import java.util.Optional;
 
-import javax.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Instance;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,17 +1,17 @@
 package uk.gov.justice.services.file.alfresco;
 
 import static java.lang.String.format;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static uk.gov.justice.services.file.alfresco.Headers.headersWithUserId;
 
 import uk.gov.justice.services.common.configuration.GlobalValue;
 import uk.gov.justice.services.file.api.FileOperationException;
 import uk.gov.justice.services.file.api.remover.FileRemover;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.core.Response;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class AlfrescoFileRemover implements FileRemover {

@@ -1,6 +1,6 @@
 package uk.gov.justice.services.common.converter.jackson.jsr353;
 
-import javax.json.JsonValue;
+import jakarta.json.JsonValue;
 
 import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
 

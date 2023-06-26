@@ -1,6 +1,6 @@
 package uk.gov.justice.maven.generator.io.files.parser;
 
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createReader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,8 +9,8 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 
 public class JsonSchemaFileParser implements FileParser<JsonObject> {

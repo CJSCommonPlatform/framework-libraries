@@ -14,13 +14,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.Queue;
-import javax.jms.QueueBrowser;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.Queue;
+import jakarta.jms.QueueBrowser;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
+import jakarta.json.JsonObject;
 
 import org.hamcrest.collection.IsMapContaining;
 import org.junit.Before;

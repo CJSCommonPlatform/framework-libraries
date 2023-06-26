@@ -5,7 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParamswithHeaders;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.junit.Test;

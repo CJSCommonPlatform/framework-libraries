@@ -8,7 +8,7 @@ import uk.gov.justice.schema.catalog.SchemaCatalogResolver;
 
 import java.io.InputStream;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.openejb.jee.Application;
 import org.apache.openejb.jee.WebApp;

@@ -1,8 +1,8 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createArrayBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -14,7 +14,7 @@ import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUI
 
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
-import javax.json.JsonArrayBuilder;
+import jakarta.json.JsonArrayBuilder;
 
 import org.junit.Test;
 

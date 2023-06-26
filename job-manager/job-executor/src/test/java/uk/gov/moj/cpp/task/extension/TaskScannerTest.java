@@ -10,9 +10,9 @@ import static org.mockito.Mockito.verify;
 
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 
-import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import jakarta.enterprise.inject.spi.AnnotatedType;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

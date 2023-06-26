@@ -2,8 +2,8 @@ package uk.gov.justice.services.test.utils.core.http;
 
 import java.util.Objects;
 
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * The response body and status of an HTTP call

@@ -149,6 +149,7 @@
                     <dependency>
                         <groupId>jakarta.xml.bind</groupId>
                         <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>${xml-bind-api.version}</version>
                     </dependency>
 
                 </dependencies>

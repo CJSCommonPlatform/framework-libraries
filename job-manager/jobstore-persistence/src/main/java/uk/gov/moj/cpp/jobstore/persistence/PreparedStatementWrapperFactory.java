@@ -4,7 +4,7 @@ import static uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapper.value
 
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
+import jakarta.sql.DataSource;
 
 public class PreparedStatementWrapperFactory {
 

@@ -1,7 +1,7 @@
 package uk.gov.justice.services.ejb.timer;
 
-import javax.ejb.Timer;
-import javax.ejb.TimerService;
+import jakarta.ejb.Timer;
+import jakarta.ejb.TimerService;
 
 public class TimerCanceler {
 

@@ -3,7 +3,7 @@ package uk.gov.justice.services.common.converter;
 import static java.time.ZoneOffset.UTC;
 import static java.time.ZonedDateTime.of;
 import static java.time.ZonedDateTime.parse;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import javax.json.JsonString;
+import jakarta.json.JsonString;
 
 import org.junit.Test;
 

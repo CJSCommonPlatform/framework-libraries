@@ -6,7 +6,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
@@ -31,8 +31,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.json.JsonObject;
-import javax.sql.DataSource;
+import jakarta.json.JsonObject;
+import jakarta.sql.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;

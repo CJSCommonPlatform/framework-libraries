@@ -7,10 +7,10 @@ import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
 
-import javax.inject.Inject;
-import javax.transaction.Status;
-import javax.transaction.SystemException;
-import javax.transaction.UserTransaction;
+import jakarta.inject.Inject;
+import jakarta.transaction.Status;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

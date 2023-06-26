@@ -4,7 +4,7 @@ package uk.gov.justice.services.fileservice.api;
 import java.io.InputStream;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 /**
  * Entry point for Storing files on the File Server. Inject This class into you code to use.

@@ -2,14 +2,14 @@ package uk.gov.justice.services.test.utils.alfresco.stub;
 
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createArrayBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
 
 import org.apache.commons.io.IOUtils;
 

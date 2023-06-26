@@ -1,14 +1,14 @@
 package uk.gov.justice.services.common.converter;
 
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.JsonValue.FALSE;
-import static javax.json.JsonValue.TRUE;
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.json.JsonValue.FALSE;
+import static jakarta.json.JsonValue.TRUE;
 
 import java.math.BigDecimal;
 
-import javax.json.JsonNumber;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 
 /**
  * Factory for producing JsonValue based values for literals.

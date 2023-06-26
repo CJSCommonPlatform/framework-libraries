@@ -1,16 +1,16 @@
 package uk.gov.justice.services.common.converter;
 
 import static java.lang.String.format;
-import static javax.json.Json.createArrayBuilder;
+import static jakarta.json.Json.createArrayBuilder;
 
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 
 import java.io.IOException;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
+import jakarta.inject.Inject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

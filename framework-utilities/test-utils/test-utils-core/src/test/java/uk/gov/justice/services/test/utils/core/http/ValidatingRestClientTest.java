@@ -1,7 +1,7 @@
 package uk.gov.justice.services.test.utils.core.http;
 
 import static java.util.Collections.singletonList;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -11,9 +11,9 @@ import uk.gov.justice.services.test.utils.core.rest.RestClient;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

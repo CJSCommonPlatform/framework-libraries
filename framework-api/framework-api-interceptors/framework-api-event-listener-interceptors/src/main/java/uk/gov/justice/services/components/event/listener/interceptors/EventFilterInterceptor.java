@@ -6,7 +6,7 @@ import uk.gov.justice.services.core.interceptor.InterceptorChain;
 import uk.gov.justice.services.core.interceptor.InterceptorContext;
 import uk.gov.justice.services.event.buffer.api.EventFilter;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * @deprecated This class should no longer be used, EventFilterInterceptor is specifically generated

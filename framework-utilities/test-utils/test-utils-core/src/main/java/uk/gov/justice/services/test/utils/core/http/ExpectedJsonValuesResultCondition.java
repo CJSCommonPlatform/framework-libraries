@@ -1,6 +1,6 @@
 package uk.gov.justice.services.test.utils.core.http;
 
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createReader;
 
 import uk.gov.justice.services.test.utils.core.messaging.JsonObjects;
 
@@ -10,8 +10,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 /**
  * Handy Predicate which validates that the response body contains the properties and

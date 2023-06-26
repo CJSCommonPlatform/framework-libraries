@@ -3,7 +3,7 @@ package uk.gov.justice.services.file.alfresco;
 
 import static java.util.Collections.singletonList;
 
-import javax.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedHashMap;
 
 public final class Headers {
 

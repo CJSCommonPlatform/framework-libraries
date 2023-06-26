@@ -1,9 +1,9 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.PRIVATE;
-import static javax.lang.model.element.Modifier.STATIC;
+import static jakarta.lang.model.element.Modifier.FINAL;
+import static jakarta.lang.model.element.Modifier.PRIVATE;
+import static jakarta.lang.model.element.Modifier.STATIC;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

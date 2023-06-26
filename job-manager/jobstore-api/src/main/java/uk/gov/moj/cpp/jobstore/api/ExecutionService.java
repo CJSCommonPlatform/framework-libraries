@@ -8,8 +8,8 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class ExecutionService {

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.common.util.Clock;
 
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

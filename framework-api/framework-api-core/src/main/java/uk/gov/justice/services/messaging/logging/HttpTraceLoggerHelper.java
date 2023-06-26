@@ -1,7 +1,7 @@
 package uk.gov.justice.services.messaging.logging;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 /**
  * Handles message logging for ReaderInterceptorContext headers.

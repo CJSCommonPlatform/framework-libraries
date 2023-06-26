@@ -1,6 +1,6 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
-import static javax.lang.model.element.Modifier.PRIVATE;
+import static jakarta.lang.model.element.Modifier.PRIVATE;
 
 import uk.gov.justice.generation.pojo.dom.Definition;
 import uk.gov.justice.generation.pojo.generators.ClassNameFactory;

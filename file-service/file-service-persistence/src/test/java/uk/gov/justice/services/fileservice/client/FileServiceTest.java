@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;

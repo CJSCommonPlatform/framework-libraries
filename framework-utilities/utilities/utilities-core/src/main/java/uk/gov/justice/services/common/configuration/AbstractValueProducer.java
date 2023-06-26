@@ -3,9 +3,9 @@ package uk.gov.justice.services.common.configuration;
 import static java.lang.String.format;
 import static uk.gov.justice.services.common.configuration.CommonValueAnnotationDef.NULL_DEFAULT;
 
-import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
-import javax.naming.NamingException;
+import jakarta.naming.InitialContext;
+import jakarta.naming.NameNotFoundException;
+import jakarta.naming.NamingException;
 
 abstract class AbstractValueProducer {
 

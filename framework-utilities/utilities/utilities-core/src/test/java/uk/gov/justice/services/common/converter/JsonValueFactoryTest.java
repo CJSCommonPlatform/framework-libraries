@@ -1,15 +1,15 @@
 package uk.gov.justice.services.common.converter;
 
-import static javax.json.JsonValue.FALSE;
+import static jakarta.json.JsonValue.FALSE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 
-import javax.json.JsonNumber;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

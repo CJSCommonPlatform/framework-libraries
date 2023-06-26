@@ -6,7 +6,7 @@ import uk.gov.justice.services.fileservice.domain.FileReference;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 /**
  * Entry point for retrieving files from the File Server. Inject This class into you code to use.

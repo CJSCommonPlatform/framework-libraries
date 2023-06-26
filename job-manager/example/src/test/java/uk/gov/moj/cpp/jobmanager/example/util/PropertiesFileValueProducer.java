@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.naming.NamingException;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

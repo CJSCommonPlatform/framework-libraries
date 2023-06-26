@@ -12,9 +12,9 @@ import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider
 
 import java.util.Optional;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.TextMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.TextMessage;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

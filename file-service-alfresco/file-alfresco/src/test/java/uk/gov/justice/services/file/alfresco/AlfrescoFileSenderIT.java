@@ -9,7 +9,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static java.lang.String.format;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static org.apache.commons.io.IOUtils.toInputStream;
 import static org.apache.openejb.util.NetworkUtil.getNextAvailablePort;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -9,8 +9,8 @@ import uk.gov.justice.services.messaging.MetadataBuilder;
 
 import java.util.ServiceLoader;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 /**
  * Interface for EnvelopeProvider implementations to provide methods for constructing

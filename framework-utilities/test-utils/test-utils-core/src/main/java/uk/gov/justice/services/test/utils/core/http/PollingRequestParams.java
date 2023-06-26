@@ -4,8 +4,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response.Status;
 
 public class PollingRequestParams {
 

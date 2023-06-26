@@ -22,7 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.spi.FileSystemProvider;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;

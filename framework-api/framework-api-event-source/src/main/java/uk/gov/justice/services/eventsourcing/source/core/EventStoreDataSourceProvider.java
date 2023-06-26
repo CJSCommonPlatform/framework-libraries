@@ -1,6 +1,6 @@
 package uk.gov.justice.services.eventsourcing.source.core;
 
-import javax.sql.DataSource;
+import jakarta.sql.DataSource;
 
 public interface EventStoreDataSourceProvider {
 

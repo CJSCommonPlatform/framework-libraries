@@ -2,10 +2,10 @@ package uk.gov.justice.services.file.alfresco;
 
 import static com.jayway.jsonpath.Configuration.defaultConfiguration;
 import static java.lang.String.format;
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA_TYPE;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN_TYPE;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.client.Entity.entity;
+import static jakarta.ws.rs.core.MediaType.MULTIPART_FORM_DATA_TYPE;
+import static jakarta.ws.rs.core.MediaType.TEXT_PLAIN_TYPE;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static uk.gov.justice.services.file.alfresco.Headers.headersWithUserId;
 
@@ -16,11 +16,11 @@ import uk.gov.justice.services.file.api.sender.FileSender;
 
 import java.io.InputStream;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.Response;
 
 import com.jayway.jsonpath.JsonPath;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;

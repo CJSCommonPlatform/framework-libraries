@@ -2,7 +2,7 @@ package uk.gov.justice.services.test.utils.core.http;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * Validates a responseBody and status against expected status and a response body condition

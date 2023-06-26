@@ -4,8 +4,8 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import javax.ejb.TimerConfig;
-import javax.ejb.TimerService;
+import jakarta.ejb.TimerConfig;
+import jakarta.ejb.TimerService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

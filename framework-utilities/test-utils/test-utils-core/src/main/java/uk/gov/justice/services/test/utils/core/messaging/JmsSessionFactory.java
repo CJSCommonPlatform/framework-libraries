@@ -1,11 +1,11 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
 import static java.lang.String.format;
-import static javax.jms.Session.AUTO_ACKNOWLEDGE;
+import static jakarta.jms.Session.AUTO_ACKNOWLEDGE;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.Session;
+import jakarta.jms.Connection;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 

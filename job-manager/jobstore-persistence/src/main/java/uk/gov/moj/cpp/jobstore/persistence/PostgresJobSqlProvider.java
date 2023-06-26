@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.jobstore.persistence;
 
-import javax.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Alternative;
 
 @Alternative
 public class PostgresJobSqlProvider implements JobSqlProvider {

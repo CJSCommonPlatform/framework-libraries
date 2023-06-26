@@ -5,7 +5,7 @@ import static java.time.ZonedDateTime.now;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createReader;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
@@ -27,8 +27,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
 

@@ -3,7 +3,7 @@ package uk.gov.justice.services.test.utils.core.matchers;
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
 import uk.gov.justice.services.test.utils.core.http.RestPoller;
 
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 
 import org.hamcrest.Description;
 

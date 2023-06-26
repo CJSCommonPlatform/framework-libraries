@@ -9,8 +9,8 @@ import uk.gov.justice.services.common.util.UtcClock;
 
 import java.time.ZonedDateTime;
 
-import javax.json.Json;
-import javax.json.JsonObject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 
 import org.junit.Before;
 import org.junit.Test;

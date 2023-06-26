@@ -5,8 +5,8 @@ import static java.sql.Date.valueOf;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * JPA {@link AttributeConverter} to manage date field conversion between entities and database.

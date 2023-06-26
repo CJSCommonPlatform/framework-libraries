@@ -26,10 +26,10 @@ import uk.gov.moj.cpp.task.extension.TaskRegistry;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
-import javax.transaction.UserTransaction;
+import jakarta.json.JsonObject;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

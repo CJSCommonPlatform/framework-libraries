@@ -19,8 +19,8 @@ import uk.gov.justice.services.common.converter.jackson.jsr353.InclusionAwareJSR
 
 import java.time.ZonedDateTime;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;

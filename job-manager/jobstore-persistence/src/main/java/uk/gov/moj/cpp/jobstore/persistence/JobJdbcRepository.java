@@ -5,7 +5,7 @@ import static java.lang.String.format;
 import static java.time.ZonedDateTime.now;
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createReader;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.fromSqlTimestamp;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
@@ -21,12 +21,12 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.sql.DataSource;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.sql.DataSource;
 
 import org.slf4j.Logger;
 

@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.Test;
 

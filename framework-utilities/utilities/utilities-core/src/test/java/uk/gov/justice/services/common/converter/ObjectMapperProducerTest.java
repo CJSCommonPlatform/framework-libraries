@@ -1,7 +1,7 @@
 package uk.gov.justice.services.common.converter;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;

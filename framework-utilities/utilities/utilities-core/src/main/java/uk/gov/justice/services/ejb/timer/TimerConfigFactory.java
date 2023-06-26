@@ -1,6 +1,6 @@
 package uk.gov.justice.services.ejb.timer;
 
-import javax.ejb.TimerConfig;
+import jakarta.ejb.TimerConfig;
 
 public class TimerConfigFactory {
 

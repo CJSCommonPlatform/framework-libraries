@@ -2,8 +2,8 @@ package uk.gov.justice.services.common.converter;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createArrayBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -16,7 +16,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.util.UUID;
 
-import javax.json.JsonArray;
+import jakarta.json.JsonArray;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,6 +1,6 @@
 package uk.gov.justice.services.adapter.rest.mapping;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 
 public interface ActionMapperHelper {
 

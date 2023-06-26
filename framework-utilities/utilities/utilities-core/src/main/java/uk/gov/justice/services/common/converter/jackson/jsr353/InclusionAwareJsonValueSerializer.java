@@ -5,8 +5,8 @@ import static uk.gov.justice.services.common.converter.jackson.jsr353.JsonInclud
 import java.io.IOException;
 import java.util.Map.Entry;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

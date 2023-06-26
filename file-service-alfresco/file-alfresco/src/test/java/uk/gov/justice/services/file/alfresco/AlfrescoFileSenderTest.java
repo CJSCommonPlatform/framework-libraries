@@ -1,8 +1,8 @@
 package uk.gov.justice.services.file.alfresco;
 
 import static java.util.UUID.randomUUID;
-import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA_TYPE;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static jakarta.ws.rs.core.MediaType.MULTIPART_FORM_DATA_TYPE;
+import static jakarta.ws.rs.core.MediaType.TEXT_PLAIN;
 import static org.apache.commons.io.IOUtils.toInputStream;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -11,7 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.file.alfresco.Headers.headersWithUserId;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 import org.junit.Before;
 import org.junit.Test;

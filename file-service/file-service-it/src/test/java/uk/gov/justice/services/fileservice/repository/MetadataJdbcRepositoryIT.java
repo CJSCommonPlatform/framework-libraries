@@ -1,7 +1,7 @@
 package uk.gov.justice.services.fileservice.repository;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -15,7 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,6 +1,6 @@
 package uk.gov.justice.services.core.json;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 /**
  * Handles message logging for Json schema validation.

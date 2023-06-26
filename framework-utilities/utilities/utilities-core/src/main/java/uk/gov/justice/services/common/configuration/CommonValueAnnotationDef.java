@@ -1,6 +1,6 @@
 package uk.gov.justice.services.common.configuration;
 
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 
 class CommonValueAnnotationDef {
 

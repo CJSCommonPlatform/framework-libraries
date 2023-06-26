@@ -2,9 +2,9 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying;
 
 import static com.squareup.javapoet.TypeName.LONG;
 import static java.lang.String.format;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.PRIVATE;
-import static javax.lang.model.element.Modifier.STATIC;
+import static jakarta.lang.model.element.Modifier.FINAL;
+import static jakarta.lang.model.element.Modifier.PRIVATE;
+import static jakarta.lang.model.element.Modifier.STATIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.IncompatiblePluginException;

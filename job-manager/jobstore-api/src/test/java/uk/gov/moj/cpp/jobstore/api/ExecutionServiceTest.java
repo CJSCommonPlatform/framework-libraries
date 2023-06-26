@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.jobstore.api;
 
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,7 +14,7 @@ import uk.gov.moj.cpp.jobstore.service.JobService;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.Before;
 import org.junit.Test;

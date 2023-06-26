@@ -2,7 +2,7 @@ package uk.gov.justice.services.core.extension;
 
 import uk.gov.justice.services.core.annotation.ServiceComponentLocation;
 
-import javax.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.Bean;
 
 public class ServiceComponentFoundEvent {
 

@@ -11,7 +11,7 @@ import uk.gov.justice.services.common.util.Sleeper;
 
 import java.util.function.BooleanSupplier;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.Test;
 

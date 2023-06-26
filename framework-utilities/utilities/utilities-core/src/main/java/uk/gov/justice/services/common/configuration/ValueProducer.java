@@ -3,11 +3,11 @@ package uk.gov.justice.services.common.configuration;
 import static java.lang.String.format;
 import static uk.gov.justice.services.common.configuration.CommonValueAnnotationDef.localValueAnnotationOf;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
-import javax.naming.NamingException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
+import jakarta.naming.NamingException;
 
 /**
  * Looks up context specific jndi names in order to inject their values into @Value annotated

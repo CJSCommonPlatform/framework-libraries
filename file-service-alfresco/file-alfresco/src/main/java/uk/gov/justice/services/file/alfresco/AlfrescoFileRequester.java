@@ -3,7 +3,7 @@ package uk.gov.justice.services.file.alfresco;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
-import static javax.ws.rs.core.MediaType.valueOf;
+import static jakarta.ws.rs.core.MediaType.valueOf;
 import static uk.gov.justice.services.file.alfresco.Headers.headersWithUserId;
 
 import uk.gov.justice.services.common.configuration.GlobalValue;
@@ -13,11 +13,11 @@ import uk.gov.justice.services.file.api.requester.FileRequester;
 import java.io.InputStream;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.ProcessingException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.ProcessingException;
 
 @ApplicationScoped
 public class AlfrescoFileRequester implements FileRequester {

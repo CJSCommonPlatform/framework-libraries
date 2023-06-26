@@ -2,7 +2,7 @@ package uk.gov.justice.services.test.utils.core.http;
 
 import static java.util.Optional.empty;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static javax.ws.rs.core.Response.Status.fromStatusCode;
+import static jakarta.ws.rs.core.Response.Status.fromStatusCode;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anyOf;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 import com.google.common.annotations.VisibleForTesting;
 import org.awaitility.core.ConditionEvaluationLogger;

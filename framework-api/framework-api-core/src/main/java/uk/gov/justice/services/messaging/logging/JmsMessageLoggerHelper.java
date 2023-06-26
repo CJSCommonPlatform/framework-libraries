@@ -1,9 +1,9 @@
 package uk.gov.justice.services.messaging.logging;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.TextMessage;
+import jakarta.json.JsonObject;
 
 public interface JmsMessageLoggerHelper {
 

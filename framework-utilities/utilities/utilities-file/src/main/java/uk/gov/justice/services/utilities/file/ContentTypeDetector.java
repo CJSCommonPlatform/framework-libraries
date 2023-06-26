@@ -3,7 +3,7 @@ package uk.gov.justice.services.utilities.file;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.detect.Detector;

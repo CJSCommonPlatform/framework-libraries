@@ -11,7 +11,7 @@ import uk.gov.justice.services.common.converter.exception.ConverterException;
 
 import java.io.FileNotFoundException;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;

@@ -17,7 +17,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Optional;
 
-import javax.json.stream.JsonParsingException;
+import jakarta.json.stream.JsonParsingException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

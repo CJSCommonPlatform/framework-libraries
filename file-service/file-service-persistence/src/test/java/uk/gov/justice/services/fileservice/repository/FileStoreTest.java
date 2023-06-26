@@ -31,8 +31,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.sql.DataSource;
+import jakarta.json.JsonObject;
+import jakarta.sql.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

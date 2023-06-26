@@ -2,7 +2,7 @@ package uk.gov.justice.services.fileservice.repository;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createReader;
 
 import uk.gov.justice.services.fileservice.api.DataIntegrityException;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
@@ -16,8 +16,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 /**
  * Class for handling inserts/updates/selects on the 'metadata' database table. This class is not

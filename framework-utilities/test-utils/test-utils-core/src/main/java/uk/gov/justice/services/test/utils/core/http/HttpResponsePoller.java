@@ -4,8 +4,8 @@ package uk.gov.justice.services.test.utils.core.http;
 import static java.lang.String.format;
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.OK;
 
 import uk.gov.justice.services.test.utils.core.messaging.JsonObjects;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
 
 /**
  * @deprecated Use {@link RestPoller} instead.

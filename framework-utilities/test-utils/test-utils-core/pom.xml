@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>artemis-jms-client</artifactId>
+            <artifactId>artemis-jakarta-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -85,6 +85,10 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-path</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
 
         <!-- Test dependencies -->

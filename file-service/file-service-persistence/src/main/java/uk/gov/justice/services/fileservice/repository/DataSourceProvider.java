@@ -6,10 +6,10 @@ import uk.gov.justice.services.fileservice.api.ConfigurationException;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
+import jakarta.naming.NamingException;
+import jakarta.sql.DataSource;
 
 /**
  * Gets the container {@link DataSource} using JNDI

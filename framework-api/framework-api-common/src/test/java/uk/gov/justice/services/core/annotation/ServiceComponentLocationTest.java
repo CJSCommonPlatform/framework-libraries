@@ -8,7 +8,7 @@ import static uk.gov.justice.services.core.annotation.ServiceComponentLocation.L
 import static uk.gov.justice.services.core.annotation.ServiceComponentLocation.REMOTE;
 import static uk.gov.justice.services.core.annotation.ServiceComponentLocation.componentLocationFrom;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.Test;
 

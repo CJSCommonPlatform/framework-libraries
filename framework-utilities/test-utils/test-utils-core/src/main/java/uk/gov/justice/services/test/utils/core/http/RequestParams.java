@@ -2,7 +2,7 @@ package uk.gov.justice.services.test.utils.core.http;
 
 import java.util.Objects;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 public class RequestParams {
 

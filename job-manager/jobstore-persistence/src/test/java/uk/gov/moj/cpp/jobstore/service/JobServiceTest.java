@@ -3,8 +3,8 @@ package uk.gov.moj.cpp.jobstore.service;
 import static java.time.ZonedDateTime.now;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.Json.createReader;
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -20,7 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.Before;
 import org.junit.Test;

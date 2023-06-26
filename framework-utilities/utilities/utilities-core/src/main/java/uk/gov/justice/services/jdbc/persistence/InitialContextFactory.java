@@ -1,7 +1,7 @@
 package uk.gov.justice.services.jdbc.persistence;
 
-import jakarta.naming.InitialContext;
-import jakarta.naming.NamingException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
  * Simple wrapper class for getting an {@link InitialContext} to allow for mocking in tests

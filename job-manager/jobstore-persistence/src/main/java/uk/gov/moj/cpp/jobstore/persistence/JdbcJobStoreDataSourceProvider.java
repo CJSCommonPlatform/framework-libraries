@@ -5,8 +5,8 @@ import static java.lang.String.format;
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.naming.Context;
-import jakarta.naming.NamingException;
+import javax.naming.Context;
+import javax.naming.NamingException;
 import jakarta.sql.DataSource;
 
 import org.slf4j.Logger;

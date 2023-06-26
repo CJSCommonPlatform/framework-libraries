@@ -7,7 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
-import jakarta.naming.NamingException;
+import javax.naming.NamingException;
 
 /**
  * Looks up context specific jndi names in order to inject their values into @Value annotated

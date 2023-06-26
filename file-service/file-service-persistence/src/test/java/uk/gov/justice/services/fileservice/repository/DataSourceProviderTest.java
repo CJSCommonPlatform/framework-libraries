@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.services.fileservice.api.ConfigurationException;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
-import jakarta.naming.InitialContext;
-import jakarta.naming.NamingException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import jakarta.sql.DataSource;
 
 import org.junit.Test;

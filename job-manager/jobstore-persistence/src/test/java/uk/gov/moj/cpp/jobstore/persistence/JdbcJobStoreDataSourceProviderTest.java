@@ -11,8 +11,8 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
-import jakarta.naming.Context;
-import jakarta.naming.NamingException;
+import javax.naming.Context;
+import javax.naming.NamingException;
 import jakarta.sql.DataSource;
 
 import org.junit.Before;

@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import jakarta.naming.InitialContext;
+import javax.naming.InitialContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

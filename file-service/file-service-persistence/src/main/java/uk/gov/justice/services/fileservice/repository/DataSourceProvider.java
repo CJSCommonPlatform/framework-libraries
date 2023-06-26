@@ -8,7 +8,7 @@ import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
-import jakarta.naming.NamingException;
+import javax.naming.NamingException;
 import jakarta.sql.DataSource;
 
 /**

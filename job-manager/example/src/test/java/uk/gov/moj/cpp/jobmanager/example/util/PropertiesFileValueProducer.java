@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
-import jakarta.naming.NamingException;
+import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

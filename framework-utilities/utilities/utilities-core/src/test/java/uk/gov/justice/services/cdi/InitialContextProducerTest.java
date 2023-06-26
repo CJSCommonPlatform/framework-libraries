@@ -9,8 +9,8 @@ import static org.mockito.Mockito.verify;
 
 import jakarta.enterprise.inject.InjectionException;
 import jakarta.enterprise.inject.spi.InjectionPoint;
-import jakarta.naming.InitialContext;
-import jakarta.naming.NamingException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

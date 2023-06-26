@@ -6,9 +6,9 @@ import static org.mockito.Mockito.when;
 
 import jakarta.enterprise.inject.spi.Annotated;
 import jakarta.enterprise.inject.spi.InjectionPoint;
-import jakarta.naming.InitialContext;
-import jakarta.naming.NameNotFoundException;
-import jakarta.naming.NamingException;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
 import org.junit.Before;
 import org.junit.Test;

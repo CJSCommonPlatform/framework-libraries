@@ -6,8 +6,8 @@ import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.InjectionException;
 import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
-import jakarta.naming.InitialContext;
-import jakarta.naming.NamingException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 @ApplicationScoped
 public class InitialContextProducer {

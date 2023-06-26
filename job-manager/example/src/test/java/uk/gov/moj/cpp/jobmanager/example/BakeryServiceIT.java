@@ -36,7 +36,7 @@ import java.util.Properties;
 
 import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
-import jakarta.naming.InitialContext;
+import javax.naming.InitialContext;
 import jakarta.sql.DataSource;
 
 import liquibase.Liquibase;

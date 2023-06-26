@@ -16,7 +16,7 @@
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
+            <artifactId>jakarta.json</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

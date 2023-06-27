@@ -29,6 +29,6 @@ public class TaskScanner implements Extension {
 
     @SuppressWarnings("unused")
     void afterDeploymentValidation(@Observes final AfterDeploymentValidation event, final BeanManager beanManager) {
-        events.forEach(beanManager::fireEvent);
+        events.forEach(e -> beanManager.getEvent().fire(e));
     }
 }

@@ -7,7 +7,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import jakarta.enterprise.event.Event;
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 
 import jakarta.enterprise.inject.spi.AnnotatedType;
@@ -33,17 +35,21 @@ public class TaskScannerTest {
     @Mock
     private BeanManager beanManager;
 
+    @Mock
+    private Event<Object> event;
+
     @InjectMocks
     private TaskScanner taskScanner;
 
     @Test
     public void shouldNotifyTaskFoundEvent() {
         mockProcessAnnotatedType(Task.class);
+        when(beanManager.getEvent()).thenReturn(event);
         taskScanner.processAnnotatedType(processAnnotatedType);
         taskScanner.afterDeploymentValidation(null, beanManager);
 
         final ArgumentCaptor<TaskFoundEvent> captor = ArgumentCaptor.forClass(TaskFoundEvent.class);
-        verify(beanManager).fireEvent(captor.capture());
+        verify(event).fire(captor.capture());
         assertThat(captor.getValue(), instanceOf(TaskFoundEvent.class));
     }
 
@@ -53,7 +59,7 @@ public class TaskScannerTest {
         taskScanner.processAnnotatedType(processAnnotatedType);
         taskScanner.afterDeploymentValidation(null, beanManager);
 
-        verify(beanManager, never()).fireEvent(any());
+        verify(event, never()).fire(any());
     }
 
     private void mockProcessAnnotatedType(final Class clazz) {

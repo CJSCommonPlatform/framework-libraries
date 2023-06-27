@@ -26,7 +26,7 @@
         <dependency>
             <groupId>org.eclipse.parsson</groupId>
             <artifactId>parsson</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
@@ -135,7 +135,7 @@
                     <dependency>
                         <groupId>org.eclipse.parsson</groupId>
                         <artifactId>parsson</artifactId>
-                        <version>1.1.2</version>
+                        <version>${eclipse-parson.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

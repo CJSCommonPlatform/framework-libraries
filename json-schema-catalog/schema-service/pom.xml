@@ -15,7 +15,7 @@
         <dependency>
             <groupId>org.eclipse.parsson</groupId>
             <artifactId>parsson</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.schema</groupId>
@@ -49,8 +49,8 @@
             <artifactId>json-path-assert</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- TODO BeforeBeanDiscovery class of jakartaee 10, doesn't contain addAnnotatedType(AnnotatedType<?> var1) method which openejb implementation is looking for and hence this dependency should be pushed down in the classpath -->
         <!-- Exception details: org.apache.webbeans.exception.WebBeansException: java.lang.NoSuchMethodError: 'void jakarta.enterprise.inject.spi.BeforeBeanDiscovery.addAnnotatedType(jakarta.enterprise.inject.spi.AnnotatedType) -->
+        <!-- BeforeBeanDiscovery class of jakartaee 10, doesn't contain addAnnotatedType(AnnotatedType<?> var1) method which openejb implementation is looking for and hence this dependency should be pushed down in the classpath -->
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>

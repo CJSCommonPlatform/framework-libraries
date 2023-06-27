@@ -151,7 +151,7 @@
         <dependency>
             <groupId>org.eclipse.parsson</groupId>
             <artifactId>parsson</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.json</groupId>
@@ -174,7 +174,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <scope>test</scope> <!-- TODO revise the scope -->
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

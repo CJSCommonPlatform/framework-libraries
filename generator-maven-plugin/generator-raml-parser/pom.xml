@@ -16,7 +16,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <scope>provided</scope> <!-- TODO revise the scope of this dependency and define this in common-bom -->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven.generator</groupId>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.eclipse.parsson</groupId>
             <artifactId>parsson</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.xml.bind</groupId>

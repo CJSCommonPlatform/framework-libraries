@@ -34,7 +34,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <scope>test</scope> <!-- TODO As raml-parser not supporting jakarta EE yet, it's still expecting jaxb dependency and as wildfly 28 not providing these jars any more during runtime, we need to change the scope to compile and analyse the impact of this during runtime, also who is providing the implementation of jaxb api as it's not added here as dependency -->
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

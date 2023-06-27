@@ -72,10 +72,10 @@
                         <artifactId>catalog-generation</artifactId>
                         <version>${project.version}</version>
                     </dependency>
-                    <dependency> <!-- TODO Do we need to add this dependency in each plugin declaration? Can we avoid this by changing the scope of this dependency declared in 'generator-plugin' module? -->
+                    <dependency>
                         <groupId>org.eclipse.parsson</groupId>
                         <artifactId>parsson</artifactId>
-                        <version>1.1.2</version>
+                        <version>${eclipse-parson.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

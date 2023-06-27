@@ -66,7 +66,6 @@ public class JsonObjectConvertersFactoryTest {
     private void checkSetUpCorrectly(final ObjectMapper objectMapper) {
         final Set<String> registeredModuleTypes = getValueOfField(objectMapper, "_registeredModuleTypes", Set.class);
 
-        //TODO modules name looks like renamed
         assertThat(registeredModuleTypes, hasItem("jackson-datatype-jsr310"));
         assertThat(registeredModuleTypes, hasItem("com.fasterxml.jackson.datatype.jdk8.Jdk8Module"));
         assertThat(registeredModuleTypes, hasItem("jackson-module-parameter-names"));

@@ -149,12 +149,12 @@
                     <dependency>
                         <groupId>javax.xml.bind</groupId>
                         <artifactId>jaxb-api</artifactId>
-                        <version>2.3.1</version> <!-- TODO define version in common-bom -->
+                        <version>${jaxb.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.eclipse.parsson</groupId>
                         <artifactId>parsson</artifactId>
-                        <version>1.1.2</version>
+                        <version>${eclipse-parson.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -198,8 +198,8 @@
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId><!-- TODO Revise the scope -->
-            <scope>test</scope>
+            <artifactId>jaxb-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

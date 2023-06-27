@@ -135,10 +135,9 @@ public class GenerateMojoTest extends BetterAbstractMojoTestCase {
         List<Raml> capturedRamls = DummyGeneratorCaptor.getInstance().capturedRamls();
         assertThat(capturedRamls, hasSize(2));
 
-        //TODO external-1 and external-2 yml files are not in classpath where as 3 and 4 are under files-for-testing-io/src/main/resources/raml, need to check this behaviour to make sure that it's working as expected
         assertThat(capturedRamls, containsInAnyOrder(
-                hasProperty("title", equalTo("external-3.raml")),
-                hasProperty("title", equalTo("external-4.raml"))));
+                hasProperty("title", equalTo("external-1.raml")),
+                hasProperty("title", equalTo("external-2.raml"))));
     }
 
     public void testShouldSkipExecution() throws Exception {

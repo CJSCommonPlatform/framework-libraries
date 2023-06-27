@@ -147,11 +147,15 @@
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                        <version>${xml-bind-api.version}</version>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                        <version>2.3.1</version> <!-- TODO define version in common-bom -->
                     </dependency>
-
+                    <dependency>
+                        <groupId>org.eclipse.parsson</groupId>
+                        <artifactId>parsson</artifactId>
+                        <version>1.1.2</version>
+                    </dependency>
                 </dependencies>
             </plugin>
         </plugins>
@@ -193,8 +197,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId><!-- TODO Revise the scope -->
             <scope>test</scope>
         </dependency>
 

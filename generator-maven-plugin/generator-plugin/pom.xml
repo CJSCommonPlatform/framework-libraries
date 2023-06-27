@@ -154,6 +154,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>jakarta.json</groupId>
+            <artifactId>jakarta.json-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>uk.gov.justice.maven.generator</groupId>
             <artifactId>files-for-testing-io</artifactId>
             <version>${project.version}</version>

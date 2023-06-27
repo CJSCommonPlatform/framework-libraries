@@ -14,9 +14,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <scope>provided</scope>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>provided</scope> <!-- TODO revise the scope of this dependency and define this in common-bom -->
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.maven.generator</groupId>

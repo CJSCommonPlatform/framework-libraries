@@ -86,6 +86,11 @@
             <artifactId>commons-testing</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.parsson</groupId>
+            <artifactId>parsson</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

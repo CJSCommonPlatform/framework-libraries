@@ -62,6 +62,11 @@
                         <artifactId>catalog-generation</artifactId>
                         <version>${project.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.eclipse.parsson</groupId>
+                        <artifactId>parsson</artifactId>
+                        <version>1.1.2</version>
+                    </dependency>
                </dependencies>
             </plugin>
         </plugins>

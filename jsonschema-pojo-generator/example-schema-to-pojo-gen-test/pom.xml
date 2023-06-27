@@ -168,6 +168,11 @@
                         <artifactId>standard-test-catalog</artifactId>
                         <version>${project.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.eclipse.parsson</groupId>
+                        <artifactId>parsson</artifactId>
+                        <version>1.1.2</version>
+                    </dependency>
 
                 </dependencies>
             </plugin>

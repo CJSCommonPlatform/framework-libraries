@@ -109,9 +109,9 @@
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                        <version>${xml-bind-api.version}</version>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                        <version>2.3.1</version>
                     </dependency>
 
                 </dependencies>

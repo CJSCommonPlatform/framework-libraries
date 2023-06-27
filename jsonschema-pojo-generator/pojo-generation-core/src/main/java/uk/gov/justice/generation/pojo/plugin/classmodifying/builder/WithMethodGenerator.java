@@ -1,8 +1,8 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
-import static jakarta.lang.model.element.Modifier.FINAL;
-import static jakarta.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 

@@ -4,7 +4,7 @@ import static com.squareup.javapoet.ClassName.get;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
-import static jakarta.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.PUBLIC;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -6,7 +6,7 @@ import static com.squareup.javapoet.TypeName.BOOLEAN;
 import static com.squareup.javapoet.TypeName.INT;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
-import static jakarta.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.dom.Definition;
@@ -17,7 +17,7 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.properties.Additiona
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;

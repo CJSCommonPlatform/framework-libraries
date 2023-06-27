@@ -12,7 +12,7 @@ import uk.gov.justice.generation.pojo.plugin.PluginContext;
 
 import java.util.List;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 
 import com.squareup.javapoet.FieldSpec;
 import org.junit.Test;

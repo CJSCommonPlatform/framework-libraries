@@ -4,10 +4,10 @@ import static com.squareup.javapoet.MethodSpec.constructorBuilder;
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static com.squareup.javapoet.TypeSpec.anonymousClassBuilder;
 import static com.squareup.javapoet.TypeSpec.enumBuilder;
-import static jakarta.lang.model.element.Modifier.FINAL;
-import static jakarta.lang.model.element.Modifier.PRIVATE;
-import static jakarta.lang.model.element.Modifier.PUBLIC;
-import static jakarta.lang.model.element.Modifier.STATIC;
+import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 
 import uk.gov.justice.generation.pojo.dom.EnumDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;

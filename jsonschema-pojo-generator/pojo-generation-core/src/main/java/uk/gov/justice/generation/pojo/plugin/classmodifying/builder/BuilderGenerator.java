@@ -2,10 +2,10 @@ package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
 import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
-import static jakarta.lang.model.element.Modifier.FINAL;
-import static jakarta.lang.model.element.Modifier.PRIVATE;
-import static jakarta.lang.model.element.Modifier.PUBLIC;
-import static jakarta.lang.model.element.Modifier.STATIC;
+import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 import static uk.gov.justice.generation.pojo.plugin.classmodifying.AddAdditionalPropertiesToClassPlugin.ADDITIONAL_PROPERTIES_FIELD_NAME;
 

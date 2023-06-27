@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.pojo.generators;
 
 import static com.squareup.javapoet.TypeSpec.classBuilder;
-import static jakarta.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.PUBLIC;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
 import uk.gov.justice.generation.pojo.plugin.PluginContext;

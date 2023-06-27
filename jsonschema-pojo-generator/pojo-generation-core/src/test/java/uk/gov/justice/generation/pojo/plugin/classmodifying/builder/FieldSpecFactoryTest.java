@@ -1,7 +1,7 @@
 package uk.gov.justice.generation.pojo.plugin.classmodifying.builder;
 
 import static com.squareup.javapoet.TypeName.get;
-import static jakarta.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PRIVATE;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

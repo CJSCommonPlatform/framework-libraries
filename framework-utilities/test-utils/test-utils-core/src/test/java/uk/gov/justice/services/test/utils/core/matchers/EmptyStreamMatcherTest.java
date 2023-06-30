@@ -1,11 +1,12 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.services.test.utils.core.matchers.EmptyStreamMatcher.isEmptyStream;
 
 import java.util.stream.Stream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EmptyStreamMatcherTest {
 
@@ -14,9 +15,13 @@ public class EmptyStreamMatcherTest {
         assertThat(Stream.empty(), isEmptyStream());
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void shouldNotMatchANonEmptyStream() throws Exception {
-        assertThat(Stream.of("test1", "test2"), isEmptyStream());
+        try {
+            assertThat(Stream.of("test1", "test2"), isEmptyStream());
+            fail();
+        } catch (final AssertionError expected) {
+        }
     }
 
 }

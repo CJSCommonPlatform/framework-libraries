@@ -1,7 +1,8 @@
 package uk.gov.justice.services.common.converter.jackson.additionalproperties;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -24,13 +25,13 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializer;
 import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AdditionalPropertiesSerializerTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
@@ -45,13 +46,11 @@ public class AdditionalPropertiesSerializerTest {
     @Mock
     private SerializerProvider serializerProviderMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
         additionalPropertiesSerializer = new AdditionalPropertiesSerializer(
                 dummySerializer,
                 newHashSet(ADDITIONAL_PROPERTIES_NAME));
-
-        when(serializerProviderMock.mappingException(anyString(), any(Object.class))).thenReturn(new JsonMappingException(null, ""));
     }
 
     @Test
@@ -108,6 +107,7 @@ public class AdditionalPropertiesSerializerTest {
 
         final TestWithAdditionalProperties person = new TestWithAdditionalProperties("TEST", "PERSON", 21, additionalProperties);
 
+        when(serializerProviderMock.mappingException(anyString(), any(Object.class))).thenReturn(new JsonMappingException(null, ""));
         doThrow(new IOException()).when(jsonGeneratorMock).writeObjectField(anyString(), any(Object.class));
 
         try {
@@ -124,43 +124,40 @@ public class AdditionalPropertiesSerializerTest {
 
         final TestWithNoAdditionalProperties person = new TestWithNoAdditionalProperties("TEST", "PERSON", 21);
 
-        try {
-            additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock);
-        } catch (final IOException expected) {
-            // Expected
-        }
+        when(serializerProviderMock.mappingException(anyString(), any(Object.class))).thenReturn(new JsonMappingException(null, ""));
+        assertThrows(IOException.class, () -> additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock));
 
         verify(serializerProviderMock, times(1)).mappingException(anyString(), any(Object.class));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldReturnUnsupportedOperationExceptionWhenCallingWithObjectIdWriter() {
-        additionalPropertiesSerializer.withObjectIdWriter(null);
+        assertThrows(UnsupportedOperationException.class, () -> additionalPropertiesSerializer.withObjectIdWriter(null));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldThrowUnsupportedOperationExceptionWhenCallingWithIgnorals() {
-        additionalPropertiesSerializer.withIgnorals(new HashSet<>());
+        assertThrows(UnsupportedOperationException.class, () -> additionalPropertiesSerializer.withIgnorals(new HashSet<>()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldThrowUnsupportedOperationExceptionWhenCallingAsArraySerializer() {
-        additionalPropertiesSerializer.asArraySerializer();
+        assertThrows(UnsupportedOperationException.class, () -> additionalPropertiesSerializer.asArraySerializer());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldThrowUnsupportedOperationExceptionWhenCallingWithFilterId() {
-        additionalPropertiesSerializer.withFilterId(new Object());
+        assertThrows(UnsupportedOperationException.class, () -> additionalPropertiesSerializer.withFilterId(new Object()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldThrowUnsupportedOperationExceptionWhenCallingWithByNameInclusion() {
-        additionalPropertiesSerializer.withByNameInclusion(newHashSet("stuff"), newHashSet("other stuff"));
+        assertThrows(UnsupportedOperationException.class, () -> additionalPropertiesSerializer.withByNameInclusion(newHashSet("stuff"), newHashSet("other stuff")));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldThrowUnsupportedOperationExceptionWhenCallingWithProperties() {
-        additionalPropertiesSerializer.withProperties(new BeanPropertyWriter[0], new BeanPropertyWriter[0]);
+        assertThrows(UnsupportedOperationException.class, () -> additionalPropertiesSerializer.withProperties(new BeanPropertyWriter[0], new BeanPropertyWriter[0]));
     }
 
     private static class TestWithNoAdditionalProperties {

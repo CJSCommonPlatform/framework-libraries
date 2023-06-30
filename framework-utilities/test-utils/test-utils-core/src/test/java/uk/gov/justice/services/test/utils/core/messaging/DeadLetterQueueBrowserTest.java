@@ -4,7 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -23,13 +23,13 @@ import javax.jms.TextMessage;
 import javax.json.JsonObject;
 
 import org.hamcrest.collection.IsMapContaining;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DeadLetterQueueBrowserTest {
 
     @Mock
@@ -52,7 +52,7 @@ public class DeadLetterQueueBrowserTest {
 
     private DeadLetterQueueBrowser deadLetterQueueBrowser;
 
-    @Before
+    @BeforeEach
     public void setup() {
         deadLetterQueueBrowser = new DeadLetterQueueBrowser(
                 "jms.queue.DLQ",

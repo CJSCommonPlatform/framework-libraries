@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class AddAdditionalPropertiesPluginIT {
@@ -33,7 +33,7 @@ public class AddAdditionalPropertiesPluginIT {
 
     private static final File JSON_SCHEMA_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/examples/plugins/add-additional-properties-plugin.json");
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories.makeDirectories("./target/test-generation/examples/plugins/add-additional-properties-plugin");
     }

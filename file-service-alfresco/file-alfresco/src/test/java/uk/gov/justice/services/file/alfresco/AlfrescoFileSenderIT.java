@@ -14,20 +14,20 @@ import static org.apache.commons.io.IOUtils.toInputStream;
 import static org.apache.openejb.util.NetworkUtil.getNextAvailablePort;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.services.file.api.FileOperationException;
 import uk.gov.justice.services.file.api.sender.FileData;
 import uk.gov.justice.services.file.api.sender.FileSender;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-
+@WireMockTest(httpPort = 23265)
 public class AlfrescoFileSenderIT {
 
-    private static final int PORT = getNextAvailablePort();
+    private static final int PORT = 23265;
     private static final String USER_ID = "user1234";
     private static final String WEB_CONTEXT = "/alfresco";
     private static final String UPLOAD_PATH = "/service/case/upload";
@@ -35,13 +35,10 @@ public class AlfrescoFileSenderIT {
 
     private static FileSender fileSender;
 
-    @Rule
-    public WireMockRule wireMock = new WireMockRule(PORT);
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         fileSender = alfrescoFileSenderWith(basePathWithPort(PORT));
-
     }
 
     @Test
@@ -75,14 +72,13 @@ public class AlfrescoFileSenderIT {
 
     }
 
-    @Test(expected = FileOperationException.class)
+    @Test
     public void shouldThrowExceptionIfAlfrescoNotAvailable() {
-        alfrescoFileSenderWith(basePathWithPort(getNextAvailablePort()))
-                .send("abc.txt", toInputStream("aa"));
-
+        assertThrows(FileOperationException.class, () -> alfrescoFileSenderWith(basePathWithPort(getNextAvailablePort()))
+                .send("abc.txt", toInputStream("aa")));
     }
 
-    @Test(expected = FileOperationException.class)
+    @Test
     public void shouldThrowExceptionIfAlfrescoReturnedUnexpectedResponseCode() {
 
         stubFor(post(urlEqualTo(WEB_CONTEXT + UPLOAD_PATH))
@@ -90,18 +86,16 @@ public class AlfrescoFileSenderIT {
                         .withStatus(500)
                         .withBody(alfrescoResponseOf("file1234", "text/plain"))));
 
-        fileSender.send("abc.txt", toInputStream("aa"));
-
+        assertThrows(FileOperationException.class, () -> fileSender.send("abc.txt", toInputStream("aa")));
     }
 
-    @Test(expected = FileOperationException.class)
+    @Test
     public void shouldThrowExceptionIfAlfrescoResponseContainsEmptyBody() {
         stubFor(post(urlEqualTo(WEB_CONTEXT + UPLOAD_PATH))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        fileSender.send("abc.txt", toInputStream("aa"));
-
+        assertThrows(FileOperationException.class, () -> fileSender.send("abc.txt", toInputStream("aa")));
     }
 
     private static FileSender alfrescoFileSenderWith(final String basePath) {

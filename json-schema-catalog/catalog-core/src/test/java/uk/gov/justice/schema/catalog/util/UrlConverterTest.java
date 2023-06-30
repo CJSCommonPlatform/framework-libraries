@@ -3,7 +3,7 @@ package uk.gov.justice.schema.catalog.util;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.schema.catalog.SchemaCatalogException;
 
@@ -12,13 +12,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UrlConverterTest {
 
     @InjectMocks
@@ -54,38 +53,33 @@ public class UrlConverterTest {
     public void shouldFailIfConvertingAStringToAUriThrowsAURISyntaxException() throws Exception {
         final String uri = "this is not a uri";
 
-        try {
-            urlConverter.toUri(uri);
-            fail();
-        } catch (final SchemaCatalogException expected) {
-            assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
-            assertThat(expected.getMessage(), is("Failed to convert URI 'this is not a uri' to URL"));
-        }
+        final SchemaCatalogException expected = assertThrows(
+                SchemaCatalogException.class,
+                () -> urlConverter.toUri(uri));
+
+        assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
+        assertThat(expected.getMessage(), is("Failed to convert URI 'this is not a uri' to URL"));
     }
 
     @Test
     public void shouldFailIfConvertingAUrlToAUriThrowsAURISyntaxException() throws Exception {
 
         final URL url = new URL("file:/this is not a uri");
-        try {
-            urlConverter.toUri(url);
-            fail();
-        } catch (final SchemaCatalogException expected) {
-            assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
-            assertThat(expected.getMessage(), is("Failed to convert URL 'file:/this is not a uri' to URI"));
-        }
+        final SchemaCatalogException expected = assertThrows(
+                SchemaCatalogException.class,
+                () -> urlConverter.toUri(url));
+        assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
+        assertThat(expected.getMessage(), is("Failed to convert URL 'file:/this is not a uri' to URI"));
     }
 
     @Test
     public void shouldFailIfConvertingAUriToAUrlThrowsAMalformedURLException() throws Exception {
 
         final URI uri = new URI("silly:/this-is-not-a-url");
-        try {
-            urlConverter.toUrl(uri);
-            fail();
-        } catch (final SchemaCatalogException expected) {
+        final SchemaCatalogException expected = assertThrows(
+                SchemaCatalogException.class,
+                () -> urlConverter.toUrl(uri));
             assertThat(expected.getCause(), is(instanceOf(MalformedURLException.class)));
             assertThat(expected.getMessage(), is("Failed to convert URI 'silly:/this-is-not-a-url' to URL"));
-        }
     }
 }

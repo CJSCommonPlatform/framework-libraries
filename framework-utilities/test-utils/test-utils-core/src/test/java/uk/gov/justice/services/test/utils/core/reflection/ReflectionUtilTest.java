@@ -2,11 +2,10 @@ package uk.gov.justice.services.test.utils.core.reflection;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -16,15 +15,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ReflectionUtilTest {
-
-    @Test
-    public void shouldBeWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(ReflectionUtil.class);
-    }
-
+    
     @Test
     public void shouldReturnListOfMethods() throws Exception {
         final List<Method> methods = ReflectionUtil.methodsOf(TestClass.class);

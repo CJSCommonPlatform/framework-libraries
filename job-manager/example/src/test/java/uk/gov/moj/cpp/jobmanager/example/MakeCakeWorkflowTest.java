@@ -11,7 +11,7 @@ import static uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow.GET_UTENSILS;
 import static uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow.MIX_INGREDIENTS;
 import static uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow.SWITCH_OVEN_ON;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MakeCakeWorkflowTest {
 

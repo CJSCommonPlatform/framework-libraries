@@ -13,14 +13,14 @@ import uk.gov.justice.services.test.domain.arg.ComplexArgument;
 import java.time.ZoneId;
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class AggregateMethodInvocationTest extends AggregateTestAssertions {
 
     private AggregateWrapper aggregateWrapper;
 
-    @Before
+    @BeforeEach
     public void setup() throws InstantiationException, IllegalAccessException {
         aggregateWrapper = aggregateWrapper()
                 .initialiseFromClass(GenericAggregate.class.getSimpleName());

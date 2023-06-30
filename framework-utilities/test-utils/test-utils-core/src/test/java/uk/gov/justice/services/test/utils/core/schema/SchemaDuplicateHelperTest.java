@@ -1,13 +1,14 @@
 package uk.gov.justice.services.test.utils.core.schema;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SchemaDuplicateHelperTest {
 
@@ -17,28 +18,37 @@ public class SchemaDuplicateHelperTest {
         URL url = new URL(jarClasspathURL);
 
         assertEquals("/c/c/c/c.jar", SchemaDuplicateHelper.extractJarPath(url));
-
-        //
-    }
-
-    @Test(expected = SchemaCheckerException.class)
-    public void testExtractJarPath_errorConditions1() throws MalformedURLException {
-        assertNull(SchemaDuplicateHelper.extractJarPath(new URL("jar:file:/c/c/c/c.ja!/json/schema/")));
-    }
-
-    @Test(expected = SchemaCheckerException.class)
-    public void testExtractJarPath_errorConditions2() throws MalformedURLException {
-        assertNull(SchemaDuplicateHelper.extractJarPath(new URL("file:/c/c/c/c.jar!/json/schema/")));
-    }
-
-    @Test(expected = SchemaCheckerException.class)
-    public void testExtractJarPath_errorConditions3() throws MalformedURLException {
-        assertNull(SchemaDuplicateHelper.extractJarPath(new URL("jar:file:/c/c/c/c.jara!/json/schema/")));
     }
 
     @Test
-    public void testConvertFileContentToLines()
-    {
+    public void testExtractJarPath_errorConditions1() throws MalformedURLException {
+        try {
+            assertNull(SchemaDuplicateHelper.extractJarPath(new URL("jar:file:/c/c/c/c.ja!/json/schema/")));
+            fail();
+        } catch (final SchemaCheckerException expected) {
+        }
+    }
+
+    @Test
+    public void testExtractJarPath_errorConditions2() throws MalformedURLException {
+        try {
+            assertNull(SchemaDuplicateHelper.extractJarPath(new URL("file:/c/c/c/c.jar!/json/schema/")));
+            fail();
+        } catch (final SchemaCheckerException expected) {
+        }
+    }
+
+    @Test
+    public void testExtractJarPath_errorConditions3() throws MalformedURLException {
+        try {
+            assertNull(SchemaDuplicateHelper.extractJarPath(new URL("jar:file:/c/c/c/c.jara!/json/schema/")));
+            fail();
+        } catch (final SchemaCheckerException expected) {
+        }
+    }
+
+    @Test
+    public void testConvertFileContentToLines() {
         String a = "AAA";
         String b = "BBB";
 
@@ -48,8 +58,8 @@ public class SchemaDuplicateHelperTest {
         List<String> unixLines = SchemaDuplicateHelper.convertFileContentToLines(unix);
         List<String> windowsLines = SchemaDuplicateHelper.convertFileContentToLines(windows);
 
-        assertEquals(2,unixLines.size());
-        assertEquals(2,windowsLines.size());
+        assertEquals(2, unixLines.size());
+        assertEquals(2, windowsLines.size());
 
         assertEquals(a, unixLines.get(0));
         assertEquals(b, unixLines.get(1));

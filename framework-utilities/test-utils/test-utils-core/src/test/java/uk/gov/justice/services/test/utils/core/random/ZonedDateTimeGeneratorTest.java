@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ZonedDateTimeGeneratorTest {
 

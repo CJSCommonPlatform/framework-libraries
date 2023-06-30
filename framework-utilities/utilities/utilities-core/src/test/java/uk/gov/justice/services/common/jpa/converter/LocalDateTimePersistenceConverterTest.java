@@ -2,15 +2,15 @@ package uk.gov.justice.services.common.jpa.converter;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Calendar;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LocalDateTimePersistenceConverterTest {
 
@@ -23,7 +23,7 @@ public class LocalDateTimePersistenceConverterTest {
 
     private LocalDateTimePersistenceConverter localDateTimePersistenceConverter;
 
-    @Before
+    @BeforeEach
     public void setup() {
         localDateTimePersistenceConverter = new LocalDateTimePersistenceConverter();
     }

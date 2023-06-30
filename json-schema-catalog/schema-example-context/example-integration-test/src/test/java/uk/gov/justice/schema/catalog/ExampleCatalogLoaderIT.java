@@ -1,6 +1,6 @@
 package uk.gov.justice.schema.catalog;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExampleCatalogLoaderIT {
 

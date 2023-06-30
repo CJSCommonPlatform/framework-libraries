@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.justice.maven</groupId>
         <artifactId>annotation-validator</artifactId>
-        <version>17.0.3-SNAPSHOT</version>
+        <version>17.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -95,8 +95,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

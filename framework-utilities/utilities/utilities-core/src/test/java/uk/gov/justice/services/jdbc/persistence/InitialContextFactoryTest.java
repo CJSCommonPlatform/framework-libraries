@@ -6,11 +6,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import javax.naming.InitialContext;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InitialContextFactoryTest {
 
     private InitialContextFactory initialContextFactory = new InitialContextFactory();

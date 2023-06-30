@@ -14,10 +14,10 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static org.apache.openejb.util.NetworkUtil.getNextAvailablePort;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import uk.gov.justice.services.file.api.FileOperationException;
 
@@ -27,13 +27,12 @@ import java.util.Optional;
 
 import javax.ws.rs.ProcessingException;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.apache.commons.io.IOUtils;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-
+@WireMockTest(httpPort = 23265)
 public class AlfrescoFileRequesterIT {
 
     private static final String BASE_PATH = "http://localhost:%d/alfresco";
@@ -43,15 +42,11 @@ public class AlfrescoFileRequesterIT {
     private static final String ALFRESCO_WORKSPACE_PDF_TRANSFORMATION_PATH = "/service/api/requestpdf/workspace/SpacesStore/";
 
 
-    private static int PORT = getNextAvailablePort();
+    private static int PORT = 23265;
 
     private static AlfrescoFileRequester fileRequester;
 
-
-    @Rule
-    public WireMockRule wireMock = new WireMockRule(PORT);
-
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         final int port = PORT;
         fileRequester = alfrescoFileRequesterWith(basePathWithPort(port));

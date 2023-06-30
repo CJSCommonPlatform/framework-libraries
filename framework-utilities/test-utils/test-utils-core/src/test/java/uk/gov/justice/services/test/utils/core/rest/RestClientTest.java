@@ -18,12 +18,12 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.hamcrest.CoreMatchers;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+@WireMockTest(httpPort = 8089)
 public class RestClientTest {
 
     private static final int PORT = 8089;
@@ -36,12 +36,9 @@ public class RestClientTest {
     private static final String HEADER = "Header";
     private static final String HEADER_VALUE = "HeaderValue";
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(PORT);
-
     private RestClient restClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         restClient = new RestClient();
     }

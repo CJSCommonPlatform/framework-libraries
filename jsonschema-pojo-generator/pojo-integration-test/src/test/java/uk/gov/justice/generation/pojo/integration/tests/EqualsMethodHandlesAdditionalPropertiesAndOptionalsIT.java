@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EqualsMethodHandlesAdditionalPropertiesAndOptionalsIT {
 
@@ -31,7 +31,7 @@ public class EqualsMethodHandlesAdditionalPropertiesAndOptionalsIT {
 
     private static final File JSON_SCHEMA_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/equals-method-handles-additional-properties.json");
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories.makeDirectories("./target/test-generation/tests/equals-method-handles-additional-propertie");
     }

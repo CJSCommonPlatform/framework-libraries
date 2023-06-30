@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.plugin.factory;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.dom.ClassDefinition;
@@ -15,14 +15,14 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin
 import java.lang.reflect.Method;
 
 import com.squareup.javapoet.TypeSpec;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @SuppressWarnings("unchecked")
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PluginInstantiatorTest {
 
     @Mock

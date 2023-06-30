@@ -27,68 +27,74 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.raml.emitter.RamlEmitter;
 import org.raml.model.Raml;
 
 /**
  * Unit tests for the {@link GenerateGoalProcessor} class.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class GenerateGoalProcessorTest {
 
     private final String[] includes = {"**/*.raml"};
     private final String[] excludes = {};
-    @Rule
-    public TemporaryFolder sourceDirectory = new TemporaryFolder();
+
+    @TempDir
+    public File sourceDirectory;
+
     @Mock
     private Generator generator;
+
     @Mock
     private MojoGeneratorFactory mojoGeneratorFactory;
+
     @Mock
     private FileTreeScannerFactory scannerFactory;
+
     @Mock
     private GenerateGoalConfig config;
+
     @Spy
     private FileParser<Raml> ramlFileParserFileParser = new RamlFileParser();
+
     @Mock
     private FileTreeScanner scanner;
+
     @InjectMocks
     private GenerateGoalProcessor generateGoalProcessor;
 
+    private static final String GENERATOR_NAME = "mock.generator";
 
-    @Before
-    public void setup() {
-        String generatorName = "mock.generator";
-
-        when(mojoGeneratorFactory.instanceOf(generatorName)).thenReturn(generator);
-        when(config.getGeneratorName()).thenReturn(generatorName);
-        when(config.getSourceDirectory()).thenReturn(sourceDirectory.getRoot().toPath());
-        when(config.getIncludes()).thenReturn(asList(includes));
-        when(config.getExcludes()).thenReturn(asList(excludes));
-        when(scannerFactory.create()).thenReturn(scanner);
-    }
 
     @Test
     @SuppressWarnings("unchecked")
     public void shouldCallGeneratorWithRamlFilesAndConfig() throws Exception {
 
-        File ramlFile = sourceDirectory.newFile("file1.raml");
+        File ramlFile = new File(sourceDirectory, "file1.raml");
         String ramlString1 = "#%RAML 0.8\nbaseUri: \"http://a:8080/\"\n";
         write(ramlFile, ramlString1);
-        File ramlFile2 = sourceDirectory.newFile("file2.raml");
+        File ramlFile2 = new File(sourceDirectory, "file2.raml");
         String ramlString2 = "#%RAML 0.8\nbaseUri: \"http://b:8080/\"\n";
         write(ramlFile2, ramlString2);
-        when(scanner.find(sourceDirectory.getRoot().toPath(), includes, excludes))
+
+        when(config.getGeneratorName()).thenReturn(GENERATOR_NAME);
+        when(mojoGeneratorFactory.instanceOf(GENERATOR_NAME)).thenReturn(generator);
+        when(config.getSourceDirectory()).thenReturn(sourceDirectory.toPath());
+        when(config.getIncludes()).thenReturn(asList(includes));
+        when(config.getExcludes()).thenReturn(asList(excludes));
+        when(scannerFactory.create()).thenReturn(scanner);
+
+        when(scanner.find(sourceDirectory.toPath(), includes, excludes))
                 .thenReturn(asList(ramlFile.toPath(), ramlFile2.toPath()));
 
         generateGoalProcessor.generate(config);
@@ -113,9 +119,18 @@ public class GenerateGoalProcessorTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldCallGeneratorWithEmptyRamlForEmptyFile() throws Exception {
-        File ramlFile = sourceDirectory.newFile("file3.raml");
 
-        when(scanner.find(sourceDirectory.getRoot().toPath(), includes, excludes))
+        final File ramlFile = new File(sourceDirectory, "file3.raml");
+        ramlFile.createNewFile();
+
+        when(config.getGeneratorName()).thenReturn(GENERATOR_NAME);
+        when(mojoGeneratorFactory.instanceOf(GENERATOR_NAME)).thenReturn(generator);
+        when(config.getSourceDirectory()).thenReturn(sourceDirectory.toPath());
+        when(config.getIncludes()).thenReturn(asList(includes));
+        when(config.getExcludes()).thenReturn(asList(excludes));
+        when(scannerFactory.create()).thenReturn(scanner);
+
+        when(scanner.find(sourceDirectory.toPath(), includes, excludes))
                 .thenReturn(singletonList(ramlFile.toPath()));
 
         generateGoalProcessor.generate(config);
@@ -136,15 +151,25 @@ public class GenerateGoalProcessorTest {
         final String[] customIncludes = {"**/*.txt"};
         final String[] customExcludes = {"**/cheese.txt"};
 
+        when(config.getGeneratorName()).thenReturn(GENERATOR_NAME);
+        when(mojoGeneratorFactory.instanceOf(GENERATOR_NAME)).thenReturn(generator);
+        when(config.getSourceDirectory()).thenReturn(sourceDirectory.toPath());
+        when(config.getIncludes()).thenReturn(asList(includes));
+        when(config.getExcludes()).thenReturn(asList(excludes));
+        when(scannerFactory.create()).thenReturn(scanner);
+
         when(config.getIncludes()).thenReturn(asList(customIncludes));
         when(config.getExcludes()).thenReturn(asList(customExcludes));
 
-        File ramlFile = sourceDirectory.newFile("file1.raml");
+        final File ramlFile = new File(sourceDirectory, "file1.raml");
+        ramlFile.createNewFile();
         String ramlString1 = "#%RAML 0.8\nbaseUri: \"http://c:8080/\"\n";
         write(ramlFile, ramlString1);
 
-        when(scanner.find(sourceDirectory.getRoot().toPath(), customIncludes, customExcludes))
+        when(scanner.find(sourceDirectory.toPath(), customIncludes, customExcludes))
                 .thenReturn(singletonList(ramlFile.toPath()));
+        when(config.getGeneratorName()).thenReturn(GENERATOR_NAME);
+        when(mojoGeneratorFactory.instanceOf(GENERATOR_NAME)).thenReturn(generator);
 
         generateGoalProcessor.generate(config);
 
@@ -158,7 +183,12 @@ public class GenerateGoalProcessorTest {
     }
 
     @Test
-    public void shouldNotInstatiateGeneratorIfNoRamlFilesToProcess() throws IOException {
+    public void shouldNotInstantiateGeneratorIfNoRamlFilesToProcess() throws IOException {
+
+        when(config.getSourceDirectory()).thenReturn(sourceDirectory.toPath());
+        when(config.getIncludes()).thenReturn(asList(includes));
+        when(config.getExcludes()).thenReturn(asList(excludes));
+        when(scannerFactory.create()).thenReturn(scanner);
 
         when(scanner.find(any(Path.class), any(String[].class), any(String[].class))).thenReturn(emptyList());
         generateGoalProcessor.generate(config);

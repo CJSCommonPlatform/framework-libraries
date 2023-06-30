@@ -15,8 +15,8 @@ import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 import java.io.File;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class PackageAndClassNameFromIdIT {
 
@@ -25,7 +25,7 @@ public class PackageAndClassNameFromIdIT {
 
     private static final File JSON_SCHEMA_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/tests/package-and-class-name-from-id.json");
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories.makeDirectories("./target/test-generation/tests/package-and-class-name-from-id");
     }

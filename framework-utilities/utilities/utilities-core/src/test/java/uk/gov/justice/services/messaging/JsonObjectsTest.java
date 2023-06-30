@@ -5,11 +5,11 @@ import static java.util.Collections.emptyList;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static javax.json.JsonValue.NULL;
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +24,7 @@ import javax.json.JsonString;
 import javax.json.JsonValue;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link JsonObjects} class.
@@ -34,10 +34,6 @@ public class JsonObjectsTest {
     private static final String UUID_A = "da45e8f6-d945-4f09-a115-1139a9dbb754";
     private static final String UUID_B = "d04885b4-9652-4c2a-87c6-299bda0a87d4";
 
-    @Test
-    public void shouldBeWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(JsonObjects.class);
-    }
 
     @Test
     public void shouldReturnJsonArray() {
@@ -134,20 +130,20 @@ public class JsonObjectsTest {
         assertThat(someBoolean.isPresent(), is(false));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldThrowExceptionForNonBoolean() {
         JsonObject object = createObjectBuilder()
                 .add("someBool", 99L)
                 .build();
-        JsonObjects.getBoolean(object, "someBool");
+        assertThrows(IllegalStateException.class, () -> JsonObjects.getBoolean(object, "someBool"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldThrowExceptionForNonString() {
         JsonObject object = createObjectBuilder()
                 .add("name", 99L)
                 .build();
-        JsonObjects.getString(object, "name");
+        assertThrows(IllegalStateException.class, () -> JsonObjects.getString(object, "name"));
     }
 
     @Test
@@ -162,12 +158,12 @@ public class JsonObjectsTest {
         assertThat(uuid.get(), equalTo(UUID.fromString(stringValue)));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldThrowExceptionForNonUUID() {
         JsonObject object = createObjectBuilder()
                 .add("name", "blah")
                 .build();
-        JsonObjects.getUUID(object, "name");
+        assertThrows(IllegalStateException.class, () -> JsonObjects.getUUID(object, "name"));
     }
 
     @Test
@@ -181,12 +177,12 @@ public class JsonObjectsTest {
         assertThat(string.get(), equalTo(99L));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldThrowExceptionForNonLong() {
         JsonObject object = createObjectBuilder()
                 .add("name", "blah")
                 .build();
-        JsonObjects.getLong(object, "name");
+        assertThrows(IllegalStateException.class, () -> JsonObjects.getLong(object, "name"));
     }
 
     @Test
@@ -235,25 +231,26 @@ public class JsonObjectsTest {
         assertThat(uuids, equalTo(ImmutableList.of(UUID.fromString(UUID_A), UUID.fromString(UUID_B))));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionForNullObject() {
-        JsonObjects.getString(null, "name");
+
+        assertThrows(IllegalArgumentException.class, () -> JsonObjects.getString(null, "name"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionForNullFieldName() {
         JsonObject object = createObjectBuilder()
                 .add("name", 99L)
                 .build();
-        JsonObjects.getString(object, (String) null);
+        assertThrows(IllegalArgumentException.class, () -> JsonObjects.getString(object, (String) null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionForEmptyVarArgs() {
         JsonObject object = createObjectBuilder()
                 .add("name", 99L)
                 .build();
-        JsonObjects.getString(object);
+        assertThrows(IllegalArgumentException.class, () -> JsonObjects.getString(object));
     }
 
     @Test

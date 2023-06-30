@@ -3,8 +3,8 @@ package uk.gov.justice.domain.aggregate.matcher;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link ClassRule} class.
@@ -13,7 +13,7 @@ public class ClassRuleTest {
 
     private ClassRule<TestClass> classRule;
 
-    @Before
+    @BeforeEach
     public void setup() {
         classRule = new ClassRule<>(TestClass.class);
     }

@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PollingRequestParamsBuilderTest {
 

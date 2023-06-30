@@ -10,7 +10,7 @@ import static uk.gov.justice.services.core.annotation.ServiceComponentLocation.c
 
 import javax.inject.Inject;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link ServiceComponentLocation} class.

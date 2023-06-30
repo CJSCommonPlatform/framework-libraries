@@ -96,6 +96,7 @@ public abstract class BetterAbstractMojoTestCase extends AbstractMojoTestCase {
      */
     protected Mojo lookupConfiguredMojo(File pom, String goal) throws Exception {
         assertNotNull(pom);
+
         assertTrue(pom.exists());
 
         ProjectBuildingRequest buildingRequest = newMavenSession().getProjectBuildingRequest();

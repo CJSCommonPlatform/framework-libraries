@@ -8,7 +8,7 @@ import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RequestParamsBuilderTest {
 

@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -23,12 +23,12 @@ import javax.json.JsonValue;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ObjectToJsonValueConverterTest {
 
     private static final UUID ID = UUID.randomUUID();
@@ -113,14 +113,14 @@ public class ObjectToJsonValueConverterTest {
         assertThat(illegalArgumentException.getCause(), is(instanceOf(JsonProcessingException.class)));
     }
 
-    @Test(expected = ConverterException.class)
+    @Test
     public void shouldThrowExceptionOnNullResult() throws JsonProcessingException {
         final ObjectToJsonValueConverter objectToJsonValueConverter = new ObjectToJsonValueConverter(mapper);
 
         final Pojo pojo = new Pojo(ID, NAME, false, ATTRIBUTES);
         when(mapper.writeValueAsString(pojo)).thenReturn(null);
 
-        objectToJsonValueConverter.convert(pojo);
+        assertThrows(ConverterException.class, () -> objectToJsonValueConverter.convert(pojo));
     }
 
     private JsonValue expectedJsonValue() {

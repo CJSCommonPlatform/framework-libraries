@@ -1,10 +1,10 @@
 package uk.gov.justice.services.test;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import uk.gov.justice.services.test.domain.Metadata;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MetadataTest {
 

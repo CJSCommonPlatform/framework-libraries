@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.string;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DomainPartValidatorTest {
 

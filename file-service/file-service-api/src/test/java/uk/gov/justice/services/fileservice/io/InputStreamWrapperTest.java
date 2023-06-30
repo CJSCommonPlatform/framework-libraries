@@ -3,7 +3,7 @@ package uk.gov.justice.services.fileservice.io;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
@@ -14,15 +14,14 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InputStreamWrapperTest {
 
     @Mock
@@ -55,13 +54,9 @@ public class InputStreamWrapperTest {
 
         doThrow(ioException).when(inputStream).close();
 
-        try {
-            inputStreamWrapper.close();
-            fail();
-        } catch (IOException expected) {
-            assertThat(expected.getMessage(), startsWith("Failed to close InputStream"));
-            assertThat(expected.getCause(), is(ioException));
-        }
+        final IOException expected = assertThrows(IOException.class, () -> inputStreamWrapper.close());
+        assertThat(expected.getMessage(), startsWith("Failed to close InputStream"));
+        assertThat(expected.getCause(), is(ioException));
 
         verify(connection).close();
     }
@@ -73,14 +68,10 @@ public class InputStreamWrapperTest {
 
         doThrow(sqlException).when(connection).close();
 
-        try {
-            inputStreamWrapper.close();
-            fail();
-        } catch (IOException expected) {
-            assertThat(expected.getMessage(), startsWith("Failed to close Connection"));
-            assertThat(expected.getCause(), is(sqlException));
-        }
+        final IOException expected = assertThrows(IOException.class, () -> inputStreamWrapper.close());
 
+        assertThat(expected.getMessage(), startsWith("Failed to close Connection"));
+        assertThat(expected.getCause(), is(sqlException));
         verify(inputStream).close();
     }
 
@@ -99,9 +90,9 @@ public class InputStreamWrapperTest {
         when(inputStream.read(bytes)).thenReturn(bytesRead_2);
         when(inputStream.read(bytes, offset, length)).thenReturn(bytesRead_3);
 
-       assertThat(inputStreamWrapper.read(), is(bytesRead_1));
-       assertThat(inputStreamWrapper.read(bytes), is(bytesRead_2));
-       assertThat(inputStreamWrapper.read(bytes, offset, length), is(bytesRead_3));
+        assertThat(inputStreamWrapper.read(), is(bytesRead_1));
+        assertThat(inputStreamWrapper.read(bytes), is(bytesRead_2));
+        assertThat(inputStreamWrapper.read(bytes, offset, length), is(bytesRead_3));
     }
 
     @Test
@@ -124,6 +115,7 @@ public class InputStreamWrapperTest {
 
         assertThat(inputStreamWrapper.available(), is(bytesAvailable));
     }
+
     @Test
     public void shouldWrapTheCallToMark() throws Exception {
 

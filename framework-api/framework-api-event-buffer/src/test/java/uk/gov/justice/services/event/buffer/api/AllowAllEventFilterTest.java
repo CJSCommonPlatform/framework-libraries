@@ -1,9 +1,8 @@
 package uk.gov.justice.services.event.buffer.api;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AllowAllEventFilterTest {
 

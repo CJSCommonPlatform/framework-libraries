@@ -1,14 +1,18 @@
 package uk.gov.justice.generation.pojo.write;
 
+import static java.nio.file.Paths.get;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.generation.pojo.core.GenerationContext;
@@ -19,54 +23,51 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.spi.FileSystemProvider;
 
 import javax.lang.model.element.Modifier;
 
+import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 public class SourceWriterTest {
 
     private final static String TEST_SOURCE_OUTPUT_DIR_NAME = "./target/test-generation";
     private final static String TEST_PACKAGE_NAME = "org.bloggs.fred";
 
-    private final SourceWriter sourceWriter = new SourceWriter();
+    @Mock
+    private JavaPoetJavaFileCreator javaPoetJavaFileCreator;
 
-    private File sourceOutputDirectory;
-
-    @Before
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void setup() throws Exception {
-        sourceOutputDirectory = new File(TEST_SOURCE_OUTPUT_DIR_NAME);
-
-        sourceOutputDirectory.mkdirs();
-
-        if (sourceOutputDirectory.exists()) {
-            cleanDirectory(sourceOutputDirectory);
-        }
-
-    }
+    @InjectMocks
+    private SourceWriter sourceWriter;
 
     @Test
     public void shouldWriteASingleSourceFile() throws Exception {
         final TypeSpec helloWorld = simpleClassTypeSpec();
+        final Path path = get(TEST_SOURCE_OUTPUT_DIR_NAME);
 
         final ClassGeneratable classGenerator = mock(ClassGeneratable.class);
         final GenerationContext generationContext = mock(GenerationContext.class);
+        final JavaFile javaFile = mock(JavaFile.class);
 
         when(classGenerator.generate()).thenReturn(helloWorld);
         when(classGenerator.getPackageName()).thenReturn(TEST_PACKAGE_NAME);
-        when(generationContext.getOutputDirectoryPath()).thenReturn(sourceOutputDirectory.toPath());
+        when(generationContext.getOutputDirectoryPath()).thenReturn(path);
+        when(javaPoetJavaFileCreator.createJavaFile(helloWorld, TEST_PACKAGE_NAME)).thenReturn(javaFile);
 
-        for (final ClassGeneratable classGeneratable : singletonList(classGenerator)) {
-            sourceWriter.write(classGeneratable, generationContext);
-        }
+        sourceWriter.write(classGenerator, generationContext);
 
-        assertThat(sourceOutputDirectory.toPath().resolve("org/bloggs/fred/Address.java").toFile().exists(), is(true));
+        verify(javaFile).writeTo(path);
     }
 
     @Test
@@ -74,40 +75,26 @@ public class SourceWriterTest {
     public void shouldThrowExceptionIfUnableToWriteJavaFile() throws Exception {
 
         final TypeSpec helloWorld = simpleClassTypeSpec();
+        final Path path = get(TEST_SOURCE_OUTPUT_DIR_NAME);
+        final IOException ioException = new IOException();
 
         final ClassGeneratable classGenerator = mock(ClassGeneratable.class);
         final GenerationContext generationContext = mock(GenerationContext.class);
-
-        final Path destPathMock = mock(Path.class);
-        final FileSystem fileSystemMock = mock(FileSystem.class);
-        final FileSystemProvider providerMock = mock(FileSystemProvider.class);
-
-        // Next few lines provide mocking to enable IOException to be thrown from
-        // FileSystemProvider.newOutputstream()
-        when(destPathMock.getFileSystem()).thenReturn(fileSystemMock);
-        when(destPathMock.toString()).thenReturn(TEST_SOURCE_OUTPUT_DIR_NAME);
-        when(destPathMock.resolve(anyString())).thenReturn(destPathMock);
-
-        when(fileSystemMock.provider()).thenReturn(providerMock);
-
-        final BasicFileAttributes basicFileAttributes = Files.readAttributes(sourceOutputDirectory.toPath(), BasicFileAttributes.class);
-        when(providerMock.readAttributes(any(Path.class), any(Class.class))).thenReturn(basicFileAttributes);
-        when(providerMock.newOutputStream(any(Path.class), any())).thenThrow(new IOException());
+        final JavaFile javaFile = mock(JavaFile.class);
 
         when(classGenerator.generate()).thenReturn(helloWorld);
         when(classGenerator.getPackageName()).thenReturn(TEST_PACKAGE_NAME);
-        when(generationContext.getOutputDirectoryPath()).thenReturn(destPathMock);
+        when(generationContext.getOutputDirectoryPath()).thenReturn(path);
+        when(javaPoetJavaFileCreator.createJavaFile(helloWorld, TEST_PACKAGE_NAME)).thenReturn(javaFile);
 
-        try {
-            sourceWriter.write(classGenerator, generationContext);
+        doThrow(ioException).when(javaFile).writeTo(path);
 
-            fail();
+        final SourceCodeWriteException sourceCodeWriteException = assertThrows(
+                SourceCodeWriteException.class,
+                () -> sourceWriter.write(classGenerator, generationContext));
 
-        } catch (final SourceCodeWriteException ex) {
-            sourceOutputDirectory.setWritable(true);
-            assertThat(ex.getMessage(), is("Failed to write java file to './target/test-generation' for 'org.bloggs.fred.Address.java'"));
-            assertThat(ex.getCause(), is(instanceOf(IOException.class)));
-        }
+        assertThat(sourceCodeWriteException.getCause(), is(ioException));
+        assertThat(sourceCodeWriteException.getMessage(), is("Failed to write java file to './target/test-generation' for 'org.bloggs.fred.Address.java'"));
     }
 
     private TypeSpec simpleClassTypeSpec() {

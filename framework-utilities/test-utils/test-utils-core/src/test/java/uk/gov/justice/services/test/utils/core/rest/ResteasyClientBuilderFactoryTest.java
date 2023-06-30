@@ -7,9 +7,9 @@ import static org.hamcrest.core.IsNull.nullValue;
 import org.apache.http.HttpHost;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient43Engine;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ResteasyClientBuilderFactoryTest {
 
@@ -20,13 +20,13 @@ public class ResteasyClientBuilderFactoryTest {
     private String proxyHostValue;
     private String proxyPortValue;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         proxyHostValue = System.getProperty(PROPERTY_HTTP_PROXY_HOST);
         proxyPortValue = System.getProperty(PROPERTY_HTTP_PROXY_PORT);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         System.clearProperty(PROPERTY_HTTP_PROXY_HOST);
         System.clearProperty(PROPERTY_HTTP_PROXY_PORT);

@@ -2,7 +2,7 @@ package uk.gov.justice.json.jolt;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.json.jolt.JsonHelper.readJson;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
@@ -14,14 +14,14 @@ import java.io.FileNotFoundException;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class JoltTransformerTest {
 
     private final JoltTransformer joltTransformer = new JoltTransformer();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         final StringToJsonObjectConverter stringToJsonObjectConverter = new StringToJsonObjectConverter();
         setField(joltTransformer, "stringToJsonObjectConverter", stringToJsonObjectConverter);
@@ -32,13 +32,11 @@ public class JoltTransformerTest {
         final JsonObject inputJson = readJson("/prosecutioncase.json");
         final JsonObject specJson = readJson("/prosecutioncase-to-case-spec-empty.json");
 
-        try {
-            final String operationsString = specJson.toString();
-            joltTransformer.transformWithJolt(operationsString, inputJson);
-            fail("Input contains operations, expecting no operations!");
-        } catch (final IllegalArgumentException e) {
-            assertThat(e.getMessage(), is("Input specification does not contain any operations"));
-        }
+        final String operationsString = specJson.toString();
+        final IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class,
+                () -> joltTransformer.transformWithJolt(operationsString, inputJson));
+        assertThat(illegalArgumentException.getMessage(), is("Input specification does not contain any operations"));
     }
 
     @Test
@@ -46,12 +44,10 @@ public class JoltTransformerTest {
         final JsonObject inputJson = readJson("/prosecutioncase.json");
         final JsonObject specJson = readJson("/prosecutioncase-empty.json");
 
-        try {
-            joltTransformer.transformWithJolt(specJson.toString(), inputJson);
-            fail("Input specification is not empty, expecting empty specification!");
-        } catch (final IllegalArgumentException e) {
-            assertThat(e.getMessage(), is("Input specification is empty"));
-        }
+        final IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class,
+                () -> joltTransformer.transformWithJolt(specJson.toString(), inputJson));
+        assertThat(illegalArgumentException.getMessage(), is("Input specification is empty"));
     }
 
     @Test
@@ -59,12 +55,10 @@ public class JoltTransformerTest {
         final JsonObject inputJson = readJson("/prosecutioncase-empty.json");
         final JsonObject specJson = readJson("/prosecutioncase-to-case-spec.json");
 
-        try {
-            joltTransformer.transformWithJolt(specJson.toString(), inputJson);
-            fail("Input Json is not empty");
-        } catch (final IllegalArgumentException e) {
-            assertThat(e.getMessage(), is("Input JSON is empty"));
-        }
+        final IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class,
+                () -> joltTransformer.transformWithJolt(specJson.toString(), inputJson));
+        assertThat(illegalArgumentException.getMessage(), is("Input JSON is empty"));
     }
 
     @Test
@@ -84,11 +78,11 @@ public class JoltTransformerTest {
         assertThat(transformedJson.getString("label"), is("label"));
     }
 
-    @Test(expected = ConverterException.class)
+    @Test
     public void shouldThrowExceptionOnNullResult() throws JsonProcessingException {
         final JsonObject inputJson = readJson("/prosecutioncase.json");
         final JsonObject specJson = readJson("/prosecutioncase-to-case-spec-invalid.json");
 
-        joltTransformer.transformWithJolt(specJson.toString(), inputJson);
+        assertThrows(ConverterException.class, () -> joltTransformer.transformWithJolt(specJson.toString(), inputJson));
     }
 }

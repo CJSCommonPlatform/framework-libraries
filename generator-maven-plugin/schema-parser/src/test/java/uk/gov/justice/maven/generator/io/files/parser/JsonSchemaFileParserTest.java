@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JsonSchemaFileParserTest {
 
@@ -55,12 +55,9 @@ public class JsonSchemaFileParserTest {
 
     @Test
     public void shouldThrowFileNotFoundException() {
-        final List<Path> paths = asList(get("no-schema1.json"));
-        try{
-            final Collection<JsonObject> result = parser.parse(baseDir, paths);
-            fail();
-        } catch (RuntimeException re) {
-            assertThat(re.getCause(), is(instanceOf(FileNotFoundException.class)));
-        }
+        final List<Path> paths = List.of(get("no-schema1.json"));
+
+        final RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> parser.parse(baseDir, paths));
+        assertThat(runtimeException.getCause(), is(instanceOf(FileNotFoundException.class)));
     }
 }

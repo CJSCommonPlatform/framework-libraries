@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
 import uk.gov.justice.schema.catalog.util.UrlConverter;
@@ -19,16 +19,16 @@ import java.util.Optional;
 
 import javax.json.stream.JsonParsingException;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SchemaIdParserTest {
 
     @Mock
@@ -73,13 +73,12 @@ public class SchemaIdParserTest {
 
         final URL schemaFile = new URL("file:/this/file/does/not/exist.json");
 
-        try {
-            schemaIdParser.parse(schemaFile);
-            fail();
-        } catch (final CatalogGenerationException expected) {
-            assertThat(expected.getCause(), is(instanceOf(IOException.class)));
-            assertThat(expected.getMessage(), is("Failed to extract id from schema file 'file:/this/file/does/not/exist.json'"));
-        }
+        final CatalogGenerationException expected = assertThrows(
+                CatalogGenerationException.class,
+                () -> schemaIdParser.parse(schemaFile));
+
+        assertThat(expected.getCause(), is(instanceOf(IOException.class)));
+        assertThat(expected.getMessage(), is("Failed to extract id from schema file 'file:/this/file/does/not/exist.json'"));
     }
 
     @Test
@@ -87,13 +86,11 @@ public class SchemaIdParserTest {
 
         final URL schemaFile = getClass().getClassLoader().getResource("dodgy-schemas/schema-with-missing-curly-brace.json");
 
-        try {
-            schemaIdParser.parse(schemaFile);
-            fail();
-        } catch (final CatalogGenerationException expected) {
-            assertThat(expected.getCause(), is(instanceOf(JsonParsingException.class)));
-            assertThat(expected.getMessage(), containsString("Failed to parse schema file '"));
-            assertThat(expected.getMessage(), containsString("dodgy-schemas/schema-with-missing-curly-brace.json'"));
-        }
+        final CatalogGenerationException expected = assertThrows(
+                CatalogGenerationException.class,
+                () -> schemaIdParser.parse(schemaFile));
+        assertThat(expected.getCause(), is(instanceOf(JsonParsingException.class)));
+        assertThat(expected.getMessage(), containsString("Failed to parse schema file '"));
+        assertThat(expected.getMessage(), containsString("dodgy-schemas/schema-with-missing-curly-brace.json'"));
     }
 }

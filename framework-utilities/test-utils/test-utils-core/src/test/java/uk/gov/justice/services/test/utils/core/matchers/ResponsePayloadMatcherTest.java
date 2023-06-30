@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUID;
 
@@ -16,7 +16,7 @@ import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
 import javax.json.JsonArrayBuilder;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ResponsePayloadMatcherTest {
 

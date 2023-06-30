@@ -17,8 +17,8 @@ import java.io.File;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ArraysIT {
 
@@ -27,7 +27,7 @@ public class ArraysIT {
     private final ClassInstantiator classInstantiator = new ClassInstantiator();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories.makeDirectories("./target/test-generation/examples/arrays");
     }

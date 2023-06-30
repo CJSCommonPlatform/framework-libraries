@@ -13,13 +13,13 @@ import java.util.List;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.project.MavenProject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ProjectDependencyLoaderTest {
 
     @Mock
@@ -31,8 +31,7 @@ public class ProjectDependencyLoaderTest {
     @Test
     public void shouldLoadProjectDependenciesSuccessfully() throws DependencyResolutionRequiredException, MalformedURLException {
 
-        final List compileTimeClasspathElements = newArrayList(
-                "example.jar");
+        final List<String> compileTimeClasspathElements = newArrayList("example.jar");
 
         when(project.getRuntimeClasspathElements()).thenReturn(newArrayList());
         when(project.getCompileClasspathElements()).thenReturn(compileTimeClasspathElements);
@@ -48,8 +47,7 @@ public class ProjectDependencyLoaderTest {
     @Test
     public void shouldNotFailedWhenProjectDependenciesJarNotFound() throws DependencyResolutionRequiredException, MalformedURLException {
 
-        final List compileTimeClasspathElements = newArrayList(
-                "fileNotFoundInClassPath");
+        final List<String> compileTimeClasspathElements = newArrayList("fileNotFoundInClassPath");
 
         when(project.getRuntimeClasspathElements()).thenReturn(newArrayList());
         when(project.getCompileClasspathElements()).thenReturn(compileTimeClasspathElements);

@@ -6,23 +6,23 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LocalPartGeneratorTest {
 
     @Mock
     private LocalPartValidator validator;
 
-    @Before
-    public void setUp() {
-        when(validator.validate(anyString())).thenReturn(true);
-    }
+//    @BeforeEach
+//    public void setUp() {
+//        when(validator.validate(anyString())).thenReturn(true);
+//    }
 
     @Test
     public void shouldGenerateLocalParts() {

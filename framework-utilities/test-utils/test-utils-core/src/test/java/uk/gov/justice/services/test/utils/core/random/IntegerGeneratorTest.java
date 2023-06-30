@@ -1,9 +1,9 @@
 package uk.gov.justice.services.test.utils.core.random;
 
 import static java.lang.String.format;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IntegerGeneratorTest {
 
@@ -203,8 +203,8 @@ public class IntegerGeneratorTest {
         IntegerGenerator ig = new IntegerGenerator(min, max);
         for (int i = 0; i < loopCount; i++) {
             int k = ig.next();
-            assertTrue(format("Value cannot be greater than Max value %s , got Value: %s", max, k), k < max);
-            assertTrue(format("Value cannot be smaller than Min value %s , got Value: %s", min, k), k >= min);
+            assertTrue(k < max, format("Value cannot be greater than Max value %s , got Value: %s", max, k));
+            assertTrue(k >= min, format("Value cannot be smaller than Min value %s , got Value: %s", min, k));
         }
     }
     
@@ -212,8 +212,8 @@ public class IntegerGeneratorTest {
         IntegerGenerator ig = new IntegerGenerator(0, max);
         for (int i = 0; i < loopCount; i++) {
             int k = ig.next();
-            assertTrue(format("Value cannot be greater than Max value %s , got Value: %s", max, k), k < max);
-            assertTrue(format("Value cannot be smaller than Min value %s , got Value: %s", 0, k), k >= 0);
+            assertTrue(k < max, format("Value cannot be greater than Max value %s , got Value: %s", max, k));
+            assertTrue(k >= 0, format("Value cannot be smaller than Min value %s , got Value: %s", 0, k));
         }
     }
 }

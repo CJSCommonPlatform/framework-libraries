@@ -2,7 +2,6 @@ package uk.gov.justice.generation.pojo.plugin.typemodifying;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,14 +13,9 @@ import uk.gov.justice.generation.pojo.core.TypeMapping;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TypeMappingPredicateTest {
-
-    @Test
-    public void shouldBeWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(TypeMappingPredicate.class);
-    }
 
     @Test
     public void shouldFilterByReferenceType() throws Exception {

@@ -3,6 +3,7 @@ package uk.gov.justice.services.validator;
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.maven.annotation.domain.ValidationResult;
 import uk.gov.justice.maven.annotation.exception.ValidationException;
@@ -10,21 +11,22 @@ import uk.gov.justice.services.validator.domain.ClassWithInvalidEventAnnotation;
 import uk.gov.justice.services.validator.domain.ClassWithValidAdministrationEventAnnotation;
 import uk.gov.justice.services.validator.domain.ClassWithValidEventAnnotation;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 
 public class EventAnnotationValidatorTest {
 
     private EventAnnotationValidator validator;
 
-    @Before
+    @BeforeEach
     public void setup() {
         validator = new EventAnnotationValidator();
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void shouldThrowExceptionIfServiceNameNotProvided() {
-        validator.validate(ClassWithValidEventAnnotation.class, of());
+        assertThrows(ValidationException.class, () -> validator.validate(ClassWithValidEventAnnotation.class, of()));
     }
 
     @Test

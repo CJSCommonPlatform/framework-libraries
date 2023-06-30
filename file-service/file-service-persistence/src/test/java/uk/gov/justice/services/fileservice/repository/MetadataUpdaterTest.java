@@ -6,7 +6,7 @@ import static java.time.ZonedDateTime.of;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -22,14 +22,14 @@ import java.time.ZonedDateTime;
 import javax.json.JsonObject;
 import javax.ws.rs.core.MediaType;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MetadataUpdaterTest {
 
     @Mock
@@ -108,12 +108,8 @@ public class MetadataUpdaterTest {
         when(utcClock.now()).thenReturn(dateTime);
         when(contentTypeDetector.detectContentTypeOf(contentStream)).thenThrow(ioException);
 
-        try {
-            metadataUpdater.addMediaTypeAndCreatedTime(metadata, contentStream);
-            fail();
-        } catch (final StorageException expected) {
-            assertThat(expected.getCause(), is(ioException));
-            assertThat(expected.getMessage(), is("Failed to get media type of file from InputStream"));
-        }
+        final StorageException expected = assertThrows(StorageException.class, () -> metadataUpdater.addMediaTypeAndCreatedTime(metadata, contentStream));
+        assertThat(expected.getCause(), is(ioException));
+        assertThat(expected.getMessage(), is("Failed to get media type of file from InputStream"));
     }
 }

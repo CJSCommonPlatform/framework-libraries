@@ -1,11 +1,11 @@
 package uk.gov.justice.services.yaml;
 
-import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -13,7 +13,7 @@ import java.net.URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.ValidationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class YamlFileValidatorIT {
 

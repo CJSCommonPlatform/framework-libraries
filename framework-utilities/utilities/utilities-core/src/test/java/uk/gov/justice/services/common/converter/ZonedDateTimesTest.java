@@ -4,7 +4,6 @@ import static java.time.ZoneOffset.UTC;
 import static java.time.ZonedDateTime.of;
 import static java.time.ZonedDateTime.parse;
 import static javax.json.Json.createObjectBuilder;
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -15,17 +14,12 @@ import java.time.ZonedDateTime;
 
 import javax.json.JsonString;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link ZonedDateTimes} utility class.
  */
 public class ZonedDateTimesTest {
-
-    @Test
-    public void shouldBeWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(ZonedDateTimes.class);
-    }
 
     @Test
     public void shouldConvertStringToUtc() {

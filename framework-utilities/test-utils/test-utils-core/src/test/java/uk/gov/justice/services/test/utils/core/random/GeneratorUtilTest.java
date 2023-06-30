@@ -7,7 +7,7 @@ import static uk.gov.justice.services.test.utils.core.random.GeneratorUtil.check
 import static uk.gov.justice.services.test.utils.core.random.GeneratorUtil.concat;
 import static uk.gov.justice.services.test.utils.core.random.GeneratorUtil.generateStringFromCharacters;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class GeneratorUtilTest {
 

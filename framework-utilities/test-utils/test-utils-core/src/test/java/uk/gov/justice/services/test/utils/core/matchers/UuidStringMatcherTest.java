@@ -1,10 +1,11 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.UUID;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UuidStringMatcherTest {
 
@@ -13,8 +14,12 @@ public class UuidStringMatcherTest {
         assertThat(UUID.randomUUID().toString(), UuidStringMatcher.isAUuid());
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void shouldNotMatchANonValidUuid() throws Exception {
-        assertThat("79d0c503-052f-4105-9b05-b49d9c4cf6a", UuidStringMatcher.isAUuid());
+
+        try {
+            assertThat("79d0c503-052f-4105-9b05-b49d9c4cf6a", UuidStringMatcher.isAUuid());
+            fail();
+        } catch (AssertionError expected) {}
     }
 }

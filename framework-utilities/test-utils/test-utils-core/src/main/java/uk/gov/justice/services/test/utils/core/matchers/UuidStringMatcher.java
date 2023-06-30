@@ -1,7 +1,6 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -23,7 +22,6 @@ public class UuidStringMatcher extends TypeSafeMatcher<String> {
         description.appendText("a string matching the pattern of a UUID");
     }
 
-    @Factory
     public static Matcher<String> isAUuid() {
         return new UuidStringMatcher();
     }

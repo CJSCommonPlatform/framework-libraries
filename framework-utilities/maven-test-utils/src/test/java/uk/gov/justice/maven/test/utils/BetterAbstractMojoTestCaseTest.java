@@ -1,11 +1,11 @@
 package uk.gov.justice.maven.test.utils;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
 import org.apache.maven.plugin.Mojo;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BetterAbstractMojoTestCaseTest {
 

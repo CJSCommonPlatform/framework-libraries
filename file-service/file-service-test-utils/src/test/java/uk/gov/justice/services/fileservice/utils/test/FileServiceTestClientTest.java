@@ -20,11 +20,9 @@ import java.sql.Connection;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-@Ignore
 public class FileServiceTestClientTest {
 
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
@@ -33,7 +31,7 @@ public class FileServiceTestClientTest {
     private final ClasspathFileResource classpathFileResource = new ClasspathFileResource();
     private final FileServiceTestClient fileServiceTestClient = new FileServiceTestClient();
 
-    @BeforeClass
+    @BeforeAll
     public static void boostrapFileStoreDatabase() throws Exception {
 
         try(final Connection connection = filestoreTestDataSourceProvider.getDatasource().getConnection()) {

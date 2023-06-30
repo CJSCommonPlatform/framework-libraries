@@ -7,7 +7,7 @@ import uk.gov.justice.maven.annotation.domain.ValidationResult;
 
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationValidatorTest {
 

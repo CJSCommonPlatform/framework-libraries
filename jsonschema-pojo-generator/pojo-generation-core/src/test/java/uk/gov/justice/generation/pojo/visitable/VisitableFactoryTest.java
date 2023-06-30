@@ -9,13 +9,13 @@ import static org.mockito.Mockito.mock;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 
 import org.everit.json.schema.ObjectSchema;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class VisitableFactoryTest {
 
     @InjectMocks

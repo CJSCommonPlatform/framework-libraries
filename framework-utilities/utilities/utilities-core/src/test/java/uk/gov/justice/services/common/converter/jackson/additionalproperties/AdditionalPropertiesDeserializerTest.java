@@ -8,6 +8,7 @@ import static com.fasterxml.jackson.core.JsonToken.VALUE_STRING;
 import static com.fasterxml.jackson.core.JsonToken.VALUE_TRUE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,13 +20,13 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AdditionalPropertiesDeserializerTest {
 
     @Mock
@@ -34,7 +35,7 @@ public class AdditionalPropertiesDeserializerTest {
     @InjectMocks
     private AdditionalPropertiesDeserializer beanDeserializer;
 
-    @Test(expected = Exception.class)
+    @Test
     public void shouldReturnAdditionalPropertiesDeserializerException() throws IOException {
         final Map<Integer, Object> invalidAdditionalProperties = Collections.singletonMap(1, new Object());
         final Object personWithInvalidAdditionalProperties = new PersonWithWrongAdditionalProperties("Adam", 34, invalidAdditionalProperties);
@@ -45,7 +46,8 @@ public class AdditionalPropertiesDeserializerTest {
         when(jp.getCurrentToken()).thenReturn(VALUE_STRING);
         when(jp.getValueAsString()).thenReturn("Test Value");
 
-        beanDeserializer.handleUnknownProperty(jp, ctxt, personWithInvalidAdditionalProperties, "additionalProperties");
+        final Exception exception = assertThrows(Exception.class, () ->beanDeserializer.handleUnknownProperty(jp, ctxt, personWithInvalidAdditionalProperties, "additionalProperties"));
+
     }
 
     @Test

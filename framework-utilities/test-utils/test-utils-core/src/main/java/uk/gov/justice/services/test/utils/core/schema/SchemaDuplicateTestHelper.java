@@ -1,8 +1,9 @@
 package uk.gov.justice.services.test.utils.core.schema;
 
 import static java.lang.String.format;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ public class SchemaDuplicateTestHelper {
             throw e;
         }
         LOGGER.info("Total duplicated schemas: {}", scc.getNumberOfViolatingSchemas());
-        Assert.assertTrue(format("Schema duplicates check test failed with %s schema(s)",scc.getNumberOfViolatingSchemas()), scc.isCompliant());
+        final String format = format("Schema duplicates check test failed with %s schema(s)", scc.getNumberOfViolatingSchemas());
+        assertThat(format, is(scc.isCompliant()));
     }
 }

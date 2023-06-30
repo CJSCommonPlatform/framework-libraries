@@ -14,8 +14,8 @@ import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 import java.io.File;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class AddToStringMethodToClassPluginIT {
 
@@ -23,7 +23,7 @@ public class AddToStringMethodToClassPluginIT {
     private final ClassInstantiator classInstantiator = new ClassInstantiator();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories.makeDirectories("./target/test-generation/examples/plugins/to/string");
     }

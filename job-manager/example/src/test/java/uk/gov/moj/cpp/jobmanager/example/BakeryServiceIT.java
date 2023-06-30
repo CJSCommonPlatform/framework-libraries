@@ -46,18 +46,17 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.openejb.jee.WebApp;
 import org.apache.openejb.jee.jpa.unit.Persistence;
 import org.apache.openejb.jee.jpa.unit.PersistenceUnit;
-import org.apache.openejb.junit.ApplicationComposer;
+import org.apache.openejb.junit5.RunWithApplicationComposer;
 import org.apache.openejb.testing.Application;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Configuration;
 import org.apache.openejb.testing.Module;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-@Ignore("This test takes minutes to run and isn't really critical, so taking it out of the default build. Uncomment this to run")
-@RunWith(ApplicationComposer.class)
+@Disabled("This test takes minutes to run and isn't really critical, so taking it out of the default build. Uncomment this to run")
+@RunWithApplicationComposer
 public class BakeryServiceIT {
 
     @Inject
@@ -123,7 +122,7 @@ public class BakeryServiceIT {
                 .build();
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         final InitialContext initialContext = new InitialContext();
         initialContext.bind("java:/app/BakeryServiceIT/DS.jobstore", dataSource);

@@ -5,7 +5,8 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -18,14 +19,14 @@ import java.net.URI;
 import java.net.URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ClasspathCatalogLoaderTest {
 
     @Mock
@@ -71,14 +72,11 @@ public class ClasspathCatalogLoaderTest {
 
         when(classpathResourceLoader.getResources("META-INF/schema_catalog.json")).thenThrow(ioException);
 
-        try {
-            classpathCatalogLoader.getCatalogs();
-            fail();
-        } catch (final Exception expected) {
-            assertThat(expected.getCause(), is(ioException));
-            assertThat(expected.getMessage(), startsWith("Failed to load the catalogs from the classpath for location 'META-INF/schema_catalog.json'"));
-
-        }
+        final Exception expected = assertThrows(
+                Exception.class,
+                () -> classpathCatalogLoader.getCatalogs());
+        assertThat(expected.getCause(), is(ioException));
+        assertThat(expected.getMessage(), startsWith("Failed to load the catalogs from the classpath for location 'META-INF/schema_catalog.json'"));
     }
 
     @Test

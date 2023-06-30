@@ -13,7 +13,7 @@ import uk.gov.justice.generation.pojo.generators.TypeNameProvider;
 import uk.gov.justice.generation.pojo.plugin.PluginProvider;
 import uk.gov.justice.generation.pojo.plugin.TypeNamePluginProcessor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PojoGeneratorFactoriesProviderTest {
 

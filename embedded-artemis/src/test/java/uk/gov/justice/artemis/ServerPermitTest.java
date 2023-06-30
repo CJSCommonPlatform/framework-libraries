@@ -8,14 +8,14 @@ import static org.mockito.Mockito.verify;
 
 import java.util.concurrent.Semaphore;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ServerPermitTest {
 
     ServerPermit serverPermit;
 
-    @Before
+    @BeforeEach
     public void before() {
         serverPermit = new ServerPermit();
     }

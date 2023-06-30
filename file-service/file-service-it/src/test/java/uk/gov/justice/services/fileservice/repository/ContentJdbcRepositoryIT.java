@@ -23,9 +23,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ContentJdbcRepositoryIT {
 
@@ -36,7 +36,7 @@ public class ContentJdbcRepositoryIT {
 
     private Connection connection;
 
-    @Before
+    @BeforeEach
     public void setupDatabase() throws Exception {
 
         connection = new FileStoreTestDataSourceProvider().getDatasource().getConnection();
@@ -46,7 +46,7 @@ public class ContentJdbcRepositoryIT {
                 connection);
     }
 
-    @After
+    @AfterEach
     public void closeConnection() throws SQLException {
 
         if(connection != null) {

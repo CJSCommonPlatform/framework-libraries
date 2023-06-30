@@ -7,7 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.healthcheck.api.HealthcheckResult.failure;
 import static uk.gov.justice.services.healthcheck.api.HealthcheckResult.success;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HealthcheckResultTest {
 

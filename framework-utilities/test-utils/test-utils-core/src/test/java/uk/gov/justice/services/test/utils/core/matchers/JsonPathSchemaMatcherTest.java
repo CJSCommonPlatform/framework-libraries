@@ -7,7 +7,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonPathSchemaMat
 import io.restassured.path.json.JsonPath;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JsonPathSchemaMatcherTest {
 

@@ -13,14 +13,14 @@ import static uk.gov.justice.services.file.alfresco.Headers.headersWithUserId;
 
 import javax.ws.rs.core.Response;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AlfrescoFileSenderTest {
 
     @InjectMocks
@@ -32,7 +32,7 @@ public class AlfrescoFileSenderTest {
     private static final String UPLOAD_PATH = "/service/case/upload";
     private static final String USER_ID = "user1234";
 
-    @Before
+    @BeforeEach
     public void beforeTest() {
         fileSender.alfrescoUploadPath = UPLOAD_PATH;
         fileSender.alfrescoUploadUser = USER_ID;

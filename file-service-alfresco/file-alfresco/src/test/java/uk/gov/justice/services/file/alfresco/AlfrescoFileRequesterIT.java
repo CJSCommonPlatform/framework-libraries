@@ -29,9 +29,9 @@ import javax.ws.rs.ProcessingException;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.io.IOUtils;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 
 public class AlfrescoFileRequesterIT {
@@ -51,7 +51,7 @@ public class AlfrescoFileRequesterIT {
     @Rule
     public WireMockRule wireMock = new WireMockRule(PORT);
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         final int port = PORT;
         fileRequester = alfrescoFileRequesterWith(basePathWithPort(port));

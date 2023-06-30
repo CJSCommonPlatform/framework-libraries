@@ -4,7 +4,8 @@ import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,15 +16,15 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JdbcJobStoreDataSourceProviderTest {
 
     private static final String SERVICE = "test";
@@ -37,7 +38,7 @@ public class JdbcJobStoreDataSourceProviderTest {
     @InjectMocks
     private JdbcJobStoreDataSourceProvider provider;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         setField(provider, "warFileName", "test-event-processor");
     }
@@ -50,7 +51,7 @@ public class JdbcJobStoreDataSourceProviderTest {
 
         final DataSource dataSource = provider.getDataSource();
 
-        assertNotNull("Returned DataSource was null!", dataSource);
+        assertNotNull(dataSource, "Returned DataSource was null!");
         assertThat(dataSource, is(dataSourceMock));
     }
 
@@ -60,9 +61,10 @@ public class JdbcJobStoreDataSourceProviderTest {
         assertThat(initialContext, notNullValue());
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRespositoryException() throws NamingException {
         when(initialContextMock.lookup(eq(format("java:/app/%s-event-processor/DS.jobstore", SERVICE)))).thenThrow(new NamingException());
-        provider.getDataSource();
+        
+        assertThrows(JdbcRepositoryException.class, () -> provider.getDataSource());
     }
 }

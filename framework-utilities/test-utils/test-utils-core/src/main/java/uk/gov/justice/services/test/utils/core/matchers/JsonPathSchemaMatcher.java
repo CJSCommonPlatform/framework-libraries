@@ -8,7 +8,6 @@ import io.restassured.path.json.JsonPath;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.json.JSONArray;
@@ -62,7 +61,6 @@ public class JsonPathSchemaMatcher extends TypeSafeMatcher<JsonPath> {
      * @param type JsonObject or JsonArray.
      * @return
      */
-    @Factory
     public static Matcher<JsonPath> matchesSchema(String schemaLocation, Class<?> type) {
         return new JsonPathSchemaMatcher(schemaLocation, type);
     }

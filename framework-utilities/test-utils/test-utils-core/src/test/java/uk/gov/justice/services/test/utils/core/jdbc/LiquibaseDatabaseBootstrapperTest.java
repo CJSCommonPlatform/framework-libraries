@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LiquibaseDatabaseBootstrapperTest {
 

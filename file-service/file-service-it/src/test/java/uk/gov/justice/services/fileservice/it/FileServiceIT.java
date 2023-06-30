@@ -37,14 +37,13 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.LogFactory;
 import org.apache.openejb.jee.Application;
 import org.apache.openejb.jee.WebApp;
-import org.apache.openejb.junit.ApplicationComposer;
+import org.apache.openejb.junit5.RunWithApplicationComposer;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Module;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-@RunWith(ApplicationComposer.class)
+@RunWithApplicationComposer
 public class FileServiceIT {
 
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
@@ -87,7 +86,7 @@ public class FileServiceIT {
                 .addServlet("TestApp", Application.class.getName());
     }
 
-    @Before
+    @BeforeEach
     public void initDatabase() throws Exception {
         liquibaseDatabaseBootstrapper.bootstrap(
                 LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML,

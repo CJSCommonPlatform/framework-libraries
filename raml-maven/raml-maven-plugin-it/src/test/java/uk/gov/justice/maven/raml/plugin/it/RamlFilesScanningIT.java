@@ -15,10 +15,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-@Ignore("Ignoring for now as this test fails on travis - allan 2 March 2022")
+@Disabled("Ignoring for now as this test fails on travis - allan 2 March 2022")
 public class RamlFilesScanningIT {
 
     @Test

@@ -4,14 +4,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.INTEGRATION_HOST_KEY;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 public class BaseUriProviderTest {
 
     private BaseUriProvider baseUriProvider = new BaseUriProvider();
 
-    @After
+    @AfterEach
     public void resetTheSystemPropertySetInTheTest() {
         System.clearProperty(INTEGRATION_HOST_KEY);
     }

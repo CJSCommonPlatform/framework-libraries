@@ -2,13 +2,13 @@ package uk.gov.justice.services.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 
 import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.justice.services.test.domain.AggregateWrapper;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AggregateExceptionsTest {
 

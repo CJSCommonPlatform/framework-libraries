@@ -3,6 +3,7 @@ package uk.gov.justice.services.common.configuration;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import javax.enterprise.inject.spi.Annotated;
@@ -11,14 +12,14 @@ import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ValueProducerTest {
 
     private static final String VALID_VALUE = "Valid value";
@@ -45,7 +46,7 @@ public class ValueProducerTest {
     @Mock
     private InitialContext initialContext;
 
-    @Before
+    @BeforeEach
     public void setup() throws NamingException {
         when(serviceContextNameProvider.getServiceContextName()).thenReturn(APP_NAME);
         when(propertyInjectionPoint.getAnnotated()).thenReturn(annotated);
@@ -94,13 +95,13 @@ public class ValueProducerTest {
         assertThat(valueProducer.stringValueOf(propertyInjectionPoint), equalTo(DEFAULT_VALUE));
     }
 
-    @Test(expected = MissingPropertyException.class)
+    @Test
     @SuppressWarnings("unchecked")
     public void shouldThrowExceptionWhenNotFoundAndNoDefaultValue() throws NamingException {
         when(initialContext.lookup(format("java:/app/%s/%s", APP_NAME, ANNOTATION_KEY))).thenThrow(NameNotFoundException.class);
         when(initialContext.lookup("java:global/" + ANNOTATION_KEY)).thenThrow(NameNotFoundException.class);
         when(param.defaultValue()).thenReturn("_null_default");
 
-        valueProducer.stringValueOf(propertyInjectionPoint);
+        assertThrows(MissingPropertyException.class, () -> valueProducer.stringValueOf(propertyInjectionPoint));
     }
 }

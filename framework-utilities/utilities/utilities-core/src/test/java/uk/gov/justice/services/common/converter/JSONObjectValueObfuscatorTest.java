@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JSONObjectValueObfuscatorTest {
 

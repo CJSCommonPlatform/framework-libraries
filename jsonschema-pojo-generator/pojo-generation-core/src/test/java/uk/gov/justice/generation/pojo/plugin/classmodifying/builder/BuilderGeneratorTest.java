@@ -10,6 +10,7 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,13 +26,13 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BuilderGeneratorTest {
 
     @Mock
@@ -163,10 +164,9 @@ public class BuilderGeneratorTest {
         assertThat(builderGenerator.getSimpleClassName(), is("Builder"));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldThrowExceptionWhenRequestingPackageNameForTheBuilder() throws Exception {
-
-        builderGenerator.getPackageName();
+        assertThrows(UnsupportedOperationException.class, () -> builderGenerator.getPackageName());
     }
 
     @Test

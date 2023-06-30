@@ -11,13 +11,13 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.util.EnumResolver;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class IntegerEnumDeserializerTest {
 
     @Mock
@@ -28,7 +28,7 @@ public class IntegerEnumDeserializerTest {
 
     private IntegerEnumDeserializer integerEnumDeserializer;
 
-    @Before
+    @BeforeEach
     public void setup() {
         when(enumResolver.getRawEnums()).thenReturn(Age.values());
         integerEnumDeserializer = new IntegerEnumDeserializer(enumResolver, enumObjectUtil);

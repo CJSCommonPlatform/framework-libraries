@@ -12,7 +12,7 @@ import java.lang.reflect.Modifier;
 
 import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AdditionalPropertiesHelperTest {
 

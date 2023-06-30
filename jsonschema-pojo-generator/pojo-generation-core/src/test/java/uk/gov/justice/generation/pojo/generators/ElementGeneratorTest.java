@@ -23,7 +23,7 @@ import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ElementGeneratorTest {
 

@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 import org.everit.json.schema.Schema;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class YamlSchemaLoaderTest {
 

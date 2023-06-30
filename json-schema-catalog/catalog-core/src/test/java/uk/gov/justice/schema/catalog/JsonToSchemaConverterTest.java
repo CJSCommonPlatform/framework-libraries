@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -18,12 +18,12 @@ import org.apache.commons.io.IOUtils;
 import org.everit.json.schema.Schema;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JsonToSchemaConverterTest {
 
     @InjectMocks
@@ -43,7 +43,7 @@ public class JsonToSchemaConverterTest {
 
         final LocalFileSystemSchemaClient localFileSystemSchemaClient = mock(LocalFileSystemSchemaClient.class);
 
-        try(final InputStream inputStream = schemaFragmentUrl.openStream()) {
+        try (final InputStream inputStream = schemaFragmentUrl.openStream()) {
 
             when(localFileSystemSchemaClient.get("http://justice.gov.uk/standards/complex_address.json")).thenReturn(inputStream);
 
@@ -70,7 +70,7 @@ public class JsonToSchemaConverterTest {
 
         final LocalFileSystemSchemaClient localFileSystemSchemaClient = mock(LocalFileSystemSchemaClient.class);
 
-        try(final InputStream inputStream = schemaFragmentUrl.openStream()) {
+        try (final InputStream inputStream = schemaFragmentUrl.openStream()) {
 
             when(localFileSystemSchemaClient.get("http://justice.gov.uk/standards/complex_address.json")).thenReturn(inputStream);
 
@@ -93,12 +93,11 @@ public class JsonToSchemaConverterTest {
 
         final String schemaJson = IOUtils.toString(url);
 
-        try {
-            jsonToSchemaConverter.convert(schemaJson, mock(LocalFileSystemSchemaClient.class));
-            fail();
-        } catch (final SchemaCatalogException expected) {
-            assertThat(expected.getCause(), is(instanceOf(JSONException.class)));
-            assertThat(expected.getMessage(), startsWith("Failed to convert schema json to Schema Object. Schema json:"));
-        }
+        final SchemaCatalogException expected = assertThrows(
+                SchemaCatalogException.class,
+                () -> jsonToSchemaConverter.convert(schemaJson, mock(LocalFileSystemSchemaClient.class)));
+
+                assertThat(expected.getCause(), is(instanceOf(JSONException.class)));
+        assertThat(expected.getMessage(), startsWith("Failed to convert schema json to Schema Object. Schema json:"));
     }
 }

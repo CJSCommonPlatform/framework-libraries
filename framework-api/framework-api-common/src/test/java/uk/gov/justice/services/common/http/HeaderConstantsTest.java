@@ -2,7 +2,7 @@ package uk.gov.justice.services.common.http;
 
 import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link HeaderConstants} test.

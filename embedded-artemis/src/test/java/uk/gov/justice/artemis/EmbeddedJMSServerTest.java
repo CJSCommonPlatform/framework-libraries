@@ -9,14 +9,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EmbeddedJMSServerTest {
 
     EmbeddedJMSServer embeddedJMSServer;
     
-    @Before
+    @BeforeEach
     public void before() {
         embeddedJMSServer = new EmbeddedJMSServer();
     }

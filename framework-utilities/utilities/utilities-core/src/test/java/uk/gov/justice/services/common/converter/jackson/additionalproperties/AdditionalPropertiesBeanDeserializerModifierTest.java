@@ -13,20 +13,20 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
 import com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AdditionalPropertiesBeanDeserializerModifierTest {
 
     private BeanDeserializerBase beanDeserializerBase;
     private BeanDescription beanDesc;
     private POJOPropertyBuilder pojoPropertyBuilder;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         beanDeserializerBase = mock(BeanDeserializerBase.class);
         beanDesc = mock(BeanDescription.class);

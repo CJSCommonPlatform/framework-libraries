@@ -17,8 +17,8 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import java.io.File;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
 public class CatalogWriterTest {
@@ -30,7 +30,7 @@ public class CatalogWriterTest {
     private final File catalogGenerationPath = new File("target/test-output-directory");
     private final File generatedCatalogFile = new File(catalogGenerationPath + "/" + catalogContext.getCatalogLocation(), catalogContext.getCatalogFilename());
 
-    @Before
+    @BeforeEach
     public void cleanUpAnyPreviouslyGeneratedCatalog() {
         deleteQuietly(generatedCatalogFile);
     }

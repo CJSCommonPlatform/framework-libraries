@@ -4,12 +4,12 @@ import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMatcher.status;
 
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ResponseStatusMatcherTest {
 

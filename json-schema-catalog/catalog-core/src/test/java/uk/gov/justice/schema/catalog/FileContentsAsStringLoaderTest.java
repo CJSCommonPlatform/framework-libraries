@@ -7,18 +7,18 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class FileContentsAsStringLoaderTest {
 
     @InjectMocks
@@ -50,13 +50,12 @@ public class FileContentsAsStringLoaderTest {
 
         final URL url = new File("this/file/does/not/exist.json").toURI().toURL();
 
-        try {
-            fileContentsAsStringLoader.readFileContents(url);
-            fail();
-        } catch (final SchemaCatalogException expected) {
-            assertThat(expected.getCause(), is(instanceOf(FileNotFoundException.class)));
-            assertThat(expected.getMessage(), startsWith("Failed to read file contents from 'file:"));
-            assertThat(expected.getMessage(), endsWith("this/file/does/not/exist.json'"));
-        }
+        final SchemaCatalogException expected = assertThrows(
+                SchemaCatalogException.class,
+                () -> fileContentsAsStringLoader.readFileContents(url));
+
+        assertThat(expected.getCause(), is(instanceOf(FileNotFoundException.class)));
+        assertThat(expected.getMessage(), startsWith("Failed to read file contents from 'file:"));
+        assertThat(expected.getMessage(), endsWith("this/file/does/not/exist.json'"));
     }
 }

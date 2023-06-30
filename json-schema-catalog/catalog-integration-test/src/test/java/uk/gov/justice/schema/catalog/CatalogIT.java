@@ -3,7 +3,7 @@ package uk.gov.justice.schema.catalog;
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.CoreMatchers.is;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CatalogIT {
 

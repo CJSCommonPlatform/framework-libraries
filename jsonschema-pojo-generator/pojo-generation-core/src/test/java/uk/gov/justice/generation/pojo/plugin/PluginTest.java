@@ -2,7 +2,7 @@ package uk.gov.justice.generation.pojo.plugin;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PluginTest {
 

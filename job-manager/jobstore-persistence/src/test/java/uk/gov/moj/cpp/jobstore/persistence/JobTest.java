@@ -12,8 +12,8 @@ import java.time.ZonedDateTime;
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class JobTest {
 
@@ -21,7 +21,7 @@ public class JobTest {
     private JsonObject jobData;
     private ZonedDateTime nextTaskStartTime;
 
-    @Before
+    @BeforeEach
     public void setup() {
         jobData = Json.createObjectBuilder().build();
         nextTaskStartTime = new UtcClock().now();

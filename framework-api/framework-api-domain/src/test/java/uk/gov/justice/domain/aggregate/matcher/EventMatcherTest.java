@@ -6,16 +6,16 @@ import static org.mockito.Mockito.when;
 
 import java.util.function.Consumer;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * Unit tests for the {@link EventMatcher} class.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EventMatcherTest {
 
     private EventMatcher<TestClass> eventMatcher;
@@ -29,7 +29,7 @@ public class EventMatcherTest {
     @Mock
     private TestClass event;
 
-    @Before
+    @BeforeEach
     public void setup() {
         eventMatcher = new EventMatcher<>(rule, consumer);
     }

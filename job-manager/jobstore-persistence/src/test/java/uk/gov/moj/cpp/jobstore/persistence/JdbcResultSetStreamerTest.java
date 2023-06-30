@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.jobstore.persistence;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JdbcResultSetStreamerTest {
 
@@ -75,12 +75,8 @@ public class JdbcResultSetStreamerTest {
             throw nullPointerException;
         });
 
-        try {
-            studentStream.collect(toList());
-            fail();
-        } catch (final JdbcRepositoryException expected) {
-            assertThat(expected.getCause(), is(nullPointerException));
-        }
+        final JdbcRepositoryException expected = assertThrows(JdbcRepositoryException.class, () -> studentStream.collect(toList()));
+        assertThat(expected.getCause(), is(nullPointerException));
 
         verify(preparedStatementWrapper).close();
     }

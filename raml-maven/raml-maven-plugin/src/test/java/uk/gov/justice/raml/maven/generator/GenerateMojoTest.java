@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.junit.Ignore;
 import org.raml.model.Raml;
 
 /**

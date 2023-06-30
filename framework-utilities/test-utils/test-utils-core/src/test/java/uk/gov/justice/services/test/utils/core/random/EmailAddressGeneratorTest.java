@@ -10,7 +10,7 @@ import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.EMA
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EmailAddressGeneratorTest {
 

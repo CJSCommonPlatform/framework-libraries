@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.maven.plugin.MojoFailureException;
-import org.junit.After;
+import org.junit.jupiter.api.AfterAll;
 
 /**
  * The tests below rely on a dummy java project with compiled source code which can be found in the
@@ -43,7 +43,7 @@ public class AnnotationCheckMojoTest extends BetterAbstractMojoTestCase {
     private static final String REPORT_FILE_EXTENSION = ".csv";
     private static final String MAVEN_GOAL_CHECK_ANNOTATIONS = "check-annotations";
 
-    @After
+    @AfterAll
     public void tearDown() {
         for (File f : new File(PROJECT_BASE_DIR).listFiles()) {
             if (f.getName().startsWith(PLUGIN_VALIDATION_RESULT_PREFIX)) {
@@ -53,7 +53,7 @@ public class AnnotationCheckMojoTest extends BetterAbstractMojoTestCase {
     }
 
     public void testShouldScanClassesWithAnnotationsAndGenerateReportWithoutFailingBuild() throws Exception {
-        this.getClass().getPackage().getImplementationVersion();
+        getClass().getPackage().getImplementationVersion();
 
         final File pom = new File(PROJECT_BASE_DIR + "/pom-generate-report.xml");
         final AnnotationCheckMojo mojo = (AnnotationCheckMojo) lookupConfiguredMojo(pom, MAVEN_GOAL_CHECK_ANNOTATIONS);

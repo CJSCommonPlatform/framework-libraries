@@ -14,9 +14,9 @@ import static org.apache.openejb.util.NetworkUtil.getNextAvailablePort;
 import uk.gov.justice.services.file.api.remover.FileRemover;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 
 public class AlfrescoFileRemoverIT {
@@ -32,7 +32,7 @@ public class AlfrescoFileRemoverIT {
     @Rule
     public WireMockRule wireMock = new WireMockRule(PORT);
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         fileRemover = alfrescoFileRemoverWith(basePathWithPort(PORT));
 

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import uk.gov.justice.generation.pojo.visitor.Visitor;
 
 import org.everit.json.schema.BooleanSchema;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BooleanAcceptorTest {
 

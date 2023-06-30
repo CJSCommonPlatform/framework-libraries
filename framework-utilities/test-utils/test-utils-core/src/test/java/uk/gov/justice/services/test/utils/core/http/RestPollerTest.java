@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -35,14 +35,14 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 
 import com.google.common.collect.ImmutableMap;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RestPollerTest {
 
     private static final String REQUEST_URL = STRING.next();
@@ -57,7 +57,7 @@ public class RestPollerTest {
 
     private RestPoller poll;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(restClient.query(anyString(), anyString(), any())).thenReturn(response);
 
@@ -150,7 +150,7 @@ public class RestPollerTest {
     //TODO: fix the flaky test
     //https://travis-ci.org/CJSCommonPlatform/microservice_framework/builds/185758661
     @Test
-    @Ignore("flaky test")
+    @Disabled("flaky test")
     public void shouldPollUntilResponsePayloadHasRequiredNumberOfItems() {
         final String userId1 = UUID.next().toString();
         final String userId2 = UUID.next().toString();

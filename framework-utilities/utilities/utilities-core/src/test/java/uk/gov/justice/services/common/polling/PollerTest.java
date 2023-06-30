@@ -13,7 +13,7 @@ import java.util.function.BooleanSupplier;
 
 import javax.inject.Inject;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PollerTest {
 

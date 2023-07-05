@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.maven.plugin.Mojo;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BetterAbstractMojoTestCaseTest {
 

@@ -9,7 +9,8 @@ import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,17 +26,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.json.JsonObject;
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
 public class JobJdbcRepositoryTest {
@@ -47,14 +46,14 @@ public class JobJdbcRepositoryTest {
     private final DataSource eventStoreDataSource = new PostgresDataSourceFactory().createJobStoreDataSource();
     private final JobJdbcRepository jdbcRepository = new JobJdbcRepository();
 
-    @Before
+    @BeforeEach
     public void runLiquibase() throws Exception {
         try (final Connection connection = eventStoreDataSource.getConnection()) {
             new LiquibaseDatabaseBootstrapper().bootstrap(LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML, connection);
         }
     }
 
-    @Before
+    @BeforeEach
     public void createJdbcRepository() throws Exception {
 
         jdbcRepository.dataSource = eventStoreDataSource;
@@ -233,60 +232,61 @@ public class JobJdbcRepositoryTest {
         assertThat(jobsCount, is(1));
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWhenCreating() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        jdbcRepository.insertJob(mock(Job.class));
+
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.insertJob(mock(Job.class)));
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWhenDeleting() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        jdbcRepository.deleteJob(randomUUID());
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.deleteJob(randomUUID()));
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWhenUpdatingJobData() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        jdbcRepository.updateJobData(randomUUID(), mock(JsonObject.class));
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.updateJobData(randomUUID(), mock(JsonObject.class)));
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWhenUpdatingNextTaskDetails() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        jdbcRepository.updateNextTaskDetails(randomUUID(), "string", mock(Timestamp.class));
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.updateNextTaskDetails(randomUUID(), "string", mock(Timestamp.class)));
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWhenLockingJobs() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        jdbcRepository.lockJobsFor(randomUUID(), 2);
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.lockJobsFor(randomUUID(), 2));
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWheoFindingJobsLockedTo() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        jdbcRepository.findJobsLockedTo(randomUUID());
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.findJobsLockedTo(randomUUID()));
     }
 
-    @Test(expected = JdbcRepositoryException.class)
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWhenReleaseingJob() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        jdbcRepository.releaseJob(randomUUID());
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.releaseJob(randomUUID()));
     }
 
     private void createJobs(final int count) {

@@ -9,7 +9,7 @@ import uk.gov.justice.maven.generator.io.files.parser.FileParser;
 import uk.gov.justice.maven.generator.io.files.parser.generator.parser.TestFileParser;
 import uk.gov.justice.maven.generator.io.files.parser.generator.parser.TestFileParserFactory;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FileParserInstanceFactoryTest {
 

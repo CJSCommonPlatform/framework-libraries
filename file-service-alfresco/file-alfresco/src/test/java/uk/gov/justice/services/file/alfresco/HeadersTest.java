@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.contains;
 import static uk.gov.justice.services.file.alfresco.Headers.ALFRESCO_USER_ID;
 import static uk.gov.justice.services.file.alfresco.Headers.headersWithUserId;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HeadersTest {
 

@@ -26,7 +26,7 @@ import org.apache.activemq.artemis.jms.server.config.impl.ConnectionFactoryConfi
 import org.apache.activemq.artemis.jms.server.config.impl.JMSConfigurationImpl;
 import org.apache.activemq.artemis.jms.server.config.impl.JMSQueueConfigurationImpl;
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EmbeddedArtemisServerIT {
 

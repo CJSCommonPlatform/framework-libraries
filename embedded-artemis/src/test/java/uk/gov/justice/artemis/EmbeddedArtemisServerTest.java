@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 import java.util.concurrent.Semaphore;
 
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EmbeddedArtemisServerTest {
 

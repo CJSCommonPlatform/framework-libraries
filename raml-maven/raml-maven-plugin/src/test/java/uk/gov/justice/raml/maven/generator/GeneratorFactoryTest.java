@@ -4,13 +4,14 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.raml.core.Generator;
 import uk.gov.justice.raml.maven.generator.generators.NonInstantiableTestGenerator;
 import uk.gov.justice.raml.maven.generator.generators.TestGenerator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link GeneratorFactory} class.
@@ -19,7 +20,7 @@ public class GeneratorFactoryTest {
 
     private GeneratorFactory factory;
 
-    @Before
+    @BeforeEach
     public void setup() {
         factory = new GeneratorFactory();
     }
@@ -38,9 +39,9 @@ public class GeneratorFactoryTest {
         assertThat(generator1, sameInstance(generator2));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionIfClassDoesNotExists() {
-        factory.instanceOf("nonexistent.GeneratorClass");
+        assertThrows(IllegalArgumentException.class, () -> factory.instanceOf("nonexistent.GeneratorClass"));
     }
 
     @Test

@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.integration.tests;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import uk.gov.justice.generation.pojo.integration.utils.GeneratorUtil;
 import uk.gov.justice.generation.pojo.integration.utils.OutputDirectories;
@@ -13,15 +13,15 @@ import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 import java.io.File;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EmptySchemaIT {
 
     private final GeneratorUtil generatorUtil = new GeneratorUtil();
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories.makeDirectories("./target/test-generation/tests/empty-schemas");
     }

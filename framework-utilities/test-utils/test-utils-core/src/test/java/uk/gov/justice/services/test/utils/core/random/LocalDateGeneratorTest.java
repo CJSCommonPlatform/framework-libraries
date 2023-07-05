@@ -7,7 +7,7 @@ import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck
 import java.time.LocalDate;
 import java.time.Period;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LocalDateGeneratorTest {
 

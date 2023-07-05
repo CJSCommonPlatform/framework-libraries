@@ -26,8 +26,8 @@ import javax.lang.model.element.Modifier;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SourceWriterTest {
 
@@ -38,7 +38,7 @@ public class SourceWriterTest {
 
     private File sourceOutputDirectory;
 
-    @Before
+    @BeforeEach
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void setup() throws Exception {
         sourceOutputDirectory = new File(TEST_SOURCE_OUTPUT_DIR_NAME);

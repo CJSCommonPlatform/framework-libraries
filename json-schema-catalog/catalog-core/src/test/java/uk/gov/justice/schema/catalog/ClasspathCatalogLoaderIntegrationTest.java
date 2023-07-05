@@ -10,7 +10,7 @@ import uk.gov.justice.schema.catalog.domain.Catalog;
 import java.net.URI;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ClasspathCatalogLoaderIntegrationTest {
 

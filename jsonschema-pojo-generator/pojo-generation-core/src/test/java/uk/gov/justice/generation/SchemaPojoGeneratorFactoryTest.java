@@ -8,7 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import uk.gov.justice.generation.io.files.parser.SchemaDefinition;
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SchemaPojoGeneratorFactoryTest {
 

@@ -9,15 +9,15 @@ import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.IN
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.artemisQueueUri;
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class QueueUriProviderTest {
 
     private static final String ARTEMIS_URI = "ARTEMIS_URI";
@@ -25,8 +25,8 @@ public class QueueUriProviderTest {
     @InjectMocks
     private QueueUriProvider queueUriProvider;
 
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void clearSystemProperty() {
         System.clearProperty(INTEGRATION_HOST_KEY);
         System.clearProperty(ARTEMIS_HOST_KEY);

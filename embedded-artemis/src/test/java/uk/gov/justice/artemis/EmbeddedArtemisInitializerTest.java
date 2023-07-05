@@ -8,7 +8,7 @@ import java.util.Collections;
 
 import org.apache.activemq.artemis.core.security.CheckType;
 import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EmbeddedArtemisInitializerTest {
 

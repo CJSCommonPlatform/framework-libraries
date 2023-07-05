@@ -13,7 +13,7 @@ import java.net.URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.everit.json.schema.ValidationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class YamlFileValidatorIT {
 

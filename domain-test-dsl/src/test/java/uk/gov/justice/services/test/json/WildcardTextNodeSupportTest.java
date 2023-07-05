@@ -1,17 +1,17 @@
 package uk.gov.justice.services.test.json;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class WildcardTextNodeSupportTest {
 
-    @Test(expected = IllegalAccessException.class)
-    public void preventInitialisationTest() throws ReflectiveOperationException {
-
-        WildcardTextNodeSupport disallowed = (WildcardTextNodeSupport)
-                Class.forName(WildcardTextNodeSupport.class.getName()).getDeclaredConstructor().newInstance();
-
-        fail(disallowed.toString());
+    @Test
+    public void preventInitialisationTest() throws Exception {
+        assertThrows(
+                IllegalAccessException.class,
+                () -> Class.forName(WildcardTextNodeSupport.class.getName())
+                        .getDeclaredConstructor()
+                        .newInstance());
     }
 }

@@ -10,7 +10,7 @@ import uk.gov.justice.generation.pojo.visitor.DefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.visitor.StringFormatValueParser;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefinitionBuilderVisitorProviderTest {
 

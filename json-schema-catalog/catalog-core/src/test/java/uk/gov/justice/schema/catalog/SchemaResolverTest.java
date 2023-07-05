@@ -5,7 +5,7 @@ import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.schema.catalog.util.UriResolver;
 import uk.gov.justice.schema.catalog.util.UrlConverter;
@@ -15,17 +15,18 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SchemaResolverTest {
 
-    @Spy @SuppressWarnings("unused")
+    @Spy
+    @SuppressWarnings("unused")
     private final UrlConverter urlConverter = new UrlConverter();
 
     @Spy
@@ -69,12 +70,11 @@ public class SchemaResolverTest {
         final String fileLocation = "some/path/to/schema.json";
         final Optional<String> baseLocation = of("this path is silly");
 
-        try {
-            schemaResolver.resolve(catalogUri, fileLocation, baseLocation);
-            fail();
-        } catch (final SchemaCatalogException expected) {
-            assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
-            assertThat(expected.getMessage(), is("Failed to resolve 'file:/src/main/resources/META-INF/catalog-file.json', to file location 'some/path/to/schema.json', with base location 'this path is silly'"));
-        }
+        final SchemaCatalogException expected = assertThrows(
+                SchemaCatalogException.class,
+                () -> schemaResolver.resolve(catalogUri, fileLocation, baseLocation));
+
+        assertThat(expected.getCause(), is(instanceOf(URISyntaxException.class)));
+        assertThat(expected.getMessage(), is("Failed to resolve 'file:/src/main/resources/META-INF/catalog-file.json', to file location 'some/path/to/schema.json', with base location 'this path is silly'"));
     }
 }

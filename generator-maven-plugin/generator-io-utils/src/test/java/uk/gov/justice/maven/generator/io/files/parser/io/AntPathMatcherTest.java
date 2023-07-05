@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.google.common.base.Predicate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AntPathMatcherTest {
     private Predicate<String> antPathMatcher;

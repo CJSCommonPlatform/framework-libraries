@@ -2,17 +2,17 @@ package uk.gov.justice.services.test.utils.core.random;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck;
 
 import java.text.DecimalFormat;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DoubleGeneratorTest {
 
     private static final int NUMBER_OF_TIMES = 100000;

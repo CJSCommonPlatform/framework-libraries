@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 
 import javax.json.JsonString;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link ZonedDateTimes} utility class.

@@ -3,7 +3,7 @@ package uk.gov.justice.generation.pojo.integration.tests;
 import static java.nio.file.Paths.get;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.generation.io.files.loader.FileResourceLoader;
 import uk.gov.justice.generation.io.files.loader.InputStreamToJsonObjectConverter;
@@ -22,7 +22,7 @@ import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 import java.io.File;
 
 import org.everit.json.schema.Schema;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SchemaValidationIT {
 
@@ -47,12 +47,11 @@ public class SchemaValidationIT {
 
         final Visitable visitableSchema = new VisitableFactory().createWith("fieldName", schema, new DefaultAcceptorService(new VisitableFactory()));
 
-        try {
-            visitableSchema.accept(schemaValidatorVisitor);
-            fail();
-        } catch (final UnsupportedSchemaException expected) {
-            assertThat(expected.getMessage(), is("Enums must have members of the same type. Found java.lang.String, java.lang.Boolean out of possible values [Mr, false, Ms, 23, Mrs]"));
-        }
+        final UnsupportedSchemaException expected = assertThrows(
+                UnsupportedSchemaException.class,
+                () -> visitableSchema.accept(schemaValidatorVisitor));
+
+        assertThat(expected.getMessage(), is("Enums must have members of the same type. Found java.lang.String, java.lang.Boolean out of possible values [Mr, false, Ms, 23, Mrs]"));
     }
 
     @Test
@@ -68,11 +67,10 @@ public class SchemaValidationIT {
 
         final Visitable visitableSchema = new VisitableFactory().createWith("fieldName", schema, new DefaultAcceptorService(new VisitableFactory()));
 
-        try {
-            visitableSchema.accept(schemaValidatorVisitor);
-            fail();
-        } catch (final UnsupportedSchemaException expected) {
-            assertThat(expected.getMessage(), is("Arrays must have members of the same type. Found org.everit.json.schema.NumberSchema, org.everit.json.schema.StringSchema"));
-        }
+        final UnsupportedSchemaException expected = assertThrows(
+                UnsupportedSchemaException.class,
+                () -> visitableSchema.accept(schemaValidatorVisitor));
+
+        assertThat(expected.getMessage(), is("Arrays must have members of the same type. Found org.everit.json.schema.NumberSchema, org.everit.json.schema.StringSchema"));
     }
 }

@@ -26,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ObjectMapperProducerTest {
 
@@ -40,7 +40,7 @@ public class ObjectMapperProducerTest {
 
     private ObjectMapper mapper;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mapper = new ObjectMapperProducer().objectMapper();
     }

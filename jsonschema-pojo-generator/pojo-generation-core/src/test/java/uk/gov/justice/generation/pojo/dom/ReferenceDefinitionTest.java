@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.generation.pojo.visitor.ReferenceValue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ReferenceDefinitionTest {
 

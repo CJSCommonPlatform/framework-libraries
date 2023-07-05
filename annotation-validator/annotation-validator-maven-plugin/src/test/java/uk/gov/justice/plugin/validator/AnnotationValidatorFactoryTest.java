@@ -2,6 +2,7 @@ package uk.gov.justice.plugin.validator;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.plugin.validator.AnnotationValidatorFactory.getValidator;
 
 import uk.gov.justice.maven.annotation.validator.AnnotationValidator;
@@ -10,14 +11,14 @@ import uk.gov.justice.plugin.exception.ValidatorNotFoundException;
 
 import javax.inject.Inject;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationValidatorFactoryTest {
 
     private ClassLoader classLoader;
 
-    @Before
+    @BeforeEach
     public void setup() {
         classLoader = getClass().getClassLoader();
     }
@@ -28,8 +29,8 @@ public class AnnotationValidatorFactoryTest {
         assertThat(validator, instanceOf(TestAnnotationValidator.class));
     }
 
-    @Test(expected = ValidatorNotFoundException.class)
+    @Test
     public void getValidatorForOtherTypes() {
-        getValidator(classLoader, Inject.class.getName());
+        assertThrows(ValidatorNotFoundException.class, () -> getValidator(classLoader, Inject.class.getName()));
     }
 }

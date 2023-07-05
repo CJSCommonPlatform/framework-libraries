@@ -1,8 +1,9 @@
 package uk.gov.justice.domain.aggregate.condition;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.domain.aggregate.condition.Precondition.assertPrecondition;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link Precondition} class.
@@ -14,9 +15,9 @@ public class PreconditionTest {
         assertPrecondition(true).orElseThrow("Test");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void shouldThrowExceptionForFailingRawAssertion() {
-        assertPrecondition(false).orElseThrow("Test");
+        assertThrows(RuntimeException.class, () -> assertPrecondition(false).orElseThrow("Test"));
     }
 
     @Test
@@ -24,13 +25,13 @@ public class PreconditionTest {
         assertPrecondition(() -> true).orElseThrow("Test");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void shouldThrowExceptionForFailingSupplierAssertion() {
-        assertPrecondition(() -> false).orElseThrow("Test");
+        assertThrows(RuntimeException.class, () -> assertPrecondition(() -> false).orElseThrow("Test"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldThrowSupplierExceptionForFailingRawAssertion() {
-        assertPrecondition(false).orElseThrow(() -> new IllegalStateException("What?!"));
+        assertThrows(IllegalStateException.class, () -> assertPrecondition(false).orElseThrow(() -> new IllegalStateException("What?!")));
     }
 }

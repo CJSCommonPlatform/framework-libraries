@@ -6,7 +6,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.schema.catalog.RawCatalog;
@@ -14,13 +14,13 @@ import uk.gov.justice.schema.catalog.RawCatalog;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LocalFileSystemSchemaClientTest {
 
     @Mock
@@ -55,11 +55,9 @@ public class LocalFileSystemSchemaClientTest {
 
         when(rawCatalog.getRawJsonSchema(schemaId)).thenReturn(empty());
 
-        try {
-            localFileSystemSchemaClient.get(schemaId);
-            fail();
-        } catch (final SchemaClientException expected) {
-            assertThat(expected.getMessage(), is("Failed to find schema with id 'schemaId'"));
-        }
+        final SchemaClientException expected =
+                assertThrows(SchemaClientException.class, () -> localFileSystemSchemaClient.get(schemaId));
+
+        assertThat(expected.getMessage(), is("Failed to find schema with id 'schemaId'"));
     }
 }

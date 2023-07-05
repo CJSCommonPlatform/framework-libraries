@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.schema.catalog.CatalogUpdater;
 import uk.gov.justice.schema.catalog.JsonSchemaFileLoader;
@@ -26,13 +26,13 @@ import java.util.Map;
 
 import javax.json.stream.JsonParsingException;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CatalogUpdaterTest {
 
     @Mock
@@ -127,13 +127,11 @@ public class CatalogUpdaterTest {
 
         final File incompleteJson = new File(this.getClass().getClassLoader().getResource("json/dodgy-schemas/incomplete-schema-missing-closing-brace.json").toURI());
         paths.add(Paths.get(incompleteJson.toURI()));
-        try {
-            catalogUpdater.updateRawCatalog(schemaIdsToRawJsonSchemaCache, basePath, paths);
-            fail("Should have thrown an exception for parsing invalid json file");
-        } catch (final InvalidJsonFileException e) {
-            assertThat(e.getCause(), instanceOf(JsonParsingException.class));
-            assertThat(e.getMessage(), containsString("json/dodgy-schemas/incomplete-schema-missing-closing-brace.json"));
-        }
+        final InvalidJsonFileException invalidJsonFileException = assertThrows(
+                InvalidJsonFileException.class,
+                () -> catalogUpdater.updateRawCatalog(schemaIdsToRawJsonSchemaCache, basePath, paths));
 
+        assertThat(invalidJsonFileException.getCause(), instanceOf(JsonParsingException.class));
+        assertThat(invalidJsonFileException.getMessage(), containsString("json/dodgy-schemas/incomplete-schema-missing-closing-brace.json"));
     }
 }

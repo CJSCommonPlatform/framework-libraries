@@ -3,7 +3,7 @@ package uk.gov.justice.domain.aggregate.matcher;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -12,8 +12,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the {@link EventSwitcher} class.
@@ -24,7 +24,7 @@ public class EventSwitcherTest {
 
     private TestClass event;
 
-    @Before
+    @BeforeEach
     public void setup() {
         event = new TestClass();
         eventSwitcher = match(event);

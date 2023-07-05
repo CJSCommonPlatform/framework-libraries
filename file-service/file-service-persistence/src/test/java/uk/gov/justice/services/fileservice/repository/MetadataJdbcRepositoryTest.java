@@ -3,7 +3,7 @@ package uk.gov.justice.services.fileservice.repository;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -24,14 +24,14 @@ import java.util.UUID;
 
 import javax.json.JsonObject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MetadataJdbcRepositoryTest {
 
     @Mock
@@ -84,13 +84,11 @@ public class MetadataJdbcRepositoryTest {
         when(connection.prepareStatement(insertSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
-        try {
-            metadataJdbcRepository.insert(fileId, metadata, connection);
-            fail();
-        } catch (FileServiceException expected) {
-            assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + insertSql));
-        }
+        final FileServiceException expected = assertThrows(
+                FileServiceException.class,
+                () -> metadataJdbcRepository.insert(fileId, metadata, connection));
+        assertThat(expected.getCause(), is(sqlException));
+        assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + insertSql));
 
         final InOrder inOrder = inOrder(
                 connection,
@@ -183,13 +181,11 @@ public class MetadataJdbcRepositoryTest {
         when(connection.prepareStatement(updateSql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
-        try {
-            metadataJdbcRepository.update(fileId, metadata, connection);
-            fail();
-        } catch (final StorageException expected) {
-            assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + updateSql));
-        }
+        final StorageException expected = assertThrows(
+                StorageException.class,
+                () -> metadataJdbcRepository.update(fileId, metadata, connection));
+        assertThat(expected.getCause(), is(sqlException));
+        assertThat(expected.getMessage(), is("Failed to update metadata table. Sql: " + updateSql));
 
         final InOrder inOrder = inOrder(
                 connection,
@@ -315,13 +311,11 @@ public class MetadataJdbcRepositoryTest {
         when(resultSet.next()).thenReturn(true);
         when(resultSet.getString(1)).thenThrow(sqlException);
 
-        try {
-            metadataJdbcRepository.findByFileId(fileId, connection);
-            fail();
-        } catch (StorageException expected) {
-            assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to find metadata. Sql: " + FIND_BY_FILE_ID_SQL));
-        }
+        final StorageException expected = assertThrows(
+                StorageException.class,
+                () -> metadataJdbcRepository.findByFileId(fileId, connection));
+        assertThat(expected.getCause(), is(sqlException));
+        assertThat(expected.getMessage(), is("Failed to find metadata. Sql: " + FIND_BY_FILE_ID_SQL));
 
         final InOrder inOrder = inOrder(connection, preparedStatement, resultSet);
 
@@ -401,12 +395,11 @@ public class MetadataJdbcRepositoryTest {
         when(connection.prepareStatement(DELETE_SQL)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsDeleted);
 
-        try {
-            metadataJdbcRepository.delete(fileId, connection);
-            fail();
-        } catch (DataIntegrityException expected) {
-            assertThat(expected.getMessage(), is("Delete from metadata table affected 2 rows!"));
-        }
+        final DataIntegrityException expected = assertThrows(
+                DataIntegrityException.class,
+                () -> metadataJdbcRepository.delete(fileId, connection));
+
+        assertThat(expected.getMessage(), is("Delete from metadata table affected 2 rows!"));
 
         final InOrder inOrder = inOrder(connection, preparedStatement);
 

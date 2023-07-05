@@ -20,9 +20,9 @@ import javax.ws.rs.core.Response;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.hamcrest.CoreMatchers;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RestClientTest {
 
@@ -41,7 +41,7 @@ public class RestClientTest {
 
     private RestClient restClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         restClient = new RestClient();
     }

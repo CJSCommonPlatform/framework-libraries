@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EnumsIT {
 
@@ -32,7 +32,7 @@ public class EnumsIT {
     private static final File JSON_SCHEMA_STRING_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/examples/enum-string.json");
     private static final File JSON_SCHEMA_INTEGER_FILE = new ClasspathFileResource().getFileFromClasspath("/schemas/examples/enum-integer.json");
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories = new OutputDirectories();
         outputDirectories.makeDirectories("./target/test-generation/examples/enums");

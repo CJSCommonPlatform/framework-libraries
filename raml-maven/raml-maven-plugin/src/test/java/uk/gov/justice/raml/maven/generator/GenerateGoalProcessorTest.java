@@ -25,22 +25,22 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.raml.emitter.RamlEmitter;
 import org.raml.model.Raml;
 
 /**
  * Unit tests for the {@link GenerateGoalProcessor} class.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class GenerateGoalProcessorTest {
 
     private final String[] includes = {"**/*.raml"};
@@ -61,7 +61,7 @@ public class GenerateGoalProcessorTest {
     private GenerateGoalProcessor generateGoalProcessor;
 
 
-    @Before
+    @BeforeEach
     public void setup() {
         String generatorName = "mock.generator";
 

@@ -17,9 +17,9 @@ import java.util.UUID;
 
 import javax.json.JsonObject;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MetadataJdbcRepositoryIT {
 
@@ -31,14 +31,14 @@ public class MetadataJdbcRepositoryIT {
 
     private Connection connection;
 
-    @Before
+    @BeforeEach
     public void setupDatabase() throws Exception {
 
         connection = new FileStoreTestDataSourceProvider().getDatasource().getConnection();
         liquibaseDatabaseBootstrapper.bootstrap(LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML, connection);
     }
 
-    @After
+    @AfterEach
     public void closeConnection() throws SQLException {
 
         if (connection != null) {

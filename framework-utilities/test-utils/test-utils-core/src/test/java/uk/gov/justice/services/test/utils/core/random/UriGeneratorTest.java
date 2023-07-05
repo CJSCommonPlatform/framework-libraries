@@ -2,7 +2,7 @@ package uk.gov.justice.services.test.utils.core.random;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.Times.times;
@@ -10,11 +10,11 @@ import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck
 
 import java.lang.reflect.Field;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UriGeneratorTest {
 
     private static final String URI_PATTERN = "[-0-9a-zA-Z]{1,63}\\.[-.0-9a-zA-Z]+";

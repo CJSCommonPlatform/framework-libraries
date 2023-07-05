@@ -12,7 +12,7 @@ import static uk.gov.justice.services.test.utils.core.jdbc.H2ConnectionParameter
 
 import java.sql.Connection;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JdbcConnectionProviderTest {
 

@@ -2,7 +2,7 @@ package uk.gov.justice.services.fileservice.repository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,15 +13,15 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
 @SuppressWarnings("Duplicates")
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DataSourceProviderTest {
 
     @Mock
@@ -52,12 +52,11 @@ public class DataSourceProviderTest {
         when(initialContextFactory.create()).thenReturn(initialContext);
         when(initialContext.lookup("java:/DS.fileservice")).thenThrow(namingException);
 
-        try {
-            dataSourceProvider.getDatasource();
-            fail();
-        } catch (final ConfigurationException expected) {
-            assertThat(expected.getCause(), is(namingException));
-            assertThat(expected.getMessage(), is("Failed to get Connection from container using JNDI name 'java:/DS.fileservice'"));
-        }
+        final ConfigurationException expected = assertThrows(
+                ConfigurationException.class,
+                () -> dataSourceProvider.getDatasource());
+
+        assertThat(expected.getCause(), is(namingException));
+        assertThat(expected.getMessage(), is("Failed to get Connection from container using JNDI name 'java:/DS.fileservice'"));
     }
 }

@@ -9,8 +9,8 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.Calendar;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LocalDatePersistenceConverterTest {
 
@@ -20,7 +20,7 @@ public class LocalDatePersistenceConverterTest {
 
     private LocalDatePersistenceConverter localDatePersistenceConverter;
 
-    @Before
+    @BeforeEach
     public void setup() {
         localDatePersistenceConverter = new LocalDatePersistenceConverter();
     }

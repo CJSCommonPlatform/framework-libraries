@@ -6,7 +6,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsSame.sameInstance;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.domain.AggregateWrapper.aggregateWrapper;
 
 import uk.gov.justice.services.test.domain.AggregateWrapper;
@@ -16,7 +16,7 @@ import uk.gov.justice.services.test.domain.event.InitialEventB;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AggregateInitialisationTest extends AggregateTestAssertions {
 

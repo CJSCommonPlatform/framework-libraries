@@ -6,8 +6,8 @@ import uk.gov.justice.services.test.utils.core.files.ClasspathFileResource;
 
 import java.io.File;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class NullSchemaIT {
 
@@ -15,7 +15,7 @@ public class NullSchemaIT {
 
     private final OutputDirectories outputDirectories = new OutputDirectories();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         outputDirectories.makeDirectories("./target/test-generation/tests/null-schema");
     }

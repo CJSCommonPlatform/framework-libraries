@@ -17,7 +17,7 @@ import uk.gov.justice.services.test.utils.core.helper.Sleeper;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("unchecked")
 public class PollerTest {

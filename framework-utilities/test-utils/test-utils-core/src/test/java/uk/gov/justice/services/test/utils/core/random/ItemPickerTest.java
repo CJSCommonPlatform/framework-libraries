@@ -11,7 +11,7 @@ import static uk.gov.justice.services.test.utils.core.helper.TypeCheck.typeCheck
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ItemPickerTest {
 

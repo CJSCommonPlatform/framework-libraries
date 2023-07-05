@@ -11,14 +11,14 @@ import static uk.gov.justice.services.file.alfresco.Headers.headersWithUserId;
 
 import javax.ws.rs.core.Response;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AlfrescoFileRemoverTest {
 
     @InjectMocks
@@ -30,7 +30,7 @@ public class AlfrescoFileRemoverTest {
     private static final String DELETE_PATH = "path/";
     private static final String USER_ID = "userDelete321";
 
-    @Before
+    @BeforeEach
     public void beforeTest() {
         fileRemover.alfrescoDeletePath = DELETE_PATH;
         fileRemover.alfrescoDeleteUser = USER_ID;

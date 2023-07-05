@@ -6,8 +6,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -34,17 +33,17 @@ import java.util.UUID;
 import javax.json.JsonObject;
 import javax.sql.DataSource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class FileStoreTest {
 
     @Mock
@@ -115,10 +114,7 @@ public class FileStoreTest {
 
         doThrow(fileServiceException).when(metadataJdbcRepository).insert(any(UUID.class), eq(updatedMetadata), eq(connection));
 
-        try {
-            fileStore.store(metadata, contentStream);
-            fail();
-        } catch (final StorageException ignored) {}
+        assertThrows(StorageException.class, () -> fileStore.store(metadata, contentStream));
 
         verify(connection).close();
     }
@@ -135,13 +131,9 @@ public class FileStoreTest {
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenThrow(sqlException);
 
-        try {
-            fileStore.store(metadata, contentStream);
-            fail();
-        } catch (final FileServiceException expected) {
-            assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to insert file into database"));
-        }
+        final FileServiceException fileServiceException = assertThrows(FileServiceException.class, () -> fileStore.store(metadata, contentStream));
+        assertThat(fileServiceException.getCause(), is(sqlException));
+        assertThat(fileServiceException.getMessage(), is("Failed to insert file into database"));
     }
 
     @Test
@@ -239,12 +231,8 @@ public class FileStoreTest {
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
         when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
 
-        try {
-            fileStore.find(fileId);
-            fail();
-        } catch (final DataIntegrityException expected) {
-            assertThat(expected.getMessage(), is("No file content found for file id " + fileId + " but metadata exists for that id"));
-        }
+        final DataIntegrityException dataIntegrityException = assertThrows(DataIntegrityException.class, () -> fileStore.find(fileId));
+        assertThat(dataIntegrityException.getMessage(), is("No file content found for file id " + fileId + " but metadata exists for that id"));
     }
 
     @Test
@@ -262,12 +250,7 @@ public class FileStoreTest {
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
         when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
 
-        try {
-            fileStore.find(fileId);
-            fail();
-        } catch (final DataIntegrityException expected) {
-
-        }
+        assertThrows(DataIntegrityException.class, () -> fileStore.find(fileId));
 
         verify(connection).close();
     }
@@ -288,12 +271,10 @@ public class FileStoreTest {
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
         when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream)));
 
-        try {
-            fileStore.find(fileId);
-            fail();
-        } catch (final DataIntegrityException expected) {
-            assertThat(expected.getMessage(), is("No metadata found for file id " + fileId + " but file content exists for that id"));
-        }
+        final DataIntegrityException dataIntegrityException = assertThrows(
+                DataIntegrityException.class,
+                () -> fileStore.find(fileId));
+        assertThat(dataIntegrityException.getMessage(), is("No metadata found for file id " + fileId + " but file content exists for that id"));
     }
 
     @Test
@@ -310,16 +291,9 @@ public class FileStoreTest {
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
         when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(new FileContent(contentStream)));
 
-        try {
-            fileStore.find(fileId);
-            fail();
-        } catch (final DataIntegrityException expected) {
-
-        }
+        assertThrows(DataIntegrityException.class, () -> fileStore.find(fileId));
 
         verify(connection).close();
-
-
     }
 
     @Test
@@ -338,11 +312,7 @@ public class FileStoreTest {
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
         when(contentJdbcRepository.findByFileId(fileId, connection)).thenThrow(storageException);
 
-        try {
-            fileStore.find(fileId);
-            fail();
-        } catch (final StorageException ignored) {
-        }
+        assertThrows(StorageException.class, () -> fileStore.find(fileId));
 
         verify(connection).close();
     }
@@ -360,13 +330,7 @@ public class FileStoreTest {
 
         when(metadataJdbcRepository.findByFileId(eq(fileId), isNull(Connection.class))).thenThrow(storageException);
 
-        try {
-            fileStore.find(fileId);
-            fail();
-        } catch (final StorageException ignored) {
-        }
-
-
+        assertThrows(StorageException.class, () -> fileStore.find(fileId));
     }
 
     @Test
@@ -408,11 +372,7 @@ public class FileStoreTest {
 
         doThrow(storageException).when(metadataJdbcRepository).update(fileId, metadata, connection);
 
-        try {
-            fileStore.updateMetadata(fileId, metadata);
-            fail();
-        } catch (final StorageException ignored) {
-        }
+        assertThrows(StorageException.class, () -> fileStore.updateMetadata(fileId, metadata));
 
         verify(connection).close();
     }
@@ -430,13 +390,9 @@ public class FileStoreTest {
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenThrow(sqlException);
 
-        try {
-            fileStore.updateMetadata(fileId, metadata);
-            fail();
-        } catch (final StorageException expected) {
-            assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to update metadata"));
-        }
+        final StorageException expected = assertThrows(StorageException.class, () -> fileStore.updateMetadata(fileId, metadata));
+        assertThat(expected.getCause(), is(sqlException));
+        assertThat(expected.getMessage(), is("Failed to update metadata"));
     }
 
     @Test
@@ -497,13 +453,9 @@ public class FileStoreTest {
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenThrow(sqlException);
 
-        try {
-            fileStore.delete(fileId);
-            fail();
-        } catch (final FileServiceException expected) {
-            assertThat(expected.getCause(), is(sqlException));
-            assertThat(expected.getMessage(), is("Failed to delete file from the database"));
-        }
+        final FileServiceException expected = assertThrows(FileServiceException.class, () -> fileStore.delete(fileId));
+        assertThat(expected.getCause(), is(sqlException));
+        assertThat(expected.getMessage(), is("Failed to delete file from the database"));
     }
 
     @Test
@@ -537,11 +489,7 @@ public class FileStoreTest {
         when(dataSource.getConnection()).thenReturn(connection);
         when(metadataJdbcRepository.findByFileId(fileId, connection)).thenThrow(storageException);
 
-        try {
-            fileStore.retrieveMetadata(fileId);
-            fail();
-        } catch (final FileServiceException ignored) {
-        }
+        assertThrows(FileServiceException.class, () -> fileStore.retrieveMetadata(fileId));
 
         verify(connection).close();
     }

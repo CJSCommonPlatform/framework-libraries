@@ -16,15 +16,15 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class JsonObjectBuilderWrapperTest {
 
     private JsonObjectBuilderWrapper wrapper;
 
-    @Before
+    @BeforeEach
     public void setup() {
         wrapper = new JsonObjectBuilderWrapper();
     }

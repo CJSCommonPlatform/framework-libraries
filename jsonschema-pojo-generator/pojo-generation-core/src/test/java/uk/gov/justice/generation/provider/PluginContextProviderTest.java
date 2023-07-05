@@ -13,7 +13,7 @@ import uk.gov.justice.generation.pojo.plugin.classmodifying.ClassModifyingPlugin
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PluginContextProviderTest {
 

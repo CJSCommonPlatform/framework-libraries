@@ -9,14 +9,13 @@ import javax.inject.Inject;
 
 import org.apache.openejb.jee.Application;
 import org.apache.openejb.jee.WebApp;
-import org.apache.openejb.junit.ApplicationComposer;
+import org.apache.openejb.junit5.RunWithApplicationComposer;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Module;
 import org.everit.json.schema.Schema;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-@RunWith(ApplicationComposer.class)
+@RunWithApplicationComposer
 public class SchemaServiceIT {
 
     @Inject

@@ -1,6 +1,6 @@
 package uk.gov.justice.services.test;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import uk.gov.justice.services.test.domain.Metadata;
 

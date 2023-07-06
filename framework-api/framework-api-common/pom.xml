@@ -34,10 +34,5 @@
             <artifactId>javax.json</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>net.trajano.commons</groupId>
-            <artifactId>commons-testing</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

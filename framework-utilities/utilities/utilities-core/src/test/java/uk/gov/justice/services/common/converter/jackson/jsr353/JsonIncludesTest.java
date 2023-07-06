@@ -10,7 +10,6 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static javax.json.JsonValue.NULL;
 import static javax.json.JsonValue.TRUE;
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.common.converter.jackson.jsr353.JsonIncludes.includeField;
@@ -25,10 +24,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class JsonIncludesTest {
 
-    @Test
-    public void shouldBeAWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(JsonIncludes.class);
-    }
 
     @Test
     public void shouldNotIncludeNullIfNonNullConfigured() {

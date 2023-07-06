@@ -47,15 +47,11 @@ public class JobJdbcRepositoryTest {
     private final JobJdbcRepository jdbcRepository = new JobJdbcRepository();
 
     @BeforeEach
-    public void runLiquibase() throws Exception {
+    public void createJdbcRepository() throws Exception {
+
         try (final Connection connection = eventStoreDataSource.getConnection()) {
             new LiquibaseDatabaseBootstrapper().bootstrap(LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML, connection);
         }
-    }
-
-    @BeforeEach
-    public void createJdbcRepository() throws Exception {
-
         jdbcRepository.dataSource = eventStoreDataSource;
         jdbcRepository.logger = mock(Logger.class);
         jdbcRepository.preparedStatementWrapperFactory = new PreparedStatementWrapperFactory();

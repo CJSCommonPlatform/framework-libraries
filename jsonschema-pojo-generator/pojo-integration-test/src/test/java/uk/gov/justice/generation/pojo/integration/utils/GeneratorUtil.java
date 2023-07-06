@@ -34,6 +34,7 @@ import uk.gov.justice.generation.pojo.visitor.DefinitionBuilderVisitor;
 import uk.gov.justice.generation.pojo.visitor.DefinitionFactory;
 import uk.gov.justice.generation.pojo.visitor.ReferenceValueParser;
 import uk.gov.justice.generation.pojo.visitor.StringFormatValueParser;
+import uk.gov.justice.generation.pojo.write.JavaPoetJavaFileCreator;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 import uk.gov.justice.schema.catalog.SchemaCatalogResolver;
@@ -63,6 +64,7 @@ public class GeneratorUtil {
     private List<String> ignoredClassNames = emptyList();
     private PojoGeneratorProperties generatorProperties = new PojoGeneratorProperties();
     private SerialVersionUIDGenerator serialVersionUIDGenerator = new SerialVersionUIDGenerator();
+    private JavaPoetJavaFileCreator javaPoetJavaFileCreator = new JavaPoetJavaFileCreator();
 
     private List<ClassModifyingPlugin> classModifyingPlugins = new ArrayList<>();
     private List<TypeModifyingPlugin> typeModifyingPlugins = new ArrayList<>();
@@ -134,7 +136,7 @@ public class GeneratorUtil {
 
         visitableSchema.accept(definitionBuilderVisitor);
 
-        final SourceWriter sourceWriter = new SourceWriter();
+        final SourceWriter sourceWriter = new SourceWriter(javaPoetJavaFileCreator);
         final ClassCompiler classCompiler = new ClassCompiler();
 
         return javaGeneratorFactory

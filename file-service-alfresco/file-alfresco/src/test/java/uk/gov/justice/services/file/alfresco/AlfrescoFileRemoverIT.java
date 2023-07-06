@@ -13,24 +13,21 @@ import static org.apache.openejb.util.NetworkUtil.getNextAvailablePort;
 
 import uk.gov.justice.services.file.api.remover.FileRemover;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.junit.Rule;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
+@WireMockTest(httpPort = 23265)
 public class AlfrescoFileRemoverIT {
 
-    private static final int PORT = getNextAvailablePort();
+    private static final int PORT = 23265;
     private static final String USER_ID = "user12348";
     private static final String WEB_CONTEXT = "/alfresco";
     private static final String DELETE_PATH = "/service/slingshot/doclib/action/file/node/workspace/SpacesStore/";
     private static final String BASE_PATH = "http://localhost:%d/%s";
 
     private static FileRemover fileRemover;
-
-    @Rule
-    public WireMockRule wireMock = new WireMockRule(PORT);
 
     @BeforeAll
     public static void beforeClass() {

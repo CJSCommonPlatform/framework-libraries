@@ -1,8 +1,7 @@
 package uk.gov.justice.artemis;
 
 
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -15,12 +14,7 @@ import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.junit.jupiter.api.Test;
 
 public class EmbeddedArtemisServerTest {
-
-    @Test
-    public void shouldBeWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(EmbeddedArtemisServer.class);
-    }
-
+    
     @Test
     public void shouldStartServerUsingMainMethod() throws Exception {
 

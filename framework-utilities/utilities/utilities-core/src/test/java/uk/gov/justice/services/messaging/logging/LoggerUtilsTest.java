@@ -1,6 +1,5 @@
 package uk.gov.justice.services.messaging.logging;
 
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,12 +15,7 @@ public class LoggerUtilsTest {
 
     @Mock
     Logger logger;
-
-    @Test
-    public void shouldBeWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(LoggerUtils.class);
-    }
-
+    
     @Test
     public void shouldDoNothing() throws Exception {
         when(logger.isTraceEnabled()).thenReturn(false);

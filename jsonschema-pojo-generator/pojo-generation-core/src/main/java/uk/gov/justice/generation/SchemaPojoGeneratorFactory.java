@@ -12,6 +12,7 @@ import uk.gov.justice.generation.pojo.visitable.VisitableFactory;
 import uk.gov.justice.generation.pojo.visitable.acceptor.AcceptorService;
 import uk.gov.justice.generation.pojo.visitable.acceptor.DefaultAcceptorService;
 import uk.gov.justice.generation.pojo.write.JavaClassFileWriter;
+import uk.gov.justice.generation.pojo.write.JavaPoetJavaFileCreator;
 import uk.gov.justice.generation.pojo.write.JavaSourceFileProvider;
 import uk.gov.justice.generation.pojo.write.NonDuplicatingSourceWriter;
 import uk.gov.justice.generation.pojo.write.SourceWriter;
@@ -30,8 +31,9 @@ public class SchemaPojoGeneratorFactory implements GeneratorFactory<SchemaDefini
     private final AcceptorService acceptorService = new DefaultAcceptorService(visitableFactory);
 
     private final JavaFileSimpleNameLister javaFileSimpleNameLister = new JavaFileSimpleNameLister();
+    private final JavaPoetJavaFileCreator javaPoetJavaFileCreator = new JavaPoetJavaFileCreator();
 
-    private final SourceWriter sourceWriter = new SourceWriter();
+    private final SourceWriter sourceWriter = new SourceWriter(javaPoetJavaFileCreator);
     private final NonDuplicatingSourceWriter writer = new NonDuplicatingSourceWriter(new JavaSourceFileProvider(), sourceWriter);
 
     private final PackageNameParser packageNameParser = new PackageNameParser();

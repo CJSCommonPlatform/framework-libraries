@@ -5,7 +5,6 @@ import static java.util.Collections.emptyList;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static javax.json.JsonValue.NULL;
-import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,10 +34,6 @@ public class JsonObjectsTest {
     private static final String UUID_A = "da45e8f6-d945-4f09-a115-1139a9dbb754";
     private static final String UUID_B = "d04885b4-9652-4c2a-87c6-299bda0a87d4";
 
-    @Test
-    public void shouldBeWellDefinedUtilityClass() {
-        assertUtilityClassWellDefined(JsonObjects.class);
-    }
 
     @Test
     public void shouldReturnJsonArray() {

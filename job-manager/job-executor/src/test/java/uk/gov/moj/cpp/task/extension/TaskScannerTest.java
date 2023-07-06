@@ -38,7 +38,8 @@ public class TaskScannerTest {
 
     @Test
     public void shouldNotifyTaskFoundEvent() {
-        mockProcessAnnotatedType(Task.class);
+        doReturn(annotatedType).when(processAnnotatedType).getAnnotatedType();
+        doReturn(true).when(annotatedType).isAnnotationPresent(Task.class);
         taskScanner.processAnnotatedType(processAnnotatedType);
         taskScanner.afterDeploymentValidation(null, beanManager);
 
@@ -49,16 +50,12 @@ public class TaskScannerTest {
 
     @Test
     public void shouldNotFireNotifyTaskFoundEventForNonNotifyTaskBeans() {
-        mockProcessAnnotatedType(String.class);
+        doReturn(annotatedType).when(processAnnotatedType).getAnnotatedType();
+        doReturn(false).when(annotatedType).isAnnotationPresent(Task.class);
+
         taskScanner.processAnnotatedType(processAnnotatedType);
         taskScanner.afterDeploymentValidation(null, beanManager);
 
         verify(beanManager, never()).fireEvent(any());
     }
-
-    private void mockProcessAnnotatedType(final Class clazz) {
-        doReturn(annotatedType).when(processAnnotatedType).getAnnotatedType();
-        doReturn(true).when(annotatedType).isAnnotationPresent(clazz);
-    }
-
 }

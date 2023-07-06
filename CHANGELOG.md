@@ -5,13 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [17.1.0] - 2023-07-05
+## [17.1.1] - 2023-07-11
 ### Changed
 - Update to JUnit 5
 - Update junit dependencies
     - Cucumber to 7.12.1
     - Mockito to 5.3.1
     - Openejb to 9.1.0
+- Update surefire and failsafe plugins
 
 ## [17.0.2] - 2023-06-14
 ### Security

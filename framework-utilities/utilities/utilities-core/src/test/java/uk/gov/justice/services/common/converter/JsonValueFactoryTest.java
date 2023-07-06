@@ -3,7 +3,7 @@ package uk.gov.justice.services.common.converter;
 import static javax.json.JsonValue.FALSE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 
@@ -14,6 +14,7 @@ import javax.json.JsonValue;
 import org.junit.jupiter.api.Test;
 
 public class JsonValueFactoryTest {
+
     private JsonValueFactory jsonValueFactory = new JsonValueFactory();
 
     @Test

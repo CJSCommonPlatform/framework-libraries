@@ -1,11 +1,11 @@
 package uk.gov.justice.services.test.utils.core.schema;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SchemaDuplicateTestHelper {
 
@@ -28,6 +28,6 @@ public class SchemaDuplicateTestHelper {
         }
         LOGGER.info("Total duplicated schemas: {}", scc.getNumberOfViolatingSchemas());
         final String format = format("Schema duplicates check test failed with %s schema(s)", scc.getNumberOfViolatingSchemas());
-        assertThat(format, is(scc.isCompliant()));
+        assertThat(format, scc.isCompliant(), is(true));
     }
 }

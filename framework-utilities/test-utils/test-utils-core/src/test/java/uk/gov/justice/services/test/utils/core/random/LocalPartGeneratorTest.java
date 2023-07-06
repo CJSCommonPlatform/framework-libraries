@@ -19,10 +19,10 @@ public class LocalPartGeneratorTest {
     @Mock
     private LocalPartValidator validator;
 
-    @BeforeEach
-    public void setUp() {
-        when(validator.validate(anyString())).thenReturn(true);
-    }
+//    @BeforeEach
+//    public void setUp() {
+//        when(validator.validate(anyString())).thenReturn(true);
+//    }
 
     @Test
     public void shouldGenerateLocalParts() {

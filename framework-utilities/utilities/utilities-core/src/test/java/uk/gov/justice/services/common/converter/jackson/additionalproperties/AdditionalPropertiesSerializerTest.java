@@ -1,7 +1,7 @@
 package uk.gov.justice.services.common.converter.jackson.additionalproperties;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -51,8 +51,6 @@ public class AdditionalPropertiesSerializerTest {
         additionalPropertiesSerializer = new AdditionalPropertiesSerializer(
                 dummySerializer,
                 newHashSet(ADDITIONAL_PROPERTIES_NAME));
-
-        when(serializerProviderMock.mappingException(anyString(), any(Object.class))).thenReturn(new JsonMappingException(null, ""));
     }
 
     @Test
@@ -109,6 +107,7 @@ public class AdditionalPropertiesSerializerTest {
 
         final TestWithAdditionalProperties person = new TestWithAdditionalProperties("TEST", "PERSON", 21, additionalProperties);
 
+        when(serializerProviderMock.mappingException(anyString(), any(Object.class))).thenReturn(new JsonMappingException(null, ""));
         doThrow(new IOException()).when(jsonGeneratorMock).writeObjectField(anyString(), any(Object.class));
 
         try {
@@ -125,11 +124,8 @@ public class AdditionalPropertiesSerializerTest {
 
         final TestWithNoAdditionalProperties person = new TestWithNoAdditionalProperties("TEST", "PERSON", 21);
 
-        try {
-            additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock);
-        } catch (final IOException expected) {
-            // Expected
-        }
+        when(serializerProviderMock.mappingException(anyString(), any(Object.class))).thenReturn(new JsonMappingException(null, ""));
+        assertThrows(IOException.class, () -> additionalPropertiesSerializer.serialize(person, jsonGeneratorMock, serializerProviderMock));
 
         verify(serializerProviderMock, times(1)).mappingException(anyString(), any(Object.class));
     }

@@ -20,15 +20,14 @@ import uk.gov.justice.services.file.api.FileOperationException;
 import uk.gov.justice.services.file.api.sender.FileData;
 import uk.gov.justice.services.file.api.sender.FileSender;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.junit.Rule;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-
+@WireMockTest(httpPort = 23265)
 public class AlfrescoFileSenderIT {
 
-    private static final int PORT = getNextAvailablePort();
+    private static final int PORT = 23265;
     private static final String USER_ID = "user1234";
     private static final String WEB_CONTEXT = "/alfresco";
     private static final String UPLOAD_PATH = "/service/case/upload";
@@ -36,13 +35,10 @@ public class AlfrescoFileSenderIT {
 
     private static FileSender fileSender;
 
-    @Rule
-    public WireMockRule wireMock = new WireMockRule(PORT);
 
     @BeforeAll
     public static void beforeClass() {
         fileSender = alfrescoFileSenderWith(basePathWithPort(PORT));
-
     }
 
     @Test

@@ -13,10 +13,8 @@ import org.apache.openejb.junit5.RunWithApplicationComposer;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Module;
 import org.everit.json.schema.Schema;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled("HERE!!! not working")
 @RunWithApplicationComposer
 public class SchemaServiceIT {
 

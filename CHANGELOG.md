@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.2.0-M3] - 2023-10-31
+### Security
+- Update common-bom to fix various security vulnerabilities in org.json, plexus-codehaus, apache-tika and google-guava
+
 ## [17.2.0-M2] - 2023-10-30
 ### Removed
 - Removed dependency on apache-drools as it's not used by any of the framework code

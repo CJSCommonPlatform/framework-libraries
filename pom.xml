@@ -37,7 +37,7 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
-        <maven-common-bom.version>17.2.0-M2</maven-common-bom.version>
+        <maven-common-bom.version>17.2.0-M3</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
         <framework-wiremock-service.version>17.0.1</framework-wiremock-service.version>
 

@@ -5,17 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [17.2.0-M3] - 2023-10-31
-### Security
-- Update common-bom to fix various security vulnerabilities in org.json, plexus-codehaus, apache-tika and google-guava
-
-## [17.2.0-M2] - 2023-10-30
-### Removed
-- Removed dependency on apache-drools as it's not used by any of the framework code
-
-## [17.2.0-M1] - 2023-10-24
+## [17.2.0] - 2023-11-03
 ### Changed
 - Centralise all generic library dependencies and versions into maven-common-bom
+- Update common-bom to 17.2.0
+### Removed
+- Removed dependency on apache-drools as it's not used by any of the framework code
+### Security
+- Update common-bom to fix various security vulnerabilities in org.json, plexus-codehaus, apache-tika and google-guava
 
 ## [17.1.1] - 2023-07-11
 ### Changed

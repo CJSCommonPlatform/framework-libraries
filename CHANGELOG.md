@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.3.0-M1] - 2023-11-08
+### Added
+- Added dependencies required by various contexts to the framework-libraries-common-bom
+
 ## [17.2.0] - 2023-11-03
 ### Changed
 - Centralise all generic library dependencies and versions into maven-common-bom

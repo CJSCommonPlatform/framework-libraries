@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ## [17.3.0] - 2023-11-09
+### Changed
+- Update common-bom to 
+
+
+## [17.3.0] - 2023-11-09
 ### Added
 - Added dependencies required by various contexts to the framework-libraries-common-bom
 

@@ -5,10 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [17.3.0] - 2023-11-09
+## [17.3.1] - 2023-11-27
 ### Changed
-- Update common-bom to 
-
+- Update common-bom to 17.2.1
 
 ## [17.3.0] - 2023-11-09
 ### Added

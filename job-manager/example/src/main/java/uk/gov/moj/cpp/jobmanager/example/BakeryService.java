@@ -3,9 +3,9 @@ package uk.gov.moj.cpp.jobmanager.example;
 import static java.time.ZonedDateTime.now;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
+import uk.gov.moj.cpp.task.execution.DefaultExecutionService;
 
 import javax.inject.Inject;
 import javax.transaction.Status;
@@ -23,7 +23,7 @@ public class BakeryService {
     ObjectToJsonObjectConverter objectConverter;
 
     @Inject
-    ExecutionService executionService;
+    DefaultExecutionService executionService;
 
     @Inject
     UserTransaction userTransaction;

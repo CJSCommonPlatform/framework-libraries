@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.task.extension;
 
+import java.util.List;
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 
@@ -49,5 +50,12 @@ public class TaskRegistry {
 
     public Optional<ExecutableTask> getTask(final String taskName) {
         return Optional.ofNullable(taskProxyByNameMap.get(taskName));
+    }
+
+    //TODO SAN
+    public Integer findRetryAttemptsRemainingFor(final String taskName) {
+        return getTask(taskName)
+                .map(task -> task.getRetryDurationsInSecs().map(List::size).orElse(0))
+                .orElse(0);
     }
 }

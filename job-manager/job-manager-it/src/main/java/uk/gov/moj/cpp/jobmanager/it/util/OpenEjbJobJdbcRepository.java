@@ -110,7 +110,7 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
 
     private void createJobsWith(int count, String nextTask, ZonedDateTime nextTaskStartTime, Optional<UUID> workerId, Optional<ZonedDateTime> workerLockTime) {
         for (int i = 0; i < count; i++) {
-            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), nextTask, nextTaskStartTime, workerId, workerLockTime);
+            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), nextTask, nextTaskStartTime, workerId, workerLockTime, 0);
             insertJob(job);
         }
     }

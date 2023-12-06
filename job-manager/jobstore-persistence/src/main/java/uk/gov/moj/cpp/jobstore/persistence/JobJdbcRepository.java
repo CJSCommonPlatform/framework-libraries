@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 @ApplicationScoped
 public class JobJdbcRepository implements JobRepository {
 
-    private static final String UPDATE_NEXT_TASK_DETAILS_SQL = "UPDATE job set next_task= ?, next_task_start_time= ? where job_id= ? ";
+    private static final String UPDATE_NEXT_TASK_DETAILS_SQL = "UPDATE job set next_task= ?, next_task_start_time= ?, retry_attempts_remaining= ? where job_id= ? ";
     private static final String DELETE_JOB_SQL = "DELETE from job where job_id= ? ";
     private static final String RELEASE_JOB_SQL = "UPDATE job set worker_id= null, worker_lock_time= null where job_id= ? ";
     private static final String JOBS_LOCKED_TO_SQL = "SELECT job_id, job_data, worker_id, worker_lock_time, next_task, next_task_start_time from job WHERE worker_id= ?";
@@ -94,11 +94,12 @@ public class JobJdbcRepository implements JobRepository {
     }
 
     @Override
-    public void updateNextTaskDetails(final UUID jobId, final String nextTask, final Timestamp nextTaskStartTime) {
+    public void updateNextTaskDetails(final UUID jobId, final String nextTask, final Timestamp nextTaskStartTime, final Integer retryAttemptsRemaining) {
         try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, UPDATE_NEXT_TASK_DETAILS_SQL)) {
             ps.setObject(1, nextTask);
             ps.setTimestamp(2, nextTaskStartTime);
             ps.setObject(3, jobId);
+            ps.setObject(4, retryAttemptsRemaining);
             ps.executeUpdate();
         } catch (final SQLException e) {
             logger.error("Error updating next task details to the job", e);
@@ -170,7 +171,8 @@ public class JobJdbcRepository implements JobRepository {
                         resultSet.getString("next_task"),
                         getZoneDateTime(resultSet, "next_task_start_time"),
                         of(getUUID(resultSet, "worker_id")),
-                        of(getZoneDateTime(resultSet, "worker_lock_time")));
+                        of(getZoneDateTime(resultSet, "worker_lock_time")),
+                        resultSet.getInt("retry_attempts_remaining"));
             } catch (final SQLException e) {
                 throw new JdbcRepositoryException("Unexpected SQLException mapping ResultSet to Job instance", e);
             }

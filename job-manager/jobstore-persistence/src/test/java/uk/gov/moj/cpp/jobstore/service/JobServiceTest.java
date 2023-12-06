@@ -69,17 +69,20 @@ public class JobServiceTest {
         final UUID jobId = randomUUID();
         final String startTask = "startTask";
         final ZonedDateTime startTime = ZonedDateTime.now();
-        final Job mockJob = new Job(jobId, jobData, startTask, startTime, empty(), empty());
+        final Integer retryAttemptsRemaining = 1;
+        final Job mockJob = new Job(jobId, jobData, startTask, startTime, empty(), empty(), retryAttemptsRemaining);
 
 
         jobService.insertJob(mockJob);
         verify(jobRepository).insertJob(jobArgumentCaptor.capture());
 
 
-        assertThat(jobArgumentCaptor.getValue().getJobId(), is(jobId));
-        assertThat(jobArgumentCaptor.getValue().getNextTask(), is(startTask));
-        assertThat(jobArgumentCaptor.getValue().getNextTaskStartTime(), is(startTime));
-        assertThat(jobArgumentCaptor.getValue().getJobData(), is(jobData));
+        final Job jobToInsert = jobArgumentCaptor.getValue();
+        assertThat(jobToInsert.getJobId(), is(jobId));
+        assertThat(jobToInsert.getNextTask(), is(startTask));
+        assertThat(jobToInsert.getNextTaskStartTime(), is(startTime));
+        assertThat(jobToInsert.getJobData(), is(jobData));
+        assertThat(jobToInsert.getRetryAttemptsRemaining(), is(retryAttemptsRemaining));
     }
 
     @Test
@@ -96,8 +99,9 @@ public class JobServiceTest {
         final UUID jobId = randomUUID();
         final String input = "new next task";
         final ZonedDateTime now = now();
-        jobService.updateNextTaskDetails(jobId, input, now);
-        verify(jobRepository).updateNextTaskDetails(jobId, input, toSqlTimestamp(now));
+        final Integer retryAttemptsRemaining = 1;
+        jobService.updateNextTaskDetails(jobId, input, now,retryAttemptsRemaining);
+        verify(jobRepository).updateNextTaskDetails(jobId, input, toSqlTimestamp(now), retryAttemptsRemaining);
     }
 
     @Test

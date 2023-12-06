@@ -11,15 +11,25 @@ public class ExecutionInfo {
     private final String nextTask;
     private final ZonedDateTime nextTaskStartTime;
     private final ExecutionStatus executionStatus;
+    private final boolean shouldRetry;
 
     public ExecutionInfo(final JsonObject jobData,
                          final String nextTask,
                          final ZonedDateTime nextTaskStartTime,
                          final ExecutionStatus executionStatus) {
+        this(jobData, nextTask, nextTaskStartTime, executionStatus, false);
+    }
+
+    public ExecutionInfo(final JsonObject jobData,
+                         final String nextTask,
+                         final ZonedDateTime nextTaskStartTime,
+                         final ExecutionStatus executionStatus,
+                         boolean shouldRetry) {
         this.jobData = jobData;
         this.nextTask = nextTask;
         this.nextTaskStartTime = nextTaskStartTime;
         this.executionStatus = executionStatus;
+        this.shouldRetry = shouldRetry;
     }
 
     public String getNextTask() {
@@ -34,6 +44,9 @@ public class ExecutionInfo {
         return executionStatus;
     }
 
+    public boolean isShouldRetry() {
+        return shouldRetry;
+    }
 
     public static Builder executionInfo() {
         return new Builder();
@@ -49,6 +62,7 @@ public class ExecutionInfo {
         private String nextTask;
         private ZonedDateTime nextTaskStartTime;
         private ExecutionStatus executionStatus;
+        private boolean shouldRetry;
 
         private Builder() {
         }
@@ -58,12 +72,18 @@ public class ExecutionInfo {
             this.nextTask = executionInfo.nextTask;
             this.nextTaskStartTime = executionInfo.nextTaskStartTime;
             this.executionStatus = executionInfo.executionStatus;
+            this.shouldRetry = executionInfo.shouldRetry;
             return this;
         }
 
 
         public ExecutionInfo build() {
-            return new ExecutionInfo(jobData, nextTask, nextTaskStartTime, executionStatus);
+            //TODO SAN Change exception and add tests
+            if(shouldRetry && (jobData == null || nextTask == null || nextTaskStartTime == null)) {
+                throw new IllegalArgumentException("jobData, nextTask, nextTaskStartTime must not be null when shouldRetry is true");
+            }
+
+            return new ExecutionInfo(jobData, nextTask, nextTaskStartTime, executionStatus, shouldRetry);
         }
 
         public Builder withJobData(final JsonObject jobData) {
@@ -83,6 +103,11 @@ public class ExecutionInfo {
 
         public Builder withExecutionStatus(final ExecutionStatus executionStatus) {
             this.executionStatus = executionStatus;
+            return this;
+        }
+
+        public Builder withShouldRetry(final boolean shouldRetry) {
+            this.shouldRetry = shouldRetry;
             return this;
         }
 

@@ -30,13 +30,14 @@ public class JobTest {
 
     @Test
     public void shouldBuildNewJobFromExistingOne() {
-        Job originalJob = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty());
+        Job originalJob = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 1);
 
         Job copiedExecutionInfo = Job.job().from(originalJob).build();
 
         assertThat(copiedExecutionInfo.getJobData(), is(jobData));
         assertThat(copiedExecutionInfo.getNextTask(), is(NEXT_TASK));
         assertThat(copiedExecutionInfo.getNextTaskStartTime(), is(nextTaskStartTime));
+        assertThat(copiedExecutionInfo.getRetryAttemptsRemaining(), is(1));
     }
 
 }

@@ -45,8 +45,8 @@ public class JobService {
         jobRepository.updateJobData(jobId, data);
     }
 
-    public void updateNextTaskDetails(final UUID jobId, final String nextTask, final ZonedDateTime startTime) {
-        jobRepository.updateNextTaskDetails(jobId, nextTask, toSqlTimestamp(startTime));
+    public void updateNextTaskDetails(final UUID jobId, final String nextTask, final ZonedDateTime startTime, final Integer retryAttemptsRemaining) {
+        jobRepository.updateNextTaskDetails(jobId, nextTask, toSqlTimestamp(startTime), retryAttemptsRemaining);
     }
 
     public void deleteJob(final UUID jobId) {
@@ -55,5 +55,10 @@ public class JobService {
 
     public void releaseJob(final UUID jobId) {
         jobRepository.releaseJob(jobId);
+    }
+
+    //TODO SAN
+    public void updateForRetry(final UUID jobId, final Integer retryAttemptsRemaining, final ZonedDateTime startTime) {
+
     }
 }

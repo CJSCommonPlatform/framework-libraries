@@ -47,7 +47,7 @@ public class ExecutionInfoTest {
 
     @Test
     public void shouldPopulateBuilderFromJob() {
-        Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty());
+        Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 0);
 
         ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().fromJob(job).build();
 

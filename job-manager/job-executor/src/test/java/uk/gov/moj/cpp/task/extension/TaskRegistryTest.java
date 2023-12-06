@@ -1,10 +1,12 @@
 package uk.gov.moj.cpp.task.extension;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import org.hamcrest.CoreMatchers;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 
 import java.util.Iterator;
@@ -36,6 +38,7 @@ public class TaskRegistryTest {
     private TaskRegistry taskRegistry;
 
     private SampleTaskCdiProxy sampleTaskCdiProxy = new SampleTaskCdiProxy();
+    private SampleRetryTaskCdiProxy sampleRetryTaskCdiProxy = new SampleRetryTaskCdiProxy();
 
     @Test
     public void shouldAddTaskToRegistry() {
@@ -51,9 +54,38 @@ public class TaskRegistryTest {
 
     }
 
+    @Test
+    public void findRetryAttemptsRemainingShouldBeZeroForNonRetryTask() {
+        when(taskFoundEventMock.getClazz()).thenReturn((Class) SampleTask.class);
+        when(taskBeanProxyMock.iterator()).thenReturn(new TestIterator());
+        taskRegistry.register(taskFoundEventMock);
+
+        final Integer retryAttemptsRemainingCount = taskRegistry.findRetryAttemptsRemainingFor("sample-task");
+
+        assertThat(retryAttemptsRemainingCount, is(0));
+    }
+
+    @Test
+    public void findRetryAttemptsRemainingShouldBeZeroForRetryTask() {
+        when(taskFoundEventMock.getClazz()).thenReturn((Class) SampleRetryTask.class);
+        when(taskBeanProxyMock.iterator()).thenReturn(new TestIterator());
+        taskRegistry.register(taskFoundEventMock);
+
+        final Integer retryAttemptsRemainingCount = taskRegistry.findRetryAttemptsRemainingFor("sample-retry-task");
+
+        assertThat(retryAttemptsRemainingCount, is(2));
+    }
+
+    @Test
+    public void findRetryAttemptsRemainingShouldBeZeroWhenTaskIsNotRegistered() {
+        final Integer retryAttemptsRemainingCount = taskRegistry.findRetryAttemptsRemainingFor("unregistered-task");
+
+        assertThat(retryAttemptsRemainingCount, is(0));
+    }
+
 
     class TestIterator implements Iterator<ExecutableTask> {
-        int count = 1;
+        int count = 2;
         @Override
         public boolean hasNext() {
             return count > 0;
@@ -61,8 +93,12 @@ public class TaskRegistryTest {
 
         @Override
         public ExecutableTask next() {
-            count = 0;
-            return sampleTaskCdiProxy;
+            count--;
+            if (count == 1) {
+                return sampleTaskCdiProxy;
+            } else {
+                return sampleRetryTaskCdiProxy;
+            }
         }
     };
 }

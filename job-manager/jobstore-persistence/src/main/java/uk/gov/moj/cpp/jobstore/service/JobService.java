@@ -57,8 +57,7 @@ public class JobService {
         jobRepository.releaseJob(jobId);
     }
 
-    //TODO SAN
-    public void updateForRetry(final UUID jobId, final Integer retryAttemptsRemaining, final ZonedDateTime startTime) {
-
+    public void updateNextTaskRetryDetails(final UUID jobId, final ZonedDateTime startTime, final Integer retryAttemptsRemaining) {
+        jobRepository.updateNextTaskRetryDetails(jobId, toSqlTimestamp(startTime), retryAttemptsRemaining);
     }
 }

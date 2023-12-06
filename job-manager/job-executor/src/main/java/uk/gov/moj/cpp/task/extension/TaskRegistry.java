@@ -52,7 +52,6 @@ public class TaskRegistry {
         return Optional.ofNullable(taskProxyByNameMap.get(taskName));
     }
 
-    //TODO SAN
     public Integer findRetryAttemptsRemainingFor(final String taskName) {
         return getTask(taskName)
                 .map(task -> task.getRetryDurationsInSecs().map(List::size).orElse(0))

@@ -10,12 +10,14 @@ import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
+import java.time.temporal.ChronoUnit;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
@@ -87,6 +89,22 @@ public class JobJdbcRepositoryTest {
     }
 
     @Test
+    public void shouldInsertJob() throws Exception {
+        final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty(), 1);
+
+        jdbcRepository.insertJob(job);
+
+        final Job insertedJob = getJobById(job.getJobId());
+        assertThat(insertedJob.getJobId(), is(job.getJobId()));
+        assertThat(insertedJob.getJobData(), is(job.getJobData()));
+        assertThat(insertedJob.getNextTask(), is(job.getNextTask()));
+        assertTrue(insertedJob.getNextTaskStartTime().truncatedTo(MILLIS).isEqual(job.getNextTaskStartTime().truncatedTo(MILLIS)));
+        assertThat(insertedJob.getWorkerId(), is(job.getWorkerId()));
+        assertThat(insertedJob.getWorkerLockTime(), is(job.getWorkerLockTime()));
+        assertThat(insertedJob.getRetryAttemptsRemaining(), is(job.getRetryAttemptsRemaining()));
+    }
+
+    @Test
     public void shouldAddEmailNotificationWithMandatoryAndOptionalData() {
         final UUID jobId1 = randomUUID();
         final UUID jobId2 = randomUUID();
@@ -141,6 +159,28 @@ public class JobJdbcRepositoryTest {
         final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).toList();
         assertThat(jobs.size(), is(1));
         assertThat(jobs.get(0).getNextTask(), is(nextTaskAfterUpdate));
+        assertThat(jobs.get(0).getNextTaskStartTime(), is(nextTaskStartTimeAfterUpdate));
+        assertThat(jobs.get(0).getRetryAttemptsRemaining(), is(retryAttemptsRemaining));
+    }
+
+    @Test
+    public void shouldUpdateNextTaskRetryDetails() {
+        final UUID jobId = randomUUID();
+        final String nextTask = "Next Task Before Update";
+        final Integer retryAttemptsRemaining = 1;
+
+        final ZonedDateTime nextTaskStartTimeBeforeUpdate = new UtcClock().now().minusHours(2).truncatedTo(MILLIS);
+        final ZonedDateTime nextTaskStartTimeAfterUpdate = new UtcClock().now().truncatedTo(MILLIS);
+
+        final Optional<UUID> workerId = of(randomUUID());
+        final Job job1 = new Job(jobId, jobData(JOB_DATA_JSON), nextTask, nextTaskStartTimeBeforeUpdate, workerId, of(now()), 0);
+
+        jdbcRepository.insertJob(job1);
+        jdbcRepository.updateNextTaskRetryDetails(jobId, toSqlTimestamp(nextTaskStartTimeAfterUpdate), retryAttemptsRemaining);
+
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).toList();
+        assertThat(jobs.size(), is(1));
+        assertThat(jobs.get(0).getNextTask(), is(nextTask));
         assertThat(jobs.get(0).getNextTaskStartTime(), is(nextTaskStartTimeAfterUpdate));
         assertThat(jobs.get(0).getRetryAttemptsRemaining(), is(retryAttemptsRemaining));
     }
@@ -264,6 +304,14 @@ public class JobJdbcRepositoryTest {
     }
 
     @Test
+    public void shouldThrowJdbcRepositoryExceptionWhenUpdatingNextTaskRetryDetails() throws SQLException {
+        final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
+        when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
+        jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.updateNextTaskRetryDetails(randomUUID(), mock(Timestamp.class), 1));
+    }
+
+    @Test
     public void shouldThrowJdbcRepositoryExceptionWhenLockingJobs() throws SQLException {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
@@ -285,6 +333,12 @@ public class JobJdbcRepositoryTest {
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
         assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.releaseJob(randomUUID()));
+    }
+
+    private Job getJobById(UUID jobId) throws SQLException {
+        final PreparedStatementWrapper ps = new PreparedStatementWrapperFactory().preparedStatementWrapperOf(eventStoreDataSource, "select * from job where job_id = ?");
+        ps.setObject(1, jobId);
+        return new JdbcResultSetStreamer().streamOf(ps, jdbcRepository.entityFromFunction()).findFirst().get();
     }
 
     private void createJobs(final int count) {

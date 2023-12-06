@@ -78,7 +78,7 @@ public class JobExecutorTest {
         createJobExecutor(job).run();
 
         verify(sampleTask).execute(any(ExecutionInfo.class));
-        verify(jobService).updateForRetry(jobId, retryAttemptsRemaining-1, nextTaskStartTime.plusSeconds(4));
+        verify(jobService).updateNextTaskRetryDetails(jobId, nextTaskStartTime.plusSeconds(4), retryAttemptsRemaining-1);
         verify(jobService).releaseJob(jobId);
         verify(jobService, never()).updateNextTaskDetails(any(), any(), any(), any());
         verify(jobService, never()).updateJobTaskData(any(), any());
@@ -95,7 +95,7 @@ public class JobExecutorTest {
         final Job job = job(jobId, jobData, nextTaskStartTime, retryAttemptsRemaining);
         final ExecutionInfo responseExecutionInfo = executionInfo().fromJob(job).withExecutionStatus(INPROGRESS).withShouldRetry(true).build();
 
-        when(taskRegistry.getTask(eq("taskName"))).thenReturn(of(sampleTask));
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(Optional.of(sampleTask));
         when(taskRegistry.findRetryAttemptsRemainingFor(eq("taskName"))).thenReturn(retryAttemptsRemaining);
         when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
         when(sampleTask.getRetryDurationsInSecs()).thenReturn(Optional.empty());
@@ -107,7 +107,7 @@ public class JobExecutorTest {
         verify(jobService).updateJobTaskData(jobId, jobData);
         verify(jobService).updateNextTaskDetails(jobId, "taskName", nextTaskStartTime, retryAttemptsRemaining);
         verify(jobService).releaseJob(jobId);
-        verify(jobService, never()).updateForRetry(any(), any(), any());
+        verify(jobService, never()).updateNextTaskRetryDetails(any(), any(), any());
         verify(jobService, never()).deleteJob(any());
     }
 
@@ -120,7 +120,7 @@ public class JobExecutorTest {
         final Job job = job(jobId, jobData, nextTaskStartTime, retryAttemptsRemaining);
         final ExecutionInfo responseExecutionInfo = executionInfo().fromJob(job).withExecutionStatus(INPROGRESS).withShouldRetry(true).build();
 
-        when(taskRegistry.getTask(eq("taskName"))).thenReturn(of(sampleTask));
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(Optional.of(sampleTask));
         when(taskRegistry.findRetryAttemptsRemainingFor(eq("taskName"))).thenReturn(retryAttemptsRemaining);
         when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
         when(clock.now()).thenReturn(nextTaskStartTime);
@@ -131,7 +131,7 @@ public class JobExecutorTest {
         verify(jobService).updateJobTaskData(jobId, jobData);
         verify(jobService).updateNextTaskDetails(jobId, "taskName", nextTaskStartTime, retryAttemptsRemaining);
         verify(jobService).releaseJob(jobId);
-        verify(jobService, never()).updateForRetry(any(), any(), any());
+        verify(jobService, never()).updateNextTaskRetryDetails(any(), any(), any());
         verify(jobService, never()).deleteJob(any());
     }
 
@@ -144,7 +144,7 @@ public class JobExecutorTest {
         final Job job = job(jobId, jobData, nextTaskStartTime, retryAttemptsRemaining);
         final ExecutionInfo responseExecutionInfo = executionInfo().fromJob(job).withExecutionStatus(INPROGRESS).withShouldRetry(false).build();
 
-        when(taskRegistry.getTask(eq("taskName"))).thenReturn(of(sampleTask));
+        when(taskRegistry.getTask(eq("taskName"))).thenReturn(Optional.of(sampleTask));
         when(taskRegistry.findRetryAttemptsRemainingFor(eq("taskName"))).thenReturn(retryAttemptsRemaining);
         when(sampleTask.execute(any(ExecutionInfo.class))).thenReturn(responseExecutionInfo);
         when(clock.now()).thenReturn(nextTaskStartTime);
@@ -155,7 +155,7 @@ public class JobExecutorTest {
         verify(jobService).updateJobTaskData(jobId, jobData);
         verify(jobService).updateNextTaskDetails(jobId, "taskName", nextTaskStartTime, retryAttemptsRemaining);
         verify(jobService).releaseJob(jobId);
-        verify(jobService, never()).updateForRetry(any(), any(), any());
+        verify(jobService, never()).updateNextTaskRetryDetails(any(), any(), any());
         verify(jobService, never()).deleteJob(any());
     }
 
@@ -177,7 +177,7 @@ public class JobExecutorTest {
         verify(jobService, never()).updateJobTaskData(any(), any());
         verify(jobService, never()).updateNextTaskDetails(any(), any(), any(), any());
         verify(jobService, never()).releaseJob(any());
-        verify(jobService, never()).updateForRetry(any(), any(), any());
+        verify(jobService, never()).updateNextTaskRetryDetails(any(), any(), any());
         verify(jobService).deleteJob(jobId);
         verify(taskRegistry, never()).findRetryAttemptsRemainingFor(any());
     }

@@ -13,7 +13,10 @@ public interface ExecutableTask {
      */
     ExecutionInfo execute(final ExecutionInfo executionInfo);
 
-    //TODO SAN
+    /**
+     * Implementation is optional and only required when task requires retry capability
+     * @return List of retry durations in seconds
+     */
     default Optional<List<Long>> getRetryDurationsInSecs() {
         return Optional.empty();
     }

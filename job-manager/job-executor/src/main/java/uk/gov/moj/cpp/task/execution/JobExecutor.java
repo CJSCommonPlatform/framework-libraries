@@ -131,7 +131,7 @@ public class JobExecutor implements Runnable {
         final List<Long> retryDurations = currentTask.getRetryDurationsInSecs().get();
         final Long retryDurationInSecs = retryDurations.get(retryDurations.size() - retryAttemptsRemaining);
         final ZonedDateTime nextTaskStartTime = clock.now().plusSeconds(retryDurationInSecs);
-        jobService.updateForRetry(job.getJobId(), retryAttemptsRemaining-1, nextTaskStartTime);
+        jobService.updateNextTaskRetryDetails(job.getJobId(), nextTaskStartTime, retryAttemptsRemaining-1);
         jobService.releaseJob(job.getJobId());
     }
 }

@@ -105,6 +105,17 @@ public class JobServiceTest {
     }
 
     @Test
+    public void shouldUpdateNextTaskRetryDetails() {
+        final UUID jobId = randomUUID();
+        final ZonedDateTime now = now();
+        final Integer retryAttemptsRemaining = 1;
+
+        jobService.updateNextTaskRetryDetails(jobId, now,retryAttemptsRemaining);
+
+        verify(jobRepository).updateNextTaskRetryDetails(jobId,  toSqlTimestamp(now), retryAttemptsRemaining);
+    }
+
+    @Test
     public void shouldDeleteJob() {
 
         final UUID jobId = randomUUID();

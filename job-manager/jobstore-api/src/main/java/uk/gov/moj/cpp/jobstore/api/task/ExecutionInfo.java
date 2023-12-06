@@ -78,9 +78,10 @@ public class ExecutionInfo {
 
 
         public ExecutionInfo build() {
-            //TODO SAN Change exception and add tests
-            if(shouldRetry && (jobData == null || nextTask == null || nextTaskStartTime == null)) {
-                throw new IllegalArgumentException("jobData, nextTask, nextTaskStartTime must not be null when shouldRetry is true");
+            boolean emptyRetriesExhaustTaskDetails = jobData == null || nextTask == null || nextTaskStartTime == null;
+
+            if(shouldRetry && emptyRetriesExhaustTaskDetails) {
+                throw new InvalidRetryExecutionInfoException("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true");
             }
 
             return new ExecutionInfo(jobData, nextTask, nextTaskStartTime, executionStatus, shouldRetry);

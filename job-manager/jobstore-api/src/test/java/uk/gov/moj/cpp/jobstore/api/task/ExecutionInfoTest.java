@@ -4,6 +4,7 @@ import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
@@ -83,5 +84,49 @@ public class ExecutionInfoTest {
         ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withExecutionStatus(ExecutionStatus.STARTED).build();
 
         assertThat(copiedExecutionInfo.getExecutionStatus(), is(ExecutionStatus.STARTED));
+    }
+
+    @Test
+    public void shouldBuildWhenShouldRetryIsTrueAndExhaustTaskDetailsSupplied() {
+        ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask("last-task")
+                .withNextTaskStartTime(ZonedDateTime.now())
+                .withJobData(jobData)
+                .build();
+
+        assertThat(copiedExecutionInfo.getJobData(), is(jobData));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenRetryExhaustTaskJobDataIsNullAndShouldRetryIsTrue() {
+        var e = assertThrows(InvalidRetryExecutionInfoException.class, () -> ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask("last-task")
+                .withNextTaskStartTime(ZonedDateTime.now())
+                .withJobData(null)
+                .build());
+
+        assertThat(e.getMessage(), is("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true"));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenRetryExhaustTaskStartTimeIsNullAndShouldRetryIsTrue() {
+        var e = assertThrows(InvalidRetryExecutionInfoException.class, () -> ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask("last-task")
+                .withNextTaskStartTime(null)
+                .withJobData(jobData)
+                .build());
+
+        assertThat(e.getMessage(), is("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true"));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenRetryExhaustTaskNameIsNullAndShouldRetryIsTrue() {
+        var e = assertThrows(InvalidRetryExecutionInfoException.class, () -> ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask(null)
+                .withNextTaskStartTime(ZonedDateTime.now())
+                .withJobData(jobData)
+                .build());
+
+        assertThat(e.getMessage(), is("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true"));
     }
 }

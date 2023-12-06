@@ -36,7 +36,7 @@ public class DefaultExecutionServiceTest {
     private TaskRegistry taskRegistry;
 
     @InjectMocks
-    private ExecutionService executionService;
+    private DefaultExecutionService executionService;
 
     @Captor
     private ArgumentCaptor<Job> jobArgumentCaptor;

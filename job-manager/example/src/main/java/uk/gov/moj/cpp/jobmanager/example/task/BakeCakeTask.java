@@ -27,11 +27,11 @@ import org.slf4j.Logger;
 @Task("BAKE_CAKE")
 public class BakeCakeTask implements ExecutableTask {
 
-    private static final int THIRTY_SECONDS = 10;
-    private static final int SIXTY_SECONDS = 20;
-    private static final int THREE_MINUTES = 30;
+    private static final long FIVE_SECONDS = 5;
+    private static final long TEN_SECONDS = 10;
+    private static final long FIFTEEN_SECONDS = 15;
 
-    private static final String RETRY_DURATIONS_SECONDS = THIRTY_SECONDS + ", " + SIXTY_SECONDS + ", " + THREE_MINUTES;
+    private static final String RETRY_DURATIONS_SECONDS = FIVE_SECONDS + "," + TEN_SECONDS + "," + FIFTEEN_SECONDS;
 
     @Inject
     private Logger logger;
@@ -43,7 +43,7 @@ public class BakeCakeTask implements ExecutableTask {
     private JobUtil jobUtil;
 
     @Override
-    public ExecutionInfo execute(ExecutionInfo executionInfo) {
+    public ExecutionInfo execute(final ExecutionInfo executionInfo) {
 
         final CakeBakingTime cakeBakingTime = jsonObjectConverter.convert(executionInfo.getJobData(), CakeBakingTime.class);
 

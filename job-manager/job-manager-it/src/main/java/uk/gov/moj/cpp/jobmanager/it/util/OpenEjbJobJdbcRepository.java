@@ -90,14 +90,14 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
         final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED);
         ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
         ps.executeQuery();
-        return jdbcResultSetStreamer.streamOf(ps, entityFromFunction());
+        return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromRs());
     }
 
     public Stream<Job> getProcessedRecords(final UUID workerId) throws SQLException {
         final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_FOR_WORKER);
         ps.setObject(1, workerId);
         ps.executeQuery();
-        return jdbcResultSetStreamer.streamOf(ps, entityFromFunction());
+        return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromRs());
     }
 
     public void createJobs(final int count) {

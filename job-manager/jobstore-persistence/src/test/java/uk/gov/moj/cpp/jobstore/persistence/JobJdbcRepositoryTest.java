@@ -17,7 +17,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
-import java.time.temporal.ChronoUnit;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
@@ -90,7 +89,7 @@ public class JobJdbcRepositoryTest {
 
     @Test
     public void shouldInsertJob() throws Exception {
-        final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), "nextTask", now(), empty(), empty(), 1);
+        final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), "nextTask", now(), Optional.of(UUID.randomUUID()), Optional.of(now()), 1);
 
         jdbcRepository.insertJob(job);
 
@@ -100,7 +99,7 @@ public class JobJdbcRepositoryTest {
         assertThat(insertedJob.getNextTask(), is(job.getNextTask()));
         assertTrue(insertedJob.getNextTaskStartTime().truncatedTo(MILLIS).isEqual(job.getNextTaskStartTime().truncatedTo(MILLIS)));
         assertThat(insertedJob.getWorkerId(), is(job.getWorkerId()));
-        assertThat(insertedJob.getWorkerLockTime(), is(job.getWorkerLockTime()));
+        assertTrue(insertedJob.getWorkerLockTime().get().truncatedTo(MILLIS).isEqual(job.getWorkerLockTime().get().truncatedTo(MILLIS)));
         assertThat(insertedJob.getRetryAttemptsRemaining(), is(job.getRetryAttemptsRemaining()));
     }
 
@@ -338,7 +337,7 @@ public class JobJdbcRepositoryTest {
     private Job getJobById(UUID jobId) throws SQLException {
         final PreparedStatementWrapper ps = new PreparedStatementWrapperFactory().preparedStatementWrapperOf(eventStoreDataSource, "select * from job where job_id = ?");
         ps.setObject(1, jobId);
-        return new JdbcResultSetStreamer().streamOf(ps, jdbcRepository.entityFromFunction()).findFirst().get();
+        return new JdbcResultSetStreamer().streamOf(ps, jdbcRepository.mapAssignedJobFromRs()).findFirst().get();
     }
 
     private void createJobs(final int count) {

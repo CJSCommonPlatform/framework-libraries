@@ -4,7 +4,6 @@ import static java.lang.Long.valueOf;
 import static java.lang.String.format;
 import static java.time.ZonedDateTime.now;
 import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static javax.json.Json.createReader;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.fromSqlTimestamp;
@@ -149,7 +148,7 @@ public class JobJdbcRepository implements JobRepository {
         try {
             final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_LOCKED_TO_SQL);
             ps.setObject(1, workerId);
-            return jdbcResultSetStreamer.streamOf(ps, entityFromFunction());
+            return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromRs());
         } catch (SQLException e) {
             logger.error("Error retrieving locked jobs for workerId " + workerId, e);
             throw new JdbcRepositoryException(format("Exception while retrieving jobs locked to worker id %s", workerId), e);
@@ -178,7 +177,7 @@ public class JobJdbcRepository implements JobRepository {
         }
     }
 
-    protected Function<ResultSet, Job> entityFromFunction() {
+    protected Function<ResultSet, Job> mapAssignedJobFromRs() {
         return resultSet -> {
             try {
                 return new Job(
@@ -186,8 +185,8 @@ public class JobJdbcRepository implements JobRepository {
                         toJsonObject(resultSet.getString("job_data")),
                         resultSet.getString("next_task"),
                         getZoneDateTime(resultSet, "next_task_start_time"),
-                        ofNullable(getUUID(resultSet, "worker_id")),
-                        ofNullable(getZoneDateTime(resultSet, "worker_lock_time")),
+                        of(getUUID(resultSet, "worker_id")),
+                        of(getZoneDateTime(resultSet, "worker_lock_time")),
                         resultSet.getInt("retry_attempts_remaining"));
             } catch (final SQLException e) {
                 throw new JdbcRepositoryException("Unexpected SQLException mapping ResultSet to Job instance", e);

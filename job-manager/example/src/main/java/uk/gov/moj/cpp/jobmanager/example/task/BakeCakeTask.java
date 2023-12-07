@@ -4,7 +4,6 @@ import static java.time.LocalDateTime.now;
 import static java.time.ZoneId.systemDefault;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.time.temporal.ChronoUnit.SECONDS;
-import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.INPROGRESS;
 
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.moj.cpp.jobmanager.example.task.data.CakeBakingTime;
@@ -14,6 +13,10 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,6 +26,12 @@ import org.slf4j.Logger;
 @ApplicationScoped
 @Task("BAKE_CAKE")
 public class BakeCakeTask implements ExecutableTask {
+
+    private static final int THIRTY_SECONDS = 10;
+    private static final int SIXTY_SECONDS = 20;
+    private static final int THREE_MINUTES = 30;
+
+    private static final String RETRY_DURATIONS_SECONDS = THIRTY_SECONDS + ", " + SIXTY_SECONDS + ", " + THREE_MINUTES;
 
     @Inject
     private Logger logger;
@@ -34,7 +43,7 @@ public class BakeCakeTask implements ExecutableTask {
     private JobUtil jobUtil;
 
     @Override
-    public ExecutionInfo execute(final ExecutionInfo executionInfo) {
+    public ExecutionInfo execute(ExecutionInfo executionInfo) {
 
         final CakeBakingTime cakeBakingTime = jsonObjectConverter.convert(executionInfo.getJobData(), CakeBakingTime.class);
 
@@ -57,13 +66,14 @@ public class BakeCakeTask implements ExecutableTask {
             logger.info("Cake not cooked yet, went in oven at {}, will be baked at {}", startDateTime, finishTime);
             // Set Job.nextTaskStartTime to when the Cake will be baked, JobExecutor won't try and run this Task
             // again until this time
-            nextJob = jobUtil.sameJob(executionInfo, INPROGRESS, newCakeBakingTime, finishTime.atZone(systemDefault()));
+            nextJob = jobUtil.sameJob(newCakeBakingTime, finishTime.atZone(systemDefault()));
         }
-        else {
-            logger.info("Cake is cooked !");
-            nextJob = jobUtil.nextJob(executionInfo);
-        }
-
         return nextJob;
+    }
+
+    @Override
+    public Optional<List<Long>> getRetryDurationsInSecs() {
+        return Optional.of(Arrays.stream(RETRY_DURATIONS_SECONDS.split(","))
+                .map(Long::valueOf).collect(Collectors.toList()));
     }
 }

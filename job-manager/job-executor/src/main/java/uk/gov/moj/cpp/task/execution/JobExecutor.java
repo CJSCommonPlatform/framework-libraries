@@ -121,12 +121,14 @@ public class JobExecutor implements Runnable {
     }
 
     private boolean canRetry(final ExecutableTask task, final ExecutionInfo taskResponse) {
+        logger.info("Invoking {} canRetry: ", taskResponse.isShouldRetry());
         return taskResponse.isShouldRetry()
                 && job.getRetryAttemptsRemaining() > 0
                 && task.getRetryDurationsInSecs().isPresent();
     }
 
     private void performRetry(final ExecutableTask currentTask) {
+        logger.info("Invoking {} performRetry {} nextTask: ", job.getRetryAttemptsRemaining(), job.getNextTask());
         final Integer retryAttemptsRemaining = job.getRetryAttemptsRemaining();
         final List<Long> retryDurations = currentTask.getRetryDurationsInSecs().get();
         final Long retryDurationInSecs = retryDurations.get(retryDurations.size() - retryAttemptsRemaining);

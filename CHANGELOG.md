@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [17.3.1] - 2023-12-12
+## [17.3.2] - 2023-12-12
 ### Changed
 - Add retry mechanism to jobstore
 

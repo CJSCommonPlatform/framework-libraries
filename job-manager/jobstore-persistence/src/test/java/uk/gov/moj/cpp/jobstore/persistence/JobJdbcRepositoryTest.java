@@ -56,7 +56,6 @@ public class JobJdbcRepositoryTest {
         jdbcRepository.logger = mock(Logger.class);
         jdbcRepository.preparedStatementWrapperFactory = new PreparedStatementWrapperFactory();
         jdbcRepository.jdbcResultSetStreamer = new JdbcResultSetStreamer();
-        jdbcRepository.jobSqlProvider = new PostgresJobSqlProvider();
         checkIfReady();
     }
 
@@ -115,7 +114,7 @@ public class JobJdbcRepositoryTest {
         jdbcRepository.insertJob(job1);
         jdbcRepository.updateJobData(jobId, jobData(jobDataAfterUpdate));
 
-        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).collect(toList());
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).toList();
         assertThat(jobs.size(), is(1));
         assertThat(jobs.get(0).getJobData(), is(jobData(jobDataAfterUpdate)));
 
@@ -150,7 +149,7 @@ public class JobJdbcRepositoryTest {
 
         jdbcRepository.lockJobsFor(workerId, 4);
 
-        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).collect(toList());
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).toList();
         assertThat(jobs.size(), is(4));
     }
 
@@ -168,12 +167,12 @@ public class JobJdbcRepositoryTest {
 
         assertThat(jobsCount(), is(2));
 
-        final List<Job> preTestJobs = jdbcRepository.findJobsLockedTo(worker).collect(toList());
+        final List<Job> preTestJobs = jdbcRepository.findJobsLockedTo(worker).toList();
         assertThat(preTestJobs.size(), is(1));
 
         jdbcRepository.lockJobsFor(worker, 10);
 
-        final List<Job> jobs = jdbcRepository.findJobsLockedTo(worker).collect(toList());
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(worker).toList();
 
         assertThat(jobs.size(), is(2));
 
@@ -195,7 +194,7 @@ public class JobJdbcRepositoryTest {
         jdbcRepository.insertJob(job2);
         jdbcRepository.releaseJob(jobId1);
 
-        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).collect(toList());
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).toList();
         assertThat(jobs.size(), is(1));
 
         assertThat(jobs.get(0).getWorkerId(), is(workerId));
@@ -219,7 +218,7 @@ public class JobJdbcRepositoryTest {
         jdbcRepository.insertJob(job2);
         jdbcRepository.deleteJob(jobId1);
 
-        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).collect(toList());
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId.get()).toList();
         assertThat(jobs.size(), is(1));
         assertThat(jobs.get(0).getWorkerId().get(), is(workerId.get()));
         assertThat(jobs.get(0).getJobId(), is(jobId2));

@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Removed
+- Remove the ability for the jobstore to support multiple databases with differing sql syntax. 
+Jobstore is now postgres only, to match the rest of the framework code
 
 ## [17.3.1] - 2023-11-27
 ### Changed

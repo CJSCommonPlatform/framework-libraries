@@ -20,7 +20,6 @@ import uk.gov.moj.cpp.jobmanager.example.task.SliceAndEatCakeTask;
 import uk.gov.moj.cpp.jobmanager.example.task.SwitchOvenOnTask;
 import uk.gov.moj.cpp.jobmanager.example.util.PropertiesFileValueProducer;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
-import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
@@ -29,6 +28,7 @@ import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.PostgresJobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
+import uk.gov.moj.cpp.task.execution.DefaultExecutionService;
 import uk.gov.moj.cpp.task.execution.JobScheduler;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
@@ -52,10 +52,8 @@ import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Configuration;
 import org.apache.openejb.testing.Module;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled("This test takes minutes to run and isn't really critical, so taking it out of the default build. Uncomment this to run")
 @RunWithApplicationComposer
 public class BakeryServiceIT {
 
@@ -71,7 +69,7 @@ public class BakeryServiceIT {
     @Module
     @Classes(cdi = true, value = {
             JobService.class,
-            ExecutionService.class,
+            DefaultExecutionService.class,
             JobRepository.class,
             TaskRegistry.class,
             JobScheduler.class,

@@ -4,6 +4,7 @@ import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.INPROGRESS;
 
+import java.util.List;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
@@ -103,14 +104,46 @@ public class JobExecutor implements Runnable {
     }
 
     private void executeTask(final ExecutableTask task, final ExecutionInfo executionInfo) {
-        final ExecutionInfo responseJob = task.execute(executionInfo);
+        final ExecutionInfo executionResponse = task.execute(executionInfo);
 
-        if (responseJob.getExecutionStatus().equals(INPROGRESS)) {
-            jobService.updateJobTaskData(job.getJobId(), responseJob.getJobData());
-            jobService.updateNextTaskDetails(job.getJobId(), responseJob.getNextTask(), responseJob.getNextTaskStartTime());
-            jobService.releaseJob(job.getJobId());
-        } else if (responseJob.getExecutionStatus().equals(COMPLETED)) {
+        if (executionResponse.getExecutionStatus().equals(INPROGRESS)) {
+            if (canRetry(task, executionResponse)) {
+                performRetry(task);
+            } else {
+                final Integer retryAttemptsRemaining = taskRegistry.findRetryAttemptsRemainingFor(executionResponse.getNextTask());
+                jobService.updateJobTaskData(job.getJobId(), executionResponse.getJobData());
+                jobService.updateNextTaskDetails(job.getJobId(), executionResponse.getNextTask(), executionResponse.getNextTaskStartTime(), retryAttemptsRemaining);
+                jobService.releaseJob(job.getJobId());
+            }
+        } else if (executionResponse.getExecutionStatus().equals(COMPLETED)) {
             jobService.deleteJob(job.getJobId());
         }
+    }
+
+    private boolean canRetry(final ExecutableTask task, final ExecutionInfo taskResponse) {
+        final boolean shouldRetryTask = taskResponse.isShouldRetry();
+        final Integer retryAttemptsRemaining = job.getRetryAttemptsRemaining();
+        final boolean taskHasRetryDurationsConfigured = task.getRetryDurationsInSecs().isPresent();
+
+        logger.info("Checking if task is retryable, jobID:{}, executionInfo.shouldRetry:{}, retryAttemptsRemaining:{}, has task configured with retryDurationsInSecs:{}",
+                job.getJobId(), shouldRetryTask, retryAttemptsRemaining, taskHasRetryDurationsConfigured);
+
+        return shouldRetryTask
+                && retryAttemptsRemaining > 0
+                && taskHasRetryDurationsConfigured;
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private void performRetry(final ExecutableTask currentTask) {
+        final List<Long> retryDurations = currentTask.getRetryDurationsInSecs().get();
+        final Integer retryAttemptsRemaining = job.getRetryAttemptsRemaining();
+        final Long retryDurationInSecs = retryDurations.get(retryDurations.size() - retryAttemptsRemaining);
+        final ZonedDateTime exhaustTaskStartTime = clock.now().plusSeconds(retryDurationInSecs);
+
+        logger.info("Updating task retryDetails to performRetry, jobID: {}, retryAttemptsRemaining: {}, taskToExecuteOnRetriesExhaust: {}, exhaustTaskStartTime: {}",
+                job.getJobId(), job.getRetryAttemptsRemaining(), job.getNextTask(), exhaustTaskStartTime);
+
+        jobService.updateNextTaskRetryDetails(job.getJobId(), exhaustTaskStartTime, retryAttemptsRemaining-1);
+        jobService.releaseJob(job.getJobId());
     }
 }

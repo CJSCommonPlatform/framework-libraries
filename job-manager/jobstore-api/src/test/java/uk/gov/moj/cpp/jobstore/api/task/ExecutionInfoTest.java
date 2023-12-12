@@ -4,6 +4,7 @@ import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
@@ -32,12 +33,12 @@ public class ExecutionInfoTest {
 
     @Test
     public void shouldPopulateBuilderFromPreviousExecutionInfo() {
-        ExecutionInfo originalExecutionInfo = new ExecutionInfo(jobData,
+        final ExecutionInfo originalExecutionInfo = new ExecutionInfo(jobData,
                 NEXT_TASK,
                 nextTaskStartTime,
                 ExecutionStatus.INPROGRESS);
 
-        ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().from(originalExecutionInfo).build();
+        final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().from(originalExecutionInfo).build();
 
         assertThat(copiedExecutionInfo.getJobData(), is(jobData));
         assertThat(copiedExecutionInfo.getNextTask(), is(NEXT_TASK));
@@ -47,9 +48,9 @@ public class ExecutionInfoTest {
 
     @Test
     public void shouldPopulateBuilderFromJob() {
-        Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty());
+        final Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 0);
 
-        ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().fromJob(job).build();
+        final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().fromJob(job).build();
 
         assertThat(copiedExecutionInfo.getJobData(), is(jobData));
         assertThat(copiedExecutionInfo.getNextTask(), is(NEXT_TASK));
@@ -59,29 +60,73 @@ public class ExecutionInfoTest {
 
     @Test
     public void shouldSetTheJobdata() {
-        ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withJobData(jobData).build();
+        final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withJobData(jobData).build();
 
         assertThat(copiedExecutionInfo.getJobData(), is(jobData));
     }
 
     @Test
     public void shouldSetTheNextTask() {
-        ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withNextTask(NEXT_TASK).build();
+        final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withNextTask(NEXT_TASK).build();
 
         assertThat(copiedExecutionInfo.getNextTask(), is(NEXT_TASK));
     }
 
     @Test
     public void shouldSetTheNextTaskStartTime() {
-        ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withNextTaskStartTime(nextTaskStartTime).build();
+        final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withNextTaskStartTime(nextTaskStartTime).build();
 
         assertThat(copiedExecutionInfo.getNextTaskStartTime(), is(nextTaskStartTime));
     }
 
     @Test
     public void shouldSetTheExecutionStatus() {
-        ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withExecutionStatus(ExecutionStatus.STARTED).build();
+        final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withExecutionStatus(ExecutionStatus.STARTED).build();
 
         assertThat(copiedExecutionInfo.getExecutionStatus(), is(ExecutionStatus.STARTED));
+    }
+
+    @Test
+    public void shouldBuildWhenShouldRetryIsTrueAndExhaustTaskDetailsSupplied() {
+        final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask("last-task")
+                .withNextTaskStartTime(ZonedDateTime.now())
+                .withJobData(jobData)
+                .build();
+
+        assertThat(copiedExecutionInfo.getJobData(), is(jobData));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenRetryExhaustTaskJobDataIsNullAndShouldRetryIsTrue() {
+        final InvalidRetryExecutionInfoException e = assertThrows(InvalidRetryExecutionInfoException.class, () -> ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask("last-task")
+                .withNextTaskStartTime(ZonedDateTime.now())
+                .withJobData(null)
+                .build());
+
+        assertThat(e.getMessage(), is("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true"));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenRetryExhaustTaskStartTimeIsNullAndShouldRetryIsTrue() {
+        final InvalidRetryExecutionInfoException e = assertThrows(InvalidRetryExecutionInfoException.class, () -> ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask("last-task")
+                .withNextTaskStartTime(null)
+                .withJobData(jobData)
+                .build());
+
+        assertThat(e.getMessage(), is("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true"));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenRetryExhaustTaskNameIsNullAndShouldRetryIsTrue() {
+        final InvalidRetryExecutionInfoException e = assertThrows(InvalidRetryExecutionInfoException.class, () -> ExecutionInfo.executionInfo().withShouldRetry(true)
+                .withNextTask(null)
+                .withNextTaskStartTime(ZonedDateTime.now())
+                .withJobData(jobData)
+                .build());
+
+        assertThat(e.getMessage(), is("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true"));
     }
 }

@@ -90,14 +90,14 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
         final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED);
         ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
         ps.executeQuery();
-        return jdbcResultSetStreamer.streamOf(ps, entityFromFunction());
+        return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromResultSet());
     }
 
     public Stream<Job> getProcessedRecords(final UUID workerId) throws SQLException {
         final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_FOR_WORKER);
         ps.setObject(1, workerId);
         ps.executeQuery();
-        return jdbcResultSetStreamer.streamOf(ps, entityFromFunction());
+        return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromResultSet());
     }
 
     public void createJobs(final int count) {
@@ -110,7 +110,7 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
 
     private void createJobsWith(int count, String nextTask, ZonedDateTime nextTaskStartTime, Optional<UUID> workerId, Optional<ZonedDateTime> workerLockTime) {
         for (int i = 0; i < count; i++) {
-            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), nextTask, nextTaskStartTime, workerId, workerLockTime);
+            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), nextTask, nextTaskStartTime, workerId, workerLockTime, 0);
             insertJob(job);
         }
     }

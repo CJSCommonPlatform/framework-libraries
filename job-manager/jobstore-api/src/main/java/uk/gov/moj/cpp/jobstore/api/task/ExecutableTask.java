@@ -1,5 +1,8 @@
 package uk.gov.moj.cpp.jobstore.api.task;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface ExecutableTask {
 
     /**
@@ -10,4 +13,11 @@ public interface ExecutableTask {
      */
     ExecutionInfo execute(final ExecutionInfo executionInfo);
 
+    /**
+     * Implementation is optional and only required when task requires retry capability
+     * @return List of retry durations in seconds
+     */
+    default Optional<List<Long>> getRetryDurationsInSecs() {
+        return Optional.empty();
+    }
 }

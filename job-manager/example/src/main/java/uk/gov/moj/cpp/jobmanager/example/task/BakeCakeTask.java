@@ -4,7 +4,6 @@ import static java.time.LocalDateTime.now;
 import static java.time.ZoneId.systemDefault;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.time.temporal.ChronoUnit.SECONDS;
-import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.INPROGRESS;
 
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.moj.cpp.jobmanager.example.task.data.CakeBakingTime;
@@ -14,6 +13,8 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -57,13 +58,13 @@ public class BakeCakeTask implements ExecutableTask {
             logger.info("Cake not cooked yet, went in oven at {}, will be baked at {}", startDateTime, finishTime);
             // Set Job.nextTaskStartTime to when the Cake will be baked, JobExecutor won't try and run this Task
             // again until this time
-            nextJob = jobUtil.sameJob(executionInfo, INPROGRESS, newCakeBakingTime, finishTime.atZone(systemDefault()));
+            nextJob = jobUtil.sameJob(newCakeBakingTime, finishTime.atZone(systemDefault()));
         }
-        else {
-            logger.info("Cake is cooked !");
-            nextJob = jobUtil.nextJob(executionInfo);
-        }
-
         return nextJob;
+    }
+
+    @Override
+    public Optional<List<Long>> getRetryDurationsInSecs() {
+        return Optional.of(List.of(5L, 10L, 15L));
     }
 }

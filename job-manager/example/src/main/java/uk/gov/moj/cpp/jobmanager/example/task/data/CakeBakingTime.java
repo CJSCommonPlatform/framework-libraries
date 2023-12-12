@@ -1,15 +1,7 @@
 package uk.gov.moj.cpp.jobmanager.example.task.data;
 
 
-public class CakeBakingTime {
-
-    private final int cookingTimeSeconds;
-    private final String startTimeString;
-
-    public CakeBakingTime(final int cookingTimeSeconds, final String startTimeString) {
-        this.cookingTimeSeconds = cookingTimeSeconds;
-        this.startTimeString = startTimeString;
-    }
+public record CakeBakingTime(int cookingTimeSeconds, String startTimeString) {
 
     public int getCookingTimeSeconds() {
         return cookingTimeSeconds;
@@ -18,5 +10,4 @@ public class CakeBakingTime {
     public String getStartTimeString() {
         return startTimeString;
     }
-
 }

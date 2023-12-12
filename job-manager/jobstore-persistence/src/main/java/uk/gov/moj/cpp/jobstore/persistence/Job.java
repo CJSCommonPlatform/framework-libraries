@@ -14,19 +14,22 @@ public class Job {
     private final String nextTask;
     private final ZonedDateTime nextTaskStartTime;
     private final JsonObject jobData;
+    private final int retryAttemptsRemaining;
 
     public Job(final UUID jobId,
                final JsonObject jobData,
                final String nextTask,
                final ZonedDateTime nextTaskStartTime,
                final Optional<UUID> workerId,
-               final Optional<ZonedDateTime> workerLockTime) {
+               final Optional<ZonedDateTime> workerLockTime,
+               final Integer retryAttemptsRemaining) {
         this.jobId = jobId;
         this.workerId = workerId;
         this.workerLockTime = workerLockTime;
         this.jobData = jobData;
         this.nextTask = nextTask;
         this.nextTaskStartTime = nextTaskStartTime;
+        this.retryAttemptsRemaining = retryAttemptsRemaining;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class Job {
                 .append(", workerLockTime=").append(workerLockTime.orElse(null))
                 .append(", nextTask='").append(nextTask).append("'\\")
                 .append(", nextTaskStartTime=").append(nextTaskStartTime)
+                .append(", retryAttemptsRemaining=").append(retryAttemptsRemaining)
                 .append("]");
 
         return sb.toString();
@@ -70,7 +74,11 @@ public class Job {
     public static Builder job() {
         return new Builder();
     }
-    
+
+    public Integer getRetryAttemptsRemaining() {
+        return retryAttemptsRemaining;
+    }
+
     public static class Builder {
 
         private UUID jobId;
@@ -79,6 +87,7 @@ public class Job {
         private Optional<ZonedDateTime> workerLockTime;
         private String nextTask;
         private ZonedDateTime nextTaskStartTime;
+        private Integer retryAttemptsRemaining;
 
         private Builder(){}
 
@@ -89,11 +98,12 @@ public class Job {
             this.workerLockTime = job.workerLockTime;
             this.nextTask = job.nextTask;
             this.nextTaskStartTime = job.nextTaskStartTime;
+            this.retryAttemptsRemaining = job.retryAttemptsRemaining;
             return this;
         }
 
         public Job build() {
-            return new Job(jobId, jobData, nextTask, nextTaskStartTime, workerId, workerLockTime);
+            return new Job(jobId, jobData, nextTask, nextTaskStartTime, workerId, workerLockTime, retryAttemptsRemaining);
         }
 
         public Builder withJobId(final UUID jobId) {
@@ -123,6 +133,11 @@ public class Job {
 
         public Builder withNextTaskStartTime(final ZonedDateTime nextTaskStartTime) {
             this.nextTaskStartTime = nextTaskStartTime;
+            return this;
+        }
+
+        public Builder withRetryAttemptsRemaining(final Integer retryAttemptsRemaining) {
+            this.retryAttemptsRemaining = retryAttemptsRemaining;
             return this;
         }
     }

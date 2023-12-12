@@ -32,20 +32,16 @@ public class JobUtil {
                 .withNextTask(nextStep.toString())
                 .withNextTaskStartTime(ZonedDateTime.now())
                 .withExecutionStatus(nextExecutionStatus)
-
                 .build();
-
-
     }
 
-    public ExecutionInfo sameJob(final ExecutionInfo prevExecutionInfo, final ExecutionStatus executionStatus, final Object jobData, final ZonedDateTime nextTaskStartTime) {
-
+    public ExecutionInfo sameJob(final Object jobData, final ZonedDateTime nextTaskStartTime) {
         return executionInfo()
+                .withShouldRetry(true)
                 .withJobData(objectConverter.convert(jobData))
-                .withNextTask(prevExecutionInfo.getNextTask())
+                .withNextTask(CAKE_MADE.toString())
                 .withNextTaskStartTime(nextTaskStartTime)
-                .withExecutionStatus(executionStatus)
+                .withExecutionStatus(INPROGRESS)
                 .build();
-
     }
 }

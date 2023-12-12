@@ -133,6 +133,7 @@ public class JobExecutor implements Runnable {
                 && taskHasRetryDurationsConfigured;
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private void performRetry(final ExecutableTask currentTask) {
         final List<Long> retryDurations = currentTask.getRetryDurationsInSecs().get();
         final Integer retryAttemptsRemaining = job.getRetryAttemptsRemaining();

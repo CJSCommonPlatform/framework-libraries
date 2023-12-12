@@ -13,10 +13,8 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,12 +24,6 @@ import org.slf4j.Logger;
 @ApplicationScoped
 @Task("BAKE_CAKE")
 public class BakeCakeTask implements ExecutableTask {
-
-    private static final long FIVE_SECONDS = 5;
-    private static final long TEN_SECONDS = 10;
-    private static final long FIFTEEN_SECONDS = 15;
-
-    private static final String RETRY_DURATIONS_SECONDS = FIVE_SECONDS + "," + TEN_SECONDS + "," + FIFTEEN_SECONDS;
 
     @Inject
     private Logger logger;
@@ -73,7 +65,6 @@ public class BakeCakeTask implements ExecutableTask {
 
     @Override
     public Optional<List<Long>> getRetryDurationsInSecs() {
-        return Optional.of(Arrays.stream(RETRY_DURATIONS_SECONDS.split(","))
-                .map(Long::valueOf).collect(Collectors.toList()));
+        return Optional.of(List.of(5L, 10L, 15L));
     }
 }

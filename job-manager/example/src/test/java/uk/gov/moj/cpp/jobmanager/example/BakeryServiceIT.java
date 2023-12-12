@@ -54,7 +54,6 @@ import org.apache.openejb.testing.Module;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-//@Disabled("This test takes minutes to run and isn't really critical, so taking it out of the default build. Uncomment this to run")
 @RunWithApplicationComposer
 public class BakeryServiceIT {
 

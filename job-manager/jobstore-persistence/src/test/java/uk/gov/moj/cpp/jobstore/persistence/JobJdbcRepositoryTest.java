@@ -337,7 +337,7 @@ public class JobJdbcRepositoryTest {
     private Job getJobById(UUID jobId) throws SQLException {
         final PreparedStatementWrapper ps = new PreparedStatementWrapperFactory().preparedStatementWrapperOf(eventStoreDataSource, "select * from job where job_id = ?");
         ps.setObject(1, jobId);
-        return new JdbcResultSetStreamer().streamOf(ps, jdbcRepository.mapAssignedJobFromRs()).findFirst().get();
+        return new JdbcResultSetStreamer().streamOf(ps, jdbcRepository.mapAssignedJobFromResultSet()).findFirst().get();
     }
 
     private void createJobs(final int count) {

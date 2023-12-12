@@ -148,7 +148,7 @@ public class JobJdbcRepository implements JobRepository {
         try {
             final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_LOCKED_TO_SQL);
             ps.setObject(1, workerId);
-            return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromRs());
+            return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromResultSet());
         } catch (SQLException e) {
             logger.error("Error retrieving locked jobs for workerId " + workerId, e);
             throw new JdbcRepositoryException(format("Exception while retrieving jobs locked to worker id %s", workerId), e);
@@ -177,7 +177,7 @@ public class JobJdbcRepository implements JobRepository {
         }
     }
 
-    protected Function<ResultSet, Job> mapAssignedJobFromRs() {
+    protected Function<ResultSet, Job> mapAssignedJobFromResultSet() {
         return resultSet -> {
             try {
                 return new Job(

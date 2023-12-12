@@ -104,18 +104,18 @@ public class JobExecutor implements Runnable {
     }
 
     private void executeTask(final ExecutableTask task, final ExecutionInfo executionInfo) {
-        final ExecutionInfo taskResponse = task.execute(executionInfo);
+        final ExecutionInfo executionResponse = task.execute(executionInfo);
 
-        if (taskResponse.getExecutionStatus().equals(INPROGRESS)) {
-            if (canRetry(task, taskResponse)) {
+        if (executionResponse.getExecutionStatus().equals(INPROGRESS)) {
+            if (canRetry(task, executionResponse)) {
                 performRetry(task);
             } else {
-                final Integer retryAttemptsRemaining = taskRegistry.findRetryAttemptsRemainingFor(taskResponse.getNextTask());
-                jobService.updateJobTaskData(job.getJobId(), taskResponse.getJobData());
-                jobService.updateNextTaskDetails(job.getJobId(), taskResponse.getNextTask(), taskResponse.getNextTaskStartTime(), retryAttemptsRemaining);
+                final Integer retryAttemptsRemaining = taskRegistry.findRetryAttemptsRemainingFor(executionResponse.getNextTask());
+                jobService.updateJobTaskData(job.getJobId(), executionResponse.getJobData());
+                jobService.updateNextTaskDetails(job.getJobId(), executionResponse.getNextTask(), executionResponse.getNextTaskStartTime(), retryAttemptsRemaining);
                 jobService.releaseJob(job.getJobId());
             }
-        } else if (taskResponse.getExecutionStatus().equals(COMPLETED)) {
+        } else if (executionResponse.getExecutionStatus().equals(COMPLETED)) {
             jobService.deleteJob(job.getJobId());
         }
     }

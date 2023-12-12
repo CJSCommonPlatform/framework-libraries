@@ -12,6 +12,7 @@ public interface JobRepository {
     void updateJobData(final UUID id, final JsonObject taskData);
 
     void updateNextTaskDetails(final UUID id, final String nextTask, final Timestamp nextTaskDate, final Integer retryAttemptsRemaining);
+
     void updateNextTaskRetryDetails(final UUID id, final Timestamp nextTaskStartTime, final Integer retryAttemptsRemaining);
 
     void lockJobsFor(final UUID workerId, final int jobCountToLock);

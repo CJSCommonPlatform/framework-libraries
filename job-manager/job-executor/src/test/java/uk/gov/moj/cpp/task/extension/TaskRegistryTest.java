@@ -6,7 +6,6 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import org.hamcrest.CoreMatchers;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 
 import java.util.Iterator;
@@ -94,11 +93,8 @@ public class TaskRegistryTest {
         @Override
         public ExecutableTask next() {
             count--;
-            if (count == 1) {
-                return sampleTaskCdiProxy;
-            } else {
-                return sampleRetryTaskCdiProxy;
-            }
+            final boolean isFirstTask = count == 1;
+            return isFirstTask ? sampleTaskCdiProxy : sampleRetryTaskCdiProxy;
         }
     };
 }

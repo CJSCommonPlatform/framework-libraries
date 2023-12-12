@@ -78,9 +78,9 @@ public class ExecutionInfo {
 
 
         public ExecutionInfo build() {
-            boolean emptyRetriesExhaustTaskDetails = jobData == null || nextTask == null || nextTaskStartTime == null;
+            final boolean exhaustTaskDetailsNotConfigured = jobData == null || nextTask == null || nextTaskStartTime == null;
 
-            if(shouldRetry && emptyRetriesExhaustTaskDetails) {
+            if(shouldRetry && exhaustTaskDetailsNotConfigured) {
                 throw new InvalidRetryExecutionInfoException("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true");
             }
 

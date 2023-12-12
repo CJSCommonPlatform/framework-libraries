@@ -21,8 +21,6 @@ import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
-import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;
-import uk.gov.moj.cpp.jobstore.persistence.PostgresJobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 
@@ -82,7 +80,6 @@ public class JobServiceIT {
             JdbcJobStoreDataSourceProvider.class,
             PreparedStatementWrapperFactory.class,
             JdbcResultSetStreamer.class,
-            JobSqlProvider.class,
             LoggerProducer.class,
             OpenEjbJobJdbcRepository.class,
             GlobalValueProducer.class,
@@ -90,7 +87,7 @@ public class JobServiceIT {
             JndiBasedServiceContextNameProvider.class,
             InitialContextProducer.class,
             Integer.class
-    }, cdiAlternatives = {PostgresJobSqlProvider.class})
+    })
 
     public WebApp war() {
         return new WebApp()

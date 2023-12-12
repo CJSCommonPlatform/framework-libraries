@@ -121,19 +121,28 @@ public class JobExecutor implements Runnable {
     }
 
     private boolean canRetry(final ExecutableTask task, final ExecutionInfo taskResponse) {
-        logger.info("Invoking {} canRetry: ", taskResponse.isShouldRetry());
-        return taskResponse.isShouldRetry()
-                && job.getRetryAttemptsRemaining() > 0
-                && task.getRetryDurationsInSecs().isPresent();
+        final boolean shouldRetryTask = taskResponse.isShouldRetry();
+        final Integer retryAttemptsRemaining = job.getRetryAttemptsRemaining();
+        final boolean taskHasRetryDurationsConfigured = task.getRetryDurationsInSecs().isPresent();
+
+        logger.info("Checking if task is retryable, jobID:{}, executionInfo.shouldRetry:{}, retryAttemptsRemaining:{}, has task configured with retryDurationsInSecs:{}",
+                job.getJobId(), shouldRetryTask, retryAttemptsRemaining, taskHasRetryDurationsConfigured);
+
+        return shouldRetryTask
+                && retryAttemptsRemaining > 0
+                && taskHasRetryDurationsConfigured;
     }
 
     private void performRetry(final ExecutableTask currentTask) {
-        logger.info("Invoking {} performRetry {} nextTask: ", job.getRetryAttemptsRemaining(), job.getNextTask());
-        final Integer retryAttemptsRemaining = job.getRetryAttemptsRemaining();
         final List<Long> retryDurations = currentTask.getRetryDurationsInSecs().get();
+        final Integer retryAttemptsRemaining = job.getRetryAttemptsRemaining();
         final Long retryDurationInSecs = retryDurations.get(retryDurations.size() - retryAttemptsRemaining);
-        final ZonedDateTime nextTaskStartTime = clock.now().plusSeconds(retryDurationInSecs);
-        jobService.updateNextTaskRetryDetails(job.getJobId(), nextTaskStartTime, retryAttemptsRemaining-1);
+        final ZonedDateTime exhaustTaskStartTime = clock.now().plusSeconds(retryDurationInSecs);
+
+        logger.info("Updating task retryDetails to performRetry, jobID: {}, retryAttemptsRemaining: {}, taskToExecuteOnRetriesExhaust: {}, exhaustTaskStartTime: {}",
+                job.getJobId(), job.getRetryAttemptsRemaining(), job.getNextTask(), exhaustTaskStartTime);
+
+        jobService.updateNextTaskRetryDetails(job.getJobId(), exhaustTaskStartTime, retryAttemptsRemaining-1);
         jobService.releaseJob(job.getJobId());
     }
 }

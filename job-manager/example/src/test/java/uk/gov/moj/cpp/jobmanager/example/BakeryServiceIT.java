@@ -24,8 +24,6 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
-import uk.gov.moj.cpp.jobstore.persistence.JobSqlProvider;
-import uk.gov.moj.cpp.jobstore.persistence.PostgresJobSqlProvider;
 import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.execution.DefaultExecutionService;
@@ -85,7 +83,6 @@ public class BakeryServiceIT {
             JdbcJobStoreDataSourceProvider.class,
             PreparedStatementWrapperFactory.class,
             JdbcResultSetStreamer.class,
-            JobSqlProvider.class,
             LoggerProducer.class,
             OpenEjbJobJdbcRepository.class,
             JndiBasedServiceContextNameProvider.class,
@@ -101,9 +98,7 @@ public class BakeryServiceIT {
             UtcClock.class,
 
             JsonObjectConvertersProducer.class
-    },
-            cdiAlternatives = {PostgresJobSqlProvider.class}
-    )
+    })
 
     public WebApp war() {
         return new WebApp()

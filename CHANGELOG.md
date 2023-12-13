@@ -5,9 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [17.3.2] - 2023-12-12
-### Changed
+## [17.4.0] - 2023-12-13
+### Added
 - Add retry mechanism to jobstore
+### Removed
+- Remove the ability for the jobstore to support multiple databases with differing sql syntax.
+  Jobstore is now postgres only, to match the rest of the framework code
 
 ## [17.3.1] - 2023-11-27
 ### Changed

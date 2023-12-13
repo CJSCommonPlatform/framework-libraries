@@ -57,7 +57,6 @@ public class JobJdbcRepositoryTest {
         jdbcRepository.logger = mock(Logger.class);
         jdbcRepository.preparedStatementWrapperFactory = new PreparedStatementWrapperFactory();
         jdbcRepository.jdbcResultSetStreamer = new JdbcResultSetStreamer();
-        jdbcRepository.jobSqlProvider = new PostgresJobSqlProvider();
         checkIfReady();
     }
 

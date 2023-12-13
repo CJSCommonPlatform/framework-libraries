@@ -33,6 +33,8 @@ import org.slf4j.Logger;
 @ApplicationScoped
 public class JobJdbcRepository implements JobRepository {
 
+    private static final String INSERT_JOB_SQL = "INSERT INTO job(job_id,worker_id,worker_lock_time,next_task,next_task_start_time,job_data,retry_attempts_remaining) values (?,?,?,?,?,to_jsonb(?::json),?)";
+    private static final String UPDATE_JOB_DATA_SQL = "UPDATE job SET job_data = to_jsonb(?::json) WHERE job_id = ?";
     private static final String UPDATE_NEXT_TASK_DETAILS_SQL = "UPDATE job set next_task= ?, next_task_start_time= ?, retry_attempts_remaining= ? where job_id= ? ";
     private static final String UPDATE_NEXT_TASK_RETRY_DETAILS_SQL = "UPDATE job set next_task_start_time= ?, retry_attempts_remaining= ? where job_id= ? ";
     private static final String DELETE_JOB_SQL = "DELETE from job where job_id= ? ";
@@ -52,9 +54,6 @@ public class JobJdbcRepository implements JobRepository {
     protected JdbcResultSetStreamer jdbcResultSetStreamer;
 
     @Inject
-    protected JobSqlProvider jobSqlProvider;
-
-    @Inject
     protected Logger logger;
 
     @Inject
@@ -67,7 +66,7 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void insertJob(final Job job) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, jobSqlProvider.getInsertSql())) {
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, INSERT_JOB_SQL)) {
             ps.setObject(1, job.getJobId());
             ps.setObject(2, job.getWorkerId().orElse(null));
             ps.setTimestamp(3, convertToTimestamp(job.getWorkerLockTime()));
@@ -85,7 +84,7 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void updateJobData(final UUID jobId, final JsonObject jobData) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, jobSqlProvider.getUpdateJobDataSql())) {
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, UPDATE_JOB_DATA_SQL)) {
             ps.setString(1, jobData.toString());
             ps.setObject(2, jobId);
             ps.executeUpdate();

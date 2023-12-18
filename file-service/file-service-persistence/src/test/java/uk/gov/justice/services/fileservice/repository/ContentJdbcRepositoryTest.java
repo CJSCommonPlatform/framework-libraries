@@ -11,7 +11,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.DataIntegrityException;
 import uk.gov.justice.services.fileservice.api.StorageException;
 
@@ -20,16 +22,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class ContentJdbcRepositoryTest {
+
+    @Mock
+    private UtcClock clock;
 
     @InjectMocks
     private ContentJdbcRepository contentJdbcRepository;
@@ -118,7 +125,7 @@ public class ContentJdbcRepositoryTest {
     public void shouldFindFileContentByFileId() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "SELECT content FROM content WHERE file_id = ?";
+        final String sql = "SELECT deleted, content FROM content WHERE file_id = ?";
 
         final InputStream contentStream = mock(InputStream.class);
         final Connection connection = mock(Connection.class);
@@ -128,7 +135,8 @@ public class ContentJdbcRepositoryTest {
         when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
-        when(resultSet.getBinaryStream(1)).thenReturn(contentStream);
+        when(resultSet.getBoolean(1)).thenReturn(false);
+        when(resultSet.getBinaryStream(2)).thenReturn(contentStream);
 
         final FileContent fileContent = contentJdbcRepository
                 .findByFileId(fileId, connection)
@@ -147,7 +155,8 @@ public class ContentJdbcRepositoryTest {
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeQuery();
         inOrder.verify(resultSet).next();
-        inOrder.verify(resultSet).getBinaryStream(1);
+        inOrder.verify(resultSet).getBoolean(1);
+        inOrder.verify(resultSet).getBinaryStream(2);
         inOrder.verify(resultSet).close();
         inOrder.verify(preparedStatement).close();
 
@@ -158,7 +167,7 @@ public class ContentJdbcRepositoryTest {
     public void shouldReturnEmptyIfNoFileFound() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "SELECT content FROM content WHERE file_id = ?";
+        final String sql = "SELECT deleted, content FROM content WHERE file_id = ?";
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
@@ -188,12 +197,10 @@ public class ContentJdbcRepositoryTest {
     }
 
     @Test
-    public void shouldThrowStorageExceptionIfAnyOfTheSqlStatementsFail() throws Exception {
-
-        final SQLException sqlException = new SQLException("Ooops");
-        final String sql = "SELECT content FROM content WHERE file_id = ?";
+    public void shouldReturnEmptyIfFileIsMarkedAsDeleted() throws Exception {
 
         final UUID fileId = randomUUID();
+        final String sql = "SELECT deleted, content FROM content WHERE file_id = ?";
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
@@ -202,11 +209,9 @@ public class ContentJdbcRepositoryTest {
         when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
-        when(resultSet.getBinaryStream(1)).thenThrow(sqlException);
+        when(resultSet.getBoolean(1)).thenReturn(true);
 
-        final StorageException expected = assertThrows(StorageException.class, () -> contentJdbcRepository.findByFileId(fileId, connection));
-        assertThat(expected.getCause(), is(sqlException));
-        assertThat(expected.getMessage(), is("Failed to read metadata using file id " + fileId));
+        assertThat(contentJdbcRepository.findByFileId(fileId, connection), is(empty()));
 
         final InOrder inOrder = inOrder(
                 connection,
@@ -219,6 +224,49 @@ public class ContentJdbcRepositoryTest {
         inOrder.verify(preparedStatement).setObject(1, fileId);
         inOrder.verify(preparedStatement).executeQuery();
         inOrder.verify(resultSet).next();
+        inOrder.verify(resultSet).getBoolean(1);
+        inOrder.verify(resultSet).close();
+        inOrder.verify(preparedStatement).close();
+
+        verify(connection, never()).close();
+
+    }
+
+    @Test
+    public void shouldThrowStorageExceptionIfAnyOfTheSqlStatementsFail() throws Exception {
+
+        final SQLException sqlException = new SQLException("Ooops");
+        final String sql = "SELECT deleted, content FROM content WHERE file_id = ?";
+
+        final UUID fileId = randomUUID();
+
+        final Connection connection = mock(Connection.class);
+        final PreparedStatement preparedStatement = mock(PreparedStatement.class);
+        final ResultSet resultSet = mock(ResultSet.class);
+
+        when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getBoolean(1)).thenReturn(false);
+        when(resultSet.getBinaryStream(2)).thenThrow(sqlException);
+
+        final StorageException expected = assertThrows(StorageException.class, () -> contentJdbcRepository.findByFileId(fileId, connection));
+        assertThat(expected.getCause(), is(sqlException));
+        assertThat(expected.getMessage(), is("Failed to read content of file with file id " + fileId));
+
+        final InOrder inOrder = inOrder(
+                connection,
+                preparedStatement,
+                resultSet,
+                preparedStatement,
+                resultSet);
+
+        inOrder.verify(connection).prepareStatement(sql);
+        inOrder.verify(preparedStatement).setObject(1, fileId);
+        inOrder.verify(preparedStatement).executeQuery();
+        inOrder.verify(resultSet).next();
+        inOrder.verify(resultSet).getBoolean(1);
+        inOrder.verify(resultSet).getBinaryStream(2);
         inOrder.verify(resultSet).close();
         inOrder.verify(preparedStatement).close();
 
@@ -229,12 +277,14 @@ public class ContentJdbcRepositoryTest {
     public void shouldDeleteAFileById() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "DELETE FROM content WHERE file_id = ?";
+        final String sql = "UPDATE content SET deleted = true, deleted_at = ? WHERE file_id = ?";
         final int rowsAffected = 1;
+        final ZonedDateTime now = new UtcClock().now();
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
+        when(clock.now()).thenReturn(now);
         when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsAffected);
 
@@ -243,7 +293,8 @@ public class ContentJdbcRepositoryTest {
         final InOrder inOrder = inOrder(connection, preparedStatement);
 
         inOrder.verify(connection).prepareStatement(sql);
-        inOrder.verify(preparedStatement).setObject(1, fileId);
+        inOrder.verify(preparedStatement).setTimestamp(1, toSqlTimestamp(now));
+        inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
 
@@ -254,12 +305,14 @@ public class ContentJdbcRepositoryTest {
     public void shouldThrowDataIntegrityExceptionIfDeletingAFileAffectsMoreThanOneRow() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "DELETE FROM content WHERE file_id = ?";
+        final String sql = "UPDATE content SET deleted = true, deleted_at = ? WHERE file_id = ?";
         final int rowsAffected = 2;
+        final ZonedDateTime now = new UtcClock().now();
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
+        when(clock.now()).thenReturn(now);
         when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(rowsAffected);
 
@@ -273,7 +326,8 @@ public class ContentJdbcRepositoryTest {
         final InOrder inOrder = inOrder(connection, preparedStatement);
 
         inOrder.verify(connection).prepareStatement(sql);
-        inOrder.verify(preparedStatement).setObject(1, fileId);
+        inOrder.verify(preparedStatement).setTimestamp(1, toSqlTimestamp(now));
+        inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
 
@@ -284,12 +338,14 @@ public class ContentJdbcRepositoryTest {
     public void shouldThrowStorageExceptionIfDeletingAFileThrowsAnSqlException() throws Exception {
 
         final UUID fileId = randomUUID();
-        final String sql = "DELETE FROM content WHERE file_id = ?";
+        final String sql = "UPDATE content SET deleted = true, deleted_at = ? WHERE file_id = ?";
+        final ZonedDateTime now = new UtcClock().now();
         final SQLException sqlException = new SQLException("Ooops");
 
         final Connection connection = mock(Connection.class);
         final PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
+        when(clock.now()).thenReturn(now);
         when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenThrow(sqlException);
 
@@ -304,7 +360,8 @@ public class ContentJdbcRepositoryTest {
         final InOrder inOrder = inOrder(connection, preparedStatement);
 
         inOrder.verify(connection).prepareStatement(sql);
-        inOrder.verify(preparedStatement).setObject(1, fileId);
+        inOrder.verify(preparedStatement).setTimestamp(1, toSqlTimestamp(now));
+        inOrder.verify(preparedStatement).setObject(2, fileId);
         inOrder.verify(preparedStatement).executeUpdate();
         inOrder.verify(preparedStatement).close();
 

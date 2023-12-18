@@ -136,7 +136,6 @@ public class FileStore {
     public void delete(final UUID fileId) throws FileServiceException {
 
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
-            metadataJdbcRepository.delete(fileId, connection);
             contentJdbcRepository.delete(fileId, connection);
         } catch (final SQLException e) {
             throw new StorageException("Failed to delete file from the database", e);

@@ -5,9 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [17.4.0] - 2023-12-13
+## [17.5.0] - 2023-12-19
 ### Added
+- Date deleted column to the file store content table
 - Add retry mechanism to jobstore
+### Changed
+- Change file store to soft delete files in the content table   
 ### Removed
 - Remove the ability for the jobstore to support multiple databases with differing sql syntax.
   Jobstore is now postgres only, to match the rest of the framework code

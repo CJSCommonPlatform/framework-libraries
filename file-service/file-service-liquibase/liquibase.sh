@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CONTEXT_NAME=framework
-FRAMEWORK_LIBRARIES_VERSION=11.0.0-M15-SNAPSHOT
+FRAMEWORK_LIBRARIES_VERSION=17.3.3-SNAPSHOT
 
 #fail script on error
 set -e

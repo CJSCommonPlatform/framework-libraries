@@ -7,7 +7,11 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.common.converter.ZonedDateTimes.fromSqlTimestamp;
 
+import uk.gov.justice.services.common.converter.ZonedDateTimes;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.utils.test.FileStoreTestDataSourceProvider;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 
@@ -20,18 +24,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 public class ContentJdbcRepositoryIT {
 
     private static final String LIQUIBASE_FILE_STORE_DB_CHANGELOG_XML = "liquibase/file-service-liquibase-db-changelog.xml";
 
-    private final ContentJdbcRepository contentJdbcRepository = new ContentJdbcRepository();
+    @Mock
+    private UtcClock clock;
+
+    @InjectMocks
+    private ContentJdbcRepository contentJdbcRepository;
+
     private final LiquibaseDatabaseBootstrapper liquibaseDatabaseBootstrapper = new LiquibaseDatabaseBootstrapper();
 
     private Connection connection;
@@ -84,10 +99,13 @@ public class ContentJdbcRepositoryIT {
     }
 
     @Test
-    public void shouldDeleteFileContent() throws Exception {
+    public void shouldMarkFileContentAsDeletedWithDeletedDateOnDelete() throws Exception {
 
         final UUID fileId = randomUUID();
         final File inputFile = getFile("/for-testing-file-store.jpg");
+        final ZonedDateTime now = new UtcClock().now();
+
+        when(clock.now()).thenReturn(now);
 
         final InputStream content = new FileInputStream(inputFile);
         contentJdbcRepository.insert(fileId, content, connection);
@@ -98,7 +116,7 @@ public class ContentJdbcRepositoryIT {
                 .findByFileId(fileId, connection)
                 .orElseThrow(() -> new AssertionError("Failed to find file content"));
 
-        fileContent.getContent().close();
+        fileContent.close();
 
         contentJdbcRepository.delete(fileId, connection);
 
@@ -107,11 +125,17 @@ public class ContentJdbcRepositoryIT {
 
         assertThat(deletedFileContent.isPresent(), is(false));
 
-        try(final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from content where file_id = ?")) {
+        try(final PreparedStatement preparedStatement = connection.prepareStatement("SELECT deleted, deleted_at from content where file_id = ?")) {
             preparedStatement.setObject(1, fileId);
 
             try(final ResultSet resultSet = preparedStatement.executeQuery()) {
-                assertThat(resultSet.next(), is(false));
+                assertThat(resultSet.next(), is(true ));
+
+                final boolean deleted = resultSet.getBoolean(1);
+                final ZonedDateTime dateDeleted = fromSqlTimestamp(resultSet.getTimestamp(2));
+
+                assertThat(deleted, is(true));
+                assertThat(dateDeleted, is(now));
             }
         }
 

@@ -42,7 +42,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 @ExtendWith(MockitoExtension.class)
 public class FileStoreTest {
 
@@ -212,9 +211,7 @@ public class FileStoreTest {
         fileStore.find(fileId);
 
         verify(connection).close();
-
     }
-
 
     @Test
     public void shouldThrowADataIntegrityExceptionIfMetadataFoundButNoContent() throws Exception {
@@ -396,7 +393,7 @@ public class FileStoreTest {
     }
 
     @Test
-    public void shouldDeleteBothTheContentAndMetadata() throws Exception {
+    public void shouldSoftDeleteTheContentButNotTheMetadata() throws Exception {
 
         final UUID fileId = randomUUID();
 
@@ -415,9 +412,10 @@ public class FileStoreTest {
                 connection);
 
         inOrder.verify(dataSourceProvider).getDatasource();
-        inOrder.verify(metadataJdbcRepository).delete(fileId, connection);
         inOrder.verify(contentJdbcRepository).delete(fileId, connection);
         inOrder.verify(connection).close();
+
+        verify(metadataJdbcRepository, never()).delete(fileId, connection);
     }
 
     @Test

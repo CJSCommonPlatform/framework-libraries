@@ -3,7 +3,9 @@ package uk.gov.justice.services.fileservice.repository;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.DataIntegrityException;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.StorageException;
@@ -15,6 +17,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.inject.Inject;
 
 /**
  * Class for handling inserts/updates/selects on the 'content' database table. This class is not
@@ -29,9 +33,12 @@ import java.util.UUID;
  */
 public class ContentJdbcRepository {
 
-    public static final String SQL_FIND_BY_FILE_ID = "SELECT content FROM content WHERE file_id = ?";
+    public static final String SQL_FIND_BY_FILE_ID = "SELECT deleted, content FROM content WHERE file_id = ?";
     public static final String SQL_INSERT_CONTENT = "INSERT INTO content(file_id, content, deleted) VALUES(?, ?, ?)";
-    public static final String SQL_DELETE_CONTENT = "DELETE FROM content WHERE file_id = ?";
+    public static final String SQL_DELETE_CONTENT = "UPDATE content SET deleted = true, deleted_at = ? WHERE file_id = ?";
+
+    @Inject
+    private UtcClock clock;
 
     /**
      * Inserts the content into the content table as an array of bytes[]
@@ -81,12 +88,17 @@ public class ContentJdbcRepository {
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    final InputStream contentStream = resultSet.getBinaryStream(1);
+                    final boolean deleted = resultSet.getBoolean(1);
+                    if(deleted) {
+                        return empty();
+                    }
+
+                    final InputStream contentStream = resultSet.getBinaryStream(2);
                     return of(new FileContent(contentStream));
                 }
             }
         } catch (final SQLException e) {
-            throw new StorageException(format("Failed to read metadata using file id %s", fileId), e);
+            throw new StorageException(format("Failed to read content of file with file id %s", fileId), e);
         }
 
         return empty();
@@ -95,7 +107,8 @@ public class ContentJdbcRepository {
     public void delete(final UUID fileId, final Connection connection) throws FileServiceException {
         try (final PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_CONTENT)) {
 
-            preparedStatement.setObject(1, fileId);
+            preparedStatement.setTimestamp(1, toSqlTimestamp(clock.now()));
+            preparedStatement.setObject(2, fileId);
             final int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected != 1) {

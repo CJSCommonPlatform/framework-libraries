@@ -7,5 +7,6 @@
     <include file="liquibase/jobstore-changesets/002a-add-job-data-column-h2.xml"/>
     <include file="liquibase/jobstore-changesets/002b-add-job-data-column-postgres.xml"/>
     <include file="liquibase/jobstore-changesets/003-add-retry-attempts-remaining-column.xml"/>
+    <include file="liquibase/jobstore-changesets/004-copy-retry-attempts-to-new-column.xml"/>
 
 </databaseChangeLog>

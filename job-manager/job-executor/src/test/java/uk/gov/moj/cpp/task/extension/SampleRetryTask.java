@@ -1,14 +1,15 @@
 package uk.gov.moj.cpp.task.extension;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
+import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
+
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 
-import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
-import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Task("sample-retry-task")
 public class SampleRetryTask implements ExecutableTask {

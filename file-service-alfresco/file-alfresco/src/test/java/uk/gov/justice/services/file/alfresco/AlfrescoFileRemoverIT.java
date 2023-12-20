@@ -9,7 +9,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static java.lang.String.format;
 import static java.util.UUID.randomUUID;
-import static org.apache.openejb.util.NetworkUtil.getNextAvailablePort;
 
 import uk.gov.justice.services.file.api.remover.FileRemover;
 

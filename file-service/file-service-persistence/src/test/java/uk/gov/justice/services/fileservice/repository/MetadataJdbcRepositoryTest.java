@@ -33,10 +33,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class MetadataJdbcRepositoryTest {
-
-    @Mock
-    private MetadataSqlProvider metadataSqlProvider;
-
+    
     @InjectMocks
     private MetadataJdbcRepository metadataJdbcRepository;
 

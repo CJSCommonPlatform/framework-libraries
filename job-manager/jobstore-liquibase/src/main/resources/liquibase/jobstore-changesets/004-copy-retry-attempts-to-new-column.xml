@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="job-store-004" author="Tech Pod"
+               logicalFilePath="004-copy-retry-attempts-to-new-column.xml">
+        <sql>
+            -- Extract value of 'retryAttemptsRemaining' field from job_data JSONB column and copy it to newly introduced column 'retry_attempts_remaining'
+            UPDATE job
+            SET retry_attempts_remaining = (job_data->>'retryAttemptsRemaining')::numeric
+            WHERE job_data->'retryAttemptsRemaining' IS NOT NULL;
+        </sql>
+
+        <sql>
+            -- Remove 'retryAttemptsRemaining' field from job_data JSONB column if it exists
+            UPDATE job
+            SET job_data = job_data #- '{retryAttemptsRemaining}'
+            WHERE job_data->'retryAttemptsRemaining' IS NOT NULL;
+        </sql>
+
+        <sql>
+            -- Remove 'retryType' field from job_data JSONB column if it exists
+            UPDATE job
+            SET job_data = job_data #- '{retryType}'
+            WHERE job_data->'retryType' IS NOT NULL;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add liquibase sqls to migrate job table data to align with new job retries implementation 
 
 ## [17.5.0] - 2023-12-19
 ### Added

@@ -8,6 +8,7 @@ import static java.util.stream.IntStream.range;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.cdi.InitialContextProducer;
 import uk.gov.justice.services.cdi.LoggerProducer;
@@ -21,6 +22,7 @@ import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 
@@ -86,7 +88,7 @@ public class JobServiceIT {
             ValueProducer.class,
             JndiBasedServiceContextNameProvider.class,
             InitialContextProducer.class,
-            Integer.class
+            JobStoreConfiguration.class
     })
 
     public WebApp war() {
@@ -107,7 +109,6 @@ public class JobServiceIT {
         final InitialContext initialContext = new InitialContext();
         initialContext.bind("java:/app/JobServiceIT/DS.jobstore", dataSource);
         initEventDatabase();
-        setField(jobService, "jobCount", "10");
     }
 
     @Configuration
@@ -144,7 +145,7 @@ public class JobServiceIT {
         userTransaction.begin();
         for (int i = 0; i < 4; i++) {
             final UUID workerId = randomUUID();
-            jobService.getUnassignedJobsFor(workerId);
+            jobService.getUnassignedJobsFor(workerId, HIGH);
             collectInfo(workerId);
         }
         userTransaction.commit();
@@ -166,13 +167,13 @@ public class JobServiceIT {
         userTransaction.begin();
         for (int i = 0; i < 4; i++) {
             final UUID workerId = randomUUID();
-            jobService.getUnassignedJobsFor(workerId);
+            jobService.getUnassignedJobsFor(workerId, HIGH);
             collectInfo(workerId);
         }
         userTransaction.commit();
 
         detectDuplicates();
-        assertThat(testJobJdbcRepository.jobsProcessed(), CoreMatchers.is(25));
+        assertThat(testJobJdbcRepository.jobsProcessed(), is(25));
     }
 
     @Test
@@ -201,7 +202,7 @@ public class JobServiceIT {
                 gate.await();
                 userTransaction.begin();
                 final UUID workerId = randomUUID();
-                jobService.getUnassignedJobsFor(workerId);
+                jobService.getUnassignedJobsFor(workerId, HIGH);
                 collectInfo(workerId);
                 userTransaction.commit();
 

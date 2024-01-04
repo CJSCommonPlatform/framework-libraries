@@ -25,6 +25,6 @@ public class DefaultExecutionService implements ExecutionService {
     public void executeWith(final ExecutionInfo executionInfo) {
         final Integer retryAttemptsRemaining = taskRegistry.findRetryAttemptsRemainingFor(executionInfo.getNextTask());
         jobService.insertJob(new Job(randomUUID(), executionInfo.getJobData(),
-                executionInfo.getNextTask(), executionInfo.getNextTaskStartTime(), empty(), empty(), retryAttemptsRemaining));
+                executionInfo.getNextTask(), executionInfo.getNextTaskStartTime(), empty(), empty(), retryAttemptsRemaining, executionInfo.getPriority()));
     }
 }

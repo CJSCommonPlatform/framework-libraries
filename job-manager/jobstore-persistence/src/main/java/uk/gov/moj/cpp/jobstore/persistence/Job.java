@@ -15,6 +15,7 @@ public class Job {
     private final ZonedDateTime nextTaskStartTime;
     private final JsonObject jobData;
     private final int retryAttemptsRemaining;
+    private final int priority;
 
     public Job(final UUID jobId,
                final JsonObject jobData,
@@ -22,7 +23,8 @@ public class Job {
                final ZonedDateTime nextTaskStartTime,
                final Optional<UUID> workerId,
                final Optional<ZonedDateTime> workerLockTime,
-               final Integer retryAttemptsRemaining) {
+               final Integer retryAttemptsRemaining,
+               final Integer priority) {
         this.jobId = jobId;
         this.workerId = workerId;
         this.workerLockTime = workerLockTime;
@@ -30,6 +32,7 @@ public class Job {
         this.nextTask = nextTask;
         this.nextTaskStartTime = nextTaskStartTime;
         this.retryAttemptsRemaining = retryAttemptsRemaining;
+        this.priority = priority;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class Job {
                 .append(", nextTask='").append(nextTask).append("'\\")
                 .append(", nextTaskStartTime=").append(nextTaskStartTime)
                 .append(", retryAttemptsRemaining=").append(retryAttemptsRemaining)
+                .append(", priority=").append(priority)
                 .append("]");
 
         return sb.toString();
@@ -79,6 +83,10 @@ public class Job {
         return retryAttemptsRemaining;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
     public static class Builder {
 
         private UUID jobId;
@@ -88,6 +96,7 @@ public class Job {
         private String nextTask;
         private ZonedDateTime nextTaskStartTime;
         private Integer retryAttemptsRemaining;
+        private Integer priority;
 
         private Builder(){}
 
@@ -99,11 +108,12 @@ public class Job {
             this.nextTask = job.nextTask;
             this.nextTaskStartTime = job.nextTaskStartTime;
             this.retryAttemptsRemaining = job.retryAttemptsRemaining;
+            this.priority = job.priority;
             return this;
         }
 
         public Job build() {
-            return new Job(jobId, jobData, nextTask, nextTaskStartTime, workerId, workerLockTime, retryAttemptsRemaining);
+            return new Job(jobId, jobData, nextTask, nextTaskStartTime, workerId, workerLockTime, retryAttemptsRemaining, priority);
         }
 
         public Builder withJobId(final UUID jobId) {
@@ -138,6 +148,11 @@ public class Job {
 
         public Builder withRetryAttemptsRemaining(final Integer retryAttemptsRemaining) {
             this.retryAttemptsRemaining = retryAttemptsRemaining;
+            return this;
+        }
+
+        public Builder withPriority(final Integer priority) {
+            this.priority = priority;
             return this;
         }
     }

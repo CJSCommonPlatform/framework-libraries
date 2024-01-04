@@ -70,7 +70,8 @@ public class JobServiceTest {
         final String startTask = "startTask";
         final ZonedDateTime startTime = ZonedDateTime.now();
         final Integer retryAttemptsRemaining = 1;
-        final Job mockJob = new Job(jobId, jobData, startTask, startTime, empty(), empty(), retryAttemptsRemaining);
+        final Integer priority = 1;
+        final Job mockJob = new Job(jobId, jobData, startTask, startTime, empty(), empty(), retryAttemptsRemaining, priority);
 
 
         jobService.insertJob(mockJob);
@@ -83,6 +84,7 @@ public class JobServiceTest {
         assertThat(jobToInsert.getNextTaskStartTime(), is(startTime));
         assertThat(jobToInsert.getJobData(), is(jobData));
         assertThat(jobToInsert.getRetryAttemptsRemaining(), is(retryAttemptsRemaining));
+        assertThat(jobToInsert.getPriority(), is(priority));
     }
 
     @Test

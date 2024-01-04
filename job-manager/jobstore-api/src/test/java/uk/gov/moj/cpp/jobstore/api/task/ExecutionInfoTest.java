@@ -36,7 +36,8 @@ public class ExecutionInfoTest {
         final ExecutionInfo originalExecutionInfo = new ExecutionInfo(jobData,
                 NEXT_TASK,
                 nextTaskStartTime,
-                ExecutionStatus.INPROGRESS);
+                ExecutionStatus.INPROGRESS,
+                1);
 
         final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().from(originalExecutionInfo).build();
 
@@ -48,7 +49,7 @@ public class ExecutionInfoTest {
 
     @Test
     public void shouldPopulateBuilderFromJob() {
-        final Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 0);
+        final Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 0, 1);
 
         final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().fromJob(job).build();
 

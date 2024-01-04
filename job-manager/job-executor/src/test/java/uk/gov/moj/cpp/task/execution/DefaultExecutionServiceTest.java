@@ -45,7 +45,7 @@ public class DefaultExecutionServiceTest {
         final JsonObject jobData = createObjectBuilder().add("testName", "testValue").build();
         final String startTask = "startTask";
         final ZonedDateTime startTime = ZonedDateTime.now();
-        final ExecutionInfo mockJob = new ExecutionInfo(jobData, startTask, startTime, ExecutionStatus.STARTED, true);
+        final ExecutionInfo mockJob = new ExecutionInfo(jobData, startTask, startTime, ExecutionStatus.STARTED, true, 1);
 
         when(taskRegistry.findRetryAttemptsRemainingFor(startTask)).thenReturn(1);
 

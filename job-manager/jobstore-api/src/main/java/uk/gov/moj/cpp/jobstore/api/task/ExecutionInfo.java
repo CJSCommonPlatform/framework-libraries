@@ -12,24 +12,28 @@ public class ExecutionInfo {
     private final ZonedDateTime nextTaskStartTime;
     private final ExecutionStatus executionStatus;
     private final boolean shouldRetry;
+    private Integer priority;
 
     public ExecutionInfo(final JsonObject jobData,
                          final String nextTask,
                          final ZonedDateTime nextTaskStartTime,
-                         final ExecutionStatus executionStatus) {
-        this(jobData, nextTask, nextTaskStartTime, executionStatus, false);
+                         final ExecutionStatus executionStatus,
+                         final Integer priority) {
+        this(jobData, nextTask, nextTaskStartTime, executionStatus, false, priority);
     }
 
     public ExecutionInfo(final JsonObject jobData,
                          final String nextTask,
                          final ZonedDateTime nextTaskStartTime,
                          final ExecutionStatus executionStatus,
-                         boolean shouldRetry) {
+                         boolean shouldRetry,
+                         final Integer priority) {
         this.jobData = jobData;
         this.nextTask = nextTask;
         this.nextTaskStartTime = nextTaskStartTime;
         this.executionStatus = executionStatus;
         this.shouldRetry = shouldRetry;
+        this.priority = priority;
     }
 
     public String getNextTask() {
@@ -56,6 +60,10 @@ public class ExecutionInfo {
         return jobData;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
     public static class Builder {
 
         private JsonObject jobData;
@@ -63,6 +71,7 @@ public class ExecutionInfo {
         private ZonedDateTime nextTaskStartTime;
         private ExecutionStatus executionStatus;
         private boolean shouldRetry;
+        private Integer priority;
 
         private Builder() {
         }
@@ -73,6 +82,7 @@ public class ExecutionInfo {
             this.nextTaskStartTime = executionInfo.nextTaskStartTime;
             this.executionStatus = executionInfo.executionStatus;
             this.shouldRetry = executionInfo.shouldRetry;
+            this.priority = executionInfo.priority;
             return this;
         }
 
@@ -84,7 +94,7 @@ public class ExecutionInfo {
                 throw new InvalidRetryExecutionInfoException("retry exhaust task details (jobData, nextTask, nextTaskStartTime) must not be null when shouldRetry is true");
             }
 
-            return new ExecutionInfo(jobData, nextTask, nextTaskStartTime, executionStatus, shouldRetry);
+            return new ExecutionInfo(jobData, nextTask, nextTaskStartTime, executionStatus, shouldRetry, priority);
         }
 
         public Builder withJobData(final JsonObject jobData) {
@@ -112,11 +122,17 @@ public class ExecutionInfo {
             return this;
         }
 
+        public Builder withPriority(final Integer priority) {
+            this.priority = priority;
+            return this;
+        }
+
         public Builder fromJob(final Job job) {
             this.executionStatus = ExecutionStatus.STARTED;
             this.jobData = job.getJobData();
             this.nextTask = job.getNextTask();
             this.nextTaskStartTime = job.getNextTaskStartTime();
+            this.priority = job.getPriority();
             return this;
         }
     }

@@ -252,7 +252,7 @@ public class JobExecutorTest {
         final UUID jobId = randomUUID();
         final JsonObject jobData = mock(JsonObject.class);
         final NotSupportedException notSupportedException = new NotSupportedException();
-        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0);
+        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0, 1);
         final JobExecutor jobExecutor = createJobExecutor(job);
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
@@ -270,7 +270,7 @@ public class JobExecutorTest {
         final JsonObject jobData = mock(JsonObject.class);
         final NotSupportedException notSupportedException = new NotSupportedException();
         final SystemException systemException = new SystemException();
-        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0);
+        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0, 1);
         final JobExecutor jobExecutor = createJobExecutor(job);
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
@@ -297,6 +297,7 @@ public class JobExecutorTest {
                 .withNextTaskStartTime(nextTaskStartTime)
                 .withNextTask("taskName")
                 .withRetryAttemptsRemaining(retryAttemptsRemaining)
+                .withPriority(1)
                 .build();
     }
 }

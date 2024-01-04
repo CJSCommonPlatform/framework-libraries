@@ -33,13 +33,13 @@ import org.slf4j.Logger;
 @ApplicationScoped
 public class JobJdbcRepository implements JobRepository {
 
-    private static final String INSERT_JOB_SQL = "INSERT INTO job(job_id,worker_id,worker_lock_time,next_task,next_task_start_time,job_data,retry_attempts_remaining) values (?,?,?,?,?,to_jsonb(?::json),?)";
+    private static final String INSERT_JOB_SQL = "INSERT INTO job(job_id,worker_id,worker_lock_time,next_task,next_task_start_time,job_data,retry_attempts_remaining,priority) values (?,?,?,?,?,to_jsonb(?::json),?,?)";
     private static final String UPDATE_JOB_DATA_SQL = "UPDATE job SET job_data = to_jsonb(?::json) WHERE job_id = ?";
     private static final String UPDATE_NEXT_TASK_DETAILS_SQL = "UPDATE job set next_task= ?, next_task_start_time= ?, retry_attempts_remaining= ? where job_id= ? ";
     private static final String UPDATE_NEXT_TASK_RETRY_DETAILS_SQL = "UPDATE job set next_task_start_time= ?, retry_attempts_remaining= ? where job_id= ? ";
     private static final String DELETE_JOB_SQL = "DELETE from job where job_id= ? ";
     private static final String RELEASE_JOB_SQL = "UPDATE job set worker_id= null, worker_lock_time= null where job_id= ? ";
-    private static final String JOBS_LOCKED_TO_SQL = "SELECT job_id, job_data, worker_id, worker_lock_time, next_task, next_task_start_time, retry_attempts_remaining from job WHERE worker_id= ?";
+    private static final String JOBS_LOCKED_TO_SQL = "SELECT job_id, job_data, worker_id, worker_lock_time, next_task, next_task_start_time, retry_attempts_remaining, priority from job WHERE worker_id= ?";
 
     private static final String LOCK_JOBS_SQL = "UPDATE job set worker_id= ? , worker_lock_time= ? where job_id in " +
             "(select job_id from job where (worker_id is null or worker_lock_time < ?) and next_task_start_time < ? limit ? for update) " +
@@ -74,6 +74,7 @@ public class JobJdbcRepository implements JobRepository {
             ps.setTimestamp(5, convertToTimestamp(job.getNextTaskStartTime()));
             ps.setString(6, job.getJobData().toString());
             ps.setInt(7, job.getRetryAttemptsRemaining());
+            ps.setInt(8, job.getPriority());
             ps.executeUpdate();
         } catch (final SQLException e) {
             logger.error("Error storing job to the database", e);
@@ -186,7 +187,8 @@ public class JobJdbcRepository implements JobRepository {
                         getZoneDateTime(resultSet, "next_task_start_time"),
                         of(getUUID(resultSet, "worker_id")),
                         of(getZoneDateTime(resultSet, "worker_lock_time")),
-                        resultSet.getInt("retry_attempts_remaining"));
+                        resultSet.getInt("retry_attempts_remaining"),
+                        resultSet.getInt("priority"));
             } catch (final SQLException e) {
                 throw new JdbcRepositoryException("Unexpected SQLException mapping ResultSet to Job instance", e);
             }

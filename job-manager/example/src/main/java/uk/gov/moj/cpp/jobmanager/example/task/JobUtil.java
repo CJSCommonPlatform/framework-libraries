@@ -32,6 +32,7 @@ public class JobUtil {
                 .withNextTask(nextStep.toString())
                 .withNextTaskStartTime(ZonedDateTime.now())
                 .withExecutionStatus(nextExecutionStatus)
+                .withPriority(1)
                 .build();
     }
 
@@ -42,6 +43,7 @@ public class JobUtil {
                 .withNextTask(CAKE_MADE.toString())
                 .withNextTaskStartTime(nextTaskStartTime)
                 .withExecutionStatus(INPROGRESS)
+                .withPriority(1)
                 .build();
     }
 }

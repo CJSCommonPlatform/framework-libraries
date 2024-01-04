@@ -32,7 +32,7 @@ public class BakeryService {
 
         final MakeCakeWorkflow firstTask = MakeCakeWorkflow.firstTask();
 
-        final ExecutionInfo startCakeExecutionInfo = new ExecutionInfo(objectConverter.convert(firstTask.getTaskData()), firstTask.toString(), now(), ExecutionStatus.STARTED, true);
+        final ExecutionInfo startCakeExecutionInfo = new ExecutionInfo(objectConverter.convert(firstTask.getTaskData()), firstTask.toString(), now(), ExecutionStatus.STARTED, true, 1);
 
         try {
             userTransaction.begin();

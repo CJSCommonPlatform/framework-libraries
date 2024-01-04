@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.INPROGRESS;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
@@ -252,7 +253,7 @@ public class JobExecutorTest {
         final UUID jobId = randomUUID();
         final JsonObject jobData = mock(JsonObject.class);
         final NotSupportedException notSupportedException = new NotSupportedException();
-        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0);
+        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0, HIGH);
         final JobExecutor jobExecutor = createJobExecutor(job);
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
@@ -270,7 +271,7 @@ public class JobExecutorTest {
         final JsonObject jobData = mock(JsonObject.class);
         final NotSupportedException notSupportedException = new NotSupportedException();
         final SystemException systemException = new SystemException();
-        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0);
+        final Job job = new Job(jobId, jobData, "taskName", new UtcClock().now(), empty(), empty(), 0, HIGH);
         final JobExecutor jobExecutor = createJobExecutor(job);
 
         when(taskRegistry.getTask(eq("taskName"))).thenReturn(empty());
@@ -297,6 +298,7 @@ public class JobExecutorTest {
                 .withNextTaskStartTime(nextTaskStartTime)
                 .withNextTask("taskName")
                 .withRetryAttemptsRemaining(retryAttemptsRemaining)
+                .withPriority(HIGH)
                 .build();
     }
 }

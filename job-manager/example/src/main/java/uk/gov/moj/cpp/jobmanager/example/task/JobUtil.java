@@ -5,6 +5,7 @@ import static uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow.nextTask;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.INPROGRESS;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.moj.cpp.jobmanager.example.MakeCakeWorkflow;
@@ -32,6 +33,7 @@ public class JobUtil {
                 .withNextTask(nextStep.toString())
                 .withNextTaskStartTime(ZonedDateTime.now())
                 .withExecutionStatus(nextExecutionStatus)
+                .withPriority(HIGH)
                 .build();
     }
 
@@ -42,6 +44,7 @@ public class JobUtil {
                 .withNextTask(CAKE_MADE.toString())
                 .withNextTaskStartTime(nextTaskStartTime)
                 .withExecutionStatus(INPROGRESS)
+                .withPriority(HIGH)
                 .build();
     }
 }

@@ -23,9 +23,12 @@ import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.execution.JobScheduler;
+import uk.gov.moj.cpp.task.execution.JobStoreSchedulerPrioritySelector;
+import uk.gov.moj.cpp.task.execution.RandomPercentageProvider;
 import uk.gov.moj.cpp.task.extension.SampleTask;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
@@ -101,8 +104,12 @@ public class JobSchedulerIT {
             LoggerProducer.class,
             SampleTask.class,
 
-            InitialContextFactory.class
+            InitialContextFactory.class,
 
+            JobStoreConfiguration.class,
+            JobStoreSchedulerPrioritySelector.class,
+            DummyJobStoreSchedulerPrioritySelector.class,
+            RandomPercentageProvider.class
     })
 
     public WebApp war() {
@@ -115,17 +122,16 @@ public class JobSchedulerIT {
     private DataSource dataSource;
 
     @Inject
-    JobService jobService;
+    private JobService jobService;
 
     @Inject
-    JobScheduler jobScheduler;
+    private JobScheduler jobScheduler;
 
     @BeforeEach
     public void setup() throws Exception {
         final InitialContext initialContext = new InitialContext();
         initialContext.bind("java:/app/JobSchedulerIT/DS.jobstore", dataSource);
         initEventDatabase();
-        setField(jobService, "jobCount", "10");
     }
 
     @Configuration

@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
@@ -48,7 +49,7 @@ public class DefaultExecutionServiceTest {
         final JsonObject jobData = createObjectBuilder().add("testName", "testValue").build();
         final String startTask = "startTask";
         final ZonedDateTime startTime = ZonedDateTime.now();
-        final ExecutionInfo mockJob = new ExecutionInfo(jobData, startTask, startTime, ExecutionStatus.STARTED, true);
+        final ExecutionInfo mockJob = new ExecutionInfo(jobData, startTask, startTime, ExecutionStatus.STARTED, true, HIGH);
 
         when(taskRegistry.findRetryAttemptsRemainingFor(startTask)).thenReturn(1);
 

@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### changed
-- Fix for Jacksons single argument constructor issue inspired from  https://github.com/FasterXML/jackson-databind/issues/1498
 
-## [17.6.1-M1] - 2024-07-19
+## [17.6.2] - 2024-09-16
+### Added
+- Update jobstore to process tasks with higher priority first
+### Changed
+- Fix for Jackson single argument constructor issue inspired from  https://github.com/FasterXML/jackson-databind/issues/1498
+
+## [17.6.1] - 2024-07-19
 ### Changed
 - Moved job-store datasource providers to common module
 

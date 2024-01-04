@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.task.execution;
 
-
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 
@@ -17,15 +16,15 @@ import javax.inject.Inject;
 public class DefaultExecutionService implements ExecutionService {
 
     @Inject
-    JobService jobService;
+    private JobService jobService;
 
     @Inject
-    TaskRegistry taskRegistry;
+    private TaskRegistry taskRegistry;
 
     @Override
     public void executeWith(final ExecutionInfo executionInfo) {
         final Integer retryAttemptsRemaining = taskRegistry.findRetryAttemptsRemainingFor(executionInfo.getNextTask());
         jobService.insertJob(new Job(randomUUID(), executionInfo.getJobData(),
-                executionInfo.getNextTask(), executionInfo.getNextTaskStartTime(), empty(), empty(), retryAttemptsRemaining));
+                executionInfo.getNextTask(), executionInfo.getNextTaskStartTime(), empty(), empty(), retryAttemptsRemaining, executionInfo.getPriority()));
     }
 }

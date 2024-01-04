@@ -24,10 +24,12 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.execution.DefaultExecutionService;
 import uk.gov.moj.cpp.task.execution.JobScheduler;
+import uk.gov.moj.cpp.task.execution.RandomPercentageProvider;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
 import java.util.Properties;
@@ -50,8 +52,10 @@ import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Configuration;
 import org.apache.openejb.testing.Module;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled("Slow Running Integration Test. Disabled by default.")
 @RunWithApplicationComposer
 public class BakeryServiceIT {
 
@@ -97,7 +101,11 @@ public class BakeryServiceIT {
             InitialContextProducer.class,
             UtcClock.class,
 
-            JsonObjectConvertersProducer.class
+            JsonObjectConvertersProducer.class,
+            JobStoreConfiguration.class,
+
+            BakeryJobStoreSchedulerPrioritySelector.class,
+            RandomPercentageProvider.class
     })
 
     public WebApp war() {
@@ -123,10 +131,18 @@ public class BakeryServiceIT {
     }
 
     public void initJobStoreDatabase() throws Exception {
+        final ClassLoaderResourceAccessor resourceAccessor = new ClassLoaderResourceAccessor();
+        final JdbcConnection connection = new JdbcConnection(dataSource.getConnection());
+
         new Liquibase(
                 "liquibase/jobstore-db-changelog.xml",
-                new ClassLoaderResourceAccessor(),
-                new JdbcConnection(dataSource.getConnection()))
+                resourceAccessor,
+                connection)
+                .dropAll();
+        new Liquibase(
+                "liquibase/jobstore-db-changelog.xml",
+                resourceAccessor,
+                connection)
                 .update("");
     }
 

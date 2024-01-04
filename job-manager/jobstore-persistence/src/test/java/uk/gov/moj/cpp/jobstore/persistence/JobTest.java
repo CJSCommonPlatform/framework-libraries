@@ -4,6 +4,7 @@ import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.util.UtcClock;
 
@@ -30,14 +31,25 @@ public class JobTest {
 
     @Test
     public void shouldBuildNewJobFromExistingOne() {
-        final Job originalJob = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 1);
+        final Priority high = HIGH;
+        final int retryAttemptsRemaining = 1;
+        final Job originalJob = new Job(
+                randomUUID(),
+                jobData,
+                NEXT_TASK,
+                nextTaskStartTime,
+                empty(),
+                empty(),
+                retryAttemptsRemaining,
+                high);
 
         final Job copiedExecutionInfo = Job.job().from(originalJob).build();
 
         assertThat(copiedExecutionInfo.getJobData(), is(jobData));
         assertThat(copiedExecutionInfo.getNextTask(), is(NEXT_TASK));
         assertThat(copiedExecutionInfo.getNextTaskStartTime(), is(nextTaskStartTime));
-        assertThat(copiedExecutionInfo.getRetryAttemptsRemaining(), is(1));
+        assertThat(copiedExecutionInfo.getRetryAttemptsRemaining(), is(retryAttemptsRemaining));
+        assertThat(copiedExecutionInfo.getPriority(), is(high));
     }
 
 }

@@ -4,7 +4,6 @@ import static uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo.executionInfo;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.COMPLETED;
 import static uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus.INPROGRESS;
 
-import java.util.List;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
@@ -13,6 +12,7 @@ import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.HeuristicMixedException;

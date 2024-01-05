@@ -1,16 +1,17 @@
 package uk.gov.moj.cpp.task.execution;
 
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import static java.util.Optional.empty;
+import static java.util.UUID.randomUUID;
+
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
-import static java.util.Optional.empty;
-import static java.util.UUID.randomUUID;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class DefaultExecutionService implements ExecutionService {

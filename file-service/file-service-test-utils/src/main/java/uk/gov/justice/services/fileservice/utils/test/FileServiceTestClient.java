@@ -1,7 +1,5 @@
 package uk.gov.justice.services.fileservice.utils.test;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 
@@ -9,9 +7,7 @@ import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.domain.FileReference;
-import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
-import uk.gov.justice.services.fileservice.repository.FileContent;
-import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
+import uk.gov.justice.services.fileservice.repository.FileStoreJdbcRepository;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -44,18 +40,14 @@ import javax.json.JsonObject;
  */
 public class FileServiceTestClient {
 
-    private final MetadataJdbcRepository metadataJdbcRepository;
-    private final ContentJdbcRepository contentJdbcRepository;
+    private final FileStoreJdbcRepository fileStoreJdbcRepository;
     private final UtcClock utcClock;
 
     /**
      * Creates a test file service client
-     *
-     * @param databaseDialect the database dialect to use. See {@link DatabaseDialect}
      */
     public FileServiceTestClient() {
-        metadataJdbcRepository = new MetadataJdbcRepository();
-        contentJdbcRepository = new ContentJdbcRepository();
+        fileStoreJdbcRepository = new FileStoreJdbcRepository();
         utcClock = new UtcClock();
     }
 
@@ -106,9 +98,7 @@ public class FileServiceTestClient {
                 .add("createdAt", ZonedDateTimes.toString(utcClock.now()))
                 .build();
 
-        contentJdbcRepository.insert(fileId, contentStream, connection);
-        metadataJdbcRepository.insert(fileId, metadata, connection);
-
+        fileStoreJdbcRepository.insert(fileId, contentStream, metadata, connection);
         return fileId;
     }
 
@@ -123,23 +113,6 @@ public class FileServiceTestClient {
      * @throws FileServiceException if retrieving the file fails
      */
     public Optional<FileReference> read(final UUID fileId, final Connection connection) throws FileServiceException {
-
-        final Optional<JsonObject> metadata = metadataJdbcRepository.findByFileId(fileId, connection);
-        final Optional<FileContent> content = contentJdbcRepository.findByFileId(fileId, connection);
-
-        if (metadata.isPresent() && content.isPresent()) {
-
-            final InputStream inputStream = content.get().getContent();
-
-            final FileReference fileReference = new FileReference(
-                    fileId,
-                    metadata.get(),
-                    inputStream,
-                    false);
-
-            return of(fileReference);
-        }
-
-        return empty();
+        return fileStoreJdbcRepository.findByFileId(fileId, connection);
     }
 }

@@ -26,4 +26,6 @@ public interface FileStorer {
      * @param fileId The id of the file to be deleted.
      */
     void delete(final UUID fileId) throws FileServiceException;
+
+    void purgeOldestSoftDeletedFiles() throws FileServiceException;
 }

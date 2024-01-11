@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [8.0.7] - 2024-01-11
+### Changed
+- Update maven-common-bom to 8.0.5
+- Update maven-framework-parent-pom to 8.0.0
+
 ## [8.0.6] - 2023-05-31
 ### Changed
 - Removed unnecessary logging of 'skipping generation' message in pojo generator

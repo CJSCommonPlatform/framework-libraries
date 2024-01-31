@@ -1,12 +1,13 @@
 package uk.gov.moj.cpp.jobstore.service;
 
 
-import static java.lang.Integer.parseInt;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
-import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
+import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -20,19 +21,20 @@ import javax.json.JsonObject;
 public class JobService {
 
     @Inject
-    @Value(key = "worker.job.count", defaultValue = "10")
-    String jobCount;
+    private JobRepository jobRepository;
 
     @Inject
-    JobRepository jobRepository;
+    private JobStoreConfiguration jobStoreConfiguration;
 
     public void lockJobsFor(final UUID jobId, final int count) {
-        jobRepository.lockJobsFor(jobId, count);
+        final Priority priority = HIGH;
+        jobRepository.lockJobsFor(jobId, priority, count);
     }
 
-    public Stream<Job> getUnassignedJobsFor(final UUID workerId) {
+    public Stream<Job> getUnassignedJobsFor(final UUID workerId, final Priority priority) {
 
-        jobRepository.lockJobsFor(workerId, parseInt(jobCount));
+        final int workerJobCount = jobStoreConfiguration.getWorkerJobCount();
+        jobRepository.lockJobsFor(workerId, priority, workerJobCount);
 
         return jobRepository.findJobsLockedTo(workerId);
     }

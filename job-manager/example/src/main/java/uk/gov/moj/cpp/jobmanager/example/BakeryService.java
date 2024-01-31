@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.jobmanager.example;
 
 import static java.time.ZonedDateTime.now;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
@@ -32,7 +33,7 @@ public class BakeryService {
 
         final MakeCakeWorkflow firstTask = MakeCakeWorkflow.firstTask();
 
-        final ExecutionInfo startCakeExecutionInfo = new ExecutionInfo(objectConverter.convert(firstTask.getTaskData()), firstTask.toString(), now(), ExecutionStatus.STARTED, true);
+        final ExecutionInfo startCakeExecutionInfo = new ExecutionInfo(objectConverter.convert(firstTask.getTaskData()), firstTask.toString(), now(), ExecutionStatus.STARTED, true, HIGH);
 
         try {
             userTransaction.begin();

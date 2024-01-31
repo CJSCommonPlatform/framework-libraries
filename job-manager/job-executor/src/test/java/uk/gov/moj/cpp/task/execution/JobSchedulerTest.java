@@ -9,9 +9,12 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
+import uk.gov.moj.cpp.jobstore.persistence.Priority;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
@@ -59,6 +62,12 @@ public class JobSchedulerTest {
     private UserTransaction userTransaction;
 
     @Mock
+    private JobStoreConfiguration jobStoreConfiguration;
+
+    @Mock
+    private JobStoreSchedulerPrioritySelector jobStoreSchedulerPrioritySelector;
+
+    @Mock
     private UtcClock clock;
 
     @Captor
@@ -69,7 +78,10 @@ public class JobSchedulerTest {
 
     @Test
     public void shouldExecuteFetchedJobs() {
-        when(jobService.getUnassignedJobsFor(any(UUID.class))).thenReturn(Stream.of(job));
+
+        final Priority priority = HIGH;
+        when(jobStoreSchedulerPrioritySelector.selectNextPriority()).thenReturn(priority);
+        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priority))).thenReturn(Stream.of(job));
 
         jobExecutor.fetchUnassignedJobs();
 
@@ -78,7 +90,10 @@ public class JobSchedulerTest {
 
     @Test
     public void shouldNotAttemptToExecuteEmptyStreamOfJobs() {
-        when(jobService.getUnassignedJobsFor(any(UUID.class))).thenReturn(Stream.of());
+
+        final Priority priority = HIGH;
+        when(jobStoreSchedulerPrioritySelector.selectNextPriority()).thenReturn(priority);
+        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priority))).thenReturn(Stream.of());
 
         jobExecutor.fetchUnassignedJobs();
 
@@ -87,12 +102,18 @@ public class JobSchedulerTest {
 
     @Test
     public void shouldSetTimerTaskOnPostConstruct() {
-        jobExecutor.timerIntervalSeconds = "1000";
-        jobExecutor.timerStartWaitSeconds = "100";
-        jobExecutor.moduleName = "TEST_TIMER";
+
+        final long timerIntervalSeconds = 1000;
+        final long timerStartWaitSeconds = 100;
+        final String moduleName = "TEST_TIMER";
+
+        when(jobStoreConfiguration.getTimerIntervalMilliseconds()).thenReturn(timerIntervalSeconds);
+        when(jobStoreConfiguration.getTimerStartWaitMilliseconds()).thenReturn(timerStartWaitSeconds);
+        when(jobStoreConfiguration.getModuleName()).thenReturn(moduleName);
+
         jobExecutor.init();
 
-        verify(timerService).createIntervalTimer(eq(100L), eq(1000L), timerConfigArgumentCaptor.capture());
+        verify(timerService).createIntervalTimer(eq(timerStartWaitSeconds), eq(timerIntervalSeconds), timerConfigArgumentCaptor.capture());
 
         assertFalse(timerConfigArgumentCaptor.getValue().isPersistent());
         assertThat(timerConfigArgumentCaptor.getValue().getInfo(), is("TEST_TIMER.job-manager.job.timer"));

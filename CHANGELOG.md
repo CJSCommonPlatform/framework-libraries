@@ -4,8 +4,17 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
 ### Added
-- Add liquibase sqls to migrate job table data to align with new job retries implementation 
+- Added priority to jobs in the jobstore
+- New Jobs must have a priority of either HIGH, MEDIUM or LOW
+- Jobstore worker threads now select next job to run by priority:
+  - HIGH priorities are by chance of selection of _(default)_ 70 percent
+  - LOW priorities are by chance of selection of _(default)_ 10 percent
+  - MEDIUM priority is everything else
+- New JNDI value of `jobstore.job.selection.percentage.high.priority` (default 70)
+- New JNDI value of  `jobstore.job.selection.percentage.low.priority` (default 10)
+- Added new 'priority' column to jobstore
 
 ## [17.5.0] - 2023-12-19
 ### Added

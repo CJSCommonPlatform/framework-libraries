@@ -11,9 +11,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
 
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
+import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
 import java.io.StringReader;
 import java.time.ZonedDateTime;
@@ -22,7 +26,6 @@ import java.util.stream.Stream;
 
 import javax.json.JsonObject;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -39,27 +42,27 @@ public class JobServiceTest {
     @Mock
     private JobRepository jobRepository;
 
+    @Mock
+    private JobStoreConfiguration jobStoreConfiguration;
+
     @InjectMocks
     private JobService jobService;
 
     @Captor
     private ArgumentCaptor<Job> jobArgumentCaptor;
 
-    @BeforeEach
-    public void setup() {
-        jobService.jobCount = "10";
-    }
-
     @Test
     public void shouldReturnNextUnassignedJobs() {
 
         final UUID workerId = randomUUID();
+        final Priority priority = MEDIUM;
         when(jobRepository.findJobsLockedTo(workerId)).thenReturn(mockJobs());
+        when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(10);
 
-        final Stream<Job> jobs = jobService.getUnassignedJobsFor(workerId);
+        final Stream<Job> jobs = jobService.getUnassignedJobsFor(workerId, priority);
 
         assertThat(jobs.count(), is(3L));
-        verify(jobRepository).lockJobsFor(workerId, 10);
+        verify(jobRepository).lockJobsFor(workerId, priority, 10);
     }
 
     @Test
@@ -70,7 +73,8 @@ public class JobServiceTest {
         final String startTask = "startTask";
         final ZonedDateTime startTime = ZonedDateTime.now();
         final Integer retryAttemptsRemaining = 1;
-        final Job mockJob = new Job(jobId, jobData, startTask, startTime, empty(), empty(), retryAttemptsRemaining);
+        final Priority priority = HIGH;
+        final Job mockJob = new Job(jobId, jobData, startTask, startTime, empty(), empty(), retryAttemptsRemaining, priority);
 
 
         jobService.insertJob(mockJob);
@@ -83,6 +87,7 @@ public class JobServiceTest {
         assertThat(jobToInsert.getNextTaskStartTime(), is(startTime));
         assertThat(jobToInsert.getJobData(), is(jobData));
         assertThat(jobToInsert.getRetryAttemptsRemaining(), is(retryAttemptsRemaining));
+        assertThat(jobToInsert.getPriority(), is(priority));
     }
 
     @Test

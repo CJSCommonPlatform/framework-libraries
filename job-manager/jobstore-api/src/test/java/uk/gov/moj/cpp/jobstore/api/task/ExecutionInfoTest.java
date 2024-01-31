@@ -5,6 +5,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
@@ -36,7 +37,8 @@ public class ExecutionInfoTest {
         final ExecutionInfo originalExecutionInfo = new ExecutionInfo(jobData,
                 NEXT_TASK,
                 nextTaskStartTime,
-                ExecutionStatus.INPROGRESS);
+                ExecutionStatus.INPROGRESS,
+                HIGH);
 
         final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().from(originalExecutionInfo).build();
 
@@ -48,7 +50,7 @@ public class ExecutionInfoTest {
 
     @Test
     public void shouldPopulateBuilderFromJob() {
-        final Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 0);
+        final Job job = new Job(randomUUID(), jobData, NEXT_TASK, nextTaskStartTime, empty(), empty(), 0, HIGH);
 
         final ExecutionInfo copiedExecutionInfo = ExecutionInfo.executionInfo().fromJob(job).build();
 

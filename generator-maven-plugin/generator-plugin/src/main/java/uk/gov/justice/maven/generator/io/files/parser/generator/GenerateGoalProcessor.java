@@ -4,7 +4,6 @@ import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import uk.gov.justice.maven.generator.io.files.parser.FileParser;
-import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
 import uk.gov.justice.maven.generator.io.files.parser.io.FileTreeScannerFactory;
 

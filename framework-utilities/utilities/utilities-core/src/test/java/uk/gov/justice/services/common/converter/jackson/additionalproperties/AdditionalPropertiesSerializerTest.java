@@ -1,8 +1,8 @@
 package uk.gov.justice.services.common.converter.jackson.additionalproperties;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;

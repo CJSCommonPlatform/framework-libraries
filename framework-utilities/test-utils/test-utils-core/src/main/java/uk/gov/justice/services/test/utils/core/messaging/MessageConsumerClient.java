@@ -10,6 +10,7 @@ import javax.jms.MessageConsumer;
 
 import com.google.common.annotations.VisibleForTesting;
 
+@Deprecated(since = "Please use JmsMessageConsumerClientProvider to create instead of using this class", forRemoval = true)
 public class MessageConsumerClient  implements AutoCloseable {
 
     public static final long TIMEOUT_IN_MILLIS = 20_000;

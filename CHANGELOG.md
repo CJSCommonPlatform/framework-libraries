@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.5.2] - 2024-06-12
+### Added
+- Add maven-sonar-plugin to pluginManagement (through maven-parent-pom)
+- MessageConsumerClient, MessageConsumerClientBuilder classes marked as deprecated for removal 
+
 ## [17.5.1] - 2024-02-08
 ### Added
 - Add liquibase sqls to migrate job table data to align with new job retries implementation 

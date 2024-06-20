@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.5.3] - 2024-06-20
+- Update com.jayway.json-path to version 2.9.0 to fix **security vulnerability CWE-787**
+  Detail: https://cwe.mitre.org/data/definitions/787.html
+
 ## [17.5.2] - 2024-06-12
 ### Added
 - Add maven-sonar-plugin to pluginManagement (through maven-parent-pom)

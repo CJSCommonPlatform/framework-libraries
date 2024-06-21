@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.5.4] - 2024-06-21
+### Added
+- Add dependency for org.ow2.asm version 9.3          
+
 ## [17.5.3] - 2024-06-20
 ### Security
 - Update com.jayway.json-path to version 2.9.0 to fix **security vulnerability CWE-787**

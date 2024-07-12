@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.6.0] - 2024-07-12
+### Changed
+- Update common-bom to 17.6.1 in order to:
+  - Add dependency for weld-junit5 1.2.2.Final
+  - Add dependency for org.owasp.encoder 1.2.3
+
 ## [17.5.1] - 2024-02-08
 ### Added
 - Add liquibase sqls to migrate job table data to align with new job retries implementation 

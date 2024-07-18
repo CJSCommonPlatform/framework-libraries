@@ -17,6 +17,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JobStoreDataSourceProvider;
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.TestJobStoreDataSourceProvider;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
@@ -32,7 +34,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.json.JsonObject;
-import javax.sql.DataSource;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,16 +45,16 @@ public class JobJdbcRepositoryTest {
     private static final String JOBS_COUNT = "SELECT COUNT(*) FROM job";
     private static final String JOB_DATA_JSON = "{\"some\": \"json\"}";
 
-    private final DataSource eventStoreDataSource = new PostgresDataSourceFactory().createJobStoreDataSource();
+    private final JobStoreDataSourceProvider jobStoreDataSourceProvider = new TestJobStoreDataSourceProvider();
     private final JobJdbcRepository jdbcRepository = new JobJdbcRepository();
 
     @BeforeEach
     public void createJdbcRepository() throws Exception {
 
-        try (final Connection connection = eventStoreDataSource.getConnection()) {
+        try (final Connection connection = jobStoreDataSourceProvider.getJobStoreDataSource().getConnection()) {
             new LiquibaseDatabaseBootstrapper().bootstrap(LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML, connection);
         }
-        jdbcRepository.dataSource = eventStoreDataSource;
+        jdbcRepository.jobStoreDataSourceProvider = jobStoreDataSourceProvider;
         jdbcRepository.logger = mock(Logger.class);
         jdbcRepository.preparedStatementWrapperFactory = new PreparedStatementWrapperFactory();
         jdbcRepository.jdbcResultSetStreamer = new JdbcResultSetStreamer();
@@ -65,7 +66,7 @@ public class JobJdbcRepositoryTest {
 
         poller.pollUntilFound(() -> {
             try {
-                jdbcRepository.dataSource.getConnection().prepareStatement(JOBS_COUNT).execute();
+                jobStoreDataSourceProvider.getJobStoreDataSource().getConnection().prepareStatement(JOBS_COUNT).execute();
                 return of("Success");
             } catch (final SQLException e) {
                 e.printStackTrace();
@@ -334,7 +335,7 @@ public class JobJdbcRepositoryTest {
     }
 
     private Job getJobById(UUID jobId) throws SQLException {
-        final PreparedStatementWrapper ps = new PreparedStatementWrapperFactory().preparedStatementWrapperOf(eventStoreDataSource, "select * from job where job_id = ?");
+        final PreparedStatementWrapper ps = new PreparedStatementWrapperFactory().preparedStatementWrapperOf(jobStoreDataSourceProvider.getJobStoreDataSource(), "select * from job where job_id = ?");
         ps.setObject(1, jobId);
         return new JdbcResultSetStreamer().streamOf(ps, jdbcRepository.mapAssignedJobFromResultSet()).findFirst().get();
     }
@@ -353,7 +354,7 @@ public class JobJdbcRepositoryTest {
     private int jobsCount() {
         int jobsCount = 0;
         try {
-            final PreparedStatementWrapper ps = jdbcRepository.preparedStatementWrapperFactory.preparedStatementWrapperOf(jdbcRepository.dataSource, JOBS_COUNT);
+            final PreparedStatementWrapper ps = jdbcRepository.preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSourceProvider.getJobStoreDataSource(), JOBS_COUNT);
             final ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 jobsCount = rs.getInt(1);

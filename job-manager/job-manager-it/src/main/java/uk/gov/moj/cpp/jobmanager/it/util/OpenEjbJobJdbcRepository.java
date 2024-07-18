@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.sql.DataSource;
 
 public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
 
@@ -41,11 +42,12 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
 
     public void waitForAllJobsToBeProcessed() {
 
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
         final Poller poller = new Poller(100, 500);
         poller.pollUntilFound(() -> {
             final PreparedStatementWrapper ps;
             try {
-                ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, "SELECT COUNT(*) FROM job");
+                ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, "SELECT COUNT(*) FROM job");
                 final ResultSet rs = ps.executeQuery();
                 return rs.next() ? Optional.empty() : Optional.of(true);
             } catch (SQLException e) {
@@ -55,8 +57,10 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public void cleanJobTables() throws SQLException {
+
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
         final String sql = format(SQL_DELETE_PATTERN, "job");
-        try (Connection connection = dataSource.getConnection()) {
+        try (Connection connection = jobStoreDataSource.getConnection()) {
             executeDelete(sql, connection);
         }
     }
@@ -68,7 +72,8 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public int jobsProcessed() throws SQLException {
-        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_COUNT);
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, JOBS_PROCESSED_COUNT);
         ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
         final ResultSet rs = ps.executeQuery();
         if (rs.next()) {
@@ -78,7 +83,8 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public int jobsNotProcessed() throws SQLException {
-        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_NOTPROCESSED_COUNT);
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, JOBS_NOTPROCESSED_COUNT);
         final ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return rs.getInt(1);
@@ -87,14 +93,16 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
     }
 
     public Stream<Job> getProcessedRecords() throws SQLException {
-        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED);
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, JOBS_PROCESSED);
         ps.setTimestamp(1, toSqlTimestamp(now().minus(30, ChronoUnit.SECONDS)));
         ps.executeQuery();
         return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromResultSet());
     }
 
     public Stream<Job> getProcessedRecords(final UUID workerId) throws SQLException {
-        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_PROCESSED_FOR_WORKER);
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, JOBS_PROCESSED_FOR_WORKER);
         ps.setObject(1, workerId);
         ps.executeQuery();
         return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromResultSet());

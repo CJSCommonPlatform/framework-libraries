@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.6.1-M1] - 2024-07-19
+### Changed
+- Moved job-store datasource providers to common module
+
 ## [17.6.0] - 2024-07-12
 ### Changed
 - Update common-bom to 17.6.1 in order to:

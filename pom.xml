@@ -33,6 +33,7 @@
         <module>json-transformer</module>
         <module>jsonschema-pojo-generator</module>
         <module>raml-maven</module>
+        <module>framework-datasources</module>
     </modules>
 
     <properties>
@@ -40,6 +41,9 @@
         <maven-common-bom.version>17.6.1</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
         <framework-wiremock-service.version>17.0.1</framework-wiremock-service.version>
+
+        <!-- Fix me -->
+        <openejb.version>8.0.13</openejb.version>
 
         <!-- Must be moved to parent-pom -->
         <maven-plugin-annotations.version>3.7.1</maven-plugin-annotations.version>

@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.jobstore.persistence;
+package uk.gov.justice.framework.libraries.datasource.providers.jobstore;
 
 import static javax.naming.Context.INITIAL_CONTEXT_FACTORY;
 import static javax.naming.Context.URL_PKG_PREFIXES;
@@ -9,13 +9,13 @@ import javax.sql.DataSource;
 import org.apache.openejb.resource.jdbc.dbcp.BasicDataSource;
 import org.postgresql.Driver;
 
-public class PostgresDataSourceFactory {
+public class TestJobStoreDataSourceProvider implements JobStoreDataSourceProvider {
 
     private static final String EVENT_STORE_URL = "jdbc:postgresql://" + getHost() + ":5432/frameworkjobstore";
     private static final String EVENT_STORE_USER_NAME = "framework";
     private static final String EVENT_STORE_PASSWORD = "framework";
 
-    public DataSource createJobStoreDataSource() {
+    public DataSource getJobStoreDataSource() {
 
         final BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setJdbcDriver(Driver.class.getName());

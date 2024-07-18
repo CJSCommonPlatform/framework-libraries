@@ -9,6 +9,7 @@ import static javax.json.Json.createReader;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.fromSqlTimestamp;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JobStoreDataSourceProvider;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 
 import java.io.StringReader;
@@ -21,7 +22,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -45,8 +45,6 @@ public class JobJdbcRepository implements JobRepository {
             "(select job_id from job where (worker_id is null or worker_lock_time < ?) and next_task_start_time < ? limit ? for update) " +
             "and (worker_id is null or worker_lock_time < ?)";
 
-    protected DataSource dataSource;
-
     @Inject
     protected PreparedStatementWrapperFactory preparedStatementWrapperFactory;
 
@@ -57,16 +55,13 @@ public class JobJdbcRepository implements JobRepository {
     protected Logger logger;
 
     @Inject
-    private JdbcJobStoreDataSourceProvider jdbcJobStoreDataSourceProvider;
+    protected JobStoreDataSourceProvider jobStoreDataSourceProvider;
 
-    @PostConstruct
-    private void initialiseDataSource() {
-        dataSource = jdbcJobStoreDataSourceProvider.getDataSource();
-    }
 
     @Override
     public void insertJob(final Job job) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, INSERT_JOB_SQL)) {
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, INSERT_JOB_SQL)) {
             ps.setObject(1, job.getJobId());
             ps.setObject(2, job.getWorkerId().orElse(null));
             ps.setTimestamp(3, convertToTimestamp(job.getWorkerLockTime()));
@@ -84,7 +79,8 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void updateJobData(final UUID jobId, final JsonObject jobData) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, UPDATE_JOB_DATA_SQL)) {
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, UPDATE_JOB_DATA_SQL)) {
             ps.setString(1, jobData.toString());
             ps.setObject(2, jobId);
             ps.executeUpdate();
@@ -96,7 +92,8 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void updateNextTaskDetails(final UUID jobId, final String nextTask, final Timestamp nextTaskStartTime, final Integer retryAttemptsRemaining) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, UPDATE_NEXT_TASK_DETAILS_SQL)) {
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, UPDATE_NEXT_TASK_DETAILS_SQL)) {
             ps.setObject(1, nextTask);
             ps.setTimestamp(2, nextTaskStartTime);
             ps.setObject(3, retryAttemptsRemaining);
@@ -110,7 +107,8 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void updateNextTaskRetryDetails(final UUID jobId, final Timestamp nextTaskStartTime, final Integer retryAttemptsRemaining) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, UPDATE_NEXT_TASK_RETRY_DETAILS_SQL)) {
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, UPDATE_NEXT_TASK_RETRY_DETAILS_SQL)) {
             ps.setTimestamp(1, nextTaskStartTime);
             ps.setObject(2, retryAttemptsRemaining);
             ps.setObject(3, jobId);
@@ -123,12 +121,13 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void lockJobsFor(final UUID workerId, final int jobCountToLock) {
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
         logger.debug("Locking jobs for worker: {}", workerId);
 
         ZonedDateTime now = now();
         Timestamp oneHourAgo = toSqlTimestamp((now.minusHours(1)));
 
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, LOCK_JOBS_SQL)) {
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, LOCK_JOBS_SQL)) {
             ps.setObject(1, workerId);
             ps.setTimestamp(2, toSqlTimestamp(now));
             ps.setTimestamp(3, oneHourAgo);
@@ -144,8 +143,10 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public Stream<Job> findJobsLockedTo(final UUID workerId) {
+
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
         try {
-            final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, JOBS_LOCKED_TO_SQL);
+            final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, JOBS_LOCKED_TO_SQL);
             ps.setObject(1, workerId);
             return jdbcResultSetStreamer.streamOf(ps, mapAssignedJobFromResultSet());
         } catch (SQLException e) {
@@ -156,7 +157,8 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void deleteJob(final UUID jobId) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, DELETE_JOB_SQL)) {
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, DELETE_JOB_SQL)) {
             ps.setObject(1, jobId);
             ps.executeUpdate();
         } catch (final SQLException e) {
@@ -167,7 +169,8 @@ public class JobJdbcRepository implements JobRepository {
 
     @Override
     public void releaseJob(final UUID jobId) {
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(dataSource, RELEASE_JOB_SQL)) {
+        final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
+        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, RELEASE_JOB_SQL)) {
             ps.setObject(1, jobId);
             ps.executeUpdate();
         } catch (final SQLException e) {

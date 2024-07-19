@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.jobmanager.example;
 
 import static uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder.createOpenEjbConfigurationBuilder;
 
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JndiJobStoreDataSourceProvider;
 import uk.gov.justice.services.cdi.InitialContextProducer;
 import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
@@ -10,6 +11,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.common.util.UtcClock;
+import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import uk.gov.moj.cpp.jobmanager.example.task.BakeCakeTask;
 import uk.gov.moj.cpp.jobmanager.example.task.FillCakeTinTask;
 import uk.gov.moj.cpp.jobmanager.example.task.GetIngredientsTask;
@@ -21,7 +23,6 @@ import uk.gov.moj.cpp.jobmanager.example.task.SwitchOvenOnTask;
 import uk.gov.moj.cpp.jobmanager.example.util.PropertiesFileValueProducer;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutableTask;
-import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.PreparedStatementWrapperFactory;
@@ -80,7 +81,7 @@ public class BakeryServiceIT {
             FillCakeTinTask.class,
             BakeCakeTask.class,
             SliceAndEatCakeTask.class,
-            JdbcJobStoreDataSourceProvider.class,
+            JndiJobStoreDataSourceProvider.class,
             PreparedStatementWrapperFactory.class,
             JdbcResultSetStreamer.class,
             LoggerProducer.class,
@@ -97,7 +98,8 @@ public class BakeryServiceIT {
             InitialContextProducer.class,
             UtcClock.class,
 
-            JsonObjectConvertersProducer.class
+            JsonObjectConvertersProducer.class,
+            InitialContextFactory.class
     })
 
     public WebApp war() {

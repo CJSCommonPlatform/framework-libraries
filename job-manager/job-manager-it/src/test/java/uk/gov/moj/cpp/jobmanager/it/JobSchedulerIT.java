@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JndiJobStoreDataSourceProvider;
 import uk.gov.justice.services.cdi.InitialContextProducer;
 import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.GlobalValueProducer;
@@ -15,10 +16,10 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.util.UtcClock;
+import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
-import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
@@ -78,7 +79,7 @@ public class JobSchedulerIT {
             JobService.class,
             ExecutionService.class,
             JobRepository.class,
-            JdbcJobStoreDataSourceProvider.class,
+            JndiJobStoreDataSourceProvider.class,
             PreparedStatementWrapperFactory.class,
             JdbcResultSetStreamer.class,
             OpenEjbJobJdbcRepository.class,
@@ -98,7 +99,9 @@ public class JobSchedulerIT {
             UtcClock.class,
             InitialContextProducer.class,
             LoggerProducer.class,
-            SampleTask.class
+            SampleTask.class,
+
+            InitialContextFactory.class
 
     })
 

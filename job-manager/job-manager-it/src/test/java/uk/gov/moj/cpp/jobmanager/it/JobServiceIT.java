@@ -9,15 +9,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JndiJobStoreDataSourceProvider;
 import uk.gov.justice.services.cdi.InitialContextProducer;
 import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.configuration.GlobalValueProducer;
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.common.configuration.ValueProducer;
+import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbConfigurationBuilder;
 import uk.gov.moj.cpp.jobmanager.it.util.OpenEjbJobJdbcRepository;
-import uk.gov.moj.cpp.jobstore.persistence.JdbcJobStoreDataSourceProvider;
 import uk.gov.moj.cpp.jobstore.persistence.JdbcResultSetStreamer;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
@@ -77,7 +78,7 @@ public class JobServiceIT {
     @Classes(cdi = true, value = {
             JobService.class,
             JobRepository.class,
-            JdbcJobStoreDataSourceProvider.class,
+            JndiJobStoreDataSourceProvider.class,
             PreparedStatementWrapperFactory.class,
             JdbcResultSetStreamer.class,
             LoggerProducer.class,
@@ -86,7 +87,9 @@ public class JobServiceIT {
             ValueProducer.class,
             JndiBasedServiceContextNameProvider.class,
             InitialContextProducer.class,
-            Integer.class
+            Integer.class,
+
+            InitialContextFactory.class
     })
 
     public WebApp war() {

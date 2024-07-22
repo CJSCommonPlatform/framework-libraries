@@ -109,10 +109,10 @@ public class JsonObjectToObjectConverterTest {
                 .add("id", id.toString())
                 .build();
 
-        final SingleArgumentConstructorPojo materialNotFound = jsonObjectToObjectConverter.convert(payloadAsJsonObject, SingleArgumentConstructorPojo.class);
+        final SingleArgumentConstructorPojo pojo = jsonObjectToObjectConverter.convert(payloadAsJsonObject, SingleArgumentConstructorPojo.class);
 
-        assertThat(materialNotFound, is(notNullValue()));
-        assertThat(materialNotFound.getId(), is(id));
+        assertThat(pojo, is(notNullValue()));
+        assertThat(pojo.getId(), is(id));
     }
 
     private JsonObject jsonObject() {

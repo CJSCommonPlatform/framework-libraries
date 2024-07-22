@@ -1,5 +1,7 @@
 package uk.gov.justice.services.common.converter;
 
+import static java.util.UUID.randomUUID;
+import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -23,6 +25,7 @@ import javax.json.JsonObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,8 +35,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class JsonObjectToObjectConverterTest {
 
-    private static final UUID ID = UUID.randomUUID();
-    private static final UUID INTERNAL_ID = UUID.randomUUID();
+    private static final UUID ID = randomUUID();
+    private static final UUID INTERNAL_ID = randomUUID();
     private static final String NAME = "Pojo";
     private static final String ATTRIBUTE_1 = "Attribute 1";
     private static final String ATTRIBUTE_2 = "Attribute 2";
@@ -84,7 +87,7 @@ public class JsonObjectToObjectConverterTest {
     @Test
     public void shouldThrowExceptionOnConversionError() throws IOException {
 
-        final UUID uuid = UUID.randomUUID();
+        final UUID uuid = randomUUID();
 
         final JsonObject jsonObject = Json.createObjectBuilder().add("id", uuid.toString()).build();
 
@@ -96,6 +99,20 @@ public class JsonObjectToObjectConverterTest {
             assertThat(expected.getMessage(), is("Error while converting to uk.gov.justice.services.common.converter.JsonObjectToObjectConverterTest$Pojo from json (obfuscated):[{\"id\":\"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\"}]"));
             assertThat(expected.getCause(), is(nullValue()));
         }
+    }
+
+    @Test
+    public void shouldConvertJsonObjectToSingleArgumentConstructorPojo() throws Exception {
+
+        final UUID id = randomUUID();
+        final JsonObject payloadAsJsonObject = createObjectBuilder()
+                .add("id", id.toString())
+                .build();
+
+        final SingleArgumentConstructorPojo materialNotFound = jsonObjectToObjectConverter.convert(payloadAsJsonObject, SingleArgumentConstructorPojo.class);
+
+        assertThat(materialNotFound, is(notNullValue()));
+        assertThat(materialNotFound.getId(), is(id));
     }
 
     private JsonObject jsonObject() {
@@ -181,6 +198,18 @@ public class JsonObjectToObjectConverterTest {
 
         public ZonedDateTime getDateTime() {
             return dateTime;
+        }
+    }
+
+    public static class SingleArgumentConstructorPojo {
+        private UUID id;
+
+        public SingleArgumentConstructorPojo (UUID id) {
+            this.id = id;
+        }
+
+        public UUID getId() {
+            return id;
         }
     }
 

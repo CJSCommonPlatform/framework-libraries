@@ -8,6 +8,7 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_WITH_ZONE_ID;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_ENUMS_USING_TO_STRING;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_NULL_MAP_VALUES;
+import static com.fasterxml.jackson.databind.cfg.ConstructorDetector.USE_PROPERTIES_BASED;
 import static java.time.ZoneOffset.UTC;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.TimeZone.getTimeZone;
@@ -66,7 +67,8 @@ public class ObjectMapperProducer {
                 .setSerializationInclusion(NON_ABSENT)
                 .enable(WRITE_ENUMS_USING_TO_STRING)
                 .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .enable(READ_ENUMS_USING_TO_STRING);
+                .enable(READ_ENUMS_USING_TO_STRING)
+                .setConstructorDetector(USE_PROPERTIES_BASED);
     }
 
     private JavaTimeModule javaTimeModuleWithFormattedDateTime() {

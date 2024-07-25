@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### changed
+
+## [17.5.5] - 2024-07-24
+### Changed
 - Fix for Jacksons single argument constructor issue inspired from  https://github.com/FasterXML/jackson-databind/issues/1498
+
 ## [17.5.4] - 2024-06-21
 ### Added
 - Add dependency for org.ow2.asm version 9.3          

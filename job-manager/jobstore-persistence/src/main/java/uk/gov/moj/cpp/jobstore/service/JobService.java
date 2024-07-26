@@ -1,20 +1,19 @@
 package uk.gov.moj.cpp.jobstore.service;
 
 
-import static java.lang.Integer.parseInt;
-import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
-
 import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.json.JsonObject;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import static java.lang.Integer.parseInt;
+import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
 @ApplicationScoped
 public class JobService {
@@ -24,15 +23,15 @@ public class JobService {
     String jobCount;
 
     @Inject
-    JobRepository jobRepository;
+    @Value(key = "max.inProgress.job.count", defaultValue = "20")
+    String maxInProgressJobCount;
 
-    public void lockJobsFor(final UUID jobId, final int count) {
-        jobRepository.lockJobsFor(jobId, count);
-    }
+    @Inject
+    JobRepository jobRepository;
 
     public Stream<Job> getUnassignedJobsFor(final UUID workerId) {
 
-        jobRepository.lockJobsFor(workerId, parseInt(jobCount));
+        jobRepository.lockJobsFor(workerId, parseInt(maxInProgressJobCount), parseInt(jobCount));
 
         return jobRepository.findJobsLockedTo(workerId);
     }

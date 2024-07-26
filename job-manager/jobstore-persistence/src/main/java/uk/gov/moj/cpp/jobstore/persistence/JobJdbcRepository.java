@@ -42,7 +42,13 @@ public class JobJdbcRepository implements JobRepository {
     private static final String JOBS_LOCKED_TO_SQL = "SELECT job_id, job_data, worker_id, worker_lock_time, next_task, next_task_start_time, retry_attempts_remaining from job WHERE worker_id= ?";
 
     private static final String LOCK_JOBS_SQL = "UPDATE job set worker_id= ? , worker_lock_time= ? where job_id in " +
-            "(select job_id from job where (worker_id is null or worker_lock_time < ?) and next_task_start_time < ? limit ? for update) " +
+            "(select job_id from job where (worker_id is null or worker_lock_time < ?) and next_task_start_time < ? " +
+            "limit LEAST(? - (" + //count of in progress jobs
+            "        SELECT COUNT(*) " +
+            "        FROM job " +
+            "        WHERE worker_id IS NOT NULL " +
+            "          AND worker_lock_time > ?), ?)" +
+            " for update) " +
             "and (worker_id is null or worker_lock_time < ?)";
 
     protected DataSource dataSource;
@@ -122,7 +128,7 @@ public class JobJdbcRepository implements JobRepository {
     }
 
     @Override
-    public void lockJobsFor(final UUID workerId, final int jobCountToLock) {
+    public void lockJobsFor(final UUID workerId, final int inProgressJobCountLimit, final int jobCountToLock) {
         logger.debug("Locking jobs for worker: {}", workerId);
 
         ZonedDateTime now = now();
@@ -133,8 +139,10 @@ public class JobJdbcRepository implements JobRepository {
             ps.setTimestamp(2, toSqlTimestamp(now));
             ps.setTimestamp(3, oneHourAgo);
             ps.setTimestamp(4, toSqlTimestamp(now));
-            ps.setLong(5, valueOf(jobCountToLock));
+            ps.setLong(5, valueOf(inProgressJobCountLimit));
             ps.setTimestamp(6, oneHourAgo);
+            ps.setLong(7, valueOf(jobCountToLock));
+            ps.setTimestamp(8, oneHourAgo);
             ps.executeUpdate();
         } catch (final SQLException e) {
             logger.error("Error locking jobs", e);

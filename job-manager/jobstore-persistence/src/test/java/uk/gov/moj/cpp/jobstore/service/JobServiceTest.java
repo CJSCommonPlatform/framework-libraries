@@ -48,6 +48,7 @@ public class JobServiceTest {
     @BeforeEach
     public void setup() {
         jobService.jobCount = "10";
+        jobService.maxInProgressJobCount = "20";
     }
 
     @Test
@@ -59,7 +60,7 @@ public class JobServiceTest {
         final Stream<Job> jobs = jobService.getUnassignedJobsFor(workerId);
 
         assertThat(jobs.count(), is(3L));
-        verify(jobRepository).lockJobsFor(workerId, 10);
+        verify(jobRepository).lockJobsFor(workerId, 20, 10);
     }
 
     @Test

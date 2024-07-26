@@ -112,6 +112,8 @@ public class JobServiceIT {
     public void setup() throws Exception {
         final InitialContext initialContext = new InitialContext();
         initialContext.bind("java:/app/JobServiceIT/DS.jobstore", dataSource);
+        initialContext.bind("java:/app/JobServiceIT/max.inProgress.job.count", "30");
+        initialContext.bind("java:/app/JobServiceIT/worker.job.count", "10");
         initEventDatabase();
     }
 

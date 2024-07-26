@@ -4,25 +4,32 @@ package uk.gov.moj.cpp.jobstore.service;
 import static java.util.stream.Stream.empty;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
+import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.json.JsonObject;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import static java.lang.Integer.parseInt;
+import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
 @ApplicationScoped
 public class JobService {
 
     @Inject
     private JobRepository jobRepository;
+
+    @Inject
+    @Value(key = "max.inProgress.job.count", defaultValue = "20")
+    String maxInProgressJobCount;
 
     @Inject
     private JobStoreConfiguration jobStoreConfiguration;

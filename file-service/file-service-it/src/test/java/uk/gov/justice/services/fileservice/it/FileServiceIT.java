@@ -9,15 +9,18 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 
+import uk.gov.justice.services.cdi.LoggerProducer;
+import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
+import uk.gov.justice.services.common.configuration.ValueProducer;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.FileRetriever;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.fileservice.client.FileService;
+import uk.gov.justice.services.fileservice.client.FileStorePurgeConfiguration;
 import uk.gov.justice.services.fileservice.domain.FileReference;
-import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
-import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
+import uk.gov.justice.services.fileservice.repository.FileStoreJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
 import uk.gov.justice.services.fileservice.utils.test.FileStoreTestDataSourceProvider;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
@@ -42,6 +45,7 @@ import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.Module;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
 
 @RunWithApplicationComposer
 public class FileServiceIT {
@@ -70,15 +74,20 @@ public class FileServiceIT {
 
             FileStoreTestDataSourceProvider.class,
 
-            ContentJdbcRepository.class,
+            FileStoreJdbcRepository.class,
             FileStore.class,
-            MetadataJdbcRepository.class,
             MetadataUpdater.class,
             UtcClock.class,
             LogFactory.class,
 
             MetadataUpdater.class,
-            ContentTypeDetector.class
+            ContentTypeDetector.class,
+            LoggerProducer.class,
+            Logger.class,
+            UtcClock.class,
+            FileStorePurgeConfiguration.class,
+            ValueProducer.class,
+            JndiBasedServiceContextNameProvider.class
     })
     public WebApp war() {
         return new WebApp()

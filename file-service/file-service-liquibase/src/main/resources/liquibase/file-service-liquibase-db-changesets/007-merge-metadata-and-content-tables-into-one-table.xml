@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="007-merge-metadata-and-content-tables-into-one-table.xml" author="TechPod">
+
+        <!-- Add metadata column to the content table -->
+        <addColumn tableName="content">
+            <column name="metadata" type="JSONB">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <!-- copy the contents of the metadata.metadata column to content.metadata -->
+        <sql>
+            UPDATE content
+            SET metadata = metadata.metadata
+            FROM metadata
+            WHERE content.file_id = metadata.file_id;
+        </sql>
+
+        <!-- drop the old metadata table -->
+        <dropTable tableName="metadata" />
+
+        <!-- drop redundant deleted column from the content table -->
+        <dropColumn tableName="content" columnName="deleted" />
+
+    </changeSet>
+</databaseChangeLog>

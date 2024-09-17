@@ -1,18 +1,16 @@
 package uk.gov.justice.services.fileservice.repository;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
 
-import uk.gov.justice.services.fileservice.api.DataIntegrityException;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.StorageException;
 import uk.gov.justice.services.fileservice.domain.FileReference;
-import uk.gov.justice.services.fileservice.io.InputStreamWrapper;
 
 import java.io.BufferedInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,16 +27,16 @@ import javax.transaction.Transactional;
 public class FileStore {
 
     @Inject
-    ContentJdbcRepository contentJdbcRepository;
+    private FileStoreJdbcRepository fileStoreJdbcRepository;
 
     @Inject
-    MetadataJdbcRepository metadataJdbcRepository;
+    private DataSourceProvider dataSourceProvider;
 
     @Inject
-    DataSourceProvider dataSourceProvider;
+    private MetadataUpdater metadataUpdater;
 
     @Inject
-    MetadataUpdater metadataUpdater;
+    private UtcClock clock;
 
     /**
      * Stores file content and metadata in the database.
@@ -56,12 +54,11 @@ public class FileStore {
 
             final JsonObject updatedMetadata = metadataUpdater.addMediaTypeAndCreatedTime(metadata, contentStream);
 
-            contentJdbcRepository.insert(fileId, contentStream, connection);
-            metadataJdbcRepository.insert(fileId, updatedMetadata, connection);
+            fileStoreJdbcRepository.insert(fileId, contentStream, updatedMetadata, connection);
 
             return fileId;
         } catch (final SQLException e) {
-            throw new StorageException("Failed to insert file into database", e);
+            throw new StorageException("Failed to get database connection", e);
         }
     }
 
@@ -71,59 +68,36 @@ public class FileStore {
      *
      * If no metadata is found for that id then {@code empty()} is returned
      *
+     * Please note: the {@link FileReference} contains a live database connection so
+     * this method should always be called in a try/finally block
+     *
      * @param fileId the id of the file
      * @return if not found: {@link Optional}.empty()
      */
     @Transactional
     public Optional<FileReference> find(final UUID fileId) throws FileServiceException {
 
-        Connection connection = null;
         try {
-            connection = dataSourceProvider.getDatasource().getConnection();
-            final Optional<JsonObject> metadata = metadataJdbcRepository.findByFileId(fileId, connection);
-            final Optional<FileContent> content = contentJdbcRepository.findByFileId(fileId, connection);
-
-            if (!metadata.isPresent()) {
-                close(connection);
-                if (content.isPresent()) {
-                    throw new DataIntegrityException("No metadata found for file id " + fileId + " but file content exists for that id");
-                }
-                return empty();
-            }
-            if (!content.isPresent()) {
-                close(connection);
-                throw new DataIntegrityException("No file content found for file id " + fileId + " but metadata exists for that id");
-            }
-
-            final FileContent fileContent = content.get();
-            final InputStreamWrapper inputStreamWrapper = new InputStreamWrapper(
-                    fileContent.getContent(),
-                    connection);
-
-            return of(new FileReference(
-                    fileId,
-                    metadata.get(),
-                    inputStreamWrapper,
-                    false));
-        } catch (final SQLException | StorageException e) {
-            close(connection);
-            throw new StorageException("Failed to read File from the database", e);
+            final Connection connection = dataSourceProvider.getDatasource().getConnection();
+            return fileStoreJdbcRepository.findByFileId(fileId, connection);
+        } catch (final SQLException e) {
+            throw new StorageException("Failed to get database connection", e);
         }
     }
 
     /**
      * Updates a file's metadata
      *
-     * @param fileId   The id of the file who's metadata should be updated
+     * @param fileId   The id of the file whose metadata should be updated
      * @param metadata The metadata to be updated
      */
     @Transactional
     public void updateMetadata(final UUID fileId, final JsonObject metadata) throws FileServiceException {
 
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
-            metadataJdbcRepository.update(fileId, metadata, connection);
+            fileStoreJdbcRepository.updateMetadata(fileId, metadata, connection);
         } catch (final SQLException e) {
-            throw new StorageException("Failed to update metadata", e);
+            throw new StorageException("Failed to get database connection", e);
         }
     }
 
@@ -133,12 +107,12 @@ public class FileStore {
      * @param fileId The id of the file to be deleted
      */
     @Transactional
-    public void delete(final UUID fileId) throws FileServiceException {
+    public void markAsDeleted(final UUID fileId) throws FileServiceException {
 
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
-            contentJdbcRepository.delete(fileId, connection);
+            fileStoreJdbcRepository.markAsDeleted(fileId, clock.now(), connection);
         } catch (final SQLException e) {
-            throw new StorageException("Failed to delete file from the database", e);
+            throw new StorageException("Failed to get database connection", e);
         }
     }
 
@@ -151,21 +125,21 @@ public class FileStore {
     @Transactional
     public Optional<JsonObject> retrieveMetadata(final UUID fileId) throws FileServiceException {
         try (final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
-            return metadataJdbcRepository.findByFileId(fileId, connection);
-        } catch (final SQLException | StorageException e) {
-            throw new StorageException("Failed to read metadata from the database", e);
+            final Optional<FileReference> fileReference = fileStoreJdbcRepository.findByFileId(fileId, connection);
+            return fileReference.map(FileReference::getMetadata);
+
+        } catch (final SQLException e) {
+            throw new StorageException("Failed to get database connection", e);
         }
     }
 
-    private void close(final Connection connection) {
+    @Transactional
+    public int purgeFilesOlderThan(final ZonedDateTime purgeDateTime, final int maxNumberToDelete) throws FileServiceException{
 
-        if(connection == null) {
-            return;
-        }
-        
-        try {
-            connection.close();
-        } catch (final SQLException ignored) {
+        try(final Connection connection = dataSourceProvider.getDatasource().getConnection()) {
+            return fileStoreJdbcRepository.purgeFilesOlderThan(purgeDateTime, maxNumberToDelete, connection);
+        } catch (final SQLException e) {
+            throw new StorageException("Failed to get database connection", e);
         }
     }
 }

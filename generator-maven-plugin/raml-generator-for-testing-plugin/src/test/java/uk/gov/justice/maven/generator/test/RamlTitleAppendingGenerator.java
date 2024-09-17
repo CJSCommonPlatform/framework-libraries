@@ -4,7 +4,7 @@ import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 import uk.gov.justice.maven.generator.io.files.parser.core.Generator;
 import uk.gov.justice.maven.generator.io.files.parser.core.GeneratorConfig;
@@ -25,7 +25,7 @@ public class RamlTitleAppendingGenerator implements Generator<Raml> {
     @Override
     public void run(final Raml raml, final GeneratorConfig generatorConfig) {
         try {
-            Files.write(filePath(generatorConfig), asList(raml.getTitle()), UTF_8, APPEND, CREATE);
+            Files.write(filePath(generatorConfig), singletonList(raml.getTitle()), UTF_8, APPEND, CREATE);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

@@ -1,13 +1,13 @@
 package uk.gov.moj.cpp.task.execution;
 
-import static java.lang.Long.parseLong;
+import static java.lang.String.format;
 import static java.util.UUID.randomUUID;
-import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
+import uk.gov.moj.cpp.jobstore.persistence.Priority;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
@@ -45,35 +45,29 @@ public class JobScheduler {
     @Inject
     private Logger logger;
 
-
-    @Resource(lookup = "java:module/ModuleName")
-    String moduleName;
+    @Resource
+    private TimerService timerService;
 
     @Resource
-    TimerService timerService;
-
-    @Resource
-    ManagedExecutorService executorService;
+    private ManagedExecutorService executorService;
 
     @Inject
-    JobService jobService;
+    private JobService jobService;
 
     @Inject
-    TaskRegistry taskRegistry;
+    private TaskRegistry taskRegistry;
 
     @Inject
-    UtcClock clock;
+    private JobStoreConfiguration jobStoreConfiguration;
 
     @Inject
-    @Value(key = "jobstore.timer.start.wait.milliseconds", defaultValue = "20000")
-    String timerStartWaitSeconds;
+    private JobStoreSchedulerPrioritySelector jobStoreSchedulerPrioritySelector;
 
     @Inject
-    @Value(key = "jobstore.timer.interval.milliseconds", defaultValue = "20000")
-    String timerIntervalSeconds;
+    private UtcClock clock;
 
     @Inject
-    UserTransaction userTransaction;
+    private UserTransaction userTransaction;
 
     private String timerName;
 
@@ -90,7 +84,10 @@ public class JobScheduler {
 
         logger.info("Creating timer [{}]", timerName);
 
-        timerService.createIntervalTimer(parseLong(timerStartWaitSeconds), parseLong(timerIntervalSeconds), timerConfig);
+        timerService.createIntervalTimer(
+                jobStoreConfiguration.getTimerStartWaitMilliseconds(),
+                jobStoreConfiguration.getTimerIntervalMilliseconds(),
+                timerConfig);
     }
 
     private void cancelExistingTimer() {
@@ -99,6 +96,7 @@ public class JobScheduler {
 
     private String timerName() {
         if (timerName == null) {
+            final String moduleName = jobStoreConfiguration.getModuleName();
             final String timerModulePrefix = moduleName != null ? moduleName : "local";
             timerName = timerModulePrefix + ".job-manager.job.timer";
         }
@@ -106,13 +104,13 @@ public class JobScheduler {
         return timerName;
     }
 
-
     @Timeout
     public void fetchUnassignedJobs() {
 
         final UUID workerId = randomUUID();
+        final Priority priority = jobStoreSchedulerPrioritySelector.selectNextPriority();
 
-        logger.debug("Retrieving new work from jobstore for WorkerID [{}]", workerId);
+        logger.debug(format("Fetching new %s priority jobs from jobstore", priority));
 
         Stream<Job> unassignedJobs = null;
 
@@ -121,8 +119,10 @@ public class JobScheduler {
 
             // Collect into List and forward to execute() method as a new Stream.
             // (as userTransaction.commit() will close the DB cursor/resultset)
-            unassignedJobs = jobService.getUnassignedJobsFor(workerId);
-            final List<Job> jobList = unassignedJobs.collect(toList());
+            unassignedJobs = jobService.getUnassignedJobsFor(workerId, priority);
+            final List<Job> jobList = unassignedJobs.toList();
+
+            logger.debug(format("Found %d %s priority job(s) to run from jobstore", jobList.size(), priority));
 
             userTransaction.commit();
 

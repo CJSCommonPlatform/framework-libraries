@@ -6,12 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
+import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
+import uk.gov.moj.cpp.jobstore.persistence.Priority;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
@@ -29,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -59,6 +64,12 @@ public class JobSchedulerTest {
     private UserTransaction userTransaction;
 
     @Mock
+    private JobStoreConfiguration jobStoreConfiguration;
+
+    @Mock
+    private JobStoreSchedulerPrioritySelector jobStoreSchedulerPrioritySelector;
+
+    @Mock
     private UtcClock clock;
 
     @Captor
@@ -69,16 +80,26 @@ public class JobSchedulerTest {
 
     @Test
     public void shouldExecuteFetchedJobs() {
-        when(jobService.getUnassignedJobsFor(any(UUID.class))).thenReturn(Stream.of(job));
+
+        final Priority priority = HIGH;
+        when(jobStoreSchedulerPrioritySelector.selectNextPriority()).thenReturn(priority);
+        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priority))).thenReturn(Stream.of(job));
 
         jobExecutor.fetchUnassignedJobs();
 
-        verify(executorService).submit(any(JobExecutor.class));
+        final InOrder inOrder = inOrder(executorService, logger);
+
+        inOrder.verify(logger).debug("Fetching new HIGH priority jobs from jobstore");
+        inOrder.verify(logger).debug("Found 1 HIGH priority job(s) to run from jobstore");
+        inOrder.verify(executorService).submit(any(JobExecutor.class));
     }
 
     @Test
     public void shouldNotAttemptToExecuteEmptyStreamOfJobs() {
-        when(jobService.getUnassignedJobsFor(any(UUID.class))).thenReturn(Stream.of());
+
+        final Priority priority = HIGH;
+        when(jobStoreSchedulerPrioritySelector.selectNextPriority()).thenReturn(priority);
+        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priority))).thenReturn(Stream.of());
 
         jobExecutor.fetchUnassignedJobs();
 
@@ -87,12 +108,18 @@ public class JobSchedulerTest {
 
     @Test
     public void shouldSetTimerTaskOnPostConstruct() {
-        jobExecutor.timerIntervalSeconds = "1000";
-        jobExecutor.timerStartWaitSeconds = "100";
-        jobExecutor.moduleName = "TEST_TIMER";
+
+        final long timerIntervalSeconds = 1000;
+        final long timerStartWaitSeconds = 100;
+        final String moduleName = "TEST_TIMER";
+
+        when(jobStoreConfiguration.getTimerIntervalMilliseconds()).thenReturn(timerIntervalSeconds);
+        when(jobStoreConfiguration.getTimerStartWaitMilliseconds()).thenReturn(timerStartWaitSeconds);
+        when(jobStoreConfiguration.getModuleName()).thenReturn(moduleName);
+
         jobExecutor.init();
 
-        verify(timerService).createIntervalTimer(eq(100L), eq(1000L), timerConfigArgumentCaptor.capture());
+        verify(timerService).createIntervalTimer(eq(timerStartWaitSeconds), eq(timerIntervalSeconds), timerConfigArgumentCaptor.capture());
 
         assertFalse(timerConfigArgumentCaptor.getValue().isPersistent());
         assertThat(timerConfigArgumentCaptor.getValue().getInfo(), is("TEST_TIMER.job-manager.job.timer"));

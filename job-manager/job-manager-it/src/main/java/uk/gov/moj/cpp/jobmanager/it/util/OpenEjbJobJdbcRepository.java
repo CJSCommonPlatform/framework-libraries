@@ -7,6 +7,7 @@ import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createReader;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
@@ -118,7 +119,7 @@ public class OpenEjbJobJdbcRepository extends JobJdbcRepository {
 
     private void createJobsWith(int count, String nextTask, ZonedDateTime nextTaskStartTime, Optional<UUID> workerId, Optional<ZonedDateTime> workerLockTime) {
         for (int i = 0; i < count; i++) {
-            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), nextTask, nextTaskStartTime, workerId, workerLockTime, 0);
+            final Job job = new Job(randomUUID(), jobData(JOB_DATA_JSON), nextTask, nextTaskStartTime, workerId, workerLockTime, 0, HIGH);
             insertJob(job);
         }
     }

@@ -26,11 +26,6 @@ public class JobService {
     @Inject
     private JobStoreConfiguration jobStoreConfiguration;
 
-    public void lockJobsFor(final UUID jobId, final int count) {
-        final Priority priority = HIGH;
-        jobRepository.lockJobsFor(jobId, priority, count);
-    }
-
     public Stream<Job> getUnassignedJobsFor(final UUID workerId, final Priority priority) {
 
         final int workerJobCount = jobStoreConfiguration.getWorkerJobCount();

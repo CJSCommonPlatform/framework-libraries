@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Refactor of File Store:
+    - Merged file store 'metadata' table into the 'content' table. File Store now only contains one table
+    - New liquibase script to:
+        - add metadata columns to content table
+        - copy all metadata data from the old metadata table into the content table
+        - drop the metadata table
+- Re-introduce 'soft' delete of files in file store. 'deleted' files now have a 'deleted_at' column.
+### Added
+- Added new 'purgeOldestSoftDeletedFiles()' method on the file store'
+- Add liquibase sqls to migrate job table data to align with new job retries implementation
 
 ## [17.6.2] - 2024-09-16
 ### Added

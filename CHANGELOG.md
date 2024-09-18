@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [17.6.3] - 2024-09-17
 ### Changed
 - Refactor of File Store:
     - Merged file store 'metadata' table into the 'content' table. File Store now only contains one table

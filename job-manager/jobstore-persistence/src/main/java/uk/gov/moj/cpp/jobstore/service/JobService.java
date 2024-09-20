@@ -1,8 +1,8 @@
 package uk.gov.moj.cpp.jobstore.service;
 
 
+import static java.util.stream.Stream.empty;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
-import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
@@ -10,6 +10,7 @@ import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -26,10 +27,23 @@ public class JobService {
     @Inject
     private JobStoreConfiguration jobStoreConfiguration;
 
-    public Stream<Job> getUnassignedJobsFor(final UUID workerId, final Priority priority) {
+    public Stream<Job> getUnassignedJobsFor(final UUID workerId, final List<Priority> orderedPriorities) {
 
         final int workerJobCount = jobStoreConfiguration.getWorkerJobCount();
-        jobRepository.lockJobsFor(workerId, priority, workerJobCount);
+        final Priority firstPriority = orderedPriorities.get(0);
+
+        int rowsAffected = jobRepository.lockJobsFor(workerId, firstPriority, workerJobCount);
+        if (rowsAffected == 0) {
+            final Priority secondPriority = orderedPriorities.get(1);
+            rowsAffected = jobRepository.lockJobsFor(workerId, secondPriority, workerJobCount);
+            if (rowsAffected == 0) {
+                final Priority thirdPriority = orderedPriorities.get(2);
+                rowsAffected = jobRepository.lockJobsFor(workerId, thirdPriority, workerJobCount);
+            }
+        }
+        if (rowsAffected == 0) {
+            return empty();
+        }
 
         return jobRepository.findJobsLockedTo(workerId);
     }

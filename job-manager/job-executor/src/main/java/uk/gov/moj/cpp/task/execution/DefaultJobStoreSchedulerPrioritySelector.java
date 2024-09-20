@@ -7,6 +7,8 @@ import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
 import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
+import java.util.List;
+
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
@@ -20,20 +22,20 @@ public class DefaultJobStoreSchedulerPrioritySelector implements JobStoreSchedul
     private JobStoreConfiguration jobStoreConfiguration;
 
     @Override
-    public Priority selectNextPriority() {
+    public List<Priority> selectOrderedPriorities() {
 
         final int randomPercentage = randomPercentageProvider.getRandomPercentage();
         final int jobPriorityPercentageHigh = jobStoreConfiguration.getJobPriorityPercentageHigh();
         final int jobPriorityPercentageLow = jobStoreConfiguration.getJobPriorityPercentageLow();
 
         if (randomPercentage >= jobPriorityPercentageHigh) {
-            return HIGH;
+            return List.of(HIGH, MEDIUM, LOW);
         }
 
         if (randomPercentage < jobPriorityPercentageLow) {
-            return LOW;
+            return List.of(LOW, HIGH, MEDIUM);
         }
 
-        return MEDIUM;
+        return List.of(MEDIUM, HIGH, LOW);
     }
 }

@@ -9,9 +9,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.LOW;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
 
 import uk.gov.moj.cpp.jobstore.persistence.Job;
@@ -21,8 +23,8 @@ import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
 import java.io.StringReader;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import javax.json.JsonObject;
 
@@ -52,17 +54,76 @@ public class JobServiceTest {
     private ArgumentCaptor<Job> jobArgumentCaptor;
 
     @Test
-    public void shouldReturnNextUnassignedJobs() {
+    public void shouldReturnNextUnassignedJobsForFirstPriority() {
 
         final UUID workerId = randomUUID();
-        final Priority priority = MEDIUM;
-        when(jobRepository.findJobsLockedTo(workerId)).thenReturn(mockJobs());
-        when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(10);
+        final int workerJobCount = 10;
+        final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
 
-        final Stream<Job> jobs = jobService.getUnassignedJobsFor(workerId, priority);
+        when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
 
-        assertThat(jobs.count(), is(3L));
-        verify(jobRepository).lockJobsFor(workerId, priority, 10);
+        final List<Job> jobs = List.of(mock(Job.class), mock(Job.class), mock(Job.class));
+
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(jobs.size());
+        when(jobRepository.findJobsLockedTo(workerId)).thenReturn(jobs.stream());
+
+        assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(3L));
+        verify(jobRepository).lockJobsFor(workerId, priorities.get(0), workerJobCount);
+    }
+
+    @Test
+    public void shouldReturnNextUnassignedJobsForSecondPriorityIfNoJobsWithFirstPriorityFound() {
+
+        final UUID workerId = randomUUID();
+        final int workerJobCount = 10;
+        final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
+
+        when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
+
+        final List<Job> jobs = List.of(mock(Job.class), mock(Job.class), mock(Job.class));
+
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(1), workerJobCount)).thenReturn(jobs.size());
+        when(jobRepository.findJobsLockedTo(workerId)).thenReturn(jobs.stream());
+
+        assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(3L));
+        verify(jobRepository).lockJobsFor(workerId, priorities.get(1), workerJobCount);
+    }
+
+    @Test
+    public void shouldReturnNextUnassignedJobsForThirdPriorityIfNoJobsWithFirstNorSecondPriorityFound() {
+
+        final UUID workerId = randomUUID();
+        final int workerJobCount = 10;
+        final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
+
+        when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
+
+        final List<Job> jobs = List.of(mock(Job.class), mock(Job.class), mock(Job.class));
+
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(1), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(2), workerJobCount)).thenReturn(jobs.size());
+        when(jobRepository.findJobsLockedTo(workerId)).thenReturn(jobs.stream());
+
+        assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(3L));
+        verify(jobRepository).lockJobsFor(workerId, priorities.get(2), workerJobCount);
+    }
+
+    @Test
+    public void shouldReturnNOUnassignedJobsfNoJobsWithFirstSecondNorThirdePriorityFound() {
+
+        final UUID workerId = randomUUID();
+        final int workerJobCount = 10;
+        final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
+
+        when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(1), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(2), workerJobCount)).thenReturn(0);
+
+        assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(0L));
+        verifyNoMoreInteractions(jobRepository);
     }
 
     @Test
@@ -134,12 +195,6 @@ public class JobServiceTest {
         final UUID jobId = randomUUID();
         jobService.releaseJob(jobId);
         verify(jobRepository).releaseJob(jobId);
-    }
-
-    private Stream<Job> mockJobs() {
-
-        return Stream.of(mock(Job.class),
-                mock(Job.class), mock(Job.class));
     }
 
     private JsonObject jobData(final String json) {

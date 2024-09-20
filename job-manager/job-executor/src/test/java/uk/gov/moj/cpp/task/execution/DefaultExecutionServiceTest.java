@@ -27,25 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
-import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
-import uk.gov.moj.cpp.jobstore.persistence.Job;
-import uk.gov.moj.cpp.jobstore.service.JobService;
-import uk.gov.moj.cpp.task.extension.TaskRegistry;
-
-import java.time.ZonedDateTime;
-import java.util.UUID;
-
-import javax.json.JsonObject;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 @ExtendWith(MockitoExtension.class)
 public class DefaultExecutionServiceTest {
 

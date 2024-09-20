@@ -108,9 +108,11 @@ public class JobScheduler {
     public void fetchUnassignedJobs() {
 
         final UUID workerId = randomUUID();
-        final Priority priority = jobStoreSchedulerPrioritySelector.selectNextPriority();
+        final List<Priority> orderedPriorities = jobStoreSchedulerPrioritySelector.selectOrderedPriorities();
 
-        logger.debug(format("Fetching new %s priority jobs from jobstore", priority));
+        if (logger.isDebugEnabled()) {
+            logger.debug(format("Fetching new jobs from jobstore in priority order %s", orderedPriorities));
+        }
 
         Stream<Job> unassignedJobs = null;
 
@@ -119,14 +121,23 @@ public class JobScheduler {
 
             // Collect into List and forward to execute() method as a new Stream.
             // (as userTransaction.commit() will close the DB cursor/resultset)
-            unassignedJobs = jobService.getUnassignedJobsFor(workerId, priority);
+            unassignedJobs = jobService.getUnassignedJobsFor(workerId, orderedPriorities);
             final List<Job> jobList = unassignedJobs.toList();
-
-            logger.debug(format("Found %d %s priority job(s) to run from jobstore", jobList.size(), priority));
 
             userTransaction.commit();
 
-            execute(jobList.stream());
+            if (jobList.isEmpty()) {
+                if(logger.isDebugEnabled()) {
+                    logger.debug("No new jobs found in jobstore");
+                }
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug(format("Found %d %s priority job(s) to run from jobstore", jobList.size(), jobList.get(0).getPriority()));
+                }
+
+                execute(jobList.stream());
+            }
+
 
         } catch (final NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
 

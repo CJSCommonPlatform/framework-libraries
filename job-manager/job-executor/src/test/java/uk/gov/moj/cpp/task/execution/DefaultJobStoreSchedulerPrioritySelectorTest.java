@@ -9,6 +9,8 @@ import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
 
 import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,9 +36,9 @@ public class DefaultJobStoreSchedulerPrioritySelectorTest {
         when(jobStoreConfiguration.getJobPriorityPercentageLow()).thenReturn(10);
         when(randomPercentageProvider.getRandomPercentage()).thenReturn(69, 70, 71);
 
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(MEDIUM));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(HIGH));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(HIGH));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(HIGH, MEDIUM, LOW)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(HIGH, MEDIUM, LOW)));
     }
 
     @Test
@@ -46,9 +48,9 @@ public class DefaultJobStoreSchedulerPrioritySelectorTest {
         when(jobStoreConfiguration.getJobPriorityPercentageLow()).thenReturn(10);
         when(randomPercentageProvider.getRandomPercentage()).thenReturn(9, 10, 11);
 
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(LOW));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(MEDIUM));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(MEDIUM));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(LOW, HIGH, MEDIUM)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));
     }
 
     @Test
@@ -57,12 +59,11 @@ public class DefaultJobStoreSchedulerPrioritySelectorTest {
         when(jobStoreConfiguration.getJobPriorityPercentageLow()).thenReturn(10);
         when(randomPercentageProvider.getRandomPercentage()).thenReturn(9, 10, 11, 69, 70, 71);
 
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(LOW));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(MEDIUM));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(MEDIUM));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(MEDIUM));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(HIGH));
-        assertThat(defaultJobStoreSchedulerPrioritySelector.selectNextPriority(), is(HIGH));
-
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(LOW, HIGH, MEDIUM)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(HIGH, MEDIUM, LOW)));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(HIGH, MEDIUM, LOW)));
     }
 }

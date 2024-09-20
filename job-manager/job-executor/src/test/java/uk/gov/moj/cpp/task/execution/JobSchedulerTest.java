@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.task.execution;
 
+import static java.util.stream.Stream.empty;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,6 +12,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.LOW;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
 
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
@@ -19,6 +22,7 @@ import uk.gov.moj.cpp.jobstore.persistence.Priority;
 import uk.gov.moj.cpp.jobstore.service.JobService;
 import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -81,25 +85,45 @@ public class JobSchedulerTest {
     @Test
     public void shouldExecuteFetchedJobs() {
 
-        final Priority priority = HIGH;
-        when(jobStoreSchedulerPrioritySelector.selectNextPriority()).thenReturn(priority);
-        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priority))).thenReturn(Stream.of(job));
+        final List<Priority> priorities = List.of(HIGH, MEDIUM, LOW);
+        when(logger.isDebugEnabled()).thenReturn(true);
+        when(jobStoreSchedulerPrioritySelector.selectOrderedPriorities()).thenReturn(priorities);
+        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priorities))).thenReturn(Stream.of(job));
+        when(job.getPriority()).thenReturn(MEDIUM);
 
         jobExecutor.fetchUnassignedJobs();
 
         final InOrder inOrder = inOrder(executorService, logger);
 
-        inOrder.verify(logger).debug("Fetching new HIGH priority jobs from jobstore");
-        inOrder.verify(logger).debug("Found 1 HIGH priority job(s) to run from jobstore");
+        inOrder.verify(logger).debug("Fetching new jobs from jobstore in priority order [HIGH, MEDIUM, LOW]");
+        inOrder.verify(logger).debug("Found 1 MEDIUM priority job(s) to run from jobstore");
         inOrder.verify(executorService).submit(any(JobExecutor.class));
+    }
+
+    @Test
+    public void shouldLogIfNoNewJobsFound() throws Exception {
+
+        final List<Priority> priorities = List.of(HIGH, MEDIUM, LOW);
+        when(logger.isDebugEnabled()).thenReturn(true);
+        when(jobStoreSchedulerPrioritySelector.selectOrderedPriorities()).thenReturn(priorities);
+        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priorities))).thenReturn(empty());
+
+        jobExecutor.fetchUnassignedJobs();
+
+        final InOrder inOrder = inOrder(logger);
+
+        inOrder.verify(logger).debug("Fetching new jobs from jobstore in priority order [HIGH, MEDIUM, LOW]");
+        inOrder.verify(logger).debug("No new jobs found in jobstore");
+
+        verifyNoInteractions(executorService);
     }
 
     @Test
     public void shouldNotAttemptToExecuteEmptyStreamOfJobs() {
 
-        final Priority priority = HIGH;
-        when(jobStoreSchedulerPrioritySelector.selectNextPriority()).thenReturn(priority);
-        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priority))).thenReturn(Stream.of());
+        final List<Priority> priorities = List.of(HIGH, MEDIUM, LOW);
+        when(jobStoreSchedulerPrioritySelector.selectOrderedPriorities()).thenReturn(priorities);
+        when(jobService.getUnassignedJobsFor(any(UUID.class), eq(priorities))).thenReturn(Stream.of());
 
         jobExecutor.fetchUnassignedJobs();
 

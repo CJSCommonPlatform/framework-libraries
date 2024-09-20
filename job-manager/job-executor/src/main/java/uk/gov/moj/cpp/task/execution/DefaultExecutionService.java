@@ -3,9 +3,6 @@ package uk.gov.moj.cpp.task.execution;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 
-import static java.util.Optional.empty;
-import static java.util.UUID.randomUUID;
-
 import uk.gov.moj.cpp.jobstore.api.ExecutionService;
 import uk.gov.moj.cpp.jobstore.api.task.ExecutionInfo;
 import uk.gov.moj.cpp.jobstore.persistence.Job;

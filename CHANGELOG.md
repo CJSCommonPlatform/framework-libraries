@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.6.4] - 2024-09-24
+### Changed
+- Improved the fetching of jobs by priority from the jobstore by retrying with a different priority if the first select returns no jobs
+
 ## [17.6.3] - 2024-09-17
 ### Changed
 - Refactor of File Store:

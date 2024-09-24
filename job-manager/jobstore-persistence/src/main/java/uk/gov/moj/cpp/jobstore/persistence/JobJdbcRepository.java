@@ -130,22 +130,22 @@ public class JobJdbcRepository implements JobRepository {
     }
 
     @Override
-    public void lockJobsFor(final UUID workerId, final Priority priority, final int jobCountToLock) {
+    public int lockJobsFor(final UUID workerId, final Priority priority, final int jobCountToLock) {
         final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
         logger.debug("Locking jobs for worker: {}", workerId);
 
         final ZonedDateTime now = now();
         final Timestamp oneHourAgo = toSqlTimestamp((now.minusHours(1)));
 
-        try (final PreparedStatementWrapper ps = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, LOCK_JOBS_SQL)) {
-            ps.setObject(1, workerId);
-            ps.setTimestamp(2, toSqlTimestamp(now));
-            ps.setTimestamp(3, oneHourAgo);
-            ps.setString(4, priority.toString());
-            ps.setTimestamp(5, toSqlTimestamp(now));
-            ps.setLong(6, valueOf(jobCountToLock));
-            ps.setTimestamp(7, oneHourAgo);
-            ps.executeUpdate();
+        try (final PreparedStatementWrapper preparedStatementWrapper = preparedStatementWrapperFactory.preparedStatementWrapperOf(jobStoreDataSource, LOCK_JOBS_SQL)) {
+            preparedStatementWrapper.setObject(1, workerId);
+            preparedStatementWrapper.setTimestamp(2, toSqlTimestamp(now));
+            preparedStatementWrapper.setTimestamp(3, oneHourAgo);
+            preparedStatementWrapper.setString(4, priority.toString());
+            preparedStatementWrapper.setTimestamp(5, toSqlTimestamp(now));
+            preparedStatementWrapper.setLong(6, valueOf(jobCountToLock));
+            preparedStatementWrapper.setTimestamp(7, oneHourAgo);
+            return preparedStatementWrapper.executeUpdate();
         } catch (final SQLException e) {
             logger.error("Error locking jobs", e);
             throw new JdbcRepositoryException(format("Exception while locking jobs for with worker id %s", workerId), e);

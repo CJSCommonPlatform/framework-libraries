@@ -9,6 +9,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.LOW;
+import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
 
 import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JndiJobStoreDataSourceProvider;
 import uk.gov.justice.services.cdi.InitialContextProducer;
@@ -70,8 +72,7 @@ public class JobServiceIT {
 
     private static final String LIQUIBASE_JOB_STORE_DB_CHANGELOG_XML = "liquibase/jobstore-db-changelog.xml";
 
-    // given a list of jobs for workers
-    final Map<UUID, List<Job>> workersToJobs = new HashMap();
+    private final Map<UUID, List<Job>> workersToJobs = new HashMap();
 
     @Inject
     OpenEjbJobJdbcRepository testJobJdbcRepository;
@@ -148,7 +149,7 @@ public class JobServiceIT {
         userTransaction.begin();
         for (int i = 0; i < 4; i++) {
             final UUID workerId = randomUUID();
-            jobService.getUnassignedJobsFor(workerId, HIGH);
+            jobService.getUnassignedJobsFor(workerId, List.of(HIGH, MEDIUM, LOW));
             collectInfo(workerId);
         }
         userTransaction.commit();
@@ -170,7 +171,7 @@ public class JobServiceIT {
         userTransaction.begin();
         for (int i = 0; i < 4; i++) {
             final UUID workerId = randomUUID();
-            jobService.getUnassignedJobsFor(workerId, HIGH);
+            jobService.getUnassignedJobsFor(workerId, List.of(HIGH, MEDIUM, LOW));
             collectInfo(workerId);
         }
         userTransaction.commit();
@@ -205,7 +206,7 @@ public class JobServiceIT {
                 gate.await();
                 userTransaction.begin();
                 final UUID workerId = randomUUID();
-                jobService.getUnassignedJobsFor(workerId, HIGH);
+                jobService.getUnassignedJobsFor(workerId, List.of(HIGH, MEDIUM, LOW));
                 collectInfo(workerId);
                 userTransaction.commit();
 

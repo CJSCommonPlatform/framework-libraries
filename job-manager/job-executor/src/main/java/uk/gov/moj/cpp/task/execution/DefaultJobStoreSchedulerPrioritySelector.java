@@ -28,7 +28,8 @@ public class DefaultJobStoreSchedulerPrioritySelector implements JobStoreSchedul
         final int jobPriorityPercentageHigh = jobStoreConfiguration.getJobPriorityPercentageHigh();
         final int jobPriorityPercentageLow = jobStoreConfiguration.getJobPriorityPercentageLow();
 
-        if (randomPercentage >= jobPriorityPercentageHigh) {
+        final int high = 100 - jobPriorityPercentageHigh;
+        if (randomPercentage >= high) {
             return List.of(HIGH, MEDIUM, LOW);
         }
 

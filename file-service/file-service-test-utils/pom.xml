@@ -5,7 +5,7 @@
     <parent>
         <artifactId>file-service</artifactId>
         <groupId>uk.gov.justice.services</groupId>
-        <version>17.6.6</version>
+        <version>17.6.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

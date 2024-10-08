@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.6.6] - 2024-10-08
+### Fixed
+- Fixed the percentage of times that HIGH, MEDIUM and LOW priority jobs are run
+
 ## [17.6.5] - 2024-10-05
 ### Fixed
 - Fixed test library accidentally put on compile scope

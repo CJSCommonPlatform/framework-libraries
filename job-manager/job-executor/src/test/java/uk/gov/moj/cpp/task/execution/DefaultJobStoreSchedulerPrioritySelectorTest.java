@@ -30,11 +30,35 @@ public class DefaultJobStoreSchedulerPrioritySelectorTest {
     private DefaultJobStoreSchedulerPrioritySelector defaultJobStoreSchedulerPrioritySelector;
 
     @Test
+    public void shouldGetPrioritiesAccordingToPriorityThresholds() throws Exception {
+
+        when(jobStoreConfiguration.getJobPriorityPercentageHigh()).thenReturn(70);
+        when(jobStoreConfiguration.getJobPriorityPercentageLow()).thenReturn(10);
+        when(randomPercentageProvider.getRandomPercentage()).thenReturn(0, 10, 20, 30, 40, 50, 60, 70, 80, 90);
+
+        // 10% of the time we should get LOW priority
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(LOW));
+
+        // 20% of the time we should get MEDIUM priority
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(MEDIUM));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(MEDIUM));
+
+        // 70% of the time we should get HIGH priority
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(HIGH));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(HIGH));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(HIGH));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(HIGH));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(HIGH));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(HIGH));
+        assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities().get(0), is(HIGH));
+    }
+
+    @Test
     public void shouldSelectHighPriorityIfRandomPercentageAboveOrEqualToHighPriorityThreshold() throws Exception {
 
         when(jobStoreConfiguration.getJobPriorityPercentageHigh()).thenReturn(70);
         when(jobStoreConfiguration.getJobPriorityPercentageLow()).thenReturn(10);
-        when(randomPercentageProvider.getRandomPercentage()).thenReturn(69, 70, 71);
+        when(randomPercentageProvider.getRandomPercentage()).thenReturn(29, 30, 31);
 
         assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));
         assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(HIGH, MEDIUM, LOW)));
@@ -57,7 +81,7 @@ public class DefaultJobStoreSchedulerPrioritySelectorTest {
     public void shouldReturnMediumPriorityIfRandomPercentageBetweenTheHighAndLowThresholds() throws Exception {
         when(jobStoreConfiguration.getJobPriorityPercentageHigh()).thenReturn(70);
         when(jobStoreConfiguration.getJobPriorityPercentageLow()).thenReturn(10);
-        when(randomPercentageProvider.getRandomPercentage()).thenReturn(9, 10, 11, 69, 70, 71);
+        when(randomPercentageProvider.getRandomPercentage()).thenReturn(9, 10, 11, 29, 30, 31);
 
         assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(LOW, HIGH, MEDIUM)));
         assertThat(defaultJobStoreSchedulerPrioritySelector.selectOrderedPriorities(), is(List.of(MEDIUM, HIGH, LOW)));

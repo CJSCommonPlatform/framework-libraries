@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.5.6] - 2024-10-10
+### Added
+- New method 'payloadIsNull()' on JsonEnvelope interface, to check if the payload is JsonValue.NULL 
+
 ## [17.5.5] - 2024-07-24
 ### Changed
 - Fix for Jacksons single argument constructor issue inspired from  https://github.com/FasterXML/jackson-databind/issues/1498

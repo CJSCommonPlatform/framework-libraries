@@ -89,6 +89,8 @@ public interface JsonEnvelope extends Envelope<JsonValue> {
 
     JsonString payloadAsJsonString();
 
+    boolean payloadIsNull();
+
     JsonObject asJsonObject();
 
     /**

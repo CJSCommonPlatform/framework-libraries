@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.100.0] - 2024-11-12
+### Changed
+- Split filestore `content` tables back into two tables of `metadata` and `content` to allow for backwards compatibility with liquibase 
+### Removed
+- Temporarily removed the method to purge a limited number of files older than a certain date 
+
 ## [17.6.8] - 2024-10-11
 ### Added
 - New method 'payloadIsNull()' on JsonEnvelope interface, to check if the payload is JsonValue.NULL 

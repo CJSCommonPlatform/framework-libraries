@@ -17,10 +17,10 @@ import uk.gov.justice.services.fileservice.api.FileRetriever;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.fileservice.client.FileService;
-import uk.gov.justice.services.fileservice.client.FileStorePurgeConfiguration;
 import uk.gov.justice.services.fileservice.domain.FileReference;
+import uk.gov.justice.services.fileservice.repository.ContentJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.FileStore;
-import uk.gov.justice.services.fileservice.repository.FileStoreJdbcRepository;
+import uk.gov.justice.services.fileservice.repository.MetadataJdbcRepository;
 import uk.gov.justice.services.fileservice.repository.MetadataUpdater;
 import uk.gov.justice.services.fileservice.utils.test.FileStoreTestDataSourceProvider;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
@@ -74,7 +74,8 @@ public class FileServiceIT {
 
             FileStoreTestDataSourceProvider.class,
 
-            FileStoreJdbcRepository.class,
+            ContentJdbcRepository.class,
+            MetadataJdbcRepository.class,
             FileStore.class,
             MetadataUpdater.class,
             UtcClock.class,
@@ -85,7 +86,6 @@ public class FileServiceIT {
             LoggerProducer.class,
             Logger.class,
             UtcClock.class,
-            FileStorePurgeConfiguration.class,
             ValueProducer.class,
             JndiBasedServiceContextNameProvider.class
     })

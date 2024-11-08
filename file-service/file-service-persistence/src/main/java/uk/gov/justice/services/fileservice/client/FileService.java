@@ -1,8 +1,6 @@
 package uk.gov.justice.services.fileservice.client;
 
 
-import static java.lang.String.format;
-
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.fileservice.api.FileRetriever;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
@@ -12,7 +10,6 @@ import uk.gov.justice.services.fileservice.repository.FileStore;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,9 +29,6 @@ public class FileService implements FileStorer, FileRetriever {
 
     @Inject
     private FileStore fileStore;
-
-    @Inject
-    private FileStorePurgeConfiguration fileStorePurgeConfiguration;
 
     @Inject
     private UtcClock clock;
@@ -84,18 +78,5 @@ public class FileService implements FileStorer, FileRetriever {
     @Override
     public void delete(final UUID fileId) throws FileServiceException {
         fileStore.markAsDeleted(fileId);
-    }
-
-    @Override
-    public void purgeOldestSoftDeletedFiles() throws FileServiceException {
-
-        final int purgeFilesOlderThanNumberOfDays = fileStorePurgeConfiguration.getPurgeFilesOlderThanNumberOfDays();
-        final int maxNumberToDelete = fileStorePurgeConfiguration.getMaximumNumberOfFilesToPurge();
-        final ZonedDateTime purgeDateTime = clock.now().minusDays(purgeFilesOlderThanNumberOfDays);
-
-        logger.info(format("Purging a maximum of %d files from the file store deleted before %s", maxNumberToDelete, purgeDateTime));
-        final int filesDeleted = fileStore.purgeFilesOlderThan(purgeDateTime, maxNumberToDelete);
-
-        logger.info(format("Purged %d files from the file store", filesDeleted));
     }
 }

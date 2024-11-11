@@ -2,23 +2,28 @@ package uk.gov.justice.services.fileservice.repository;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
 
 import uk.gov.justice.services.common.util.UtcClock;
+import uk.gov.justice.services.fileservice.api.DataIntegrityException;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.StorageException;
 import uk.gov.justice.services.fileservice.domain.FileReference;
+import uk.gov.justice.services.fileservice.io.InputStreamWrapper;
 
 import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.ZonedDateTime;
@@ -39,7 +44,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class FileStoreTest {
 
     @Mock
-    private FileStoreJdbcRepository fileStoreJdbcRepository;
+    private ContentJdbcRepository contentJdbcRepository;
+
+    @Mock
+    private MetadataJdbcRepository metadataJdbcRepository;
 
     @Mock
     private DataSourceProvider dataSourceProvider;
@@ -68,9 +76,10 @@ public class FileStoreTest {
 
         final UUID fileId = fileStore.store(metadata, contentStream);
 
-        final InOrder inOrder = inOrder(fileStoreJdbcRepository, connection);
+        final InOrder inOrder = inOrder(metadataJdbcRepository, contentJdbcRepository, connection);
 
-        inOrder.verify(fileStoreJdbcRepository).insert(fileId, contentStream, updatedMetadata, connection);
+        inOrder.verify(contentJdbcRepository).insert(fileId, contentStream, connection);
+        inOrder.verify(metadataJdbcRepository).insert(fileId, updatedMetadata, connection);
         inOrder.verify(connection).close();
     }
 
@@ -89,7 +98,7 @@ public class FileStoreTest {
         final FileServiceException fileServiceException = assertThrows(FileServiceException.class, () -> fileStore.store(metadata, contentStream));
 
         assertThat(fileServiceException.getCause(), is(sqlException));
-        assertThat(fileServiceException.getMessage(), is("Failed to get database connection"));
+        assertThat(fileServiceException.getMessage(), is("Failed to insert file into file-store"));
     }
 
     @Test
@@ -99,15 +108,30 @@ public class FileStoreTest {
 
         final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
-        final Optional<FileReference> fileReference = of(mock(FileReference.class));
+        final InputStream inputStream = mock(InputStream.class);
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
-        when(fileStoreJdbcRepository.findByFileId(fileId, connection)).thenReturn(fileReference);
 
-        assertThat(fileStore.find(fileId), is(fileReference));
+        final Optional<JsonObject> metadata = of(mock(JsonObject.class));
+        final FileContent fileContent = mock(FileContent.class);
+        final Optional<FileContent> fileContentOptional = of(fileContent);
 
-        verify(fileStoreJdbcRepository).findByFileId(fileId, connection);
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(metadata);
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(fileContentOptional);
+        when(fileContent.getContent()).thenReturn(inputStream);
+
+        final Optional<FileReference> fileReference = fileStore.find(fileId);
+
+        assertThat(fileReference.isPresent(), is(true));
+        assertThat(fileReference.get().getFileId(), is(fileId));
+
+        final InputStream contentStream = fileReference.get().getContentStream();
+        assertThat(contentStream, is(instanceOf(InputStreamWrapper.class)));
+        final InputStreamWrapper inputStreamWrapper = (InputStreamWrapper) contentStream;
+
+        assertThat(getValueOfField(inputStreamWrapper, "inputStream", InputStream.class), is(inputStream));
+        assertThat(getValueOfField(inputStreamWrapper, "connection", Connection.class), is(connection));
 
         verify(connection, never()).close();
     }
@@ -126,7 +150,50 @@ public class FileStoreTest {
         final StorageException storageException = assertThrows(StorageException.class, () -> fileStore.find(fileId));
 
         assertThat(storageException.getCause(), is(sqlException));
-        assertThat(storageException.getMessage(), is("Failed to get database connection"));
+        assertThat(storageException.getMessage(), is("Failed to read file from the file-store database"));
+    }
+
+    @Test
+    public void shouldThrowDataIntegrityExceptionIfMetadataFoundButNoContentExists() throws Exception {
+
+        final UUID fileId = fromString("ba2439e3-7fe2-4f7b-83a7-4a3ddef83cc1");
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final Optional<JsonObject> metadata = of(mock(JsonObject.class));
+        final Optional<FileContent> content = empty();
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(metadata);
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(content);
+
+        final DataIntegrityException dataIntegrityException = assertThrows(DataIntegrityException.class, () -> fileStore.find(fileId));
+
+        assertThat(dataIntegrityException.getMessage(), is("No file content found for file id 'ba2439e3-7fe2-4f7b-83a7-4a3ddef83cc1' but metadata exists for that id"));
+    }
+
+    @Test
+    public void shouldThrowDataIntegrityExceptionIfContentFoundButNoMetadataExists() throws Exception {
+
+        final UUID fileId = fromString("ba2439e3-7fe2-4f7b-83a7-4a3ddef83cc1");
+
+        final DataSource dataSource = mock(DataSource.class);
+        final Connection connection = mock(Connection.class);
+        final Optional<JsonObject> metadata = empty();
+        final Optional<FileContent> content = of(mock(FileContent.class));
+
+
+        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(metadata);
+        when(contentJdbcRepository.findByFileId(fileId, connection)).thenReturn(content);
+
+        final DataIntegrityException dataIntegrityException = assertThrows(DataIntegrityException.class, () -> fileStore.find(fileId));
+
+        assertThat(dataIntegrityException.getMessage(), is("No metadata found for file id 'ba2439e3-7fe2-4f7b-83a7-4a3ddef83cc1' but file content exists for that id"));
     }
 
     @Test
@@ -143,7 +210,7 @@ public class FileStoreTest {
 
         fileStore.updateMetadata(fileId, metadata);
 
-        verify(fileStoreJdbcRepository).updateMetadata(fileId, metadata, connection);
+        verify(metadataJdbcRepository).update(fileId, metadata, connection);
 
         verify(connection).close();
     }
@@ -165,7 +232,7 @@ public class FileStoreTest {
                 () -> fileStore.updateMetadata(fileId, metadata));
 
         assertThat(storageException.getCause(), is(sqlException));
-        assertThat(storageException.getMessage(), is("Failed to get database connection"));
+        assertThat(storageException.getMessage(), is("Failed to get database connection to file-store"));
     }
 
     @Test
@@ -183,7 +250,7 @@ public class FileStoreTest {
 
         fileStore.markAsDeleted(fileId);
 
-        verify(fileStoreJdbcRepository).markAsDeleted(fileId, deletedAt, connection);
+        verify(contentJdbcRepository).markAsDeleted(fileId, deletedAt, connection);
 
         verify(connection).close();
     }
@@ -204,7 +271,7 @@ public class FileStoreTest {
                 () -> fileStore.markAsDeleted(fileId));
 
         assertThat(storageException.getCause(), is(sqlException));
-        assertThat(storageException.getMessage(), is("Failed to get database connection"));
+        assertThat(storageException.getMessage(), is("Failed to delete file from the file-store"));
     }
 
     @Test
@@ -214,22 +281,13 @@ public class FileStoreTest {
 
         final DataSource dataSource = mock(DataSource.class);
         final Connection connection = mock(Connection.class);
-        final FileReference fileReference = mock(FileReference.class);
         final JsonObject metadata = mock(JsonObject.class);
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
-        when(fileStoreJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(fileReference));
-        when(fileReference.getMetadata()).thenReturn(metadata);
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(of(metadata));
 
-        final Optional<JsonObject> metadataOptional = fileStore.retrieveMetadata(fileId);
-
-        if (metadataOptional.isPresent()) {
-            assertThat(metadataOptional.get(), is(metadata));
-        } else {
-            fail();
-        }
-
+        assertThat(fileStore.retrieveMetadata(fileId), is(of(metadata)));
         verify(connection).close();
     }
 
@@ -243,7 +301,7 @@ public class FileStoreTest {
 
         when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
         when(dataSource.getConnection()).thenReturn(connection);
-        when(fileStoreJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
+        when(metadataJdbcRepository.findByFileId(fileId, connection)).thenReturn(empty());
 
         assertThat(fileStore.retrieveMetadata(fileId), is(empty()));
 
@@ -266,43 +324,6 @@ public class FileStoreTest {
                 () -> fileStore.retrieveMetadata(fileId));
 
         assertThat(storageException.getCause(), is(sqlException));
-        assertThat(storageException.getMessage(), is("Failed to get database connection"));
-    }
-
-    @Test
-    public void shouldPurgeFilesOlderThanSpecifiedDate() throws Exception {
-
-        final ZonedDateTime purgeDateTime = new UtcClock().now().minusDays(28);
-        final int maxNumberToDelete = 23;
-        final int rowsAffected = 11;
-
-        final DataSource dataSource = mock(DataSource.class);
-        final Connection connection = mock(Connection.class);
-
-        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
-        when(dataSource.getConnection()).thenReturn(connection);
-        when(fileStoreJdbcRepository.purgeFilesOlderThan(purgeDateTime, maxNumberToDelete, connection)).thenReturn(rowsAffected);
-
-        assertThat(fileStore.purgeFilesOlderThan(purgeDateTime, maxNumberToDelete), is(rowsAffected));
-    }
-
-    @Test
-    public void shouldThrowExceptionIfGettingConnectionFailsWhenPurgingFilesOlderThanSpecifiedDate() throws Exception {
-
-        final ZonedDateTime purgeDateTime = new UtcClock().now().minusDays(28);
-        final int maxNumberToDelete = 23;
-        final SQLException sqlException = new SQLException("Ooops");
-
-        final DataSource dataSource = mock(DataSource.class);
-
-        when(dataSourceProvider.getDatasource()).thenReturn(dataSource);
-        when(dataSource.getConnection()).thenThrow(sqlException);
-
-        final StorageException storageException = assertThrows(
-                StorageException.class,
-                () -> fileStore.purgeFilesOlderThan(purgeDateTime, maxNumberToDelete));
-
-        assertThat(storageException.getCause(), is(sqlException));
-        assertThat(storageException.getMessage(), is("Failed to get database connection"));
+        assertThat(storageException.getMessage(), is("Failed to read metadata from the database"));
     }
 }

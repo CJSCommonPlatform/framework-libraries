@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [17.100.0] - 2024-11-12
+## [17.100.1] - 2024-11-12
 ### Changed
 - Split filestore `content` tables back into two tables of `metadata` and `content` to allow for backwards compatibility with liquibase 
 ### Removed

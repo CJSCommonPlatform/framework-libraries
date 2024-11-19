@@ -222,24 +222,24 @@ public class JobJdbcRepositoryTest {
 
         @Test
         public void shouldLockJobsToWorkerGivenInProgressJobsNotReachedLimit() {
-            final int inProgressJobCountLimit = 5;
-            final int jobCountToLock = 4;
-            createJobs(10);
+            final int inProgressJobCountLimit = 3;
+            final int jobCountToLock = 2;
+            createJobs(5);
             final UUID workerId = randomUUID();
 
             jdbcRepository.lockJobsFor(workerId, HIGH, inProgressJobCountLimit, jobCountToLock);
 
             final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).toList();
-            assertThat(jobs.size(), is(4));
+            assertThat(jobs.size(), is(2));
         }
 
         @Test
         public void shouldLockJobsUpToInProgressLimitGivenInProgressJobsCountNotReachedLimit() {
-            final int inProgressJobCountLimit = 5;
-            createJobs(10);
+            final int inProgressJobCountLimit = 3;
+            createJobs(5);
             final UUID workerId1 = randomUUID();
             final UUID workerId2 = randomUUID();
-            lockJobsTo(workerId1, 3);
+            lockJobsTo(workerId1, 1);
 
             jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 4);
             final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
@@ -248,37 +248,37 @@ public class JobJdbcRepositoryTest {
 
         @Test
         public void multipleWorkersShouldBeAbleToLockJobsUntilInProgressLimitReached() {
-            final int inProgressJobCountLimit = 7;
-            createJobs(10);
+            final int inProgressJobCountLimit = 3;
+            createJobs(5);
             final UUID workerId1 = randomUUID();
             final UUID workerId2 = randomUUID();
             final UUID workerId3 = randomUUID();
             final UUID workerId4 = randomUUID();
 
-            jdbcRepository.lockJobsFor(workerId1, HIGH, inProgressJobCountLimit, 3);
+            jdbcRepository.lockJobsFor(workerId1, HIGH, inProgressJobCountLimit, 1);
             final List<Job> jobsLockedToWorker1 = jdbcRepository.findJobsLockedTo(workerId1).toList();
-            assertThat(jobsLockedToWorker1.size(), is(3));
+            assertThat(jobsLockedToWorker1.size(), is(1));
 
-            jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 3);
+            jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 1);
             final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
-            assertThat(jobsLockedToWorker2.size(), is(3));
+            assertThat(jobsLockedToWorker2.size(), is(1));
 
-            jdbcRepository.lockJobsFor(workerId3, HIGH, inProgressJobCountLimit, 3);
+            jdbcRepository.lockJobsFor(workerId3, HIGH, inProgressJobCountLimit, 1);
             final List<Job> jobsLockedToWorker3 = jdbcRepository.findJobsLockedTo(workerId3).toList();
             assertThat(jobsLockedToWorker3.size(), is(1));
 
-            jdbcRepository.lockJobsFor(workerId4, HIGH, inProgressJobCountLimit, 3);
+            jdbcRepository.lockJobsFor(workerId4, HIGH, inProgressJobCountLimit, 1);
             final List<Job> jobsLockedToWorker4 = jdbcRepository.findJobsLockedTo(workerId4).toList();
             assertThat(jobsLockedToWorker4.size(), is(0));
         }
 
         @Test
         public void shouldNotLockJobsToWorkerGivenInProgressJobsCountReachedLimit() {
-            final int inProgressJobCountLimit = 5;
-            createJobs(10);
+            final int inProgressJobCountLimit = 3;
+            createJobs(5);
             final UUID workerId1 = randomUUID();
             final UUID workerId2 = randomUUID();
-            lockJobsTo(workerId1, 5);
+            lockJobsTo(workerId1, 3);
 
             jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 1);
             final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
@@ -298,8 +298,8 @@ public class JobJdbcRepositoryTest {
         private void lockJobsTo(final UUID workerId, final int jobCountToLock) {
             //Lock jobs up to max allowed in progress limit
             jdbcRepository.lockJobsFor(workerId, HIGH, 1000, jobCountToLock);
-            final List<Job> jobsLockedToWorker1 = jdbcRepository.findJobsLockedTo(workerId).toList();
-            assertThat(jobsLockedToWorker1.size(), is(5));
+            final List<Job> jobsLocked = jdbcRepository.findJobsLockedTo(workerId).toList();
+            assertThat(jobsLocked.size(), is(jobCountToLock));
         }
     }
 

@@ -143,10 +143,10 @@ public class JobJdbcRepository implements JobRepository {
             preparedStatementWrapper.setTimestamp(3, oneHourAgo);
             preparedStatementWrapper.setString(4, priority.toString());
             preparedStatementWrapper.setTimestamp(5, toSqlTimestamp(now));
-            ps.setLong(5, valueOf(inProgressJobCountLimit));
-            ps.setTimestamp(6, oneHourAgo);
-            preparedStatementWrapper.setLong(6, valueOf(jobCountToLock));
+            preparedStatementWrapper.setLong(6, valueOf(inProgressJobCountLimit));
             preparedStatementWrapper.setTimestamp(7, oneHourAgo);
+            preparedStatementWrapper.setLong(8, valueOf(jobCountToLock));
+            preparedStatementWrapper.setTimestamp(9, oneHourAgo);
             return preparedStatementWrapper.executeUpdate();
         } catch (final SQLException e) {
             logger.error("Error locking jobs", e);

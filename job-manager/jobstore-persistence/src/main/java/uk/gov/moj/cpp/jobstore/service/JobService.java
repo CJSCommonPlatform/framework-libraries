@@ -28,24 +28,21 @@ public class JobService {
     private JobRepository jobRepository;
 
     @Inject
-    @Value(key = "max.inProgress.job.count", defaultValue = "20")
-    String maxInProgressJobCount;
-
-    @Inject
     private JobStoreConfiguration jobStoreConfiguration;
 
     public Stream<Job> getUnassignedJobsFor(final UUID workerId, final List<Priority> orderedPriorities) {
 
         final int workerJobCount = jobStoreConfiguration.getWorkerJobCount();
+        final int maxInProgressJobCount = jobStoreConfiguration.getMaxInProgressJobCount();
         final Priority firstPriority = orderedPriorities.get(0);
 
-        int rowsAffected = jobRepository.lockJobsFor(workerId, firstPriority, workerJobCount);
+        int rowsAffected = jobRepository.lockJobsFor(workerId, firstPriority, maxInProgressJobCount, workerJobCount);
         if (rowsAffected == 0) {
             final Priority secondPriority = orderedPriorities.get(1);
-            rowsAffected = jobRepository.lockJobsFor(workerId, secondPriority, workerJobCount);
+            rowsAffected = jobRepository.lockJobsFor(workerId, secondPriority, maxInProgressJobCount, workerJobCount);
             if (rowsAffected == 0) {
                 final Priority thirdPriority = orderedPriorities.get(2);
-                rowsAffected = jobRepository.lockJobsFor(workerId, thirdPriority, workerJobCount);
+                rowsAffected = jobRepository.lockJobsFor(workerId, thirdPriority, maxInProgressJobCount, workerJobCount);
             }
         }
         if (rowsAffected == 0) {

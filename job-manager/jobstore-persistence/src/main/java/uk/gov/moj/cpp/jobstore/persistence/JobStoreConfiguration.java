@@ -34,7 +34,7 @@ public class JobStoreConfiguration {
     i.e. to maintain backward compatibility default value should be configured to a high value.
      */
     @Inject
-    @Value(key = "max.inProgress.job.count", defaultValue = "1000")
+    @Value(key = "max.inProgress.job.count", defaultValue = "10000")
     private String maxInProgressJobCount;
 
     @Resource(lookup = "java:module/ModuleName")

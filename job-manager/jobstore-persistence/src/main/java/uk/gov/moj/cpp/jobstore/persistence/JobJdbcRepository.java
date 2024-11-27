@@ -49,7 +49,7 @@ public class JobJdbcRepository implements JobRepository {
                 WHERE (worker_id IS NULL OR worker_lock_time < ?)
                 AND priority = ?
                 AND next_task_start_time < ?
-                LIMIT LEAST(? - (SELECT COUNT(*) FROM job WHERE worker_id IS NOT NULL AND worker_lock_time > ?), ?)
+                LIMIT GREATEST(LEAST(? - (SELECT COUNT(*) FROM job WHERE worker_id IS NOT NULL AND worker_lock_time > ?), ?), 0)
                 FOR UPDATE SKIP LOCKED)
             AND (worker_id IS NULL OR worker_lock_time < ?)
             """;

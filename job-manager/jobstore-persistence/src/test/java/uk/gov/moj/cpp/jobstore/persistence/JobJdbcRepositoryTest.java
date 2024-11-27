@@ -286,6 +286,19 @@ public class JobJdbcRepositoryTest {
         }
 
         @Test
+        public void shouldNotLockJobsToWorkerGivenInProgressJobsCountGreaterThanConfiguredThreshold() {
+            final int inProgressJobCountLimit = 2;
+            createJobs(5);
+            final UUID workerId1 = randomUUID();
+            final UUID workerId2 = randomUUID();
+            lockJobsTo(workerId1, 4);
+
+            jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 2);
+            final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
+            assertThat(jobsLockedToWorker2.size(), is(0));
+        }
+
+        @Test
         public void shouldThrowJdbcRepositoryExceptionWhenLockingJobs() throws SQLException {
             final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
             when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);

@@ -15,7 +15,7 @@ public interface JobRepository {
 
     void updateNextTaskRetryDetails(final UUID id, final Timestamp nextTaskStartTime, final Integer retryAttemptsRemaining);
 
-    int lockJobsFor(final UUID workerId, final Priority priority, final int jobCountToLock);
+    int lockJobsFor(final UUID workerId, final Priority priority, final int inProgressJobCountLimit, final int jobCountToLock);
 
     Stream<Job> findJobsLockedTo(final UUID workerId);
 

@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [17.101.0] - 2024-12-03
+### Added
+- Expose prometheus metrics through /internal/metrics/prometheus endpoint
+- Provide timerRegistrar bean to register timer with metricsRegistry
+
 ### Added
 - Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to 
   stop liquibase collecting anonymous analytics if we should ever upgrade to liquibase  

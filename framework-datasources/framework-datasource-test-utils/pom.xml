@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice.framework.libraries</groupId>
         <artifactId>framework-datasources</artifactId>
-        <version>17.100.2-SNAPSHOT</version>
+        <version>17.101.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>framework-datasource-test-utils</artifactId>

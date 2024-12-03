@@ -34,6 +34,7 @@
         <module>jsonschema-pojo-generator</module>
         <module>raml-maven</module>
         <module>framework-datasources</module>
+        <module>framework-metrics</module>
     </modules>
 
     <properties>

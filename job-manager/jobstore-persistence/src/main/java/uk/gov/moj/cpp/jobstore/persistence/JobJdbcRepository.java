@@ -49,7 +49,7 @@ public class JobJdbcRepository implements JobRepository {
                 WHERE (worker_id IS NULL OR worker_lock_time < ?)
                 AND priority = ?
                 AND next_task_start_time < ?
-                LIMIT ?
+                LIMIT GREATEST(LEAST(? - (SELECT COUNT(*) FROM job WHERE worker_id IS NOT NULL AND worker_lock_time > ?), ?), 0)
                 FOR UPDATE SKIP LOCKED)
             AND (worker_id IS NULL OR worker_lock_time < ?)
             """;
@@ -130,7 +130,7 @@ public class JobJdbcRepository implements JobRepository {
     }
 
     @Override
-    public int lockJobsFor(final UUID workerId, final Priority priority, final int jobCountToLock) {
+    public int lockJobsFor(final UUID workerId, final Priority priority, final int inProgressJobCountLimit, final int jobCountToLock) {
         final DataSource jobStoreDataSource = jobStoreDataSourceProvider.getJobStoreDataSource();
         logger.debug("Locking jobs for worker: {}", workerId);
 
@@ -143,8 +143,10 @@ public class JobJdbcRepository implements JobRepository {
             preparedStatementWrapper.setTimestamp(3, oneHourAgo);
             preparedStatementWrapper.setString(4, priority.toString());
             preparedStatementWrapper.setTimestamp(5, toSqlTimestamp(now));
-            preparedStatementWrapper.setLong(6, valueOf(jobCountToLock));
+            preparedStatementWrapper.setLong(6, valueOf(inProgressJobCountLimit));
             preparedStatementWrapper.setTimestamp(7, oneHourAgo);
+            preparedStatementWrapper.setLong(8, valueOf(jobCountToLock));
+            preparedStatementWrapper.setTimestamp(9, oneHourAgo);
             return preparedStatementWrapper.executeUpdate();
         } catch (final SQLException e) {
             logger.error("Error locking jobs", e);

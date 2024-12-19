@@ -1,28 +1,5 @@
 package uk.gov.moj.cpp.jobstore.persistence;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-
-import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JobStoreDataSourceProvider;
-import uk.gov.justice.framework.libraries.datasource.providers.jobstore.TestJobStoreDataSourceProvider;
-import uk.gov.justice.services.common.util.UtcClock;
-import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
-import uk.gov.justice.services.test.utils.core.messaging.Poller;
-
-import javax.json.JsonObject;
-import javax.sql.DataSource;
-import java.io.StringReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import static java.time.ZonedDateTime.now;
 import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.Optional.empty;
@@ -32,7 +9,9 @@ import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,6 +20,8 @@ import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.LOW;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
 
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.JobStoreDataSourceProvider;
+import uk.gov.justice.framework.libraries.datasource.providers.jobstore.TestJobStoreDataSourceProvider;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.test.utils.core.jdbc.LiquibaseDatabaseBootstrapper;
 import uk.gov.justice.services.test.utils.core.messaging.Poller;
@@ -56,7 +37,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.json.JsonObject;
-import javax.sql.DataSource;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -217,103 +197,15 @@ public class JobJdbcRepositoryTest {
         assertThat(jobs.get(0).getRetryAttemptsRemaining(), is(retryAttemptsRemaining));
     }
 
-    @Nested
-    class LockJobsTest {
+    @Test
+    public void shouldLockJobsToWorker() throws SQLException {
+        createJobs(10);
+        final UUID workerId = randomUUID();
 
-        @Test
-        public void shouldLockJobsToWorkerGivenInProgressJobsNotReachedLimit() {
-            final int inProgressJobCountLimit = 3;
-            final int jobCountToLock = 2;
-            createJobs(5);
-            final UUID workerId = randomUUID();
+        jdbcRepository.lockJobsFor(workerId, HIGH, 4);
 
-            jdbcRepository.lockJobsFor(workerId, HIGH, inProgressJobCountLimit, jobCountToLock);
-
-            final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).toList();
-            assertThat(jobs.size(), is(2));
-        }
-
-        @Test
-        public void shouldLockJobsUpToInProgressLimitGivenInProgressJobsCountNotReachedLimit() {
-            final int inProgressJobCountLimit = 3;
-            createJobs(5);
-            final UUID workerId1 = randomUUID();
-            final UUID workerId2 = randomUUID();
-            lockJobsTo(workerId1, 1);
-
-            jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 4);
-            final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
-            assertThat(jobsLockedToWorker2.size(), is(2)); //Only 2 left to reach InProgress limit
-        }
-
-        @Test
-        public void multipleWorkersShouldBeAbleToLockJobsUntilInProgressLimitReached() {
-            final int inProgressJobCountLimit = 3;
-            createJobs(5);
-            final UUID workerId1 = randomUUID();
-            final UUID workerId2 = randomUUID();
-            final UUID workerId3 = randomUUID();
-            final UUID workerId4 = randomUUID();
-
-            jdbcRepository.lockJobsFor(workerId1, HIGH, inProgressJobCountLimit, 1);
-            final List<Job> jobsLockedToWorker1 = jdbcRepository.findJobsLockedTo(workerId1).toList();
-            assertThat(jobsLockedToWorker1.size(), is(1));
-
-            jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 1);
-            final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
-            assertThat(jobsLockedToWorker2.size(), is(1));
-
-            jdbcRepository.lockJobsFor(workerId3, HIGH, inProgressJobCountLimit, 1);
-            final List<Job> jobsLockedToWorker3 = jdbcRepository.findJobsLockedTo(workerId3).toList();
-            assertThat(jobsLockedToWorker3.size(), is(1));
-
-            jdbcRepository.lockJobsFor(workerId4, HIGH, inProgressJobCountLimit, 1);
-            final List<Job> jobsLockedToWorker4 = jdbcRepository.findJobsLockedTo(workerId4).toList();
-            assertThat(jobsLockedToWorker4.size(), is(0));
-        }
-
-        @Test
-        public void shouldNotLockJobsToWorkerGivenInProgressJobsCountReachedLimit() {
-            final int inProgressJobCountLimit = 3;
-            createJobs(5);
-            final UUID workerId1 = randomUUID();
-            final UUID workerId2 = randomUUID();
-            lockJobsTo(workerId1, 3);
-
-            jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 1);
-            final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
-            assertThat(jobsLockedToWorker2.size(), is(0));
-        }
-
-        @Test
-        public void shouldNotLockJobsToWorkerGivenInProgressJobsCountGreaterThanConfiguredThreshold() {
-            final int inProgressJobCountLimit = 2;
-            createJobs(5);
-            final UUID workerId1 = randomUUID();
-            final UUID workerId2 = randomUUID();
-            lockJobsTo(workerId1, 4);
-
-            jdbcRepository.lockJobsFor(workerId2, HIGH, inProgressJobCountLimit, 2);
-            final List<Job> jobsLockedToWorker2 = jdbcRepository.findJobsLockedTo(workerId2).toList();
-            assertThat(jobsLockedToWorker2.size(), is(0));
-        }
-
-        @Test
-        public void shouldThrowJdbcRepositoryExceptionWhenLockingJobs() throws SQLException {
-            final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
-            when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
-
-            jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-
-            assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.lockJobsFor(randomUUID(), HIGH, 10, 2));
-        }
-
-        private void lockJobsTo(final UUID workerId, final int jobCountToLock) {
-            //Lock jobs up to max allowed in progress limit
-            jdbcRepository.lockJobsFor(workerId, HIGH, 1000, jobCountToLock);
-            final List<Job> jobsLocked = jdbcRepository.findJobsLockedTo(workerId).toList();
-            assertThat(jobsLocked.size(), is(jobCountToLock));
-        }
+        final List<Job> jobs = jdbcRepository.findJobsLockedTo(workerId).collect(toList());
+        assertThat(jobs.size(), is(4));
     }
 
     @Test
@@ -333,7 +225,7 @@ public class JobJdbcRepositoryTest {
         final List<Job> preTestJobs = jdbcRepository.findJobsLockedTo(worker).collect(toList());
         assertThat(preTestJobs.size(), is(1));
 
-        jdbcRepository.lockJobsFor(worker, HIGH, 1000, 10);
+        jdbcRepository.lockJobsFor(worker, HIGH, 10);
 
         final List<Job> jobs = jdbcRepository.findJobsLockedTo(worker).collect(toList());
 
@@ -436,7 +328,7 @@ public class JobJdbcRepositoryTest {
         final PreparedStatementWrapperFactory preparedStatementWrapperFactory = mock(PreparedStatementWrapperFactory.class);
         when(preparedStatementWrapperFactory.preparedStatementWrapperOf(any(), any())).thenThrow(SQLException.class);
         jdbcRepository.preparedStatementWrapperFactory = preparedStatementWrapperFactory;
-        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.lockJobsFor(randomUUID(), HIGH, 1000, 2));
+        assertThrows(JdbcRepositoryException.class, () -> jdbcRepository.lockJobsFor(randomUUID(), HIGH, 2));
     }
 
     @Test

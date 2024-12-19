@@ -4,22 +4,19 @@ package uk.gov.moj.cpp.jobstore.service;
 import static java.util.stream.Stream.empty;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
 
-import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.moj.cpp.jobstore.persistence.Job;
 import uk.gov.moj.cpp.jobstore.persistence.JobRepository;
 import uk.gov.moj.cpp.jobstore.persistence.JobStoreConfiguration;
 import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonObject;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static java.lang.Integer.parseInt;
-import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.json.JsonObject;
 
 @ApplicationScoped
 public class JobService {
@@ -33,16 +30,15 @@ public class JobService {
     public Stream<Job> getUnassignedJobsFor(final UUID workerId, final List<Priority> orderedPriorities) {
 
         final int workerJobCount = jobStoreConfiguration.getWorkerJobCount();
-        final int maxInProgressJobCount = jobStoreConfiguration.getMaxInProgressJobCount();
         final Priority firstPriority = orderedPriorities.get(0);
 
-        int rowsAffected = jobRepository.lockJobsFor(workerId, firstPriority, maxInProgressJobCount, workerJobCount);
+        int rowsAffected = jobRepository.lockJobsFor(workerId, firstPriority, workerJobCount);
         if (rowsAffected == 0) {
             final Priority secondPriority = orderedPriorities.get(1);
-            rowsAffected = jobRepository.lockJobsFor(workerId, secondPriority, maxInProgressJobCount, workerJobCount);
+            rowsAffected = jobRepository.lockJobsFor(workerId, secondPriority, workerJobCount);
             if (rowsAffected == 0) {
                 final Priority thirdPriority = orderedPriorities.get(2);
-                rowsAffected = jobRepository.lockJobsFor(workerId, thirdPriority, maxInProgressJobCount, workerJobCount);
+                rowsAffected = jobRepository.lockJobsFor(workerId, thirdPriority, workerJobCount);
             }
         }
         if (rowsAffected == 0) {

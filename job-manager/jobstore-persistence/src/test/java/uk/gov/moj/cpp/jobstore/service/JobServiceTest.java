@@ -58,19 +58,17 @@ public class JobServiceTest {
 
         final UUID workerId = randomUUID();
         final int workerJobCount = 10;
-        final int inProgressJobCountLimit = 100;
         final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
 
         when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
-        when(jobStoreConfiguration.getMaxInProgressJobCount()).thenReturn(inProgressJobCountLimit);
 
         final List<Job> jobs = List.of(mock(Job.class), mock(Job.class), mock(Job.class));
 
-        when(jobRepository.lockJobsFor(workerId, priorities.get(0), inProgressJobCountLimit, workerJobCount)).thenReturn(jobs.size());
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(jobs.size());
         when(jobRepository.findJobsLockedTo(workerId)).thenReturn(jobs.stream());
 
         assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(3L));
-        verify(jobRepository).lockJobsFor(workerId, priorities.get(0), inProgressJobCountLimit, workerJobCount);
+        verify(jobRepository).lockJobsFor(workerId, priorities.get(0), workerJobCount);
     }
 
     @Test
@@ -78,20 +76,18 @@ public class JobServiceTest {
 
         final UUID workerId = randomUUID();
         final int workerJobCount = 10;
-        final int inProgressJobCountLimit = 100;
         final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
 
         when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
-        when(jobStoreConfiguration.getMaxInProgressJobCount()).thenReturn(inProgressJobCountLimit);
 
         final List<Job> jobs = List.of(mock(Job.class), mock(Job.class), mock(Job.class));
 
-        when(jobRepository.lockJobsFor(workerId, priorities.get(0), inProgressJobCountLimit, workerJobCount)).thenReturn(0);
-        when(jobRepository.lockJobsFor(workerId, priorities.get(1), inProgressJobCountLimit, workerJobCount)).thenReturn(jobs.size());
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(1), workerJobCount)).thenReturn(jobs.size());
         when(jobRepository.findJobsLockedTo(workerId)).thenReturn(jobs.stream());
 
         assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(3L));
-        verify(jobRepository).lockJobsFor(workerId, priorities.get(1), inProgressJobCountLimit, workerJobCount);
+        verify(jobRepository).lockJobsFor(workerId, priorities.get(1), workerJobCount);
     }
 
     @Test
@@ -99,21 +95,19 @@ public class JobServiceTest {
 
         final UUID workerId = randomUUID();
         final int workerJobCount = 10;
-        final int inProgressJobCountLimit = 100;
         final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
 
         when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
-        when(jobStoreConfiguration.getMaxInProgressJobCount()).thenReturn(inProgressJobCountLimit);
 
         final List<Job> jobs = List.of(mock(Job.class), mock(Job.class), mock(Job.class));
 
-        when(jobRepository.lockJobsFor(workerId, priorities.get(0), inProgressJobCountLimit, workerJobCount)).thenReturn(0);
-        when(jobRepository.lockJobsFor(workerId, priorities.get(1), inProgressJobCountLimit, workerJobCount)).thenReturn(0);
-        when(jobRepository.lockJobsFor(workerId, priorities.get(2), inProgressJobCountLimit, workerJobCount)).thenReturn(jobs.size());
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(1), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(2), workerJobCount)).thenReturn(jobs.size());
         when(jobRepository.findJobsLockedTo(workerId)).thenReturn(jobs.stream());
 
         assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(3L));
-        verify(jobRepository).lockJobsFor(workerId, priorities.get(2), inProgressJobCountLimit, workerJobCount);
+        verify(jobRepository).lockJobsFor(workerId, priorities.get(2), workerJobCount);
     }
 
     @Test
@@ -121,14 +115,12 @@ public class JobServiceTest {
 
         final UUID workerId = randomUUID();
         final int workerJobCount = 10;
-        final int inProgressJobCountLimit = 100;
         final List<Priority> priorities = List.of(MEDIUM, HIGH, LOW);
 
         when(jobStoreConfiguration.getWorkerJobCount()).thenReturn(workerJobCount);
-        when(jobStoreConfiguration.getMaxInProgressJobCount()).thenReturn(inProgressJobCountLimit);
-        when(jobRepository.lockJobsFor(workerId, priorities.get(0), inProgressJobCountLimit, workerJobCount)).thenReturn(0);
-        when(jobRepository.lockJobsFor(workerId, priorities.get(1), inProgressJobCountLimit, workerJobCount)).thenReturn(0);
-        when(jobRepository.lockJobsFor(workerId, priorities.get(2), inProgressJobCountLimit, workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(0), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(1), workerJobCount)).thenReturn(0);
+        when(jobRepository.lockJobsFor(workerId, priorities.get(2), workerJobCount)).thenReturn(0);
 
         assertThat(jobService.getUnassignedJobsFor(workerId, priorities).count(), is(0L));
         verifyNoMoreInteractions(jobRepository);

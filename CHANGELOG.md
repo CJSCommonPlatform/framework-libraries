@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add dependency for org.ow2.asm version 9.3 (through maven-common-bom)
+### Changed
+- Update maven-parent-pom to 17.101.0
+- Update postgresql.driver.version to 42.3.2 (through maven-parent-pom)
+- Update maven-common-bom to 17.101.0
+### Security
+- Update com.jayway.json-path to version 2.9.0 to fix **security vulnerability CWE-787**
+  Detail: https://cwe.mitre.org/data/definitions/787.html (through maven-common-bom)
 
 ## [17.101.1] - 2024-12-20
 ### Added

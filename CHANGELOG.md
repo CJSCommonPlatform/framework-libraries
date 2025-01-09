@@ -9,10 +9,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Update maven-parent-pom to 17.101.0
 - Update postgresql.driver.version to 42.3.2 (through maven-parent-pom)
-- Update maven-common-bom to 17.101.0
+- Update maven-common-bom to 17.101.1
 ### Security
 - Update com.jayway.json-path to version 2.9.0 to fix **security vulnerability CWE-787**
   Detail: https://cwe.mitre.org/data/definitions/787.html (through maven-common-bom)
+- Update commons.io to 2.18.0 to fix security vulnerability CVE-2024-47554
+  Detail: https://nvd.nist.gov/vuln/detail/CVE-2024-47554 and https://cwe.mitre.org/data/definitions/400.html
 
 ## [17.101.1] - 2024-12-20
 ### Added

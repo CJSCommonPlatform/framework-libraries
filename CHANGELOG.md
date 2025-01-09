@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-# [17.100.2] - 2025-01-09
+# [17.101.2] - 2025-01-09
 ### Added
 - Add dependency for org.ow2.asm version 9.3 (through maven-common-bom)
 ### Changed

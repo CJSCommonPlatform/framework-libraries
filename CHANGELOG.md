@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
+### Changed
+- Updated postgresql.driver.version to 42.3.2 through maven-parent-pom.
+- Updated maven-framework-parent-pom to 8.0.1.
+- 
 ## [8.0.7] - 2024-01-11
 ### Changed
 - Update maven-common-bom to 8.0.5

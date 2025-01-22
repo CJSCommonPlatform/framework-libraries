@@ -5,15 +5,28 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [17.101.2] - 2025-01-09
+### Added
+- Add dependency for org.ow2.asm version 9.3 (through maven-common-bom)
+### Changed
+- Update maven-parent-pom to 17.101.0
+- Update postgresql.driver.version to 42.3.2 (through maven-parent-pom)
+- Update maven-common-bom to 17.101.1
+### Security
+- Update com.jayway.json-path to version 2.9.0 to fix **security vulnerability CWE-787**
+  Detail: https://cwe.mitre.org/data/definitions/787.html (through maven-common-bom)
+- Update commons.io to 2.18.0 to fix security vulnerability CVE-2024-47554
+  Detail: https://nvd.nist.gov/vuln/detail/CVE-2024-47554 and https://cwe.mitre.org/data/definitions/400.html
+
+## [17.101.1] - 2024-12-20
+### Removed
+- Revert "Jobstore throttling" included in 17.101.0 release
+
 ## [17.101.0] - 2024-12-03
 ### Added
-- Expose prometheus metrics through /internal/metrics/prometheus endpoint
-- Provide timerRegistrar bean to register timer with metricsRegistry
-
-### Added
-- Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to 
+- Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to
   stop liquibase collecting anonymous analytics if we should ever upgrade to liquibase  
-  4.30.0 or greater. Details can be found here: https://www.liquibase.com/blog/product-update-liquibase-now-collects-anonymous-usage-analytics 
+  4.30.0 or greater. Details can be found here: https://www.liquibase.com/blog/product-update-liquibase-now-collects-anonymous-usage-analytics
 
 ## [17.100.1] - 2024-11-12
 ### Changed

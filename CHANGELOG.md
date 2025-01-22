@@ -4,8 +4,9 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+# [17.102.0] - 2025-01-22
 ### Changed
-- Bumped version to 17.102.x for next release version
+- Bumped version to 17.102.0 for next release version
 ### Added
 - New interface `JsonEnvelopeProcessingFailureHandler` in framework-api-core, needed for the new error handling in microservices-framework
 

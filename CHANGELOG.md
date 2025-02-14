@@ -23,14 +23,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Detail: https://nvd.nist.gov/vuln/detail/CVE-2024-47554 and https://cwe.mitre.org/data/definitions/400.html
 
 ## [17.101.1] - 2024-12-20
-### Removed
-- Revert "Jobstore throttling" included in 17.101.0 release
-
-## [17.101.0] - 2024-12-03
 ### Added
-- Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to
+- Expose prometheus metrics through /internal/metrics/prometheus endpoint
+- Provide timerRegistrar bean to register timer with metricsRegistry
+- Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to 
   stop liquibase collecting anonymous analytics if we should ever upgrade to liquibase  
-  4.30.0 or greater. Details can be found here: https://www.liquibase.com/blog/product-update-liquibase-now-collects-anonymous-usage-analytics
+  4.30.0 or greater. Details can be found here: https://www.liquibase.com/blog/product-update-liquibase-now-collects-anonymous-usage-analytics 
 
 ## [17.100.1] - 2024-11-12
 ### Changed

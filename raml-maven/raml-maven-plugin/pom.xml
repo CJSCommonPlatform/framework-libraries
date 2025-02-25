@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice.maven</groupId>
         <artifactId>raml-maven</artifactId>
-        <version>17.102.1</version>
+        <version>17.102.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>raml-maven-plugin</artifactId>

@@ -2,13 +2,12 @@ package uk.gov.justice.services.common.converter;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static javax.json.JsonValue.NULL;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static uk.gov.justice.services.common.converter.JSONObjectValueObfuscator.obfuscated;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import java.math.BigDecimal;
 
@@ -21,9 +20,9 @@ public class JSONObjectValueObfuscatorTest {
 
     @Test
     public void shouldReplaceStringValues() throws Exception {
-        final JsonObject json = createObjectBuilder()
+        final JsonObject json = getJsonBuilderFactory().createObjectBuilder()
                 .add("property1", "Hello World!")
-                .add("nested", createObjectBuilder().add("property2", "Hello Universe!")).build();
+                .add("nested", getJsonBuilderFactory().createObjectBuilder().add("property2", "Hello Universe!")).build();
 
         with(obfuscated(json)
                 .toString())
@@ -34,10 +33,10 @@ public class JSONObjectValueObfuscatorTest {
 
     @Test
     public void shouldReplaceBooleanValues() throws Exception {
-        final JsonObject json = createObjectBuilder()
+        final JsonObject json = getJsonBuilderFactory().createObjectBuilder()
                 .add("property1", true)
                 .add("property2", false)
-                .add("nested", createObjectBuilder().add("property3", true)).build();
+                .add("nested", getJsonBuilderFactory().createObjectBuilder().add("property3", true)).build();
 
         with(obfuscated(json)
                 .toString())
@@ -48,10 +47,10 @@ public class JSONObjectValueObfuscatorTest {
 
     @Test
     public void shouldReplaceNumericValues() throws Exception {
-        final JsonObject json = createObjectBuilder()
+        final JsonObject json = getJsonBuilderFactory().createObjectBuilder()
                 .add("property1", 10)
                 .add("property2", 13L)
-                .add("nested", createObjectBuilder().add("property3", BigDecimal.valueOf(11111))).build();
+                .add("nested", getJsonBuilderFactory().createObjectBuilder().add("property3", BigDecimal.valueOf(11111))).build();
 
         with(obfuscated(json)
                 .toString())
@@ -62,9 +61,9 @@ public class JSONObjectValueObfuscatorTest {
 
     @Test
     public void shouldReplaceUUIDs() throws Exception {
-        final JsonObject json = createObjectBuilder()
+        final JsonObject json = getJsonBuilderFactory().createObjectBuilder()
                 .add("property1", randomUUID().toString())
-                .add("nested", createObjectBuilder().add("property2", randomUUID().toString())).build();
+                .add("nested", getJsonBuilderFactory().createObjectBuilder().add("property2", randomUUID().toString())).build();
 
         with(obfuscated(json)
                 .toString())
@@ -75,22 +74,22 @@ public class JSONObjectValueObfuscatorTest {
 
     @Test
     public void shouldReplaceValuesInArray() throws Exception {
-        final JsonArray array = createArrayBuilder()
+        final JsonArray array = getJsonBuilderFactory().createArrayBuilder()
                 .add("value1")
                 .add("value2")
                 .add("value2")
                 .add(randomUUID().toString())
                 .build();
 
-        final JsonArray array2 = createArrayBuilder()
+        final JsonArray array2 = getJsonBuilderFactory().createArrayBuilder()
                 .add(1)
                 .add(BigDecimal.valueOf(3333))
                 .add(77777L)
                 .build();
 
-        final JsonObject json = createObjectBuilder()
+        final JsonObject json = getJsonBuilderFactory().createObjectBuilder()
                 .add("property1", array)
-                .add("nested", createObjectBuilder().add("property2", array2)).build();
+                .add("nested", getJsonBuilderFactory().createObjectBuilder().add("property2", array2)).build();
 
         with(obfuscated(json)
                 .toString())
@@ -100,18 +99,18 @@ public class JSONObjectValueObfuscatorTest {
 
     @Test
     public void shouldObfuscateJsonObjectInArray() throws Exception {
-        final JsonObject object = createObjectBuilder()
+        final JsonObject object = getJsonBuilderFactory().createObjectBuilder()
                 .add("property2", "someValueA").build();
 
-        final JsonObject object2 = createObjectBuilder()
+        final JsonObject object2 = getJsonBuilderFactory().createObjectBuilder()
                 .add("property3", "someValueB").build();
 
-        final JsonArray array = createArrayBuilder()
+        final JsonArray array = getJsonBuilderFactory().createArrayBuilder()
                 .add(object)
                 .add(object2)
                 .build();
 
-        final JsonObject json = createObjectBuilder()
+        final JsonObject json = getJsonBuilderFactory().createObjectBuilder()
                 .add("property1", array).build();
 
         with(obfuscated(json)
@@ -122,9 +121,9 @@ public class JSONObjectValueObfuscatorTest {
 
     @Test
     public void shouldReplaceNullValues() throws Exception {
-        final JsonObject json = createObjectBuilder()
+        final JsonObject json = getJsonBuilderFactory().createObjectBuilder()
                 .add("property1", NULL)
-                .add("nested", createObjectBuilder().add("property2", NULL)).build();
+                .add("nested", getJsonBuilderFactory().createObjectBuilder().add("property2", NULL)).build();
 
         with(obfuscated(json)
                 .toString())

@@ -10,6 +10,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.awaitility.pollinterval.PollInterval;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 
 import java.time.Duration;
@@ -127,6 +129,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  * </blockquote></pre>
  */
 public class RestPoller {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestPoller.class);
 
     private final RestClient restClient;
     private final RequestParams requestParams;
@@ -134,6 +137,7 @@ public class RestPoller {
     private ConditionFactory await;
     private Matcher<ResponseData> expectedResponseMatcher;
     private Optional<Matcher<ResponseData>> ignoredResponseMatcher = empty();
+
 
     /**
      * Instantiates a new rest poller
@@ -327,13 +331,20 @@ public class RestPoller {
         }
 
         @Override
-        public ResponseData call() throws Exception {
-            final Response response = restClient.query(
+        public ResponseData call() {
+            try (Response response = restClient.query(
                     requestParams.getUrl(),
                     requestParams.getMediaType(),
-                    requestParams.getHeaders());
+                    requestParams.getHeaders())) {
 
-            return new ResponseData(fromStatusCode(response.getStatus()), response.readEntity(String.class), response.getHeaders());
+                String payload = null;
+                try {
+                    payload = response.readEntity(String.class);
+                } catch (Exception e) {
+                    LOGGER.trace("Failed to read response body", e);
+                }
+                return new ResponseData(fromStatusCode(response.getStatus()), payload, response.getHeaders());
+            }
         }
     }
 

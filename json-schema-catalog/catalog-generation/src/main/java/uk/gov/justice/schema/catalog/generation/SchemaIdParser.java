@@ -4,7 +4,7 @@ import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static javax.json.Json.createReader;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 import uk.gov.justice.schema.catalog.util.UrlConverter;
 
@@ -46,7 +46,7 @@ public class SchemaIdParser {
 
         try {
             final String schema = IOUtils.toString(schemaFile, UTF_8);
-            try(final JsonReader reader = createReader(new StringReader(schema))) {
+            try(final JsonReader reader = getJsonReaderFactory().createReader(new StringReader(schema))) {
                 final JsonObject jsonObject = reader.readObject();
 
                 if (jsonObject.containsKey("id")) {

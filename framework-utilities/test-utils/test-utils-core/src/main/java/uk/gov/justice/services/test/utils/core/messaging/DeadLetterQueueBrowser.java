@@ -1,6 +1,7 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
 import static java.util.stream.Collectors.toCollection;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonObjects.jsonReaderFactory;
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.artemisQueueUri;
 
 import java.io.StringReader;
@@ -14,7 +15,6 @@ import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -156,7 +156,7 @@ public class DeadLetterQueueBrowser implements AutoCloseable {
     }
 
     private JsonObject convert(final String source) {
-        try (final JsonReader reader = Json.createReader(new StringReader(source))) {
+        try (final JsonReader reader = jsonReaderFactory.createReader(new StringReader(source))) {
             return reader.readObject();
         }
     }

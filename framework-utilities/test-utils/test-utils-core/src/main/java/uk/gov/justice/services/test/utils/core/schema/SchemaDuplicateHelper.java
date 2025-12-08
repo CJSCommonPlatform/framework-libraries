@@ -1,6 +1,7 @@
 package uk.gov.justice.services.test.utils.core.schema;
 
 import static java.lang.String.format;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonObjects.jsonReaderFactory;
 
 import java.io.File;
 import java.io.StringReader;
@@ -8,7 +9,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -63,7 +63,7 @@ public class SchemaDuplicateHelper {
      * @return
      */
     public static String stripWhitespace(String jsonString) {
-        try (final JsonReader jsonReader = Json.createReader(new StringReader(jsonString))) {
+        try (final JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(jsonString))) {
             JsonObject jsonObject = jsonReader.readObject();
             return jsonObject.toString();
         }

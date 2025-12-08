@@ -1,7 +1,7 @@
 package uk.gov.justice.services.common.converter;
 
 import static java.lang.String.format;
-import static javax.json.Json.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 
@@ -28,7 +28,7 @@ public class ListToJsonArrayConverter<T> implements Converter<List<T>, JsonArray
     StringToJsonObjectConverter stringToJsonObjectConverter;
 
     public JsonArray convert(final List<T> sourceList) {
-        final JsonArrayBuilder jsonArrayBuilder = createArrayBuilder();
+        final JsonArrayBuilder jsonArrayBuilder = getJsonBuilderFactory().createArrayBuilder();
 
         if (sourceList == null) {
             throw new ConverterException("Failed to convert Null List to JsonArray");

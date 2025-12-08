@@ -1,7 +1,6 @@
 package uk.gov.justice.services.messaging.spi;
 
 import static java.lang.Integer.MAX_VALUE;
-import static java.util.ServiceLoader.load;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
@@ -22,6 +21,9 @@ import javax.json.JsonValue;
  */
 public interface JsonEnvelopeProvider {
 
+    JsonEnvelopeProvider JSON_ENVELOPE_PROVIDER = new JsonEnvelopeProviderSelector()
+            .selectFrom(ServiceLoader.load(JsonEnvelopeProvider.class).spliterator());
+
     /**
      * Loads an implementation of JsonEnvelopeProvider using the {@link ServiceLoader} mechanism. An
      * instance of the first implementing class from the loader list is returned.
@@ -31,8 +33,7 @@ public interface JsonEnvelopeProvider {
      *                                               are found
      */
     static JsonEnvelopeProvider provider() {
-        return new JsonEnvelopeProviderSelector()
-                .selectFrom(load(JsonEnvelopeProvider.class).spliterator());
+        return JSON_ENVELOPE_PROVIDER;
     }
 
     /**

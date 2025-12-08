@@ -4,8 +4,6 @@ import static com.google.common.collect.ImmutableMap.of;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.FORBIDDEN;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -24,6 +22,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMatcher.status;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonObjectBuilderWrapperTest.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUID;
 
@@ -77,7 +76,7 @@ public class RestPollerTest {
         final String payloadValue = STRING.next();
         when(response.readEntity(String.class))
                 .thenReturn("{}")
-                .thenReturn(createObjectBuilder().add("payloadKey", payloadValue).build().toString());
+                .thenReturn(jsonBuilderFactory.createObjectBuilder().add("payloadKey", payloadValue).build().toString());
 
         poll.until(
                 payload()
@@ -110,7 +109,7 @@ public class RestPollerTest {
         final String payloadValue = STRING.next();
         when(response.readEntity(String.class))
                 .thenReturn("{}")
-                .thenReturn(createObjectBuilder().add("payloadKey", payloadValue).build().toString());
+                .thenReturn(jsonBuilderFactory.createObjectBuilder().add("payloadKey", payloadValue).build().toString());
         when(response.getStatus())
                 .thenReturn(NOT_FOUND.getStatusCode())
                 .thenReturn(ACCEPTED.getStatusCode());
@@ -157,19 +156,19 @@ public class RestPollerTest {
         final String userId1 = UUID.next().toString();
         final String userId2 = UUID.next().toString();
 
-        final JsonArray emptyEvents = createArrayBuilder().build();
-        final JsonArrayBuilder eventsWith1Item = createArrayBuilder()
-                .add(createObjectBuilder().add("userId", userId1).build());
-        final JsonArrayBuilder eventsWith2Items = createArrayBuilder()
-                .add(createObjectBuilder().add("userId", userId1).build())
-                .add(createObjectBuilder().add("userId", userId2).build());
+        final JsonArray emptyEvents = jsonBuilderFactory.createArrayBuilder().build();
+        final JsonArrayBuilder eventsWith1Item = jsonBuilderFactory.createArrayBuilder()
+                .add(jsonBuilderFactory.createObjectBuilder().add("userId", userId1).build());
+        final JsonArrayBuilder eventsWith2Items = jsonBuilderFactory.createArrayBuilder()
+                .add(jsonBuilderFactory.createObjectBuilder().add("userId", userId1).build())
+                .add(jsonBuilderFactory.createObjectBuilder().add("userId", userId2).build());
 
         when(response.getStatus())
                 .thenReturn(OK.getStatusCode());
         when(response.readEntity(String.class))
-                .thenReturn(createObjectBuilder().add("events", emptyEvents).build().toString())
-                .thenReturn(createObjectBuilder().add("events", eventsWith1Item).build().toString())
-                .thenReturn(createObjectBuilder().add("events", eventsWith2Items).build().toString());
+                .thenReturn(jsonBuilderFactory.createObjectBuilder().add("events", emptyEvents).build().toString())
+                .thenReturn(jsonBuilderFactory.createObjectBuilder().add("events", eventsWith1Item).build().toString())
+                .thenReturn(jsonBuilderFactory.createObjectBuilder().add("events", eventsWith2Items).build().toString());
 
         poll
                 .ignoring(

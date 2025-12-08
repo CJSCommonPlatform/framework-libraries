@@ -2,7 +2,7 @@ package uk.gov.justice.schema.catalog;
 
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static javax.json.Json.createReader;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 import uk.gov.justice.schema.catalog.exception.InvalidJsonFileException;
 
@@ -44,7 +44,7 @@ public class CatalogUpdater {
             try {
                 if (!updatedPath.toString().contains(CLASSPATH)) {
                     final String schema = IOUtils.toString(updatedPath.toUri().toURL(), UTF_8);
-                    try (final JsonReader reader = createReader(new StringReader(schema))) {
+                    try (final JsonReader reader = getJsonReaderFactory().createReader(new StringReader(schema))) {
                         try {
                             final JsonObject jsonObject = reader.readObject();
 

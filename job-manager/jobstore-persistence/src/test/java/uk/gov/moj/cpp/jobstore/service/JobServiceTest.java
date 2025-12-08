@@ -3,8 +3,6 @@ package uk.gov.moj.cpp.jobstore.service;
 import static java.time.ZonedDateTime.now;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -12,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.converter.ZonedDateTimes.toSqlTimestamp;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.LOW;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.MEDIUM;
@@ -129,7 +129,7 @@ public class JobServiceTest {
     @Test
     public void shouldCreateNewJob() {
 
-        final JsonObject jobData = createObjectBuilder().add("testName", "testValue").build();
+        final JsonObject jobData = getJsonBuilderFactory().createObjectBuilder().add("testName", "testValue").build();
         final UUID jobId = randomUUID();
         final String startTask = "startTask";
         final ZonedDateTime startTime = ZonedDateTime.now();
@@ -198,7 +198,7 @@ public class JobServiceTest {
     }
 
     private JsonObject jobData(final String json) {
-        return createReader(new StringReader(json)).readObject();
+        return getJsonReaderFactory().createReader(new StringReader(json)).readObject();
     }
 
 }

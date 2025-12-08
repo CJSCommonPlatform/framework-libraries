@@ -1,7 +1,6 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
 
-import static javax.json.Json.createObjectBuilder;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -12,9 +11,11 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
+import static uk.gov.justice.services.test.utils.core.messaging.JsonObjects.jsonBuilderFactory;
+
 class JsonObjectBuilderWrapper {
 
-    private JsonObjectBuilder jsonObjectBuilder = createObjectBuilder();
+    private final JsonObjectBuilder jsonObjectBuilder;
     private final Map<String, Object> entryMap = new HashMap<>();
 
     public JsonObjectBuilderWrapper(final JsonObject jsonObject) {
@@ -22,7 +23,7 @@ class JsonObjectBuilderWrapper {
     }
 
     public JsonObjectBuilderWrapper() {
-        jsonObjectBuilder = createObjectBuilder();
+        jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
 
     }
 
@@ -94,7 +95,7 @@ class JsonObjectBuilderWrapper {
         JsonObjectBuilder nestedJsonObject;
 
         if (object == null) {
-            nestedJsonObject = createObjectBuilder();
+            nestedJsonObject = jsonBuilderFactory.createObjectBuilder();
             entryMap.put(name, nestedJsonObject);
         } else {
             nestedJsonObject = (JsonObjectBuilder) object;

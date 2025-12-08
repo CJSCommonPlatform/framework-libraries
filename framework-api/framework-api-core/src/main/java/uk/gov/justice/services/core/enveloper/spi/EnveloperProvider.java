@@ -1,7 +1,6 @@
 package uk.gov.justice.services.core.enveloper.spi;
 
 import static java.lang.Integer.MAX_VALUE;
-import static java.util.ServiceLoader.load;
 
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.messaging.Envelope;
@@ -19,6 +18,9 @@ import java.util.function.Function;
  */
 public interface EnveloperProvider {
 
+    EnveloperProvider ENVELOPER_PROVIDER = new EnveloperProviderSelector()
+            .selectFrom(ServiceLoader.load(EnveloperProvider.class).spliterator());
+
     /**
      * Loads an implementation of EnveloperProvider using the {@link ServiceLoader} mechanism. An
      * instance of the first implementing class from the loader list is returned.
@@ -28,8 +30,7 @@ public interface EnveloperProvider {
      *                                           are found
      */
     static EnveloperProvider provider() {
-        return new EnveloperProviderSelector()
-                .selectFrom(load(EnveloperProvider.class).spliterator());
+        return ENVELOPER_PROVIDER;
     }
 
     /**

@@ -1,7 +1,8 @@
 package uk.gov.justice.services.common.converter;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static javax.json.Json.createObjectBuilder;
+import static java.time.ZoneOffset.UTC;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -11,9 +12,12 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Age.THIRTY;
 import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Colour.BLUE;
 import static uk.gov.justice.services.common.converter.ObjectMapperProducerTest.Colour.RED;
+import static uk.gov.justice.services.common.converter.ZonedDateTimes.ISO_8601;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,23 +36,23 @@ import org.junit.jupiter.api.Test;
 public class ObjectMapperProducerTest {
 
     private static final String JSON_OBJECT_STRING = "{\n" +
-            "  \"id\": \"861c9430-7bc6-4bf0-b549-6534394b8d65\"\n" +
-            "}";
+                                                     "  \"id\": \"861c9430-7bc6-4bf0-b549-6534394b8d65\"\n" +
+                                                     "}";
     private static final String YAML_AS_STRING = "---\n" +
-            "subscription_descriptor:\n" +
-            "  spec_version: 1.0.0\n";
+                                                 "subscription_descriptor:\n" +
+                                                 "  spec_version: 1.0.0\n";
 
-    private ObjectMapper mapper;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
-        mapper = new ObjectMapperProducer().objectMapper();
+        objectMapper = new ObjectMapperProducer().objectMapper();
     }
 
     @Test
     public void shouldReturnAMapper() throws Exception {
-        assertThat(mapper, notNullValue());
-        assertThat(mapper, isA(ObjectMapper.class));
+        assertThat(objectMapper, notNullValue());
+        assertThat(objectMapper, isA(ObjectMapper.class));
     }
 
     @Test
@@ -63,19 +67,19 @@ public class ObjectMapperProducerTest {
             }
         };
 
-        final String json = mapper.writeValueAsString(source);
+        final String json = objectMapper.writeValueAsString(source);
 
         assertEquals(JSON_OBJECT_STRING, json, true);
     }
 
     @Test
     public void shouldOmitsNullValuesFromJsonObjects() throws Exception {
-        final JsonObject source = createObjectBuilder()
+        final JsonObject source = getJsonBuilderFactory().createObjectBuilder()
                 .add("id", "861c9430-7bc6-4bf0-b549-6534394b8d65")
                 .add("name", JsonValue.NULL)
                 .build();
 
-        final String json = mapper.writeValueAsString(source);
+        final String json = objectMapper.writeValueAsString(source);
 
         assertEquals(JSON_OBJECT_STRING, json, true);
     }
@@ -85,7 +89,7 @@ public class ObjectMapperProducerTest {
 
         final String json = "{\"name\":\"Fred\",\"age\":42,\"favouriteColour\":\"Blue\", \"something\": \"else\"}";
 
-        mapper.readValue(json, Person.class);
+        objectMapper.readValue(json, Person.class);
     }
 
     @Test
@@ -93,9 +97,9 @@ public class ObjectMapperProducerTest {
 
         final DummyBeanWithSingleArgConstructor bean = new DummyBeanWithSingleArgConstructor("fred");
 
-        final String json = mapper.writeValueAsString(bean);
+        final String json = objectMapper.writeValueAsString(bean);
 
-        assertThat(mapper.readValue(json, DummyBeanWithSingleArgConstructor.class), is(bean));
+        assertThat(objectMapper.readValue(json, DummyBeanWithSingleArgConstructor.class), is(bean));
 
     }
 
@@ -108,7 +112,7 @@ public class ObjectMapperProducerTest {
 
         final Person fred = new Person(name, age, favouriteColour);
 
-        final String json = mapper.writeValueAsString(fred);
+        final String json = objectMapper.writeValueAsString(fred);
 
         with(json)
                 .assertThat("$.name", is(name))
@@ -126,7 +130,7 @@ public class ObjectMapperProducerTest {
 
         final String json = "{\"name\":\"Fred\",\"age\":42,\"favouriteColour\":\"Blue\"}";
 
-        final Person person = mapper.readValue(json, Person.class);
+        final Person person = objectMapper.readValue(json, Person.class);
 
         assertThat(person.getName(), is(name));
         assertThat(person.getAge(), is(age));
@@ -142,7 +146,7 @@ public class ObjectMapperProducerTest {
 
         final PersonWithAgeAsEnum fred = new PersonWithAgeAsEnum(name, age, favouriteColour);
 
-        final String json = mapper.writeValueAsString(fred);
+        final String json = objectMapper.writeValueAsString(fred);
 
         with(json)
                 .assertThat("$.name", is(name))
@@ -159,7 +163,7 @@ public class ObjectMapperProducerTest {
 
         final String json = "{\"name\":\"Fred\",\"age\":30,\"favouriteColour\":\"Red\"}";
 
-        final PersonWithAgeAsEnum person = mapper.readValue(json, PersonWithAgeAsEnum.class);
+        final PersonWithAgeAsEnum person = objectMapper.readValue(json, PersonWithAgeAsEnum.class);
 
         assertThat(person.getName(), is(name));
         assertThat(person.getAge(), is(age));
@@ -173,7 +177,7 @@ public class ObjectMapperProducerTest {
 
         final PersonWithAdditionalProperties bean = new PersonWithAdditionalProperties("fred", 42, additionalProperties);
 
-        final String json = mapper.writeValueAsString(bean);
+        final String json = objectMapper.writeValueAsString(bean);
 
         with(json)
                 .assertThat("$.name", is("fred"))
@@ -186,7 +190,7 @@ public class ObjectMapperProducerTest {
     public void shouldWriteObjectWithAdditionalProperties() throws Exception {
 
         final String jsonString = "{\"name\":\"Jack\",\"age\":42,\"Test\":\"Test Value\",\"Test 2\":\"Test Value 2\",\"Test Number\":25}";
-        final PersonWithAdditionalProperties personWithAdditionalProperties = mapper.readValue(jsonString, PersonWithAdditionalProperties.class);
+        final PersonWithAdditionalProperties personWithAdditionalProperties = objectMapper.readValue(jsonString, PersonWithAdditionalProperties.class);
 
         assertThat(personWithAdditionalProperties.getName(), is("Jack"));
         assertThat(personWithAdditionalProperties.getAge(), is(42));
@@ -200,17 +204,17 @@ public class ObjectMapperProducerTest {
     public void shouldReadAdditionalPropertiesWithAllPropertyTypes() throws Exception {
 
         final String json = "{\n" +
-                "  \"booleanFalseProperty\": false,\n" +
-                "  \"nullProperty\": null,\n" +
-                "  \"intProperty\": 23,\n" +
-                "  \"booleanTrueProperty\": true,\n" +
-                "  \"stringProperty\": \"a String\",\n" +
-                "  \"floatProperty\": 23.23,\n" +
-                "  \"name\": \"a name\",\n" +
-                "  \"age\": 23\n" +
-                "}\n";
+                            "  \"booleanFalseProperty\": false,\n" +
+                            "  \"nullProperty\": null,\n" +
+                            "  \"intProperty\": 23,\n" +
+                            "  \"booleanTrueProperty\": true,\n" +
+                            "  \"stringProperty\": \"a String\",\n" +
+                            "  \"floatProperty\": 23.23,\n" +
+                            "  \"name\": \"a name\",\n" +
+                            "  \"age\": 23\n" +
+                            "}\n";
 
-        final PersonWithAdditionalProperties person = mapper.readValue(json, PersonWithAdditionalProperties.class);
+        final PersonWithAdditionalProperties person = objectMapper.readValue(json, PersonWithAdditionalProperties.class);
 
         assertThat(person.getAdditionalProperties().get("booleanFalseProperty"), is(false));
         assertThat(person.getAdditionalProperties().get("nullProperty"), is(nullValue()));
@@ -245,7 +249,7 @@ public class ObjectMapperProducerTest {
                 additionalProperties
         );
 
-        final String json = mapper.writeValueAsString(person);
+        final String json = objectMapper.writeValueAsString(person);
 
         with(json)
                 .assertThat("$.stringProperty", is(stringProperty))
@@ -256,7 +260,6 @@ public class ObjectMapperProducerTest {
                 .assertThat("$.nullProperty", is(nullValue()))
         ;
     }
-
 
     @Test
     public void shouldNotWriteAdditionalPropertiesWhenNullPassed() throws Exception {
@@ -270,22 +273,46 @@ public class ObjectMapperProducerTest {
                 null
         );
 
-        final String json = mapper.writeValueAsString(person);
+        final String json = objectMapper.writeValueAsString(person);
 
         with(json)
                 .assertThat("$.name", is(name))
                 .assertThat("$.age", is(age));
     }
 
-
     @Test
     public void shouldConvertYamlToJsonObject() throws Exception {
         final ObjectMapper yamlObjectMapper = new ObjectMapperProducer().objectMapperWith(new YAMLFactory());
 
         final Object yamlObject = yamlObjectMapper.readValue(YAML_AS_STRING, Object.class);
-        final JSONObject yamlAsJsonObject = new JSONObject(mapper.writeValueAsString(yamlObject));
+        final JSONObject yamlAsJsonObject = new JSONObject(objectMapper.writeValueAsString(yamlObject));
 
         assertThat(yamlAsJsonObject.getJSONObject("subscription_descriptor").get("spec_version"), is("1.0.0"));
+    }
+
+    @Test
+    public void shouldConvertDatesUsingTheCorrectISO_8601Format() throws Exception {
+
+        final String name = "Fred Bloggs";
+        final String dateOfBirthCorrectFormat = "2025-02-23T10:36:11.000Z";
+        final ZonedDateTime dateOfBirth = ZonedDateTime.parse(dateOfBirthCorrectFormat);
+
+        final PersonWithDateOfBirth personWithDateOfBirth = new PersonWithDateOfBirth(
+                name,
+                dateOfBirth
+        );
+
+        final String json = objectMapper.writeValueAsString(personWithDateOfBirth);
+
+        with(json)
+                .assertThat("$.name", is(name))
+                .assertThat("$.dateOfBirth", is(dateOfBirthCorrectFormat));
+
+        final PersonWithDateOfBirth parsedPersonWithDateOfBirth = objectMapper.readValue(json, PersonWithDateOfBirth.class);
+        assertThat(parsedPersonWithDateOfBirth.getName(), is(name));
+
+        assertThat(parsedPersonWithDateOfBirth.getDateOfBirth().getOffset(), is(UTC));
+        assertThat(ofPattern(ISO_8601).format(parsedPersonWithDateOfBirth.getDateOfBirth()), is(dateOfBirthCorrectFormat));
     }
 
     public static class DummyBeanWithSingleArgConstructor {
@@ -391,6 +418,25 @@ public class ObjectMapperProducerTest {
         }
     }
 
+    public static class PersonWithDateOfBirth {
+
+        private final String name;
+        private final ZonedDateTime dateOfBirth;
+
+        public PersonWithDateOfBirth(final String name, final ZonedDateTime dateOfBirth) {
+            this.name = name;
+            this.dateOfBirth = dateOfBirth;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public ZonedDateTime getDateOfBirth() {
+            return dateOfBirth;
+        }
+    }
+
     public enum Age {
         ONE(1),
         TWO(2),
@@ -424,5 +470,4 @@ public class ObjectMapperProducerTest {
             return name;
         }
     }
-
 }

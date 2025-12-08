@@ -2,14 +2,13 @@ package uk.gov.justice.services.common.converter;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -79,9 +78,9 @@ public class ListToJsonArrayConverterTest {
     }
 
     private JsonArray expectedJsonArray() {
-        return createArrayBuilder()
-                .add(createObjectBuilder().add("id", ID_ONE.toString()).add("name", NAME_ONE))
-                .add(createObjectBuilder().add("id", ID_TWO.toString()).add("name", NAME_TWO))
+        return getJsonBuilderFactory().createArrayBuilder()
+                .add(getJsonBuilderFactory().createObjectBuilder().add("id", ID_ONE.toString()).add("name", NAME_ONE))
+                .add(getJsonBuilderFactory().createObjectBuilder().add("id", ID_TWO.toString()).add("name", NAME_TWO))
                 .build();
     }
 

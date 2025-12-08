@@ -1,7 +1,5 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -12,8 +10,10 @@ import uk.gov.justice.services.test.utils.core.random.BigDecimalGenerator;
 
 import java.math.BigDecimal;
 
+import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 
 public class JsonObjectBuilderWrapperTest {
+    public static final JsonBuilderFactory jsonBuilderFactory = Json.createBuilderFactory(null);
 
     private JsonObjectBuilderWrapper wrapper;
 
@@ -31,7 +32,7 @@ public class JsonObjectBuilderWrapperTest {
 
     @Test
     public void testAddingJsonArrayAsAttributeToRootLevelJsonObject() {
-        final JsonArray numberJsonArray = createArrayBuilder().add(1).add(2).build();
+        final JsonArray numberJsonArray = jsonBuilderFactory.createArrayBuilder().add(1).add(2).build();
 
         final String firstLevelAttributeName = "numbers";
         wrapper.add(numberJsonArray, firstLevelAttributeName);
@@ -44,7 +45,7 @@ public class JsonObjectBuilderWrapperTest {
 
     @Test
     public void testAddingJsonArrayAsAttributeAsNestedAttribute() {
-        final JsonArray numberJsonArray = createArrayBuilder().add(1).add(2).build();
+        final JsonArray numberJsonArray = jsonBuilderFactory.createArrayBuilder().add(1).add(2).build();
 
         final String firstLevelAttributeName = "example";
         final String secondLevelAttributeName = "numbers";
@@ -69,9 +70,9 @@ public class JsonObjectBuilderWrapperTest {
         final String jsonArrayBuilderAttributeName = "jsonArrayBuilder";
 
 
-        final JsonArray jsonArray = createArrayBuilder().add(1).add(2).build();
-        final JsonArrayBuilder jsonArrayBuilder = createArrayBuilder().add(3).add(4);
-        final JsonObject jsonObject = createObjectBuilder().add("key", "value").build();
+        final JsonArray jsonArray = jsonBuilderFactory.createArrayBuilder().add(1).add(2).build();
+        final JsonArrayBuilder jsonArrayBuilder = jsonBuilderFactory.createArrayBuilder().add(3).add(4);
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add("key", "value").build();
         final int integerAttributeValue = 500;
         final String stringAttributeValue = randomAlphanumeric(10);
         final boolean booleanAttributeValue = true;

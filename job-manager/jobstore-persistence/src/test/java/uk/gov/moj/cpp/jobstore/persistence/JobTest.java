@@ -4,13 +4,13 @@ import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.util.UtcClock;
 
 import java.time.ZonedDateTime;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ public class JobTest {
 
     @BeforeEach
     public void setup() {
-        jobData = Json.createObjectBuilder().build();
+        jobData = getJsonBuilderFactory().createObjectBuilder().build();
         nextTaskStartTime = new UtcClock().now();
     }
 

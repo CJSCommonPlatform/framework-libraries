@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [17.103.1] - 2025-12-08
+### Changed
+- Refactor JsonObject usages to more proper api 
+- Fix HttpClient lifecycle.
+- Used JsonFactory instead of Json.create methods
+
 # [17.103.0] - 2025-07-16
 ### Changed
 - Moved file-service modules to separate git repo hmcts/cp-file-service

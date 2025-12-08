@@ -3,9 +3,9 @@ package uk.gov.justice.services.common.converter;
 import static java.time.ZoneOffset.UTC;
 import static java.time.ZonedDateTime.of;
 import static java.time.ZonedDateTime.parse;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -68,6 +68,6 @@ public class ZonedDateTimesTest {
     }
 
     private JsonString createJsonString(final String source) {
-        return createObjectBuilder().add("tmp", source).build().getJsonString("tmp");
+        return getJsonBuilderFactory().createObjectBuilder().add("tmp", source).build().getJsonString("tmp");
     }
 }

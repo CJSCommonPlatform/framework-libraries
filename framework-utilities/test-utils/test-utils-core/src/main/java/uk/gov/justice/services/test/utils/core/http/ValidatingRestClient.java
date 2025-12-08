@@ -39,17 +39,17 @@ public class ValidatingRestClient {
      */
     public Optional<ResponseDetails> get(final PollingRequestParams pollingRequestParams) {
 
-        final Response response = restClient.query(
+        try (Response response = restClient.query(
                 pollingRequestParams.getUrl(),
                 pollingRequestParams.getMediaType(),
-                pollingRequestParams.getHeaders());
+                pollingRequestParams.getHeaders())) {
 
 
-        final Status status = fromStatusCode(response.getStatus());
-        final String responseBody = response.readEntity(String.class);
-
-        if (responseValidator.isValid(responseBody, status, pollingRequestParams)) {
-            return of(new ResponseDetails(status, responseBody));
+            final Status status = fromStatusCode(response.getStatus());
+            final String responseBody = response.readEntity(String.class);
+            if (responseValidator.isValid(responseBody, status, pollingRequestParams)) {
+                return of(new ResponseDetails(status, responseBody));
+            }
         }
 
         return empty();

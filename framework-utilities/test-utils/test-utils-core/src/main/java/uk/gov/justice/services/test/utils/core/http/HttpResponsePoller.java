@@ -6,6 +6,7 @@ import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonObjects.jsonReaderFactory;
 
 import uk.gov.justice.services.test.utils.core.messaging.JsonObjects;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
@@ -15,7 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.ws.rs.core.MultivaluedMap;
@@ -101,9 +101,10 @@ public class HttpResponsePoller {
     private Predicate<String> compareJsonObjectWith(final Map<String, String> values) {
         return entity -> {
             if (entity != null) {
-                final JsonReader jsonReader = Json.createReader(new StringReader(entity));
-                final JsonObject jsonObject = jsonReader.readObject();
-                jsonReader.close();
+                final JsonObject jsonObject;
+                try (JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(entity))) {
+                    jsonObject = jsonReader.readObject();
+                }
 
                 final boolean anyMatchFalse = values.entrySet().stream().map(entry -> {
                     final Optional<String> value = JsonObjects.getString(jsonObject, entry.getKey());

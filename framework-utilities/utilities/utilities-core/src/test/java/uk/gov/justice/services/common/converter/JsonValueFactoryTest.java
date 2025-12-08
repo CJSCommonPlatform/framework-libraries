@@ -11,6 +11,7 @@ import javax.json.JsonNumber;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
 public class JsonValueFactoryTest {
@@ -59,5 +60,13 @@ public class JsonValueFactoryTest {
         final JsonValue myValue = jsonValueFactory.build(myBoolean);
 
         assertThat(myValue, is(FALSE));
+    }
+    @Test
+    public void shouldReturnToStringIfOtherType() {
+        final Pair myPair = Pair.of("myString", "myValue");
+        JsonValue myValue = jsonValueFactory.build(myPair);
+
+        assertTrue(myValue instanceof JsonString);
+        assertThat(((JsonString)myValue).getString(), is("(myString,myValue)"));
     }
 }

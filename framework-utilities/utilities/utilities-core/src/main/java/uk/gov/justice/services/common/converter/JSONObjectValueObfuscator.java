@@ -1,8 +1,7 @@
 package uk.gov.justice.services.common.converter;
 
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static javax.json.JsonValue.NULL;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import java.util.UUID;
 
@@ -43,12 +42,12 @@ public final class JSONObjectValueObfuscator {
     public static JsonValue obfuscated(final JsonValue json) {
         switch (json.getValueType()) {
             case ARRAY:
-                final JsonArrayBuilder arrayBuilder = createArrayBuilder();
+                final JsonArrayBuilder arrayBuilder = getJsonBuilderFactory().createArrayBuilder();
                 final JsonArray jsonArray = (JsonArray) json;
                 jsonArray.forEach(o -> arrayBuilder.add(obfuscated(o)));
                 return arrayBuilder.build();
             case OBJECT:
-                final JsonObjectBuilder obfuscatedJsonObjectBuilder = createObjectBuilder();
+                final JsonObjectBuilder obfuscatedJsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
                 for (String key : ((JsonObject) json).keySet()) {
                     obfuscatedJsonObjectBuilder.add(key, obfuscated(((JsonObject) json).get(key)));
                 }

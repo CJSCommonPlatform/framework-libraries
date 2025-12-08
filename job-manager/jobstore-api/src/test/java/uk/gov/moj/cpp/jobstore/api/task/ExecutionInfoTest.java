@@ -5,6 +5,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.moj.cpp.jobstore.persistence.Priority.HIGH;
 
 import uk.gov.justice.services.common.util.UtcClock;
@@ -12,7 +13,6 @@ import uk.gov.moj.cpp.jobstore.persistence.Job;
 
 import java.time.ZonedDateTime;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ public class ExecutionInfoTest {
 
     @BeforeEach
     public void setup() {
-        jobData = Json.createObjectBuilder().build();
+        jobData = getJsonBuilderFactory().createObjectBuilder().build();
         nextTaskStartTime = new UtcClock().now();
     }
 

@@ -1,8 +1,6 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -10,6 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonObjectBuilderWrapperTest.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUID;
 
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
@@ -25,11 +24,11 @@ public class ResponsePayloadMatcherTest {
         final String userId1 = UUID.next().toString();
         final String userId2 = UUID.next().toString();
 
-        final JsonArrayBuilder events = createArrayBuilder()
-                .add(createObjectBuilder().add("userId", userId1).build())
-                .add(createObjectBuilder().add("userId", userId2).build());
+        final JsonArrayBuilder events = jsonBuilderFactory.createArrayBuilder()
+                .add(jsonBuilderFactory.createObjectBuilder().add("userId", userId1).build())
+                .add(jsonBuilderFactory.createObjectBuilder().add("userId", userId2).build());
 
-        final String eventsJson = createObjectBuilder().add("events", events).build().toString();
+        final String eventsJson = jsonBuilderFactory.createObjectBuilder().add("events", events).build().toString();
 
         assertThat(new ResponseData(null, eventsJson), payload()
                 .isJson(allOf(
@@ -41,8 +40,8 @@ public class ResponsePayloadMatcherTest {
 
     @Test
     public void shouldFailWhenJsonResponsePayloadDoesNotMatch() throws Exception {
-        final JsonArrayBuilder events = createArrayBuilder();
-        final String emptyEventsJson = createObjectBuilder().add("events", events).build().toString();
+        final JsonArrayBuilder events = jsonBuilderFactory.createArrayBuilder();
+        final String emptyEventsJson = jsonBuilderFactory.createObjectBuilder().add("events", events).build().toString();
 
         assertThrows(AssertionError.class, () -> assertThat(
                 new ResponseData(null, emptyEventsJson), payload()
@@ -71,10 +70,10 @@ public class ResponsePayloadMatcherTest {
     public void shouldMatchBothStringAndJsonPayloadFromResponse() {
         final String userId1 = UUID.next().toString();
 
-        final JsonArrayBuilder events = createArrayBuilder()
-                .add(createObjectBuilder().add("userId", userId1).build());
+        final JsonArrayBuilder events = jsonBuilderFactory.createArrayBuilder()
+                .add(jsonBuilderFactory.createObjectBuilder().add("userId", userId1).build());
 
-        final String eventsJson = createObjectBuilder().add("events", events).build().toString();
+        final String eventsJson = jsonBuilderFactory.createObjectBuilder().add("events", events).build().toString();
 
         assertThat(new ResponseData(null, eventsJson), payload()
                 .that(containsString(userId1))

@@ -1,170 +1,87 @@
 package uk.gov.justice.services.test.utils.core.rest;
 
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.HttpHeaders.ACCEPT;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static uk.gov.justice.services.test.utils.core.rest.ResteasyClientBuilderFactory.clientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-/**
- * Helper class to send Post Commands and Get Queries.
- */
 public class RestClient {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RestClient.class);
+    public static final ResteasyClient RESTEASY_CLIENT = ResteasyClientBuilderFactory.clientBuilder().connectionPoolSize(5).build();
 
-    /**
-     * POSTs a command to the specified URL.
-     *
-     * @param url            - the URL to post the command to.
-     * @param contentType    - the content type of the command.
-     * @param requestPayload - the payload of the command.
-     * @return the Response from the command being issued.
-     */
     public Response postCommand(final String url, final String contentType, final String requestPayload) {
-        final Entity<String> entity = entity(requestPayload, MediaType.valueOf(contentType));
-
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Making POST request to '{}' with Content Type '{}'", url, contentType);
-            LOGGER.info("Request payload: '{}'", requestPayload);
+        Entity<String> entity = Entity.entity(requestPayload, MediaType.valueOf(contentType));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Making POST request to '{}' with Content Type '{}' Request payload: '{}'", url, contentType, requestPayload);
         }
 
-        final Response response = clientBuilder().build()
-                .target(url)
-                .request()
-                .post(entity);
-
-        if (LOGGER.isInfoEnabled()) {
-            final Response.StatusType statusType = response.getStatusInfo();
-            LOGGER.info("Received response status '{}' '{}'", statusType.getStatusCode(), statusType.getReasonPhrase());
+        try (Response response = RESTEASY_CLIENT.target(url).request().post(entity)) {
+            response.bufferEntity();
+            logIfFailed(response);
+            return response;
         }
-
-        return response;
     }
 
-    /**
-     * POSTs a command with headers to the specified URL.
-     *
-     * @param url            - the URL to post the command to.
-     * @param contentType    - the content type of the command.
-     * @param requestPayload - the payload of the command.
-     * @param headers        - headers to be sent in the request.
-     * @return the Response from the command being issued.
-     */
     public Response postCommand(final String url, final String contentType, final String requestPayload, final MultivaluedMap<String, Object> headers) {
-        final Entity<String> entity = entity(requestPayload, MediaType.valueOf(contentType));
-
-
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Making POST request to '{}' with Content Type '{}'", url, contentType);
-            LOGGER.info("Request payload: '{}'", requestPayload);
-            LOGGER.info("Headers: {}", headers);
+        Entity<String> entity = Entity.entity(requestPayload, MediaType.valueOf(contentType));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Making POST request to '{}' with Content Type '{}' Request payload: '{}' Headers: {} ", url, contentType, requestPayload, headers);
         }
 
-
-        final Response response = clientBuilder().build()
-                .target(url)
-                .request()
-                .headers(headers)
-                .post(entity);
-
-        if (LOGGER.isInfoEnabled()) {
-            final Response.StatusType statusType = response.getStatusInfo();
-            LOGGER.info("Received response status '{}' '{}'", statusType.getStatusCode(), statusType.getReasonPhrase());
+        try (Response response = RESTEASY_CLIENT.target(url).request().headers(headers).post(entity)) {
+            response.bufferEntity();
+            logIfFailed(response);
+            return response;
         }
-
-        return response;
     }
 
-    /**
-     * Sends a query (Get) to the specified URL.
-     *
-     * @param url          - the URL of the query.
-     * @param contentTypes - the content type of the query.
-     * @return the Response from the query being issued.
-     */
     public Response query(final String url, final String contentTypes) {
-
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Making GET request to '{}' with Content Type '{}'", url, contentTypes);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Making GET request to '{}' with Content Type '{}'", url, contentTypes);
         }
 
-        final Response response = clientBuilder().build()
-                .target(url)
-                .request(MediaType.valueOf(contentTypes))
-                .get();
-
-        if (LOGGER.isInfoEnabled()) {
-            final Response.StatusType statusType = response.getStatusInfo();
-            LOGGER.info("Received response status '{}' '{}'", statusType.getStatusCode(), statusType.getReasonPhrase());
+        try (Response response = RESTEASY_CLIENT.target(url).request(new MediaType[]{MediaType.valueOf(contentTypes)}).get()) {
+            response.bufferEntity();
+            logIfFailed(response);
+            return response;
         }
-
-        return response;
     }
 
-    /**
-     * Sends a query (Get) with headers to the specified URL.
-     *
-     * @param url          - the URL of the query.
-     * @param contentTypes - the content type of the query.
-     * @param headers      - headers to be sent in the request.
-     * @return the Response from the query being issued.
-     */
     public Response query(final String url, final String contentTypes, final MultivaluedMap<String, Object> headers) {
-
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Making GET request to '{}' with Content Type '{}'", url, contentTypes);
-            LOGGER.info("Headers: {}", headers);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Making GET request to '{}' with Content Type '{}' and Headers: {}", url, contentTypes, headers);
         }
 
-        final Response response = clientBuilder().build()
-                .target(url)
-                .request()
-                .headers(headers)
-                .header(ACCEPT, contentTypes)
-                .get();
-
-        if (LOGGER.isInfoEnabled()) {
-            final Response.StatusType statusType = response.getStatusInfo();
-            LOGGER.info("Received response status '{}' '{}'", statusType.getStatusCode(), statusType.getReasonPhrase());
+        try (Response response = RESTEASY_CLIENT.target(url).request().headers(headers).header("Accept", contentTypes).get()) {
+            response.bufferEntity();
+            logIfFailed(response);
+            return response;
         }
-        
-        return response;
     }
 
-    /**
-     * Sends a DELETE command to the specified URL.
-     *
-     * @param url            - the URL to post the command to.
-     * @param contentType    - the content type of the command.
-     * @param headers      - headers to be sent in the request.
-     * @return the Response from the command being issued.
-     */
     public Response deleteCommand(final String url, final String contentType, final MultivaluedMap<String, Object> headers) {
-
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Making DELETE request to '{}' with Content Type '{}'", url, contentType);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Making DELETE request to '{}' with Content Type '{}'", url, contentType);
         }
 
-        final Response response = clientBuilder().build()
-                .target(url)
-                .request()
-                .headers(headers)
-                .header(CONTENT_TYPE, contentType)
-                .delete();
-
-        if (LOGGER.isInfoEnabled()) {
-            final Response.StatusType statusType = response.getStatusInfo();
-            LOGGER.info("Received response status '{}' '{}'", statusType.getStatusCode(), statusType.getReasonPhrase());
+        try (Response response = RESTEASY_CLIENT.target(url).request().headers(headers).header("Content-Type", contentType).delete()) {
+            response.bufferEntity();
+            logIfFailed(response);
+            return response;
         }
+    }
 
-        return response;
+    private static void logIfFailed(final Response response) {
+        if (LOGGER.isInfoEnabled()) {
+            Response.StatusType statusType = response.getStatusInfo();
+            if (statusType.getFamily() != Response.Status.Family.SUCCESSFUL) {
+                LOGGER.info("Received response status '{}' '{}' {} ", statusType.getStatusCode(), statusType.getReasonPhrase(), response.readEntity(String.class));
+            }
+        }
     }
 }
+

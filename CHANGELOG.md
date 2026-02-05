@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, which loose
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Bump version to 17.105.x for new Framework F development
 
 # [17.104.0] - 2025-12-16
 ### Added

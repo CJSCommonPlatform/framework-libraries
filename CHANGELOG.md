@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Bump version to 17.105.x for new Framework F development
 
+### Added
+- Add HttpCaller interface to perform simple get API invocation
+
 # [17.104.0] - 2025-12-16
 ### Added
 - New module `framework-libraries-version` that contains a maven generated json file that has this project's version number

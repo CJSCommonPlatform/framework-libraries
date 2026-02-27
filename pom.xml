@@ -41,6 +41,7 @@
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
         <framework-wiremock-service.version>17.0.1</framework-wiremock-service.version>
         <file-service.version>17.104.0</file-service.version>
+        <coveralls.skip>true</coveralls.skip>
 
         <!-- Fix me -->
         <openejb.version>8.0.13</openejb.version>
@@ -105,7 +106,7 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>${coveralls.skip}</skip>
                 </configuration>
             </plugin>
         </plugins>

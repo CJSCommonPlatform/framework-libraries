@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 # [17.105.0-M1] - 2026-02-26
 ### Added
 - Add HttpCaller interface to perform simple get API invocation
+- Skip coveralls due to service being down
 
 # [17.104.0] - 2025-12-16
 ### Added

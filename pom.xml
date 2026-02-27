@@ -105,7 +105,7 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <configuration>
-                    <failOnServiceError>false</failOnServiceError>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

@@ -104,13 +104,9 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml.bind</groupId>
-                        <artifactId>jaxb-api</artifactId>
-                        <version>${jaxb.version}</version>
-                    </dependency>
-                </dependencies>
+                <configuration>
+                    <failOnServiceError>false</failOnServiceError>
+                </configuration>
             </plugin>
         </plugins>
 

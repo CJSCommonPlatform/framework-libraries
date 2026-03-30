@@ -1,31 +1,29 @@
 {
-  "catalog": {
-    "name": "my catalog",
-    "groups": [
-      {
-        "name": "standards",
-        "baseLocation": "jar://CommonSchemas.jar!//context/schemas",
-        "schemas": [
-          {
-            "id": "http://justive.gov.uk/standards/complex_addressV1.json",
-            "location": "standards/complex_addressV1.json"
-          },
-          {
-            "id": "http://justive.gov.uk/standards/person.json",
-            "location": "standards/person"
-          }
-        ]
-      },
-      {
-        "name": "staging interface",
-        "baseLocation": "file:///context/schemas",
-        "schemas": [
-          {
-            "id": "http://justive.gov.uk/context/exhibitV1.json",
-            "location": "context/eh.json"
-          }
-        ]
-      }
-    ]
-  }
+  "name": "my catalog",
+  "groups": [
+    {
+      "name": "standards",
+      "baseLocation": "jar://CommonSchemas.jar!//context/schemas",
+      "schemas": [
+        {
+          "id": "http://justive.gov.uk/standards/complex_addressV1.json",
+          "location": "standards/complex_addressV1.json"
+        },
+        {
+          "id": "http://justive.gov.uk/standards/person.json",
+          "location": "standards/person"
+        }
+      ]
+    },
+    {
+      "name": "staging interface",
+      "baseLocation": "file:///context/schemas",
+      "schemas": [
+        {
+          "id": "http://justive.gov.uk/context/exhibitV1.json",
+          "location": "context/eh.json"
+        }
+      ]
+    }
+  ]
 }

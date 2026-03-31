@@ -30,6 +30,13 @@ public class JobStoreConfiguration {
     @Value(key = "worker.job.count", defaultValue = "10")
     private String workerJobCount;
 
+    /* When identifying unassigned jobs in order to ignore restrictions due to this configuration
+    i.e. to maintain backward compatibility default value should be configured to a high value.
+     */
+    @Inject
+    @Value(key = "max.inProgress.job.count", defaultValue = "10000")
+    private String maxInProgressJobCount;
+
     @Resource(lookup = "java:module/ModuleName")
     private String moduleName;
 
@@ -51,6 +58,10 @@ public class JobStoreConfiguration {
 
     public int getWorkerJobCount() {
         return parseInt(workerJobCount);
+    }
+
+    public int getMaxInProgressJobCount() {
+        return parseInt(maxInProgressJobCount);
     }
 
     public String getModuleName() {

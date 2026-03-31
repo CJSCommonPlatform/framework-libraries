@@ -112,6 +112,8 @@ public class JobServiceIT {
     public void setup() throws Exception {
         final InitialContext initialContext = new InitialContext();
         initialContext.bind("java:/app/JobServiceIT/DS.jobstore", dataSource);
+        initialContext.bind("java:/app/JobServiceIT/max.inProgress.job.count", "30");
+        initialContext.bind("java:/app/JobServiceIT/worker.job.count", "10");
         initEventDatabase();
     }
 
@@ -155,7 +157,15 @@ public class JobServiceIT {
         userTransaction.commit();
 
         detectDuplicates();
-        assertThat(testJobJdbcRepository.jobsProcessed(), CoreMatchers.is(30));
+        /*
+            Given
+                - 20 unassigned jobs (eligible to be assigned) - SET 1
+                - 10 assigned with lockTime expired (eligible to be assigned) - SET 2
+                - 10 assigned with lockTime not expired (not eligible to be assigned, with in active period of 1 hour) - SET 3
+            After processing SET 1, in progress jobs count reaches threshold limit of 30 i.e. SET 1 (20) + SET 3 (10)
+            and hence no more jobs are assigned (even though SET 2 is eligible to be processed)
+        */
+        assertThat(testJobJdbcRepository.jobsProcessed(), CoreMatchers.is(20));
     }
 
     @Test
@@ -164,8 +174,8 @@ public class JobServiceIT {
         testJobJdbcRepository.cleanJobTables();
         testJobJdbcRepository.createJobs(20);
         testJobJdbcRepository.createIdleJobs(5, of(now().minus(65, MINUTES)), now().plus(30, MINUTES));
-        testJobJdbcRepository.createIdleJobs(5, of(now().minus(65, MINUTES)), now());
-        testJobJdbcRepository.createIdleJobs(10, of(now().minus(30, MINUTES)), now());
+        testJobJdbcRepository.createIdleJobs(10, of(now().minus(65, MINUTES)), now());
+        testJobJdbcRepository.createIdleJobs(5, of(now().minus(30, MINUTES)), now());
         userTransaction.commit();
 
         userTransaction.begin();
@@ -177,6 +187,15 @@ public class JobServiceIT {
         userTransaction.commit();
 
         detectDuplicates();
+        /*
+            Given
+                - 20 unassigned jobs (eligible to be assigned) - SET 1
+                - 10 assigned with lockTime expired (eligible to be assigned) - SET 2
+                - 5 assigned with lockTime expired but nextTaskStartTime is 30 mins in future (not eligible to be assigned) - SET 3
+                - 5 assigned with lockTime not expired  (not eligible to be assigned) - SET 4
+            After processing SET 1 and partially SET 2, in progress jobs count reaches threshold limit of 30 i.e. SET 1 (20) + 5 out of SET 2 + SET 4 (5)
+            and hence no more jobs are assigned (even though 5 out of SET 2 are still eligible to be assigned)
+        */
         assertThat(testJobJdbcRepository.jobsProcessed(), is(25));
     }
 

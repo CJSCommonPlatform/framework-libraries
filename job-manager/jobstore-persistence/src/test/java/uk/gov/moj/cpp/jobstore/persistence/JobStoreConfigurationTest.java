@@ -44,4 +44,11 @@ public class JobStoreConfigurationTest {
         setField(jobStoreConfiguration, "moduleName", "fred-bloggs");
         assertThat(jobStoreConfiguration.getModuleName(), is("fred-bloggs"));
     }
+
+    @Test
+    public void shouldGetMaxInProgressJobCount() throws Exception {
+
+        setField(jobStoreConfiguration, "maxInProgressJobCount", "10");
+        assertThat(jobStoreConfiguration.getMaxInProgressJobCount(), is(10));
+    }
 }

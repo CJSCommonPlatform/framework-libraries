@@ -43,7 +43,7 @@ public class HasEventsMatcherTest {
 
         final JsonNode event_1 = create("event_1");
         final JsonNode event_2 = create("event_2");
-        final JsonNode event_3 = create("event_3");
+        final JsonNode event_3 = mock(JsonNode.class, "event_3");
 
         final Description description = mock(Description.class);
 

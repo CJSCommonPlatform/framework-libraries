@@ -24,6 +24,9 @@ public class IntegerEnumDeserializerTest {
     private EnumResolver enumResolver;
 
     @Mock
+    private EnumResolver toStringResolver;
+
+    @Mock
     private EnumObjectUtil enumObjectUtil;
 
     private IntegerEnumDeserializer integerEnumDeserializer;
@@ -31,7 +34,7 @@ public class IntegerEnumDeserializerTest {
     @BeforeEach
     public void setup() {
         when(enumResolver.getRawEnums()).thenReturn(Age.values());
-        integerEnumDeserializer = new IntegerEnumDeserializer(enumResolver, enumObjectUtil);
+        integerEnumDeserializer = new IntegerEnumDeserializer(enumResolver, toStringResolver, enumObjectUtil);
     }
 
     @Test

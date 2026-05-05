@@ -1,41 +1,68 @@
-# Framework Libraries
+# cp-framework-libraries
 
-[![Coverage Status](https://coveralls.io/repos/github/hmcts/cp-framework-libraries/badge.svg?branch=main)](https://coveralls.io/github/hmcts/cp-framework-libraries?branch=main)
+`uk.gov.justice.framework.libraries:framework-libraries`
 
-Common Libraries used by [Microservice Framework](https://github.com/CJSCommonPlatform/microservice_framework)
+Common libraries used by the CPP microservice framework. This project provides the APIs, utilities, code generators, and testing tools that the rest of the framework stack depends on.
 
-## Library Projects
+## Position in the hierarchy
 
-# [Framework API](./framework-api/README.md)
-The Java API for a framework to support applications utilising CQRS and Event Sourcing architectures.
+```
+maven-framework-parent-pom
+└── cp-framework-libraries  ← this project
+    └── framework-libraries-bom  (imported by cp-microservice-framework and cp-event-store)
+```
 
-# [Framework Utilities](./framework-utilities/README.md)
-Main repository for utilities used by [Microservice Framework](https://github.com/CJSCommonPlatform/microservice_framework)
+`cp-microservice-framework` imports `framework-libraries-bom` to consume the artifacts from this project.
 
-# [Maven Generator Plugin](./generator-maven-plugin/README.md)
-A plugin for using [RAML](http://raml.org/) within Maven projects for the generation of [Microservice Framework](https://github.com/CJSCommonPlatform/microservice_framework) code. 
+## Modules
 
-# [Job Manager](./job-manager/README.md)
-A stateful multi-threaded Job and Task executor. 
+| Module | Artifact | Description |
+|---|---|---|
+| `framework-api` | `framework-api-*` | Java API contracts (interfaces and annotations) for CQRS/ES — `@Handles`, `@ServiceComponent`, `Sender`, `Envelope`, `JsonEnvelope`, `Requester` |
+| `framework-utilities` | `utilities-core`, `utilities-file`, `test-utils-*` | Core utilities (UUID generation, date/time helpers, JSON utilities) plus a set of test utilities used across all projects |
+| `generator-maven-plugin` | `generator-maven-plugin` | Maven plugin that drives RAML-based code generation (REST adapters, messaging adapters, JMS listeners) |
+| `json-schema-catalog` | `json-schema-catalog-*` | JSON Schema catalog — resolves `$ref` URIs to local schema files, mirroring the XML Catalog concept |
+| `jsonschema-pojo-generator` | `pojo-generation-plugin`, `jsonschema-pojo-generator` | Generates Java POJOs from JSON Schema definitions; used for domain event payload classes |
+| `raml-maven` | `raml-maven-plugin`, `raml-maven` | RAML parsing support for Maven projects; validates RAML files and extracts schema/action metadata |
+| `annotation-validator` | `annotation-validator-maven-plugin` | Maven plugin that validates `@Handles`, `@ServiceComponent`, and other framework annotations are applied correctly |
+| `domain-test-dsl` | `domain-test-dsl` | Fluent DSL for writing aggregate unit tests — builds event sequences and asserts raised events |
+| `job-manager` | `job-manager` | Priority-aware multi-threaded job and task executor; worker slots and priority percentages are JNDI-configurable (see `jndi-configuration.md`) |
+| `json-transformer` | `json-transformer` | JSON document transformation utilities (Jolt-based and custom) |
+| `framework-datasources` | `framework-datasources` | CDI producers for `@EventStoreDataSource`, `@ViewStoreDataSource`, and `@FileStoreDataSource` JNDI datasource lookups |
+| `framework-libraries-bom` | `framework-libraries-bom` | BOM that imports all `framework-libraries` artifacts at a consistent version |
 
-# [Json Schema Catalog](./json-schema-catalog/README.md)
-A json version of [XML Catalogs](https://www.oasis-open.org/committees/entity/spec-2001-08-06.html)
+## Key APIs
 
-# [Pojo Generator](./jsonschema-pojo-generator/README.md)
-Generator for domain event POJOs defined in json schemas
+**Envelope / messaging**
+- `JsonEnvelope` — the universal message wrapper carrying a `Metadata` header and a `JsonValue` payload
+- `Envelope<T>` — typed variant for domain command/event payloads
+- `Metadata` — carries the action name, stream ID, causation chain, session info
 
-# [Maven Raml](./raml-maven/README.md)
-A plugin for using [RAML](http://raml.org/) documents within Maven projects.
+**Dispatch**
+- `Sender` — fire-and-forget command dispatch (`sender.send(envelope)`)
+- `Requester` — request/response query dispatch (`requester.request(envelope)`)
+- `@Handles("action.name")` — marks a method as the handler for a named action
 
-# [Embedded Artemis](./embedded-artemis/README.md)
-An embedded version of Artemis that can be included in a project for testing.
+**Service component**
+- `@ServiceComponent(SERVICE_COMPONENT)` — CDI qualifier that identifies a bean as a framework service component (command API, command handler, event listener, etc.)
 
-# [Annotation Validator Maven Plugin](./annotation-validator/README.md)
-A plugin for validating annotations, that creates a report that lists what classes have which annotations
+**Testing**
+- `domain-test-dsl` — `given(events).when(command).thenExpect(event)` style aggregate tests
+- `test-utils-core` / `test-utils-common` — builder helpers, envelope factories, mock producers
 
-# [Json Transformer](./json-transformer/README.md)
+## Build
 
-# [Domain Test DSL](./domain-test-dsl/README.md)
- 
+```bash
+# Build and install all modules
+mvn clean install
 
+# Skip integration tests (no PostgreSQL needed)
+mvn clean install -DskipTests
 
+# Build a specific module and its dependencies
+mvn clean install -pl json-schema-catalog -am
+```
+
+## JNDI configuration
+
+See [jndi-configuration.md](./jndi-configuration.md) for JNDI keys used by `job-manager`.

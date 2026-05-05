@@ -203,9 +203,8 @@ public class BuilderMethodFactoryTest {
 
 
         final String expectedAdditionalPropertiesWithMethod =
-                "public org.bloggs.fred.AlcubierreDrive.Builder withAdditionalProperty(" +
-                        "final java.lang.String name, " +
-                        "final java.lang.Object value) {\n  " +
+                "public org.bloggs.fred.AlcubierreDrive.Builder withAdditionalProperty(final java.lang.String name,\n" +
+                        "    final java.lang.Object value) {\n  " +
                         "additionalProperties.put(name, value);\n  " +
                         "return this;\n" +
                         "}\n";

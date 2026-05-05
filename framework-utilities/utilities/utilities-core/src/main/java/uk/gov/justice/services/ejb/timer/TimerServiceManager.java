@@ -1,9 +1,9 @@
 package uk.gov.justice.services.ejb.timer;
 
-import javax.ejb.Timer;
-import javax.ejb.TimerConfig;
-import javax.ejb.TimerService;
-import javax.inject.Inject;
+import jakarta.ejb.Timer;
+import jakarta.ejb.TimerConfig;
+import jakarta.ejb.TimerService;
+import jakarta.inject.Inject;
 
 public class TimerServiceManager {
 

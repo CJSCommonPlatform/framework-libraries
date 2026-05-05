@@ -9,8 +9,8 @@ import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
 import java.util.List;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 
 @Default
 public class DefaultJobStoreSchedulerPrioritySelector implements JobStoreSchedulerPrioritySelector {

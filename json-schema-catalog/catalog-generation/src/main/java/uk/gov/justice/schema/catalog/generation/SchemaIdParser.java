@@ -14,9 +14,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Optional;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.stream.JsonParsingException;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.stream.JsonParsingException;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;

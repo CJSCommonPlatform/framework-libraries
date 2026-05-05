@@ -14,7 +14,7 @@ import uk.gov.moj.cpp.jobstore.api.task.ExecutionStatus;
 
 import java.time.ZonedDateTime;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class JobUtil {
 

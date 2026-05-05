@@ -8,10 +8,10 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonReaderFactory;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonReaderFactory;
 
 
 public class JsonSchemaFileParser implements FileParser<JsonObject> {

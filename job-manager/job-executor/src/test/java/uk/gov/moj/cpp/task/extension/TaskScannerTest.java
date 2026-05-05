@@ -7,12 +7,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import uk.gov.moj.cpp.jobstore.api.annotation.Task;
 
-import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import jakarta.enterprise.event.Event;
+import jakarta.enterprise.inject.spi.AnnotatedType;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +35,9 @@ public class TaskScannerTest {
     @Mock
     private BeanManager beanManager;
 
+    @Mock
+    private Event<Object> event;
+
     @InjectMocks
     private TaskScanner taskScanner;
 
@@ -40,11 +45,12 @@ public class TaskScannerTest {
     public void shouldNotifyTaskFoundEvent() {
         doReturn(annotatedType).when(processAnnotatedType).getAnnotatedType();
         doReturn(true).when(annotatedType).isAnnotationPresent(Task.class);
+        when(beanManager.getEvent()).thenReturn(event);
         taskScanner.processAnnotatedType(processAnnotatedType);
         taskScanner.afterDeploymentValidation(null, beanManager);
 
         final ArgumentCaptor<TaskFoundEvent> captor = ArgumentCaptor.forClass(TaskFoundEvent.class);
-        verify(beanManager).fireEvent(captor.capture());
+        verify(event).fire(captor.capture());
         assertThat(captor.getValue(), instanceOf(TaskFoundEvent.class));
     }
 
@@ -56,6 +62,6 @@ public class TaskScannerTest {
         taskScanner.processAnnotatedType(processAnnotatedType);
         taskScanner.afterDeploymentValidation(null, beanManager);
 
-        verify(beanManager, never()).fireEvent(any());
+        verify(event, never()).fire(any());
     }
 }

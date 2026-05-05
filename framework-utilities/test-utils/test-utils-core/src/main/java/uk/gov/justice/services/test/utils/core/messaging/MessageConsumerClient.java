@@ -5,8 +5,8 @@ import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider
 
 import java.util.Optional;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
 
 import com.google.common.annotations.VisibleForTesting;
 

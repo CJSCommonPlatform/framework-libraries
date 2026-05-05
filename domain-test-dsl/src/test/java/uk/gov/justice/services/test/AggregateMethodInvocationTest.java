@@ -10,7 +10,7 @@ import uk.gov.justice.services.test.domain.AggregateWrapper;
 import uk.gov.justice.services.test.domain.aggregate.GenericAggregate;
 import uk.gov.justice.services.test.domain.arg.ComplexArgument;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -85,7 +85,7 @@ public class AggregateMethodInvocationTest extends AggregateTestAssertions {
 
         assertMethodInvocations(aggregateWrapper, "doSthWithDateTimeArg", 1,
                 arrayContaining(ZonedDateTimes.fromString("2017-01-21T16:42:03.522Z")
-                        .withZoneSameInstant(ZoneId.of("UTC"))));
+                        .withZoneSameInstant(ZoneOffset.UTC)));
     }
 
     @Test

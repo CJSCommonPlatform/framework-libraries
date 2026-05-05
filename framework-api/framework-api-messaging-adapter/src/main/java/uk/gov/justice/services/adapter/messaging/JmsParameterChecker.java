@@ -1,6 +1,6 @@
 package uk.gov.justice.services.adapter.messaging;
 
-import javax.jms.TextMessage;
+import jakarta.jms.TextMessage;
 
 public interface JmsParameterChecker {
 

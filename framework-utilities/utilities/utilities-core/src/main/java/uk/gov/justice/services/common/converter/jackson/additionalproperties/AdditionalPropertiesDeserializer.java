@@ -44,10 +44,12 @@ public class AdditionalPropertiesDeserializer extends BeanDeserializer {
                 }
                 additionalPropertiesMap.put(propName, value);
             } else {
-                throw context.mappingException("Expected target object to have additionalProperties attribute! [" + bean.getClass() + "]");
+                throw new IOException("Expected target object to have additionalProperties attribute! [" + bean.getClass() + "]");
             }
+        } catch (final IOException ex) {
+            throw ex;
         } catch (final Exception ex) {
-            throw context.mappingException("Couldn't add [" + propName + "] to additionalProperties attribute!", ex);
+            throw new IOException("Couldn't add [" + propName + "] to additionalProperties attribute!", ex);
         }
     }
 
@@ -83,7 +85,7 @@ public class AdditionalPropertiesDeserializer extends BeanDeserializer {
                 obj = null;
                 break;
             default:
-                throw context.mappingException(this.handledType());
+                throw new IOException("Cannot deserialize value of type " + this.handledType() + " from token " + jsonToken);
         }
         return obj;
     }

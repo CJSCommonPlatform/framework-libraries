@@ -109,11 +109,13 @@ public class WithMethodGeneratorTest {
                         "}\n";
 
         final String overloadedBuildMethod =
-                "public org.bloggs.fred.AlcubierreDriveBuilder withFirstName(final java.util.Optional<java.lang.String> firstName) {" +
-                        "\n  if (firstName != null) {\n" +
+                "public org.bloggs.fred.AlcubierreDriveBuilder withFirstName(\n" +
+                        "    final java.util.Optional<java.lang.String> firstName) {\n" +
+                        "  if (firstName != null) {\n" +
                         "    this.firstName = firstName.orElse(null);\n" +
                         "  }\n" +
-                        "  return this;\n}\n";
+                        "  return this;\n" +
+                        "}\n";
 
         assertThat(methodSpecs.get(0).toString(), is(expectedWithMethod));
         assertThat(methodSpecs.get(1).toString(), is(overloadedBuildMethod));
@@ -162,7 +164,8 @@ public class WithMethodGeneratorTest {
                 pluginContext);
 
         final String expectedGeneratedMethod =
-                "public org.bloggs.fred.AlcubierreDriveBuilder withValuesFrom(final org.bloggs.fred.AlcubierreDrive alcubierreDrive) {\n" +
+                "public org.bloggs.fred.AlcubierreDriveBuilder withValuesFrom(\n" +
+                        "    final org.bloggs.fred.AlcubierreDrive alcubierreDrive) {\n" +
                         "  this.name = alcubierreDrive.getName();\n" +
                         "  this.age = alcubierreDrive.getAge();\n" +
                         "  this.haircut = alcubierreDrive.getHaircut();\n" +

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>json-schema-catalog</artifactId>
         <groupId>uk.gov.justice.schema</groupId>
-        <version>17.105.0-M3-SNAPSHOT</version>
+        <version>21.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -52,6 +52,11 @@
                         <groupId>uk.gov.justice.schema</groupId>
                         <artifactId>catalog-generation</artifactId>
                         <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.fasterxml.jackson.datatype</groupId>
+                        <artifactId>jackson-datatype-jakarta-jsonp</artifactId>
+                        <version>${jackson-datatype-jakarta-jsonp.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

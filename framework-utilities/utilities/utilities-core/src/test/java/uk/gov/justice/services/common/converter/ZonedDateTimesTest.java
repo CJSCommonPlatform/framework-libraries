@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import javax.json.JsonString;
+import jakarta.json.JsonString;
 
 import org.junit.jupiter.api.Test;
 

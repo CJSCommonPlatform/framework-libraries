@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.justice.utils</groupId>
         <artifactId>test-utils</artifactId>
-        <version>17.105.0-M3-SNAPSHOT</version>
+        <version>21.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,11 +23,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-reload4j</artifactId>
-        </dependency>
-
         <!-- Logging implementation -->
         <dependency>
             <groupId>org.slf4j</groupId>

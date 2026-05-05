@@ -26,12 +26,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.ejb.TimerConfig;
-import javax.ejb.TimerService;
-import javax.enterprise.concurrent.ManagedExecutorService;
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
-import javax.transaction.UserTransaction;
+import jakarta.ejb.TimerConfig;
+import jakarta.ejb.TimerService;
+import jakarta.enterprise.concurrent.ManagedExecutorService;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

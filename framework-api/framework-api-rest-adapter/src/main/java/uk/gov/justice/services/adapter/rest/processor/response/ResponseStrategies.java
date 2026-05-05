@@ -1,6 +1,6 @@
 package uk.gov.justice.services.adapter.rest.processor.response;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 /**
  * Named response strategies for REST generator

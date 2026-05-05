@@ -1,13 +1,13 @@
 package uk.gov.justice.services.common.converter;
 
-import static javax.json.JsonValue.NULL;
+import static jakarta.json.JsonValue.NULL;
 
 import uk.gov.justice.services.common.converter.exception.ConverterException;
 
 import java.io.IOException;
 
-import javax.enterprise.inject.Vetoed;
-import javax.json.JsonValue;
+import jakarta.enterprise.inject.Vetoed;
+import jakarta.json.JsonValue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

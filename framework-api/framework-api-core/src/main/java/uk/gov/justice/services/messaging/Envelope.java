@@ -2,7 +2,7 @@ package uk.gov.justice.services.messaging;
 
 import uk.gov.justice.services.messaging.spi.EnvelopeProvider;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 /**
  * Interface for a messaging envelope containing metadata and a payload.

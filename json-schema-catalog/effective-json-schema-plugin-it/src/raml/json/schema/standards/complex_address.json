@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/standards/complex_address.json",
+  "type": "object",
+  "definitions": {
+    "complex_address": {
+      "type": "object",
+      "properties": {
+        "addressline1": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "addressline1",
+        "city",
+        "postcode",
+        "country"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/complex_address"
+    }
+  ]
+}

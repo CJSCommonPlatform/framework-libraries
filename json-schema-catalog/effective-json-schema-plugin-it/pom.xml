@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>json-schema-catalog</artifactId>
+        <groupId>uk.gov.justice.schema</groupId>
+        <version>21.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>effective-json-schema-plugin-it</artifactId>
+
+    <build>
+        <plugins>
+            <!--
+                Step 1: generate the schema catalog for this module's schemas.
+                Must run before the effective JSON schema generator so that all
+                schema IDs are registered.
+            -->
+            <plugin>
+                <groupId>uk.gov.justice.schema</groupId>
+                <artifactId>catalog-generation-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-schema-catalog</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-schema-catalog</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>
+                                uk.gov.justice.schema.catalog.generation.maven.MavenCatalogGeneratorFactory
+                            </generatorName>
+                            <parserName>
+                                uk.gov.justice.schema.catalog.generation.io.parser.ListOfUriParser
+                            </parserName>
+                            <sourceDirectory>${basedir}/src/raml/json/schema</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
+                            <includes>
+                                <include>**/*.json</include>
+                            </includes>
+                            <excludes/>
+                            <generatorProperties
+                                    implementation="uk.gov.justice.schema.catalog.generation.maven.CatalogGeneratorProperties">
+                                <catalogName>${project.artifactId}</catalogName>
+                            </generatorProperties>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>uk.gov.justice.schema</groupId>
+                        <artifactId>catalog-generation</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.fasterxml.jackson.datatype</groupId>
+                        <artifactId>jackson-datatype-jakarta-jsonp</artifactId>
+                        <version>${jackson-datatype-jakarta-jsonp.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <!--
+                Step 2: generate effective JSON schemas — all $ref values are inlined
+                into a single self-contained document per schema file.
+            -->
+            <plugin>
+                <groupId>uk.gov.justice.schema</groupId>
+                <artifactId>effective-json-schema-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-effective-json-schemas</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate-effective-json-schemas</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/raml/json/schema</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/effective-json-schemas</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${plugins.maven.enforcer.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-rules</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>${enforcer.java.version.range}</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${enforcer.maven.version.range}</version>
+                                </requireMavenVersion>
+                                <requirePluginVersions>
+                                    <message>Please define plugin versions</message>
+                                    <banSnapshots>false</banSnapshots>
+                                </requirePluginVersions>
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>uk.gov.justice.schema</groupId>
+            <artifactId>catalog-effective-json-schema-generation</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

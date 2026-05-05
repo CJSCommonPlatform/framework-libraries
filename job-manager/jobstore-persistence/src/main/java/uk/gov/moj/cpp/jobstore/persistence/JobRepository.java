@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 public interface JobRepository {
     void insertJob(final Job notificationJob);

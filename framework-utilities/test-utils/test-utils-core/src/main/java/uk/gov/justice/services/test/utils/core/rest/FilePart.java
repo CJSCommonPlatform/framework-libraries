@@ -5,7 +5,7 @@ import static java.util.Optional.empty;
 import java.io.InputStream;
 import java.util.Optional;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 /**
  * Used in conjunction with {@link MultipartRestClient}. Contains the parameters relating to the

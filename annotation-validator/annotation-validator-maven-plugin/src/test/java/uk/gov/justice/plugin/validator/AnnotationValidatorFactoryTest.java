@@ -9,7 +9,7 @@ import uk.gov.justice.maven.annotation.validator.AnnotationValidator;
 import uk.gov.justice.plugin.domain.TestAnnotation;
 import uk.gov.justice.plugin.exception.ValidatorNotFoundException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

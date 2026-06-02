@@ -5,8 +5,8 @@ import static java.lang.Long.parseLong;
 
 import uk.gov.justice.services.common.configuration.Value;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 
 public class JobStoreConfiguration {
 

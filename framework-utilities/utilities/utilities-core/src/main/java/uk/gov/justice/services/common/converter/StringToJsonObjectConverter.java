@@ -2,8 +2,8 @@ package uk.gov.justice.services.common.converter;
 
 import java.io.StringReader;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 

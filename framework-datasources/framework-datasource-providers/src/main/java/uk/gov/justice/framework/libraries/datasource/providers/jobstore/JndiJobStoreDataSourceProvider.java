@@ -6,8 +6,8 @@ import uk.gov.justice.framework.libraries.datasource.providers.DatasourceAcquisi
 import uk.gov.justice.services.common.configuration.JndiBasedServiceContextNameProvider;
 import uk.gov.justice.services.jdbc.persistence.InitialContextFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 

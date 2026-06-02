@@ -6,7 +6,7 @@ import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

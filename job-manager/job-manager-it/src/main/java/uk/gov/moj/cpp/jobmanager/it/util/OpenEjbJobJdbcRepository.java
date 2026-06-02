@@ -28,8 +28,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import javax.sql.DataSource;
 
 public class OpenEjbJobJdbcRepository extends JobJdbcRepository {

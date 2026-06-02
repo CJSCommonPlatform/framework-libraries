@@ -7,8 +7,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import javax.enterprise.inject.InjectionException;
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.inject.InjectionException;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 

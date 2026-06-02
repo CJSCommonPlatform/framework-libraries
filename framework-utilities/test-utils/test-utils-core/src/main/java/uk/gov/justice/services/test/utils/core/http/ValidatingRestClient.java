@@ -2,14 +2,14 @@ package uk.gov.justice.services.test.utils.core.http;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static javax.ws.rs.core.Response.Status.fromStatusCode;
+import static jakarta.ws.rs.core.Response.Status.fromStatusCode;
 
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import com.google.common.annotations.VisibleForTesting;
 

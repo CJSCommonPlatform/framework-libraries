@@ -1,6 +1,6 @@
 package uk.gov.justice.services.core.annotation;
 
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 
 public enum ServiceComponentLocation {
 

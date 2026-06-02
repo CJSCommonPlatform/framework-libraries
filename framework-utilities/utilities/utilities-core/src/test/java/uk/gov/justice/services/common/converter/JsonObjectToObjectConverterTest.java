@@ -14,12 +14,13 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
 import java.io.IOException;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -65,20 +66,20 @@ public class JsonObjectToObjectConverterTest {
 
         assertThat(jsonObjectToObjectConverter
                         .convert(getJsonBuilderFactory().createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0+00:00").build(),
-                                PojoWithDateTime.class).getDateTime(),
-                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
+                                PojoWithDateTime.class).getDateTime().toInstant(),
+                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneOffset.UTC).toInstant()));
         assertThat(jsonObjectToObjectConverter
                         .convert(getJsonBuilderFactory().createObjectBuilder().add("dateTime", "2016-07-25T13:09:01.0Z").build(),
-                                PojoWithDateTime.class).getDateTime(),
-                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
+                                PojoWithDateTime.class).getDateTime().toInstant(),
+                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneOffset.UTC).toInstant()));
         assertThat(jsonObjectToObjectConverter
                         .convert(getJsonBuilderFactory().createObjectBuilder().add("dateTime", "2016-07-25T13:09:01Z").build(),
-                                PojoWithDateTime.class).getDateTime(),
-                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
+                                PojoWithDateTime.class).getDateTime().toInstant(),
+                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneOffset.UTC).toInstant()));
         assertThat(jsonObjectToObjectConverter
                         .convert(getJsonBuilderFactory().createObjectBuilder().add("dateTime", "2016-07-25T16:09:01.0+03:00").build(),
-                                PojoWithDateTime.class).getDateTime(),
-                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneId.of("UTC"))));
+                                PojoWithDateTime.class).getDateTime().toInstant(),
+                equalTo(ZonedDateTime.of(2016, 7, 25, 13, 9, 1, 0, ZoneOffset.UTC).toInstant()));
 
     }
 

@@ -9,16 +9,16 @@ import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+import jakarta.ws.rs.core.MultivaluedHashMap;
 import org.junit.jupiter.api.Test;
 
 public class ResponseHeadersMatcherTest {
 
 	@Test
 	public void shouldMatchHeadersFromResponse() throws Exception {
-		MultivaluedMap<String, Object> headers = new MultivaluedMapImpl<String, Object>();
+		MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
 		headers.add("Content-Disposition", "attachment");
 		headers.add("filename", "MaterialFullStackTestFile.docx");
 		headers.add("Content-Type", "application/pdf");
@@ -30,7 +30,7 @@ public class ResponseHeadersMatcherTest {
 
 	@Test
 	public void shouldFailWhenResponseHeadersDoesNotMatch() {
-		MultivaluedMap<String, Object> headers = new MultivaluedMapImpl<String, Object>();
+		MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
 		headers.add("Content-Disposition", "attachment");
 		headers.add("filename", "MaterialFullStackTestFile.docx");
 		headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");

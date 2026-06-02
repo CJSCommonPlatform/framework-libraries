@@ -4,8 +4,8 @@ import static java.util.Collections.singletonList;
 
 import java.util.Map;
 
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 /**
  * Builder for creating RequestParams. Expects a url and a media type. All other

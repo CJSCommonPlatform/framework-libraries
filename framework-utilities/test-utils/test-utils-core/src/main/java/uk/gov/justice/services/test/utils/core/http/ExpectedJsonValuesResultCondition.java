@@ -8,8 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 import static uk.gov.justice.services.test.utils.core.messaging.JsonObjects.jsonReaderFactory;
 

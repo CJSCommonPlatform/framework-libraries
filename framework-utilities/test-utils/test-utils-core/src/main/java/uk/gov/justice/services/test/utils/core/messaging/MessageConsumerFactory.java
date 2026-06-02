@@ -3,9 +3,9 @@ package uk.gov.justice.services.test.utils.core.messaging;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.Session;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.Session;
 
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.activemq.artemis.jms.client.ActiveMQTopic;

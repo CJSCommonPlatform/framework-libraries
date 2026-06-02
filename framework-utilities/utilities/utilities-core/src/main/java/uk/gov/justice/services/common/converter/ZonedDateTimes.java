@@ -7,7 +7,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
-import javax.json.JsonString;
+import jakarta.json.JsonString;
 
 /**
  * Utility functions for converting to and from date time objects.

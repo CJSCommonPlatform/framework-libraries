@@ -59,7 +59,7 @@ public class AddHashcodeAndEqualsPluginTest {
         final String expectedHashCodeMethod =
                 "@java.lang.Override\n" +
                         "public int hashCode() {\n  " +
-                        "return java.util.Objects.hash(firstName, lastName, age);" +
+                        "return java.util.Objects.hash(firstName, lastName, age);\n" +
                         "}\n";
 
         final TypeSpec.Builder classBuilder = classBuilder("MyClass").addModifiers(PUBLIC);
@@ -123,7 +123,7 @@ public class AddHashcodeAndEqualsPluginTest {
         final String expectedHashCodeMethod =
                 "@java.lang.Override\n" +
                         "public int hashCode() {\n  " +
-                        "return java.util.Objects.hash(firstName, lastName, age, additionalProperties);" +
+                        "return java.util.Objects.hash(firstName, lastName, age, additionalProperties);\n" +
                         "}\n";
 
         final TypeSpec.Builder classBuilder = classBuilder("MyClass").addModifiers(PUBLIC);

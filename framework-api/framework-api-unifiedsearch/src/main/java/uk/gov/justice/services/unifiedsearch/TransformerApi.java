@@ -1,6 +1,6 @@
 package uk.gov.justice.services.unifiedsearch;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 public interface TransformerApi {
 

@@ -2,8 +2,8 @@ package uk.gov.justice.services.common.configuration;
 
 import static java.lang.String.format;
 
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.annotation.Resource;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.google.common.annotations.VisibleForTesting;
 

@@ -1,8 +1,8 @@
 package uk.gov.justice.services.test.utils.core.http;
 
 import static java.util.Collections.singletonMap;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -14,10 +14,10 @@ import uk.gov.justice.services.test.utils.core.rest.RestClient;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
 
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+import jakarta.ws.rs.core.MultivaluedHashMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -236,7 +236,7 @@ public class HttpResponsePollerTest {
 
         final String responseText = "Condition Met";
 
-        MultivaluedMap<String, Object> arbitraryHerader = new MultivaluedMapImpl<>();
+        MultivaluedMap<String, Object> arbitraryHerader = new MultivaluedHashMap<>();
         when(restClient.query(URL, MEDIA_TYPE, arbitraryHerader)).thenReturn(response);
         when(response.getStatus()).thenReturn(OK.getStatusCode());
         when(response.readEntity(String.class)).thenReturn(responseText);

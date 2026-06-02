@@ -6,7 +6,7 @@ import uk.gov.justice.services.test.utils.core.helper.Sleeper;
 
 import java.util.Optional;
 
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 
 import com.google.common.annotations.VisibleForTesting;
 

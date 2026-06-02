@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-libraries</artifactId>
         <groupId>uk.gov.justice.framework.libraries</groupId>
-        <version>17.104.1-SNAPSHOT</version>
+        <version>21.0.0-M1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -154,6 +154,11 @@
             </dependency>
             <dependency>
                 <groupId>uk.gov.justice.utils</groupId>
+                <artifactId>test-utils-hibernate</artifactId>
+                <version>${framework-libraries.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.utils</groupId>
                 <artifactId>test-utils-framework-api</artifactId>
                 <version>${framework-libraries.version}</version>
             </dependency>
@@ -269,11 +274,6 @@
             <dependency>
                 <groupId>uk.gov.justice.generators</groupId>
                 <artifactId>pojo-generation-core</artifactId>
-                <version>${framework-libraries.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>uk.gov.justice.artemis</groupId>
-                <artifactId>embedded-artemis</artifactId>
                 <version>${framework-libraries.version}</version>
             </dependency>
             <dependency>

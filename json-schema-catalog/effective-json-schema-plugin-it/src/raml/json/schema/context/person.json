@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/context/person.json",
+  "type": "object",
+  "properties": {
+    "nino": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "home_address": {
+      "$ref": "http://justice.gov.uk/standards/address.json"
+    },
+    "correspondence_address": {
+      "$ref": "http://justice.gov.uk/standards/complex_address.json#/definitions/complex_address"
+    }
+  },
+  "required": [
+    "nino",
+    "name",
+    "home_address",
+    "correspondence_address"
+  ]
+}

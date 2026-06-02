@@ -5,6 +5,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [21.0.0-SNAPSHOT] - 2026-03-31
+### Changed
+- Upgraded to Java 21 and Jakarta EE 10
+- Migrated `javax.jms.*` to `jakarta.jms.*` in embedded Artemis and JMS test utility classes (`EmbeddedArtemisServerIT`, `MessageConsumerClient`, `MessageConsumerFactory`, `JmsSessionFactory`, `DeadLetterQueueBrowser`, `TopicSender`)
+- Replaced `javax.xml.bind:jaxb-api` with `jakarta.xml.bind:jakarta.xml.bind-api` in plugin dependencies
+- Removed test module 'embedded-artemis' and all associated code, in order to break the dependency on artemis
+- Upgraded OpenEJB from `8.0.13` to `10.0.0` (Jakarta EE 10 compatible) — fixes `@Resource` injection in Application Composer integration tests and removes the need for xbean-asm9 overrides as OpenEJB 10 natively supports Java 21 class files
+- Fixed `job-manager-it` integration tests (`JobSchedulerIT`, `JobServiceIT`): `@Resource(name = "openejb/Resource/jobStore")` injection now works correctly with OpenEJB 10 + `jakarta.annotation.Resource`
+- Fixed `HasEventsMatcherTest` `UnnecessaryStubbingException`: in `shouldReturnTrueIfAllExpectedEventsAreInTheActualEventList`, `event_3` only appears in `actualEvents` so `fieldNames()` is never called on it via `WildcardTextNodeSupport`; replaced `create("event_3")` with a plain `mock(JsonNode.class, "event_3")` for that node, and replaced `lenient()` stubbing in the `create()` helper with strict `when()` stubbing
+- Fixed Maven plugin scope warnings: added `<scope>provided</scope>` to `maven-plugin-api`, `maven-compat`, `maven-core`, and `maven-model` in `annotation-validator-maven-plugin`, `generator-plugin`, and `raml-maven-plugin`; added explicit `provided` declarations for `maven-plugin-api` and `maven-core` in `catalog-generation-plugin` and `pojo-generation-plugin`
+- Added `commons-lang3` as an explicit compile dependency to `generator-plugin` (previously pulled in transitively via `maven-core`)
+- Fixed `IntegerEnumDeserializer`: changed `super(enumResolver)` to `super(enumResolver, Boolean.FALSE)` — in Jackson 2.15.x the single-arg `EnumDeserializer(EnumResolver)` constructor internally passes `null` for `caseInsensitive` causing `NullPointerException` on unboxing
 # [17.104.0] - 2025-12-16
 ### Added
 - New module `framework-libraries-version` that contains a maven generated json file that has this project's version number

@@ -22,6 +22,8 @@
                     </includes>
                     <excludes>
                         <exclude>**/*external-ignore.raml</exclude>
+                        <exclude>**/*external-3.raml</exclude>
+                        <exclude>**/*external-4.raml</exclude>
                     </excludes>
                 </configuration>
             </plugin>

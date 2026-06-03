@@ -5,8 +5,8 @@ import static uk.gov.justice.services.common.configuration.CommonValueAnnotation
 
 import java.lang.annotation.Retention;
 
-import javax.enterprise.util.Nonbinding;
-import javax.inject.Qualifier;
+import jakarta.enterprise.util.Nonbinding;
+import jakarta.inject.Qualifier;
 
 @Qualifier
 @Retention(RUNTIME)

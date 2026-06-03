@@ -2,7 +2,7 @@ package uk.gov.justice.services.common.configuration;
 
 import uk.gov.justice.services.common.util.LazyValue;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class ContextNameProvider {
 

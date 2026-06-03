@@ -1,6 +1,6 @@
 package uk.gov.justice.maven.generator.io.files.parser;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 public class JsonSchemaFileParserFactory implements FileParserFactory<JsonObject> {
 

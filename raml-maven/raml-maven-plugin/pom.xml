@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice.maven</groupId>
         <artifactId>raml-maven</artifactId>
-        <version>17.104.1-SNAPSHOT</version>
+        <version>21.0.0-M1-SNAPSHOT</version>
     </parent>
 
     <artifactId>raml-maven-plugin</artifactId>
@@ -67,21 +67,25 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-compat</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -138,7 +142,7 @@
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
+            <artifactId>jakarta.json</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -158,10 +162,11 @@
             <artifactId>maven-test-utils</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Pinned to ${jakarta.xml.bind-api.raml.version} (pre-EE9): org.raml:raml-parser uses javax.xml.bind.* which is only present in jakarta.xml.bind-api 2.x. See root pom for full explanation. -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <scope>test</scope>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jakarta.xml.bind-api.raml.version}</version>
         </dependency>
 
     </dependencies>

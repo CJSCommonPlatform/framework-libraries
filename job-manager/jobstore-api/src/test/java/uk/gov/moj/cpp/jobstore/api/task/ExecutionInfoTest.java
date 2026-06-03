@@ -13,7 +13,7 @@ import uk.gov.moj.cpp.jobstore.persistence.Job;
 
 import java.time.ZonedDateTime;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

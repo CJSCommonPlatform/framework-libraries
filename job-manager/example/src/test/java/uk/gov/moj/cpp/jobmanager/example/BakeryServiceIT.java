@@ -35,8 +35,8 @@ import uk.gov.moj.cpp.task.extension.TaskRegistry;
 
 import java.util.Properties;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.annotation.Resource;
+import jakarta.inject.Inject;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 

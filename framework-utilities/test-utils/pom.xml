@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice.framework.utilities</groupId>
         <artifactId>framework-utilities</artifactId>
-        <version>17.104.1-SNAPSHOT</version>
+        <version>21.0.0-M1-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.justice.utils</groupId>
@@ -17,6 +17,7 @@
     <modules>
         <module>test-utils-core</module>
         <module>test-utils-framework-api</module>
+        <module>test-utils-hibernate</module>
         <module>test-utils-logging-jdk</module>
         <module>test-utils-logging-log4j</module>
         <module>test-utils-logging-simple</module>

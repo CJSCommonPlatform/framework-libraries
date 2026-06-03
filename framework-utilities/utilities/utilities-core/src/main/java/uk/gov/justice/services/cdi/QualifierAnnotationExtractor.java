@@ -5,9 +5,9 @@ import static java.lang.String.format;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.InjectionException;
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.InjectionException;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 
 /**
  * Extracts a qualifier from an {@link InjectionPoint}

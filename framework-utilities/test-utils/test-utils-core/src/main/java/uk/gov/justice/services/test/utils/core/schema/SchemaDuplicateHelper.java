@@ -9,8 +9,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

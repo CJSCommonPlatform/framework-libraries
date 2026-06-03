@@ -2,7 +2,7 @@ package uk.gov.justice.services.messaging;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static javax.json.JsonValue.NULL;
+import static jakarta.json.JsonValue.NULL;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,12 +18,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-import javax.json.JsonArray;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
@@ -36,8 +36,8 @@ public class JsonObjectsTest {
     private static final String UUID_A = "da45e8f6-d945-4f09-a115-1139a9dbb754";
     private static final String UUID_B = "d04885b4-9652-4c2a-87c6-299bda0a87d4";
 
-    private static final javax.json.JsonBuilderFactory jsonBuilderFactory = JsonObjects.getJsonBuilderFactory();
-    private static final javax.json.JsonReaderFactory jsonReaderFactory = JsonObjects.getJsonReaderFactory();
+    private static final jakarta.json.JsonBuilderFactory jsonBuilderFactory = JsonObjects.getJsonBuilderFactory();
+    private static final jakarta.json.JsonReaderFactory jsonReaderFactory = JsonObjects.getJsonReaderFactory();
 
     @Test
     public void shouldReturnJsonArray() {
@@ -370,8 +370,8 @@ public class JsonObjectsTest {
     @Test
     public void shouldGetJsonReaderFactoryAndCacheIt() {
         // when
-        final javax.json.JsonReaderFactory first = JsonObjects.getJsonReaderFactory();
-        final javax.json.JsonReaderFactory second = JsonObjects.getJsonReaderFactory();
+        final jakarta.json.JsonReaderFactory first = JsonObjects.getJsonReaderFactory();
+        final jakarta.json.JsonReaderFactory second = JsonObjects.getJsonReaderFactory();
 
         // then
         assertNotNull(first);
@@ -382,8 +382,8 @@ public class JsonObjectsTest {
     @Test
     public void shouldGetJsonWriterFactoryAndCacheIt() {
         // when
-        final javax.json.JsonWriterFactory first = JsonObjects.getJsonWriterFactory();
-        final javax.json.JsonWriterFactory second = JsonObjects.getJsonWriterFactory();
+        final jakarta.json.JsonWriterFactory first = JsonObjects.getJsonWriterFactory();
+        final jakarta.json.JsonWriterFactory second = JsonObjects.getJsonWriterFactory();
 
         // then
         assertNotNull(first);
@@ -394,8 +394,8 @@ public class JsonObjectsTest {
     @Test
     public void shouldGetJsonBuilderFactoryAndCacheIt() {
         // when
-        final javax.json.JsonBuilderFactory first = JsonObjects.getJsonBuilderFactory();
-        final javax.json.JsonBuilderFactory second = JsonObjects.getJsonBuilderFactory();
+        final jakarta.json.JsonBuilderFactory first = JsonObjects.getJsonBuilderFactory();
+        final jakarta.json.JsonBuilderFactory second = JsonObjects.getJsonBuilderFactory();
 
         // then
         assertNotNull(first);
@@ -406,8 +406,8 @@ public class JsonObjectsTest {
     @Test
     public void shouldGetProviderAndCacheIt() {
         // when
-        final javax.json.spi.JsonProvider first = JsonObjects.getProvider();
-        final javax.json.spi.JsonProvider second = JsonObjects.getProvider();
+        final jakarta.json.spi.JsonProvider first = JsonObjects.getProvider();
+        final jakarta.json.spi.JsonProvider second = JsonObjects.getProvider();
 
         // then
         assertNotNull(first);
@@ -420,15 +420,15 @@ public class JsonObjectsTest {
         final String json = "{\"a\":1}";
 
         // when
-        final javax.json.stream.JsonParser parser = JsonObjects.createParser(new java.io.StringReader(json));
+        final jakarta.json.stream.JsonParser parser = JsonObjects.createParser(new java.io.StringReader(json));
         boolean sawKey = false;
         boolean sawValue = false;
         while (parser.hasNext()) {
-            final javax.json.stream.JsonParser.Event event = parser.next();
-            if (event == javax.json.stream.JsonParser.Event.KEY_NAME) {
+            final jakarta.json.stream.JsonParser.Event event = parser.next();
+            if (event == jakarta.json.stream.JsonParser.Event.KEY_NAME) {
                 sawKey = true;
             }
-            if (event == javax.json.stream.JsonParser.Event.VALUE_NUMBER) {
+            if (event == jakarta.json.stream.JsonParser.Event.VALUE_NUMBER) {
                 sawValue = true;
             }
         }
@@ -445,15 +445,15 @@ public class JsonObjectsTest {
         final java.io.InputStream in = new java.io.ByteArrayInputStream(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
         // when
-        final javax.json.stream.JsonParser parser = JsonObjects.createParser(in);
+        final jakarta.json.stream.JsonParser parser = JsonObjects.createParser(in);
         boolean sawKey = false;
         boolean sawValue = false;
         while (parser.hasNext()) {
-            final javax.json.stream.JsonParser.Event event = parser.next();
-            if (event == javax.json.stream.JsonParser.Event.KEY_NAME) {
+            final jakarta.json.stream.JsonParser.Event event = parser.next();
+            if (event == jakarta.json.stream.JsonParser.Event.KEY_NAME) {
                 sawKey = true;
             }
-            if (event == javax.json.stream.JsonParser.Event.VALUE_NUMBER) {
+            if (event == jakarta.json.stream.JsonParser.Event.VALUE_NUMBER) {
                 sawValue = true;
             }
         }
@@ -469,13 +469,13 @@ public class JsonObjectsTest {
         final java.io.StringWriter writer = new java.io.StringWriter();
 
         // when
-        final javax.json.stream.JsonGenerator generator = JsonObjects.createGenerator(writer);
+        final jakarta.json.stream.JsonGenerator generator = JsonObjects.createGenerator(writer);
         generator.writeStartObject().write("a", 1).writeEnd();
         generator.close();
 
         // then
         final String json = writer.toString();
-        final javax.json.JsonObject obj = JsonObjects.createReader(new java.io.StringReader(json)).readObject();
+        final jakarta.json.JsonObject obj = JsonObjects.createReader(new java.io.StringReader(json)).readObject();
         assertThat(obj.getInt("a"), equalTo(1));
     }
 
@@ -485,58 +485,107 @@ public class JsonObjectsTest {
         final java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
 
         // when
-        final javax.json.stream.JsonGenerator generator = JsonObjects.createGenerator(out);
+        final jakarta.json.stream.JsonGenerator generator = JsonObjects.createGenerator(out);
         generator.writeStartObject().write("b", 2).writeEnd();
         generator.close();
 
         // then
         final String json = new String(out.toByteArray(), java.nio.charset.StandardCharsets.UTF_8);
-        final javax.json.JsonObject obj = JsonObjects.createReader(new java.io.StringReader(json)).readObject();
+        final jakarta.json.JsonObject obj = JsonObjects.createReader(new java.io.StringReader(json)).readObject();
         assertThat(obj.getInt("b"), equalTo(2));
     }
 
     @Test
     public void shouldCreateWriterAndReaderUsingWriter() {
         // given
-        final javax.json.JsonObject source = JsonObjects.createObjectBuilder().add("x", "y").build();
+        final jakarta.json.JsonObject source = JsonObjects.createObjectBuilder().add("x", "y").build();
 
         // when
         final java.io.StringWriter stringWriter = new java.io.StringWriter();
-        try (final javax.json.JsonWriter jsonWriter = JsonObjects.createWriter(stringWriter)) {
+        try (final jakarta.json.JsonWriter jsonWriter = JsonObjects.createWriter(stringWriter)) {
             jsonWriter.write(source);
         }
 
         // then
         final String json = stringWriter.toString();
-        final javax.json.JsonObject readBack = JsonObjects.createReader(new java.io.StringReader(json)).readObject();
+        final jakarta.json.JsonObject readBack = JsonObjects.createReader(new java.io.StringReader(json)).readObject();
         assertThat(readBack.getString("x"), equalTo("y"));
     }
 
     @Test
     public void shouldCreateWriterAndReaderUsingOutputStream() {
         // given
-        final javax.json.JsonObject source = JsonObjects.createObjectBuilder().add("p", true).build();
+        final jakarta.json.JsonObject source = JsonObjects.createObjectBuilder().add("p", true).build();
 
         // when
         final java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-        try (final javax.json.JsonWriter jsonWriter = JsonObjects.createWriter(out)) {
+        try (final jakarta.json.JsonWriter jsonWriter = JsonObjects.createWriter(out)) {
             jsonWriter.write(source);
         }
 
         // then
         final byte[] bytes = out.toByteArray();
-        final javax.json.JsonObject readBack = JsonObjects.createReader(new java.io.ByteArrayInputStream(bytes)).readObject();
+        final jakarta.json.JsonObject readBack = JsonObjects.createReader(new java.io.ByteArrayInputStream(bytes)).readObject();
         assertThat(readBack.getBoolean("p"), is(true));
     }
 
     @Test
     public void shouldCreateArrayBuilder() {
         // when
-        final javax.json.JsonArray array = JsonObjects.createArrayBuilder().add("v1").add("v2").build();
+        final jakarta.json.JsonArray array = JsonObjects.createArrayBuilder().add("v1").add("v2").build();
 
         // then
         assertThat(array.size(), equalTo(2));
         assertThat(array.getString(0), equalTo("v1"));
         assertThat(array.getString(1), equalTo("v2"));
+    }
+
+    @Test
+    public void shouldThrowExceptionForEmptyFieldName() {
+        final JsonObject object = jsonBuilderFactory.createObjectBuilder()
+                .add("name", "test")
+                .build();
+        assertThrows(IllegalArgumentException.class, () -> getString(object, ""));
+    }
+
+    @Test
+    public void shouldReturnEmptyForNestedFieldWhenIntermediateObjectNotFound() {
+        final JsonObject object = jsonBuilderFactory.createObjectBuilder()
+                .add("other", "value")
+                .build();
+
+        final Optional<String> result = getString(object, "missing", "child");
+
+        assertThat(result.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldReturnEmptyListForGetUUIDsWhenFieldNotFound() {
+        final JsonObject object = jsonBuilderFactory.createObjectBuilder()
+                .build();
+
+        final List<UUID> result = getUUIDs(object, "missing");
+
+        assertThat(result, equalTo(java.util.Collections.emptyList()));
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalForGetListWhenFieldNotFound() {
+        final JsonObject object = jsonBuilderFactory.createObjectBuilder()
+                .build();
+
+        final Optional<List<JsonString>> result = getList(object, JsonString.class, "missing");
+
+        assertThat(result.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalForGetListWithConverterWhenFieldNotFound() {
+        final JsonObject object = jsonBuilderFactory.createObjectBuilder()
+                .build();
+
+        final Optional<List<String>> result = getList(object, JsonString.class, JsonString::getString, "missing");
+
+        assertThat(result.isPresent(), is(false));
     }
 }

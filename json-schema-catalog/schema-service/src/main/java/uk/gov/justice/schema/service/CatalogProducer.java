@@ -3,8 +3,8 @@ package uk.gov.justice.schema.service;
 import uk.gov.justice.schema.catalog.Catalog;
 import uk.gov.justice.schema.catalog.CatalogObjectFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 
 /**
  * A Producer for the {@link Catalog} should you be running in a CDI container

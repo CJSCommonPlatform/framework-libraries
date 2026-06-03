@@ -1,17 +1,18 @@
 package uk.gov.justice.services.test.utils.core.rest;
 
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
 
 public class RestClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestClient.class);
-    public static final ResteasyClient RESTEASY_CLIENT = ResteasyClientBuilderFactory.clientBuilder().connectionPoolSize(5).build();
+    public static final Client RESTEASY_CLIENT = ClientBuilder.newClient();
 
     public Response postCommand(final String url, final String contentType, final String requestPayload) {
         Entity<String> entity = Entity.entity(requestPayload, MediaType.valueOf(contentType));
@@ -21,7 +22,6 @@ public class RestClient {
 
         try (Response response = RESTEASY_CLIENT.target(url).request().post(entity)) {
             response.bufferEntity();
-            logIfFailed(response);
             return response;
         }
     }
@@ -34,7 +34,6 @@ public class RestClient {
 
         try (Response response = RESTEASY_CLIENT.target(url).request().headers(headers).post(entity)) {
             response.bufferEntity();
-            logIfFailed(response);
             return response;
         }
     }
@@ -46,7 +45,6 @@ public class RestClient {
 
         try (Response response = RESTEASY_CLIENT.target(url).request(new MediaType[]{MediaType.valueOf(contentTypes)}).get()) {
             response.bufferEntity();
-            logIfFailed(response);
             return response;
         }
     }
@@ -58,7 +56,6 @@ public class RestClient {
 
         try (Response response = RESTEASY_CLIENT.target(url).request().headers(headers).header("Accept", contentTypes).get()) {
             response.bufferEntity();
-            logIfFailed(response);
             return response;
         }
     }
@@ -70,17 +67,7 @@ public class RestClient {
 
         try (Response response = RESTEASY_CLIENT.target(url).request().headers(headers).header("Content-Type", contentType).delete()) {
             response.bufferEntity();
-            logIfFailed(response);
             return response;
-        }
-    }
-
-    private static void logIfFailed(final Response response) {
-        if (LOGGER.isInfoEnabled()) {
-            Response.StatusType statusType = response.getStatusInfo();
-            if (statusType.getFamily() != Response.Status.Family.SUCCESSFUL) {
-                LOGGER.info("Received response status '{}' '{}' {} ", statusType.getStatusCode(), statusType.getReasonPhrase(), response.readEntity(String.class));
-            }
         }
     }
 }

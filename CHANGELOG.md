@@ -5,6 +5,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [21.0.0-M1] - 2026-06-02
+### Changed
+- Upgraded to Java 21 and Jakarta EE 10 (17.104.x release line)
+- Updated `maven-framework-parent-pom` to `21.0.0-M3-SNAPSHOT` for local chain validation; pinned to `21.0.0-M2` released version for CI
+- Migrated all `javax.*` imports to `jakarta.*` across all modules
+- Replaced `javax.xml.bind:jaxb-api` with `jakarta.xml.bind:jakarta.xml.bind-api` in all raml-maven and generator-maven-plugin module POMs
+- Migrated `javax.jms.*` to `jakarta.jms.*` in embedded Artemis and JMS test utility classes
+- Removed `embedded-artemis` module (server-side Artemis internals; not upgradeable and architecturally unsound)
+- Upgraded OpenEJB from `8.0.13` to `10.1.4` (Jakarta EE 10 / CDI 4.0 compatible)
+
+### Fixed
+- RAML parser modules (`raml-parser`, `raml-generator-core`, `generator-core`, `generator-raml-parser`, `raml-maven-plugin`, `generator-plugin`): `org.raml:raml-parser` uses `javax.xml.bind.*` classes internally (pre-Jakarta EE 9 namespace). Fixed by pinning `jakarta.xml.bind:jakarta.xml.bind-api` to version `2.3.2` — the last release where the API classes remained in the `javax.xml.bind.*` namespace. Version is controlled by the `jakarta.xml.bind-api.raml.version` property in the root pom (with full explanation). Do not upgrade to 3.x or 4.x.
+- Fixed `IntegerEnumDeserializer`: changed `super(enumResolver)` to `super(enumResolver, Boolean.FALSE)` — Jackson 2.15.x single-arg `EnumDeserializer(EnumResolver)` passes `null` for `caseInsensitive` causing `NullPointerException` on unboxing
+- Fixed `HasEventsMatcherTest` `UnnecessaryStubbingException`: replaced `lenient()` stubbing with strict `when()` stubs and used plain `mock(JsonNode.class)` for event nodes that are never queried via `fieldNames()`
+- Fixed Maven plugin scope warnings: added `<scope>provided</scope>` to `maven-plugin-api`, `maven-compat`, `maven-core`, and `maven-model` in `annotation-validator-maven-plugin`, `generator-plugin`, and `raml-maven-plugin`
+
+### Added
+- `jakarta.xml.bind-api.raml.version` root pom property: documents why `jakarta.xml.bind:jakarta.xml.bind-api` is pinned to `2.3.2` for RAML parser modules (org.raml:raml-parser requires the pre-EE9 `javax.xml.bind.*` namespace)
 # [17.104.0] - 2025-12-16
 ### Added
 - New module `framework-libraries-version` that contains a maven generated json file that has this project's version number

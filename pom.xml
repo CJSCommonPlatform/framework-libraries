@@ -6,13 +6,13 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>17.103.0</version>
+        <version>21.0.0-M3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.gov.justice.framework.libraries</groupId>
     <artifactId>framework-libraries</artifactId>
-    <version>17.104.1-SNAPSHOT</version>
+    <version>21.0.0-M1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Framework Common Libraries</name>
@@ -21,7 +21,6 @@
     <modules>
         <module>annotation-validator</module>
         <module>domain-test-dsl</module>
-        <module>embedded-artemis</module>
         <module>framework-api</module>
         <module>framework-libraries-bom</module>
         <module>framework-utilities</module>
@@ -37,16 +36,25 @@
 
     <properties>
         <cpp.repo.name>framework-libraries</cpp.repo.name>
-        <maven-common-bom.version>17.104.0</maven-common-bom.version>
+        <maven-common-bom.version>21.0.0-M2</maven-common-bom.version>
         <cucumber.reporting.plugin.version>2.0.0</cucumber.reporting.plugin.version>
-        <framework-wiremock-service.version>17.0.1</framework-wiremock-service.version>
-        <file-service.version>17.104.0</file-service.version>
-
-        <!-- Fix me -->
-        <openejb.version>8.0.13</openejb.version>
+        <framework-wiremock-service.version>21.0.0-M1-SNAPSHOT</framework-wiremock-service.version>
+        <file-service.version>21.0.0-M1-SNAPSHOT</file-service.version>
 
         <!-- Must be moved to parent-pom -->
-        <maven-plugin-annotations.version>3.7.1</maven-plugin-annotations.version>
+        <maven-plugin-annotations.version>3.9.0</maven-plugin-annotations.version>
+
+        <!--
+            jakarta.xml.bind:jakarta.xml.bind-api is managed by the BOM at 4.0.0 (Jakarta EE 10,
+            jakarta.* namespace). However, org.raml:raml-parser is a legacy third-party library
+            that uses javax.xml.bind.* classes internally. Those classes only exist in versions
+            2.x of jakarta.xml.bind-api (before the EE 9 namespace change). From 3.0.0 onwards
+            the namespace became jakarta.xml.bind.*  and javax.xml.bind.* is no longer provided.
+            Any module that runs the RAML parser at compile or test time must pin this dependency
+            to ${jakarta.xml.bind-api.raml.version} to avoid NoClassDefFoundError on
+            javax/xml/bind/SchemaOutputResolver. DO NOT upgrade to 3.x or 4.x.
+        -->
+        <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
     </properties>
 
@@ -92,6 +100,14 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <scm>
         <connection>${cpp.scm.connection}</connection>
         <developerConnection>${cpp.scm.developerConnection}</developerConnection>
@@ -104,11 +120,15 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
                 <dependencies>
+                    <!-- Pinned to ${jakarta.xml.bind-api.raml.version} (pre-EE9): org.raml:raml-parser uses javax.xml.bind.* which is only present in jakarta.xml.bind-api 2.x. See root pom for full explanation. -->
                     <dependency>
-                        <groupId>javax.xml.bind</groupId>
-                        <artifactId>jaxb-api</artifactId>
-                        <version>${jaxb.version}</version>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>${jakarta.xml.bind-api.raml.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

@@ -13,7 +13,7 @@ import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUI
 
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
-import javax.json.JsonArrayBuilder;
+import jakarta.json.JsonArrayBuilder;
 
 import org.junit.jupiter.api.Test;
 

@@ -4,7 +4,7 @@ import uk.gov.justice.services.core.interceptor.InterceptorContext;
 
 import java.util.function.Consumer;
 
-import javax.jms.Message;
+import jakarta.jms.Message;
 
 public interface JmsProcessor {
 

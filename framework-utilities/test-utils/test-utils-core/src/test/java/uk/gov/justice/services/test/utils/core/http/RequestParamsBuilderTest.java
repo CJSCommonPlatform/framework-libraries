@@ -5,9 +5,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParamswithHeaders;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+import jakarta.ws.rs.core.MultivaluedHashMap;
 import org.junit.jupiter.api.Test;
 
 public class RequestParamsBuilderTest {
@@ -32,7 +32,7 @@ public class RequestParamsBuilderTest {
 
 	        final String url = "a url";
 	        final String mediaType = "the media type";
-	        MultivaluedMap<String, Object> headers = new MultivaluedMapImpl<String, Object>();
+	        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
 			headers.add("key", "value");
 	        
 	        final RequestParamsBuilder requestParamsBuilder = requestParamswithHeaders(url, mediaType, headers);

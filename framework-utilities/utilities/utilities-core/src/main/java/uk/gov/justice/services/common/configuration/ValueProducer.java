@@ -3,10 +3,10 @@ package uk.gov.justice.services.common.configuration;
 import static java.lang.String.format;
 import static uk.gov.justice.services.common.configuration.CommonValueAnnotationDef.localValueAnnotationOf;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
 import javax.naming.NamingException;
 
 /**

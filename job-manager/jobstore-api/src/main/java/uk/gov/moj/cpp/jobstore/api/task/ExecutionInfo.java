@@ -5,7 +5,7 @@ import uk.gov.moj.cpp.jobstore.persistence.Priority;
 
 import java.time.ZonedDateTime;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 public class ExecutionInfo {
     private final JsonObject jobData;

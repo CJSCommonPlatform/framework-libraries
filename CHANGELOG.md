@@ -5,18 +5,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [21.0.0-SNAPSHOT] - 2026-03-31
+## [21.0.0-M1] - 2026-06-02
 ### Changed
-- Upgraded to Java 21 and Jakarta EE 10
-- Migrated `javax.jms.*` to `jakarta.jms.*` in embedded Artemis and JMS test utility classes (`EmbeddedArtemisServerIT`, `MessageConsumerClient`, `MessageConsumerFactory`, `JmsSessionFactory`, `DeadLetterQueueBrowser`, `TopicSender`)
-- Replaced `javax.xml.bind:jaxb-api` with `jakarta.xml.bind:jakarta.xml.bind-api` in plugin dependencies
-- Removed test module 'embedded-artemis' and all associated code, in order to break the dependency on artemis
-- Upgraded OpenEJB from `8.0.13` to `10.0.0` (Jakarta EE 10 compatible) — fixes `@Resource` injection in Application Composer integration tests and removes the need for xbean-asm9 overrides as OpenEJB 10 natively supports Java 21 class files
-- Fixed `job-manager-it` integration tests (`JobSchedulerIT`, `JobServiceIT`): `@Resource(name = "openejb/Resource/jobStore")` injection now works correctly with OpenEJB 10 + `jakarta.annotation.Resource`
-- Fixed `HasEventsMatcherTest` `UnnecessaryStubbingException`: in `shouldReturnTrueIfAllExpectedEventsAreInTheActualEventList`, `event_3` only appears in `actualEvents` so `fieldNames()` is never called on it via `WildcardTextNodeSupport`; replaced `create("event_3")` with a plain `mock(JsonNode.class, "event_3")` for that node, and replaced `lenient()` stubbing in the `create()` helper with strict `when()` stubbing
-- Fixed Maven plugin scope warnings: added `<scope>provided</scope>` to `maven-plugin-api`, `maven-compat`, `maven-core`, and `maven-model` in `annotation-validator-maven-plugin`, `generator-plugin`, and `raml-maven-plugin`; added explicit `provided` declarations for `maven-plugin-api` and `maven-core` in `catalog-generation-plugin` and `pojo-generation-plugin`
-- Added `commons-lang3` as an explicit compile dependency to `generator-plugin` (previously pulled in transitively via `maven-core`)
-- Fixed `IntegerEnumDeserializer`: changed `super(enumResolver)` to `super(enumResolver, Boolean.FALSE)` — in Jackson 2.15.x the single-arg `EnumDeserializer(EnumResolver)` constructor internally passes `null` for `caseInsensitive` causing `NullPointerException` on unboxing
+- Upgraded to Java 21 and Jakarta EE 10 (17.104.x release line)
+- Updated `maven-framework-parent-pom` to `21.0.0-M3-SNAPSHOT` for local chain validation; pinned to `21.0.0-M2` released version for CI
+- Migrated all `javax.*` imports to `jakarta.*` across all modules
+- Replaced `javax.xml.bind:jaxb-api` with `jakarta.xml.bind:jakarta.xml.bind-api` in all raml-maven and generator-maven-plugin module POMs
+- Migrated `javax.jms.*` to `jakarta.jms.*` in embedded Artemis and JMS test utility classes
+- Removed `embedded-artemis` module (server-side Artemis internals; not upgradeable and architecturally unsound)
+- Upgraded OpenEJB from `8.0.13` to `10.1.4` (Jakarta EE 10 / CDI 4.0 compatible)
+
+### Fixed
+- RAML parser modules (`raml-parser`, `raml-generator-core`, `generator-core`, `generator-raml-parser`, `raml-maven-plugin`, `generator-plugin`): `org.raml:raml-parser` uses `javax.xml.bind.*` classes internally (pre-Jakarta EE 9 namespace). Fixed by pinning `jakarta.xml.bind:jakarta.xml.bind-api` to version `2.3.2` — the last release where the API classes remained in the `javax.xml.bind.*` namespace. Version is controlled by the `jakarta.xml.bind-api.raml.version` property in the root pom (with full explanation). Do not upgrade to 3.x or 4.x.
+- Fixed `IntegerEnumDeserializer`: changed `super(enumResolver)` to `super(enumResolver, Boolean.FALSE)` — Jackson 2.15.x single-arg `EnumDeserializer(EnumResolver)` passes `null` for `caseInsensitive` causing `NullPointerException` on unboxing
+- Fixed `HasEventsMatcherTest` `UnnecessaryStubbingException`: replaced `lenient()` stubbing with strict `when()` stubs and used plain `mock(JsonNode.class)` for event nodes that are never queried via `fieldNames()`
+- Fixed Maven plugin scope warnings: added `<scope>provided</scope>` to `maven-plugin-api`, `maven-compat`, `maven-core`, and `maven-model` in `annotation-validator-maven-plugin`, `generator-plugin`, and `raml-maven-plugin`
+
+### Added
+- `jakarta.xml.bind-api.raml.version` root pom property: documents why `jakarta.xml.bind:jakarta.xml.bind-api` is pinned to `2.3.2` for RAML parser modules (org.raml:raml-parser requires the pre-EE9 `javax.xml.bind.*` namespace)
 # [17.104.0] - 2025-12-16
 ### Added
 - New module `framework-libraries-version` that contains a maven generated json file that has this project's version number

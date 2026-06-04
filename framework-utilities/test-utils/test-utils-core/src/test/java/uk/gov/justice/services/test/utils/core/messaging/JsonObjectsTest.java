@@ -11,9 +11,10 @@ class JsonObjectsTest {
     @Test
     public void shouldJsonObjectsCacheProviders() {
         assertNotNull(jsonBuilderFactory);
-        assertTrue(jsonBuilderFactory.getConfigInUse().isEmpty());
+        // parsson returns null from getConfigInUse() when no config was set; glassfish returned empty map — both mean no config
+        assertTrue(jsonBuilderFactory.getConfigInUse() == null || jsonBuilderFactory.getConfigInUse().isEmpty());
         assertNotNull(jsonReaderFactory);
-        assertTrue(jsonReaderFactory.getConfigInUse().isEmpty());
+        assertTrue(jsonReaderFactory.getConfigInUse() == null || jsonReaderFactory.getConfigInUse().isEmpty());
     }
 
 }

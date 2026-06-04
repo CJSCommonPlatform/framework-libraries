@@ -20,8 +20,8 @@ public class IntegerEnumBeanDeserializerModifier extends BeanDeserializerModifie
             final BeanDescription beanDesc,
             final JsonDeserializer<?> deserializer) {
 
-        final EnumResolver enumResolver = constructFor(config, beanDesc.getBeanClass());
-        final EnumResolver toStringResolver = constructUsingToString(config, beanDesc.getBeanClass());
+        final EnumResolver enumResolver = constructFor(config, beanDesc.getClassInfo());
+        final EnumResolver toStringResolver = constructUsingToString(config, beanDesc.getClassInfo());
 
         return new IntegerEnumDeserializer(
                 enumResolver,

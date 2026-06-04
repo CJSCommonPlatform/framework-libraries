@@ -362,9 +362,9 @@ public class JsonObjectsTest {
     @Test
     public void shouldJsonObjectsCacheProviders() {
         assertNotNull(jsonBuilderFactory);
-        assertTrue(jsonBuilderFactory.getConfigInUse().isEmpty());
+        assertTrue(jsonBuilderFactory.getConfigInUse() == null || jsonBuilderFactory.getConfigInUse().isEmpty());
         assertNotNull(jsonReaderFactory);
-        assertTrue(jsonReaderFactory.getConfigInUse().isEmpty());
+        assertTrue(jsonReaderFactory.getConfigInUse() == null || jsonReaderFactory.getConfigInUse().isEmpty());
     }
 
     @Test
@@ -375,7 +375,7 @@ public class JsonObjectsTest {
 
         // then
         assertNotNull(first);
-        assertTrue(first.getConfigInUse().isEmpty());
+        assertTrue(first.getConfigInUse() == null || first.getConfigInUse().isEmpty());
         assertSame(first, second, "JsonReaderFactory should be a cached singleton instance");
     }
 
@@ -387,7 +387,7 @@ public class JsonObjectsTest {
 
         // then
         assertNotNull(first);
-        assertTrue(first.getConfigInUse().isEmpty());
+        assertTrue(first.getConfigInUse() == null || first.getConfigInUse().isEmpty());
         assertSame(first, second, "JsonWriterFactory should be a cached singleton instance");
     }
 
@@ -399,7 +399,7 @@ public class JsonObjectsTest {
 
         // then
         assertNotNull(first);
-        assertTrue(first.getConfigInUse().isEmpty());
+        assertTrue(first.getConfigInUse() == null || first.getConfigInUse().isEmpty());
         assertSame(first, second, "JsonBuilderFactory should be a cached singleton instance");
     }
 

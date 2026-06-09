@@ -5,9 +5,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [21.0.0-M1] - 2026-06-02
+## [25.104.0-M3] - 2026-06-09
 ### Changed
-- Upgraded to Java 21 and Jakarta EE 10 (17.104.x release line)
+- Upgraded to Java 25 / WildFly 40 / Jakarta EE 11 (25.104.x release line)
+- Updated `maven-framework-parent-pom` to `25.104.0-M3`
+- Updated `maven-common-bom` to `25.104.0-M2`
+- Updated `framework-wiremock-service` to `25.104.0-M3`
+- Updated `file-service` to `25.104.0-M3`
+- Replaced `org.glassfish:jakarta.json` (test scope) with `org.eclipse.parsson:parsson` — glassfish artifact unavailable under Jakarta EE 11
+- Pinned `maven-plugin-plugin` to `3.15.2` — uses ASM 9.9 which supports Java 25 class file major version 69; earlier versions fail to analyse bytecode
+- Pinned `jakarta.xml.bind:jakarta.xml.bind-api` to `2.3.2` in RAML generator plugin dependencies — `org.raml:raml-parser` uses `javax.xml.bind.*` internally and requires the pre-EE9 namespace version
+
+### Fixed
+- `JavaCompilerUtility`: migrated from reflections 0.9.x API (`ReflectionUtils.forNames`, `SubTypesScanner`, Guava `Multimap` store) to reflections 0.10.x API (`ConfigurationBuilder.forPackage`, `Scanners.SubTypes`, `Map<String,Set<String>>` store)
+- `FileTreeScanner` (generator-io-utils and raml-maven-io-utils): replaced deprecated `ResourcesScanner` with `Scanners.Resources` — fixes empty results under reflections 0.10.x
+
+## [21.0.0-M1] - 2026-06-09
+### Changed
+- Upgraded to Java 25 and Jakarta EE 10 (17.104.x release line)
 - Updated `maven-framework-parent-pom` to `21.0.0-M3-SNAPSHOT` for local chain validation; pinned to `21.0.0-M2` released version for CI
 - Migrated all `javax.*` imports to `jakarta.*` across all modules
 - Replaced `javax.xml.bind:jaxb-api` with `jakarta.xml.bind:jakarta.xml.bind-api` in all raml-maven and generator-maven-plugin module POMs

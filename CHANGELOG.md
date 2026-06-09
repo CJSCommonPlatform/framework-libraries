@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [25.104.0-M6] - 2026-06-09
+### Fixed
+- `JavaCompilerUtility.getClassNames()`: return only subtype values from the reflections store, not keys (supertypes) — the 0.10.x migration incorrectly included supertypes causing `compiledInterfaceOf` to find multiple interfaces and `compiledClassesOf` to return extra types
+
 ## [25.104.0-M5] - 2026-06-09
 ### Changed
 - Upgraded to Java 25 / WildFly 40 / Jakarta EE 11 (25.104.x release line)

@@ -12,7 +12,6 @@ import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -229,7 +228,7 @@ public class JavaCompilerUtility {
 
     private Set<String> getClassNames(final Reflections reflections) {
         final Map<String, Set<String>> types = reflections.getStore().get(SubTypes.index());
-        return Stream.concat(types.values().stream().flatMap(Set::stream), types.keySet().stream()).collect(toSet());
+        return types.values().stream().flatMap(Set::stream).collect(toSet());
     }
 
     private static Class<?> loadClass(final String name, final ClassLoader classLoader) {

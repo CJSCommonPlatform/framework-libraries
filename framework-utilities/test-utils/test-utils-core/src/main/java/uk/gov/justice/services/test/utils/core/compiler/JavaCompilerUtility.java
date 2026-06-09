@@ -1,22 +1,21 @@
 package uk.gov.justice.services.test.utils.core.compiler;
 
-import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.join;
 import static java.text.MessageFormat.format;
 import static java.util.stream.Collectors.toSet;
-import static org.reflections.ReflectionUtils.forNames;
+import static org.reflections.scanners.Scanners.SubTypes;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import com.google.common.collect.Multimap;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ConfigurationBuilder;
 
 public class JavaCompilerUtility {
 
@@ -216,15 +215,28 @@ public class JavaCompilerUtility {
 
     private Set<Class<?>> loadClasses(final File compilationOutputDir, final String basePackage) {
         try (URLClassLoader resourceClassLoader = new URLClassLoader(new URL[]{compilationOutputDir.toURI().toURL()})) {
-            final Reflections reflections = new Reflections(basePackage, new SubTypesScanner(false), resourceClassLoader);
-            return newHashSet(forNames(getClassNames(reflections), resourceClassLoader));
+            final Reflections reflections = new Reflections(
+                    new ConfigurationBuilder()
+                            .forPackage(basePackage, resourceClassLoader)
+                            .addScanners(SubTypes.filterResultsBy(s -> true)));
+            return getClassNames(reflections).stream()
+                    .map(name -> loadClass(name, resourceClassLoader))
+                    .collect(toSet());
         } catch (IOException ex) {
             throw new CompilationException("Error creating class loader", ex);
         }
     }
 
     private Set<String> getClassNames(final Reflections reflections) {
-        Multimap<String, String> types = reflections.getStore().get(SubTypesScanner.class.getSimpleName());
-        return Stream.concat(types.values().stream(), types.keySet().stream()).collect(toSet());
+        final Map<String, Set<String>> types = reflections.getStore().get(SubTypes.index());
+        return Stream.concat(types.values().stream().flatMap(Set::stream), types.keySet().stream()).collect(toSet());
+    }
+
+    private static Class<?> loadClass(final String name, final ClassLoader classLoader) {
+        try {
+            return classLoader.loadClass(name);
+        } catch (ClassNotFoundException e) {
+            throw new CompilationException("Class not found: " + name, e);
+        }
     }
 }

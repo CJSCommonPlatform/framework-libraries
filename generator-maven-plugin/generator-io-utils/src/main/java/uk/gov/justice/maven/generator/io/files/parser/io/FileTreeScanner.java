@@ -23,7 +23,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ResourceList;
 import io.github.classgraph.ScanResult;
 import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 /**
@@ -68,7 +68,7 @@ public class FileTreeScanner {
                 new ConfigurationBuilder()
                         .filterInputsBy(filterOf(includes, excludes))
                         .setUrls(singletonList(baseDir.toUri().toURL()))
-                        .setScanners(new ResourcesScanner()));
+                        .setScanners(Scanners.Resources));
         return reflections.getResources(Pattern.compile(".*"));
     }
 

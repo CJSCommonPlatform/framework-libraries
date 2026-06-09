@@ -5,11 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [25.104.0-M4] - 2026-06-09
-### Fixed
-- `pojo-plugin-it`: added `org.eclipse.parsson:parsson` to `pojo-generation-plugin` plugin classloader dependencies — `jakarta.jakartaee-api:11` registers parsson as the `JsonProvider` SPI implementation but does not bundle the jar; the plugin's isolated Maven classloader had no provider, causing `ServiceLoader` to throw at `generate-sources` phase on CI
-
-## [25.104.0-M3] - 2026-06-09
+## [25.104.0-M5] - 2026-06-09
 ### Changed
 - Upgraded to Java 25 / WildFly 40 / Jakarta EE 11 (25.104.x release line)
 - Updated `maven-framework-parent-pom` to `25.104.0-M3`
@@ -21,7 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Migrated `javax.jms.*` to `jakarta.jms.*` in embedded Artemis and JMS test utility classes
 - Removed `embedded-artemis` module (server-side Artemis internals; not upgradeable and architecturally unsound)
 - Upgraded OpenEJB from `8.0.13` to `10.1.4` (Jakarta EE 10 / CDI 4.0 compatible)
-- Replaced `org.glassfish:jakarta.json` (test scope) with `org.eclipse.parsson:parsson` — glassfish artifact unavailable under Jakarta EE 11
+- Replaced `org.glassfish:jakarta.json` with `org.eclipse.parsson:parsson` across all modules — glassfish artifact unavailable under Jakarta EE 11; added parsson to `pojo-generation-plugin` classloader dependencies to satisfy `JsonProvider` SPI at generate-sources phase
 - Pinned `maven-plugin-plugin` to `3.15.2` — uses ASM 9.9 which supports Java 25 class file major version 69; earlier versions fail to analyse bytecode
 - Pinned `jakarta.xml.bind:jakarta.xml.bind-api` to `2.3.2` in RAML generator plugin dependencies — `org.raml:raml-parser` uses `javax.xml.bind.*` internally and requires the pre-EE9 namespace version
 

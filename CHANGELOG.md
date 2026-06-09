@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [25.104.0-M4] - 2026-06-09
+### Fixed
+- `pojo-plugin-it`: added `org.eclipse.parsson:parsson` to `pojo-generation-plugin` plugin classloader dependencies — `jakarta.jakartaee-api:11` registers parsson as the `JsonProvider` SPI implementation but does not bundle the jar; the plugin's isolated Maven classloader had no provider, causing `ServiceLoader` to throw at `generate-sources` phase on CI
+
 ## [25.104.0-M3] - 2026-06-09
 ### Changed
 - Upgraded to Java 25 / WildFly 40 / Jakarta EE 11 (25.104.x release line)

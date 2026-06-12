@@ -41,9 +41,6 @@
         <framework-wiremock-service.version>25.104.0-M3</framework-wiremock-service.version>
         <file-service.version>25.104.0-M3</file-service.version>
 
-        <!-- Must be moved to parent-pom -->
-        <maven-plugin-annotations.version>3.9.0</maven-plugin-annotations.version>
-
         <!--
             jakarta.xml.bind:jakarta.xml.bind-api is managed by the BOM at 4.0.0 (Jakarta EE 10,
             jakarta.* namespace). However, org.raml:raml-parser is a legacy third-party library

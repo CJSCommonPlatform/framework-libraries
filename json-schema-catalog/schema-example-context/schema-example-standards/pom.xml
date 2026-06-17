@@ -5,7 +5,7 @@
     <parent>
         <artifactId>schema-example-context</artifactId>
         <groupId>uk.gov.justice.schema</groupId>
-        <version>25.104.0-M7</version>
+        <version>25.104.0-M8-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

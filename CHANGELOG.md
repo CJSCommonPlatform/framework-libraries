@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [25.104.0-M9] - 2026-06-18
+## [25.104.0-M10] - 2026-06-18
 ### Changed
 - Bumped parent `maven-framework-parent-pom` to `25.104.0-M7` — picks up `liquibase.version=5.0.3`
 - Bumped parent `maven-common-bom.version` to 25.104.0-M5

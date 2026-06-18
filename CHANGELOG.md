@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [25.104.0-M8] - 2026-06-18
+### Changed
+- Bumped parent `maven-framework-parent-pom` to `25.104.0-M7` — picks up `liquibase.version=5.0.3`
+- Bumped parent `maven-common-bom.version` to 25.104.0-M5
+- Bumped parent `framework-wiremock-service.version` to 25.104.0-M4
+- Bumped parent `file-service.version` to 25.104.0-M6
+
 ## [25.104.0-M6] - 2026-06-09
 ### Fixed
 - `JavaCompilerUtility.getClassNames()`: return only subtype values from the reflections store, not keys (supertypes) — the 0.10.x migration incorrectly included supertypes causing `compiledInterfaceOf` to find multiple interfaces and `compiledClassesOf` to return extra types

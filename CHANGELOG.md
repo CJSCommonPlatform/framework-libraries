@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [25.104.0-M11] - 2026-07-27
+### Changed
+- Bumped parent `maven-framework-parent-pom` to `25.104.0-M8` and `maven-common-bom.version` to `25.104.0-M6` — picks up Jackson `2.21.5` (**CVE-2026-54515**) and the `org.junit:junit-bom` import
+- Bumped `framework-wiremock-service.version` to `25.104.0-M5` and `file-service.version` to `25.104.0-M7` — propagates the same Jackson `2.21.5` fix through those artifacts
+
 ## [25.104.0-M10] - 2026-06-18
 ### Changed
 - Bumped parent `maven-framework-parent-pom` to `25.104.0-M7` — picks up `liquibase.version=5.0.3`

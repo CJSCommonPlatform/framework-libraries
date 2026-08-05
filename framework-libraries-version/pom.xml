@@ -6,7 +6,7 @@
     <parent>
         <groupId>uk.gov.justice.framework.libraries</groupId>
         <artifactId>framework-libraries</artifactId>
-        <version>25.104.0-M12</version>
+        <version>25.104.0-M13-SNAPSHOT</version>
     </parent>
 
     <artifactId>framework-libraries-version</artifactId>

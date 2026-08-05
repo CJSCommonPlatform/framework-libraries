@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [25.104.0-M12] - 2026-08-05
+### Changed
+- Bumped parent `maven-framework-parent-pom` to `25.104.0-M9`, `maven-common-bom.version` to `25.104.0-M7`, and `framework-wiremock-service.version` to `25.104.0-M6` — picks up the Apache Artemis client bump `2.53.0` → `2.54.0`.
+
 ## [25.104.0-M11] - 2026-07-27
 ### Changed
 - Bumped parent `maven-framework-parent-pom` to `25.104.0-M8` and `maven-common-bom.version` to `25.104.0-M6` — picks up Jackson `2.21.5` (**CVE-2026-54515**) and the `org.junit:junit-bom` import

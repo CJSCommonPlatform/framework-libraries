@@ -5,44 +5,28 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [25.104.0-M12] - 2026-08-05
-### Changed
-- Bumped parent `maven-framework-parent-pom` to `25.104.0-M9`, `maven-common-bom.version` to `25.104.0-M7`, and `framework-wiremock-service.version` to `25.104.0-M6` — picks up the Apache Artemis client bump `2.53.0` → `2.54.0`.
+## [25.104.0] - 2026-09-07
+First official (non-milestone) release of the Java 25 / WildFly 40 / Jakarta EE 11 line,
+consolidating milestones `25.104.0-M3` to `25.104.0-M12`. (M8 and M9 were dependency-only
+releases with no source changes.)
 
-## [25.104.0-M11] - 2026-07-27
-### Changed
-- Bumped parent `maven-framework-parent-pom` to `25.104.0-M8` and `maven-common-bom.version` to `25.104.0-M6` — picks up Jackson `2.21.5` (**CVE-2026-54515**) and the `org.junit:junit-bom` import
-- Bumped `framework-wiremock-service.version` to `25.104.0-M5` and `file-service.version` to `25.104.0-M7` — propagates the same Jackson `2.21.5` fix through those artifacts
-
-## [25.104.0-M10] - 2026-06-18
-### Changed
-- Bumped parent `maven-framework-parent-pom` to `25.104.0-M7` — picks up `liquibase.version=5.0.3`
-- Bumped parent `maven-common-bom.version` to 25.104.0-M5
-- Bumped parent `framework-wiremock-service.version` to 25.104.0-M4
-- Bumped parent `file-service.version` to 25.104.0-M6
-
-## [25.104.0-M6] - 2026-06-09
-### Fixed
-- `JavaCompilerUtility.getClassNames()`: return only subtype values from the reflections store, not keys (supertypes) — the 0.10.x migration incorrectly included supertypes causing `compiledInterfaceOf` to find multiple interfaces and `compiledClassesOf` to return extra types
-
-## [25.104.0-M5] - 2026-06-09
 ### Changed
 - Upgraded to Java 25 / WildFly 40 / Jakarta EE 11 (25.104.x release line)
-- Updated `maven-framework-parent-pom` to `25.104.0-M3`
-- Updated `maven-common-bom` to `25.104.0-M2`
-- Updated `framework-wiremock-service` to `25.104.0-M3`
-- Updated `file-service` to `25.104.0-M3`
+- Updated parent `maven-framework-parent-pom`, `maven-common-bom.version`, `framework-wiremock-service.version` and `file-service.version` to the released `25.104.0` — Java 25 / Jakarta EE 11 targeting (`java.major.version=25`, `enforcer.java.version.range=[25,)`), Jakarta EE 11 API set, WildFly `40.0.0.Final`, Weld 6, RESTEasy 7, Hibernate ORM 6, Apache Artemis `2.54.0` under the new `org.apache.artemis` groupId, `liquibase.version=5.0.3`, Jackson `2.21.5` (**CVE-2026-54515**) and the `org.junit:junit-bom` import
+- Upgraded `maven-plugin-annotations` from `3.7.1` to `3.9.0`
+- Added a root-level `mockito-junit-jupiter` test dependency, so every module gets the JUnit 5 Mockito extension
 - Migrated all `javax.*` imports to `jakarta.*` across all modules
 - Replaced `javax.xml.bind:jaxb-api` with `jakarta.xml.bind:jakarta.xml.bind-api` in all raml-maven and generator-maven-plugin module POMs
 - Migrated `javax.jms.*` to `jakarta.jms.*` in embedded Artemis and JMS test utility classes
 - Removed `embedded-artemis` module (server-side Artemis internals; not upgradeable and architecturally unsound)
-- Upgraded OpenEJB from `8.0.13` to `10.1.4` (Jakarta EE 10 / CDI 4.0 compatible)
+- Upgraded OpenEJB from `8.0.13` to `10.1.4` (Jakarta EE 10 / CDI 4.0 compatible), dropping the local `openejb.version` override that carried a `<!-- Fix me -->` marker — the version now comes from `cp-maven-common-bom`
 - Replaced `org.glassfish:jakarta.json` with `org.eclipse.parsson:parsson` across all modules — glassfish artifact unavailable under Jakarta EE 11; added parsson to `pojo-generation-plugin` classloader dependencies to satisfy `JsonProvider` SPI at generate-sources phase
 - Pinned `maven-plugin-plugin` to `3.15.2` — uses ASM 9.9 which supports Java 25 class file major version 69; earlier versions fail to analyse bytecode
 - Pinned `jakarta.xml.bind:jakarta.xml.bind-api` to `2.3.2` in RAML generator plugin dependencies — `org.raml:raml-parser` uses `javax.xml.bind.*` internally and requires the pre-EE9 namespace version
 
 ### Fixed
-- RAML parser modules: pinned `jakarta.xml.bind:jakarta.xml.bind-api` to `2.3.2` — the last release where the API classes remained in the `javax.xml.bind.*` namespace. Version controlled by `jakarta.xml.bind-api.raml.version` property in root pom. Do not upgrade to 3.x or 4.x.
+- RAML parser modules: pinned `jakarta.xml.bind:jakarta.xml.bind-api` to `2.3.2` — the last release where the API classes remained in the `javax.xml.bind.*` namespace. Version controlled by the `jakarta.xml.bind-api.raml.version` property, now inherited from `maven-framework-parent-pom`. Do not upgrade to 3.x or 4.x.
+- `JavaCompilerUtility.getClassNames()`: return only subtype values from the reflections store, not keys (supertypes) — the 0.10.x migration incorrectly included supertypes, causing `compiledInterfaceOf` to find multiple interfaces and `compiledClassesOf` to return extra types
 - `IntegerEnumDeserializer`: changed `super(enumResolver)` to `super(enumResolver, Boolean.FALSE)` — Jackson 2.15.x single-arg constructor passes `null` for `caseInsensitive` causing `NullPointerException` on unboxing
 - `HasEventsMatcherTest`: replaced `lenient()` stubbing with strict `when()` stubs to fix `UnnecessaryStubbingException`
 - Maven plugin scope warnings: added `<scope>provided</scope>` to `maven-plugin-api`, `maven-compat`, `maven-core`, and `maven-model` in `annotation-validator-maven-plugin`, `generator-plugin`, and `raml-maven-plugin`
@@ -50,8 +34,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `FileTreeScanner` (generator-io-utils and raml-maven-io-utils): replaced deprecated `ResourcesScanner` with `Scanners.Resources` — fixes empty results under reflections 0.10.x
 
 ### Added
-- `jakarta.xml.bind-api.raml.version` root pom property documenting the RAML parser javax.xml.bind namespace constraint
-# [17.104.0] - 2025-12-16
+- Documentation in the root pom of the RAML parser `javax.xml.bind` namespace constraint, alongside the `jakarta.xml.bind-api.raml.version` property that enforces it
+
+### Removed
+- The local `jakarta.xml.bind-api.raml.version` property — the value (`2.3.2`) now comes from `maven-framework-parent-pom`, which centralised it so child projects could drop their copies. The explanatory comment stays in the root pom, since the submodule poms refer to it
+- `liquibase.hub.mode: off` from `job-manager/jobstore-liquibase/src/main/resources/liquibase.properties` — the key was removed in Liquibase 4.12.0, and the JAR bundling it fails with an `IllegalArgumentException` and exits non-zero (the other Liquibase JARs bundle 4.10.0 and only warn), causing the Kubernetes pre-install job to time out at 900s
+
+## [17.104.0] - 2025-12-16
 ### Added
 - New module `framework-libraries-version` that contains a maven generated json file that has this project's version number
 ### Security

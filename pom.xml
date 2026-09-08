@@ -41,9 +41,6 @@
         <framework-wiremock-service.version>25.104.0</framework-wiremock-service.version>
         <file-service.version>25.104.0</file-service.version>
 
-        <!-- Must be moved to parent-pom -->
-        <maven-plugin-annotations.version>3.9.0</maven-plugin-annotations.version>
-
         <!--
             jakarta.xml.bind-api.raml.version (2.3.2) now comes from maven-framework-parent-pom
             and must NOT be re-pinned here — a local copy silently overrides the centralised

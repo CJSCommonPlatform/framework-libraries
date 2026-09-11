@@ -3,7 +3,11 @@ All notable changes to this project will be documented in this file, which loose
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [25.104.1] - 2026-09-11
+### Changed
+- Updated the parent `maven-framework-parent-pom` to 25.104.1 to take the changes from it
+- Updated `maven-common-bom`, `framework-wiremock-service` and `cp-file-service` to 25.104.1
+- Maven Plugin Annotations 3.15.2, now taken from `maven-common-bom` instead of a local pin at 3.9.0
 
 ## [25.104.0] - 2026-09-07
 First official (non-milestone) release of the Java 25 / WildFly 40 / Jakarta EE 11 line,
